@@ -1,0 +1,29 @@
+<div class="table-header"><i></i><span>基本信息</span></div>
+<div class="form-div" style="border-bottom:0;">
+	<table>
+	<tr>
+		<td width="75"><h1>您的姓名：</h1></td>
+		<td><h2><?php e($tpl['info']['name'],'html'); ?></h2></td>
+	</tr>
+	<tr>
+		<td><h1>您的帐号：</h1></td>
+		<td><h2><?php e($tpl['info']['username'],'html'); ?></h2></td>
+	</tr>
+	</table>
+</div>
+
+<form id="wfm-myaccount-fill" onkeydown="deal_wfm_keyboard(event,this);">
+<div class="table-header"><i></i><span>修改密码</span></div>
+<div class="form-div" style="border-bottom:0;">
+	<table>
+	<tr>
+		<td width="75"><h1>新的密码：</h1></td>
+		<td><input type="password" name="password" class="pwdbox" style="width:130px"/></td>
+	</tr>
+	<tr>
+		<td><h1>重复密码：</h1></td>
+		<td><input type="password" name="passwordr" class="pwdbox" style="width:130px"/></td>
+	</tr>
+	</table>
+</div>
+</form>
