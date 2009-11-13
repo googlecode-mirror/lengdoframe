@@ -1,0 +1,76 @@
+<?php if( $tpl['type'] == 'btn' ){?>
+<div class="btn" onmouseover="tbtn_init(this)" onclick="<?php echo $tpl['info']['onclick']; ?>" title="<?php echo $tpl['info']['title']; ?>">
+	<div class="l"><span class="side"></span></div>
+	<div class="m"><i class="<?php echo $tpl['info']['ico']; ?>"></i><span><?php echo $tpl['info']['text']; ?>&nbsp;</span></div>
+	<div class="r"><span class="side"></span></div>
+</div>
+
+
+<?php }elseif( $tpl['type'] == 'cdd' ){?>
+<div class="btn" onmouseover="tbtn_init(this)" onclick="tbtn_cdd(event,'tbtn_ddl_<?php echo $tpl['info']['id']; ?>')" title="<?php echo $tpl['info']['title']; ?>">
+	<div class="l"><span class="side"></span></div>
+	<div class="m">
+		<i class="<?php echo $tpl['info']['ico']; ?>"></i>
+		<span><?php echo $tpl['info']['text']; ?>&nbsp;</span>
+	</div>
+	<div class="r"><span class="ddl"></span><span class="side"></span></div>
+	<br /><br />
+	<div class="ddl" id="tbtn_ddl_<?php echo $tpl['info']['id']; ?>" style="width:<?php echo $tpl['info']['ddlwidth']; ?>px;">
+		<?php foreach( $tpl['items'] AS $r ){?>
+		<a href="javascript:void(0)" onclick="<?php echo $r['onclick']; ?>">
+			<?php if($r['ico']){ echo '<i class="'. $r['ico'] .'"></i>'; } ?>
+			<?php echo $r['text']; ?>
+		</a>
+		<?php }?>
+	</div>
+</div>
+
+
+<?php }elseif( $tpl['type'] == 'cddl' ){?>
+<div class="btn" onmouseover="tbtn_init_cddl(this)" onclick="<?php echo $tpl['info']['onclick']; ?>">
+	<div class="l" onmousedown="tbtn_cddl_ldown(event,this)" title="<?php echo $tpl['info']['title']; ?>"><span class="side"></span></div>
+	<div class="m" onmousedown="tbtn_cddl_ldown(event,this)" title="<?php echo $tpl['info']['title']; ?>">
+		<i class="<?php echo $tpl['info']['ico']; ?>"></i>
+		<span><?php echo $tpl['info']['text']; ?>&nbsp;</span>
+	</div>
+	<div class="r" onmousedown="tbtn_cddl_rdown(event,this)" onclick="tbtn_cdd(event,'tbtn_ddl_<?php echo $tpl['info']['id']; ?>')">
+		<span class="ddl"></span>
+		<span class="side"></span>
+	</div>
+	<br /><br />
+	<div class="ddl" id="tbtn_ddl_<?php echo $tpl['info']['id']; ?>" style="width:<?php echo $tpl['info']['ddlwidth']; ?>px;">
+		<?php foreach( $tpl['items'] AS $r ){?>
+		<a href="javascript:void(0)" onclick="<?php echo $r['onclick']; ?>">
+			<?php if($r['ico']){ echo '<i class="'. $r['ico'] .'"></i>'; } ?>
+			<?php echo $r['text']; ?>
+		</a>
+		<?php }?>
+	</div>
+</div>
+
+
+<?php }elseif( $tpl['type'] == 'mdd' ){?>
+<div class="btn" onmouseover="tbtn_init_mdd(this,'tbtn_ddl_<?php echo $tpl['info']['id']; ?>')" title="<?php echo $tpl['info']['title']; ?>">
+	<div class="l"><span class="side"></span></div>
+	<div class="m">
+		<i class="<?php echo $tpl['info']['ico']; ?>"></i>
+		<span><?php echo $tpl['info']['text']; ?>&nbsp;</span>
+	</div>
+	<div class="r"><span class="ddl"></span><span class="side"></span></div>
+	<br /><br />
+	<div class="ddl" id="tbtn_ddl_<?php echo $tpl['info']['id']; ?>" style="width:<?php echo $tpl['info']['ddlwidth']; ?>px;">
+		<?php foreach( $tpl['items'] AS $r ){?>
+		<a href="javascript:void(0)" onclick="<?php echo $r['onclick']; ?>">
+			<?php if($r['ico']){ echo '<i class="'. $r['ico'] .'"></i>'; } ?>
+			<?php echo $r['text']; ?>
+		</a>
+		<?php }?>
+	</div>
+</div>
+
+
+<?php }else{?>
+<a href="<?php echo $tpl['info']['href']; ?>" onclick="<?php echo $tpl['info']['onclick']; ?>" title="<?php echo $tpl['info']['title']; ?>">
+    <?php echo $tpl['info']['text']; ?>
+</a>
+<?php }?>

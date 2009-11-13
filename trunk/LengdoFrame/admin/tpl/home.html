@@ -1,0 +1,287 @@
+<?php include(DIR_ADMIN_TPL.'header.html'); ?>
+
+
+<div class="home-header">
+    <?php if( admin_privilege_valid('syspriv.php', 'myaccount', false) ){?>
+	<a href="javascript:void(0)" onmousedown="this.className='mdown'" onmouseup="this.className=''" onmouseout="this.className=''" onfocus="this.blur()" onclick="wnd_myaccount_fill();"><i class="account"></i>我的帐号</a>
+	<?php }?>
+    <a href="javascript:void(0)" onmousedown="this.className='mdown'" onmouseup="this.className=''" onmouseout="this.className=''" onfocus="this.blur()" onclick="wnd_sysinfo_view();"><i class="sysinfo"></i>系统信息</a>
+</div>
+
+<div class="home-body">
+	<div class="roundbox" style="width:755px;"><div class="linea"></div><div class="lineb"></div>
+		<div class="header"><span class="title">LengdoFrame</span></div>
+
+		<div class="body"><div class="linea"></div><div class="lineb"></div>
+			<div class="content" style="line-height:150%;">
+
+                <p>当前版本：<span style="padding-left:5px;"><?php echo $_LANG['sys_kernel']; ?></span></p>
+                <p>
+                    相关链接：
+                    <a target="_blank" href="http://www.lengdo.com/lengdoframe/index.php" style="color:#050;text-decoration:none;margin-right:5px;">官方网站</a>
+                    <a target="_blank" href="http://www.lengdo.com/lengdoframe/manual.php" style="color:#050;text-decoration:none;margin-right:5px;">开发手册</a>
+                    <a target="_blank" href="http://www.lengdo.com/lengdoframe/novice.php" style="color:#060;text-decoration:none;margin-right:5px;">新手上路</a>
+                </p>
+
+			</div>
+			<div class="linec"></div><div class="lined"></div>
+		</div><div class="linec"></div><div class="lined"></div>
+	</div>
+
+	<div class="roundbox" style="width:755px;"><div class="linea"></div><div class="lineb"></div>
+		<div class="header"><span class="title">LengdoFrame Version</span></div>
+
+		<div class="body"><div class="linea"></div><div class="lineb"></div>
+			<div class="content" style="line-height:150%; height:75px; overflow-y:scroll;">
+
+				<span style="color:#900">[20091010] 发布版本 Lengdoframe v1.0.0 RC1</span><br />
+                <span style="padding-left:70px;color:#999">2009年6月初开始对框架的修改进行记录，完善功能代码</span><br />
+                <span style="padding-left:70px;color:#999">2008到2009年利用Ajax和Js窗口重构框架，提高用户体验及大量重写框架的功能代码</span><br />
+                <span style="padding-left:70px;color:#999">2008年2月初最原始的框架成型，仅融合权限系统</span><br />
+			</div>
+			<div class="linec"></div><div class="lined"></div>
+		</div><div class="linec"></div><div class="lined"></div>
+	</div>
+
+	<div class="roundbox" style="width:755px;"><div class="linea"></div><div class="lineb"></div>
+		<div class="header"><span class="title">LengdoFrame Log</span></div>
+
+		<div class="body"><div class="linea"></div><div class="lineb"></div>
+			<div class="content" style="line-height:150%; height:300px; overflow-y:scroll;">
+                <span>[20091106] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20091106] 优化 /admin/js/module_menu.js</span><br />
+                <span>[20091106] 优化 /admin/skin/default/style.css</span><br />
+                <span>[20091106] 增加 /js/common.js - tabbar() 函数</span><br />
+                <br />
+                <span>[20091105] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20091105] 优化页面加载中遮掩层的显示</span><br />
+                <br />
+                <span>[20091102] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20091102] 优化 /js/window.js</span><br />
+                <span>[20091102] 优化 /js/common.js</span><br />
+                <span>[20091102] 优化 /js/formc.js</span><br />
+                <span>[20091102] 优化 /js/tableact.js</span><br />
+                <span>[20091102] 优化 /admin/js/listtable.js</span><br />
+                <span>[20091102] 优化 /admin/js/tbtn.js</span><br />
+                <span>[20091102] 优化 /admin/js/windows.js</span><br />
+                <span>[20091102] 删除 /admin/js/tabletree.js</span><br />
+                <span>[20091102] 修改 tree_click() => tabletree_click() 以及相关代码</span><br />
+                <br />
+                <span style="color:#900">[20091010] 发布版本 LengdoFrame v1.0.0 RC1</span><br />
+                <br />
+                <span>[20090926] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20090926] 修正窗口类 /js/window.js</span><br />
+                <span>[20090926] 注释微调 /js/common.js</span><br />
+                <br />
+                <span>[20090918] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20090918] 修正tagtitle()中使用的转义类型 /admin/tpl/admin_log.html</span><br />
+                <span>[20090918] 修正错误表单控件单词 fromc /admin/tpl/admin.html, module.html <font style="color:#999">AND</font> /admin/modules/kernel/module.php<br />
+                <span>[20090918] 修正页面加载遮掩层 /admin/tpl/login.html, index.html <font style="color:#999">AND</font> /admin/skin/default/*.css</span><br />
+                <br />
+                <span>[20090917] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20090917] 修正样式 /admin/skin/default/login.css</span><br />
+                <br />
+                <span>[20090915] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20090915] 文件级注释调整 /admin/. includes/*.php, js/*.js, lang/*.php, modules/*.php</span><br />
+                <span>[20090915] 文件级注释调整 /. class/*.php, includes/*.php, js/*.js, lang/*.php</span><br />
+                <br />
+                <span>[20090913] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20090913] 增加标签TITLE功能 /js/common.js <font style="color:#999">AND</font> /admin/skin/default/style.css<br />
+                <span>[20090913] 模板列表数据调整  /admin/tpl/admin.html, admin_log.html, db_backup.html, privilege.html, role.html<br />
+                <span>[20090913] 添加按钮控制区控制功能并优化部分代码  /js/window.js<br />
+                <br />
+                <span>[20090910] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20090910] 修改tabbar()函数并移动函数到/admin/js/common.js 删除/admin/js/tabbar.js文件 <br />
+                <span>[20090910] 修正调用tabbar()函数的文件 /admin/tpl/index.html, db_backup.html<br />
+                <span>[20090910] 修正样式 /admin/skin/default/style.css<br />
+                <span>[20090910] 所有IN()中的元素都添加双引号及增加表单控件HTML转义 /admin/includes/*.php<br />
+                <span>[20090910] 注释调整 /admin/modules/admin/admin.php, /db/db_backup.php, db_optimize.php <font style="color:#999">AND</font> /admin/js/windows.js<br />
+                <span>[20090910] 修改 privilege-tbl-div为div-role-privilegetbl /admin/modules/admin/role.php <font style="color:#999">MAP</font> role.html<br />
+                <span>[20090910] 修正addRow()函数以及修改表格行和列的样式类名索引 /js/tableact.js<br />
+                <span>[20090910] 增加列表同步机制 /admin/js/listtable.js<br />
+                <span>[20090910] 增加单/复选框的标签样式类名添加功能，撤销自动转义HTML /class/formc.class.php<br />
+                <br />
+                <span>[20090902] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20090902] 修改 /admin/tpl/home.html</span><br />
+                <br />
+                <span>[20090901] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20090901] 修正f()中'html'转义 /includes/func.php</span><br />
+                <br />
+                <span>[20090829] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20090829] 修正模块菜单树HTML构建错误 /admin/includes/lib_func.php</span><br />
+                <span>[20090829] 修正模块数据过滤错误 /admin/includes/lib_privilege.php</span><br />
+                <br />
+                <span>[20090827] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20090827] 增加 get() 和 focus() 成员函数 /js/formc.js</span><br />
+                <span>[20090827] 撤销_inner函数的使用 /admin/modules/admin/role.php <font style="color:#999">AND</font> /js/common.js</span><br />
+                <br />
+                <span>[20090826] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20090826] 更新FCKeditor默认皮肤 /js/fckeditor/.../fck_editor.css</span><br />
+                <span>[20090826] 修正BODY溢出时隐藏 /admin/skin/default/style.css</span><br />
+                <span>[20090826] 修正toggle返回失败时恢复样式 /admin/js/listtable.js</span><br />
+                <br />
+                <span>[20090825] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20090825] 修正函数参数错误 /includes/func.php</span><br />
+                <span>[20090825] 调整权限表HTML的权限和模块ID，使之唯一 /admin/includes/lib_privilege.php</span><br />
+                <span>[20090825] 调整调整模块菜单树项ID，使之唯一 /admin/includes/lib_func.php</span><br />
+                <span>[20090825] 变量微调 /admin/modules/kernel/module.php <font style="color:#999">MAP</font> module.html</span><br />
+                <br />
+                <span>[20090824] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20090824] 数据库：module表增加hidden字段</span><br />
+                <span>[20090824] 添加模块隐藏字段处理函数 /admin/tpl/module.html <font style="color:#999">AND</font> /admin/modules/kernel/module.php</span><br />
+                <span>[20090824] 添加模块隐藏功能 /admin/includes/lib_privilege.php<br />
+                <span>[20090824] 优化更新字段代码段的系统提示 /admin/modules/admin/admin.php, role.php</span><br />
+                <span>[20090824] 调整被跨参数的默认值和数据操作函数集添加回调函数和改变del参数 /admin/js/listtable.js</span><br />
+                <span>[20090824] 添加变量值格式化函数 f() /js/common.js</span><br />
+                <span>[20090824] 调整搜索条件位置 /admin/tpl/admin.html</span><br />
+                <span>[20090824] 修改列表记录行删除参数ListTable.del /admin/modules/*.php <font style="color:#999">AND</font> /admin/tpl/admin_log.html</span><br />
+                <span>[20090824] 更改样式图片名 /admin/skin/default/images/index_fxy.gif(style_fxy.gif)</span><br/>
+                <span>[20090824] 替换为无限级模块菜单树样式 /admin/skin/default/style.css</span><br/>
+                <span>[20090824] 修改无限级模块菜单树函数 /admin/js/module_menu.js, windows.js <font style="color:#999">AND</font> /admin/modules/kernel/module.php</span><br />
+                <span>[20090824] 修改无限级模块菜单树请求函数 /admin/js/windows.js <font style="color:#999">AND</font> /admin/modules/kernel/module.php</span><br />
+                <span>[20090824] 修改无限级模块菜单树请求函数 /admin/tpl/index.html</span><br />
+                <span>[20090824] 修改无限级模块菜单树HTML构建函数 /admin/includes/lib_func.php<span><br />
+                <br />
+                <span>[20090820] 修改表格项选中函数集 /admin/js/listtable.js</span><br />
+                <span>[20090820] 修改表格通用操作对象函数 /js/tableact.js</span><br />
+                <span>[20090820] 修改样式图片 /admin/skin/default/images/index_fy.gif</span><br />
+                <span>[20090820] 增加列表的多行TH、单元格线条、溢出换行 /admin/skin/default/style.css</span><br />
+                <br />
+                <span>[20090819] 注释微调 /admin/includes/*.php</span><br />
+                <span>[20090819] 修改 /class/formc.class.php</span><br />
+                <span>[20090819] 添加表单层隐藏表格行的样式 /admin/skin/default/style.css</span><br />
+                <span>[20090819] 变量命名规范，更改表格行移动函数 /admin/modules/*/*.php <font style="color:#999">MAP</font> *.html</span><br />
+                <span>[20090819] 变量命名规范，优化数据库导入，更改表格行移动函数 /admin/js/windows.js</span><br />
+                <br />
+                <span>[20090818] 修改列表搜索初始化 - deal_search_init() /admin/js/windows.js</span><br />
+                <span>[20090818] 修改列表对象函数 - ListTable.getChoiced() /admin/js/listtable.js</span><br />
+                <span>[20090818] 注释微调 /admin/modules/admin/admin.php</span><br />
+                <br />
+                <span>[20090814] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20090814] 修正TEXTAREA样式 /admin/skin/default/style.css</span><br />
+                <br />
+                <span>[20090813] 修正日期组合框必填时样式 /admin/skin/default/style.css</span><br />
+                <span>[20090813] 注释微调 /js/common.js <font style="color:#999">AND</font> /admin/js/windows.js</span><br />
+                <br />
+                <span>[20090812] 表单回车提交时忽略Textarea中回车事件 /js/common.js</span><br />
+                <span>[20090812] 调整载入和重载函数的属性参数 /js/window.js</span>
+                <span>[20090812] 注释微调 /js/ajax.js <font style="color:#999">AND</font> /admin/js/listtable.js</span><br />
+                <span>[20090812] 注释微调 /admin/modules/admin/admin.php, role.php</span><br />
+                <br />
+                <span>[20090811] 更新日期组合框样式，调低异步提示层z-index为50(小于系统提示框z-index) /admin/skin/default/style.css, login.css</span><br />
+                <span>[20090811] 添加获取选中IDS值的成员变量和其他微调 /admin/js/listtable.js</span><br />
+                <br />
+                <span>[20090810] 更改系统模块组下的文件名称 /admin/modules/sys/*.php</span><br />
+                <span>[20090810] 更改系统模块组下的文件模板名称 /admin/tpl/sysconfig.php(config.php), sysdata.php(custom.php)</span><br />
+                <span>[20090810] 更改模块和权限关于系统模块组的数据(数据库)</span><br />
+                <span>[20090810] 修改“页面加载中...”位置 /admin/skin/default/*.php <font style="color:#999">AND</font> /admin/tpl/login.html, index.html</span><br />
+                <br />
+                <span>[20090807] 调整下拉列表添加到头部 /includes/func.php</span><br />
+                <span>[20090807] 微调 /js/ajax.js, /admin/js/listtable.js</span><br />
+                <span>[20090807] 列表宽度调整 /admin/tpl/db_optimize.html</span><br />
+                <span>[20090807] 设置时间组合输入框字体,调整复选框兼容CSS /admin/skin/default/style.css</span><br />
+                <span>[20090807] 调整下拉列表顶部个数和删除返回的消息索引 /admin/includes/lib_admin.php, lib_privilege.php, lib_module.php, lib_role</span><br />
+                <br />
+                <span>[20090806] 重构$_REQUEST数据(只保留$_GET和$_POST) /admin/include/init.php <font style="color:#999">AND</font> /include/_init.php </span><br />
+                <span>[20090806] 添加回车登陆功能和异步等待 /admin/tpl/login.html <font style="color:#999">AND</font> /admin/js/login.js <font style="color:#999">AND</font> /admin/skin/default/login.css</span><br />
+                <span>[20090806] 微调 /admin/skin/default/style.css</span><br />
+                <span>[20090806] 增加控制区激活功能(带键盘控制功能),修改自定义按钮的提交参数 /js/window.js</span><br />
+                <span>[20090806] 添加表单键盘事件核心函数(deal_wfm_keyboard)和系统提示框的键盘功能 /js/common.js</span><br />
+                <span>[20090806] 添加表单键盘处理功能 /admin/tpl/account.html, admin.html, db_backup.html, module.html, privilege.html, role.html</span><br />
+                <span>[20090806] 添加表单填写键盘功能以及提交方式改为异步等待 /admin/js/windows.js</span><br />
+                <span>[20090806] 修正文件加载 /js/fckeditor/*/*.php<br />
+                <br />
+                <span>[20090804] 增加数据库连接控制变量 /includes/config.php <font style="color:#999">AND</font> /admin/includes/init.php <font style="color:#999">AND</font> /includes/_init.php</span><br />
+                <span>[20090804] 预定义变量转移 从 /includes/config.php 到 /includes/_systemconfig.php <font style="color:#999">AND</font> /js/fckeditor/*/*.php<br />
+                <span>[20090804] 登陆系统权限文件建立失败提示 admin_pfile_create() /admin/includes/lib_privilege.php<br />
+                <br />
+                <span>[20090729] 修正 fname_append 函数 /includes/func.php</span><br />
+                <br />
+                <span>[20090727] 修正无文件时错误 www/admin/modules/db/db_backup.php</span><br />
+                <span>[20090727] 调整无文件时提示 www/admin/tpl/db_backup.html</span><br />
+                <span>[20090727] 微调 www/admin/tpl/admin.html</span><br />
+                <br />
+                <span>[20090725] 更新数据备份文件随机命名规则 /class/dumpsql.class.php</span><br />
+                <span>[20090725] 调整数据库备份文件显示列表规则 /admin/tpl/db_backup.html <font style="color:#999">AND</font> /admin/tpl/db_backup.html</span><br />
+                <br />
+                <span>[20090724] ddl_dbd等函数添加Key包含过滤和部分函数优化 /includes/func.php</span><br />
+                <span>[20090724] 修改FCKeditor皮肤 /js/fckeditor/editor/skins/default/*.css<br />
+                <span>[20090724] 备份文件点击弹出新窗口和解除文件最大内部限制 /admin/modules/db/db_backup.php<br />
+                <br />
+                <span>[20090722] 修改数据库备份默认配置 /admin/tpl/db_backup.html</span><br />
+                <span>[20090722] 修改列表TH样式 /admin/skin/default/index_fy.gif <font style="color:#999">AND</font> /admin/skin/default/style.css</span><br />
+                <span>[20090722] 修改FCKeditor皮肤 /js/fckeditor/editor/skins/default/*.css<br />
+                <br />
+                <span>[20090721] 优化大数据数据库分卷备份函数deal_dbbackup_import() /admin/js/windows.js</span><br />
+                <span>[20090721] 优化大数据时数据库分卷备份代码 /admin/modules/db/db_backup.php</span><br />
+                <br />
+                <span>[20090717] 修正系统提示框每次调用都初始化回掉函数 wnd_sysmsg() /js/common.js</span><br />
+                <span>[20090717] 修改数据库备份HTML上的默认设置以及HTML上的各项ID /admin/tpl/db_backup.html</span><br />
+                <span>[20090717] 修改自定义数据表表格样式ID /admin/skin/default/style.css</span><br />
+                <br />
+                <span>[20090715] 撤销忘记密码 /admin/lang/zh.php</span><br />
+                <br />
+                <span>[20090713] 增加成员函数affectedRows() /class/mysql.class.php</span><br />
+                <span>[20090713] 更改'title'=>'text' /class/formc.class.php <font style="color:#999">AND</font> /includes/func.php</span><br />
+                <span>[20090713] 更改'title'=>'text' /admin/includes/lib_role.php,lib_admin.php,lib_module.php <font style="color:#999">AND</font> 非框架文件关联修改</span><br />
+                <span>[20090713] 更改'title'=>'text'  /admin/modules/kernel/*.php <font style="color:#999">AND</font> 非框架文件关联修改</span><br />
+                <span>[20090713] 修正单卷导入时变量引用错误 /admin/modules/db/db_backup.php</span><br />
+                <span>[20090713] 更改窗口类型为控制区类型('type'=>'control')并增加自定义按钮功能 /js/window.js</span><br />
+                <span>[20090713] 更改窗口类型为控制区类型('type'=>'control') /js/common.js</span><br />
+                <span>[20090713] 更改窗口类型为控制区类型('type'=>'control') /admin/js/windows.js <font style="color:#999">AND</font> 非框架文件关联修改<br />
+                <br />
+                <span>[20090710] 添加登陆语言 /admin/lang/zh.php</span><br />
+                <span>[20090710] 更改表单编辑器接口设计</span><br />
+                <span>[20090710] 更改表单编辑器上传的文件夹名称  /update/fck -> /update/jseditor</span><br />
+                <span>[20090710] 更改表单编辑器配置变量 /includes/config.php</span><br />
+                <span>[20090710] 更改表单编辑器使用变量 /js/fckeditor/*.*</span><br />
+                <span>[20090710] 更改系统显示信息  /admin/modules/common/sysinfo.php <font style="color:#999">AND</font> /admin/tpl/sysinfo.html</span><br />
+                <span>[20090710] 日历控件性JS代码性能优化及其他BUG修改 /js/common.js</span><br />
+                <span>[20090710] INPUT,SELECT控件对齐(兼容) /admin/skin/default/style.css</span><br />
+                <span>[20090710] 登陆验证采用异步方式</span><br />
+                <span>[20090710] 更改提交方式  /admin/tpl/login.html</span><br />
+                <span>[20090710] 增加后台登陆脚本文件 /admin/js/login.js</span><br />
+                <span>[20090710] 追加登陆页面的Wnd样式 /admin/skin/default/login.css</span><br />
+                <span>[20090710] 处理服务器端登陆错误返回信息 /admin/index.php</span><br />
+                <span>[20090710] 添加未登录时可访问index.php模块  /admin/includes/init.php</span><br />
+                <span>[20090710] 微调 /admin/js/tbtn.js AND /admin/js/tabbar.js AND /admin/js/tabletree.js</span><br />
+                <br />
+                <span>[20090702] 注释微调 /admin/modules/*/*.php</span><br />
+                <span>[20090702] 修改'val' 为 'value' /class/formc.class.php <font style="color:#999">AND</font> /includes/func.php</span><br />
+                <span>[20090702] 修改'val' 为 'value' /admin/includes/*.php <font style="color:#999">AND</font> /admin/modules/*/*.php<br />
+                <br />
+                <span>[20090701] 添加全局配置变量数组并添加数据表前辍变量，兼容性调整 /include/config.php <font style="color:#999">AND</font> include/_systemconfig.php</span><br />
+                <span>[20090701] 修改旧的全局配置变量的使用，兼容性调整 /admin/include/init.php <font style="color:#999">AND</font> /include/_init.php</span><br />
+                <span>[20090701] 添加数据表名前辍连接函数tname() /includes/func.php</span><br />
+                <span>[20090701] 微调 /class/mysql.class.php</span><br />
+                <span>[20090701] 使用tname()函数 /admin/modules/admin/*.php</span><br />
+                <span>[20090701] 使用tname()函数 /admin/modules/kernel/*.php</span><br />
+                <span>[20090701] 使用tname()函数 /admin/modules/common/account.php</span><br />
+                <span>[20090701] 使用tname()函数 /admin/includes/lib_admin.php</span><br />
+                <span>[20090701] 使用tname()函数 /admin/includes/lib_module.php</span><br />
+                <span>[20090701] 使用tname()函数 /admin/includes/lib_privilege.php</span><br />
+                <span>[20090701] 使用tname()函数 /admin/includes/lib_role.php</span><br />
+                <span>[20090701] 使用tname()函数 /admin/includes/lib_func.php</span><br />
+                <span>[20090701] 调整系统信息窗口宽度 /admin/js/windows.js <font style="color:#999">AND</font> /admin/tpl/sysinfo.html</span><br />
+                <br />
+				<span>[20090629] 系统提示代码重构 /js/common.js</span><br />
+				<span>[20090629] 窗口类名更改及圆角框的调整 /admin/skin/default/style.css</span><br />
+				<span>[20090629] 调整系统信息窗口宽度 /admin/js/windows.js <font style="color:#999">AND</font> /admin/tpl/sysinfo.html</span><br />
+				<span>[20090629] 窗口类名更改，调整Wnds对象的API，添加窗口遮掩层效果 /js/window.js</span><br />
+				<span>[20090629] 增加delete_pic()函数，微调upload_pic()，thumb_pic()函数 /admin/includes/lib_func.php</span><br />
+                <br />
+                <span>[20090612] 解决Linux路径解析失败导致目录创建失败 /class/image.class.js - _mkdirs(..)</span><br />
+                <span>[20090612] 修改当异步模拟提交表单返回错误时显示详细的错误信息 /js/common.js - deal_form_submit(..)</span><br />
+                <br />
+                <span>[20090611] 微调 /admin/include/init.php <font style="color:#999">AND</font> /include/config.php <font style="color:#999">AND</font> /admin/modules/xxx.php</span><br />
+                <span>[20090611] 后台公用函数库和整站公用函数库调整 /admin/include/lib_func.php <font style="color:#999">AND</font> /include/func.php</span><br />
+                <br />
+                <span>[20090605] 更新密码成功时提示语言 /admin/lang/zh.php</span><br />
+                <span>[20090605] 增加密码更新成功时返回提示信息 /admin/modules/common/account.php</span><br />
+                <span>[20090605] 增加文件域提交成功后的回调功能 /admin/js/windows.js - deal_filecbox_uploaded_del(..)</span><br />
+                <span>[20090605] 解决FF下由于fileUpload导致返回的数据加上&lt;pre&gt;标签的BUG /js/common.js - deal_form_submit(..)</span><br />
+			</div>
+			<div class="linec"></div><div class="lined"></div>
+		</div><div class="linec"></div><div class="lined"></div>
+	</div>
+</div>

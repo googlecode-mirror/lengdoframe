@@ -1,0 +1,47 @@
+<?php if( $tpl['_block'] !== true ){ include(DIR_ADMIN_TPL.'header.html'); }?>
+
+
+<?php if( $tpl['_body'] == 'list' ){ ?>
+<?php if( $tpl['_block'] !== true ){?>
+<div id="list-dboptimize" class="list-div" style="border-top:0;" onmouseover="ListTable.init(this.id,'modules/db/db_optimize.php','?act=query');">
+<?php }?>
+
+	<table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);" style="border-bottom:0;">
+	<tr>
+		<th width="17%">数据表</th>
+		<th width="14%">数据表备注</th>
+		<th width="10%">数据表类型</th>
+		<th width="11%">记录数</th>
+		<th width="10%">数据量</th>
+		<th width="11%">碎片</th>
+		<th width="12%">字符集</th>
+		<th width="15%">状态</th>
+	</tr>
+	<?php foreach( $tpl['all'] AS $i=>$r ){?>
+	<tr align="center">
+		<td><?php echo $r['name']; ?></td>
+		<td><?php echo $r['comment']; ?></td>
+		<td><?php echo $r['type']; ?></td>
+		<td><?php echo $r['rec_row']; ?></td>
+		<td><?php echo $r['rec_size']; ?></td>
+		<td><?php echo $r['rec_chip'] > 0 ? f($r['rec_chip'],'color') : $r['rec_chip']; ?></td>
+		<td><?php echo $r['charset']; ?></td>
+		<td><?php echo $r['status']; ?></td>
+	</tr>
+	<?php }?>
+	<tr align="center" style="color:#023A55;">
+		<td style="background:#fbfdfd;border-bottom:0;"></td>
+		<td style="background:#fbfdfd;border-bottom:0;"></td>
+		<td style="background:#fbfdfd;border-bottom:0;"></td>
+		<td style="background:#fbfdfd;border-bottom:0;"><?php echo $tpl['cnt']['row']; ?></td>
+		<td style="background:#fbfdfd;border-bottom:0;"><?php echo $tpl['cnt']['size']; ?></td>
+		<td style="background:#fbfdfd;border-bottom:0;"><?php echo $tpl['cnt']['chip'] > 0 ? f($tpl['cnt']['chip'],'color') : $tpl['cnt']['chip']; ?></td>
+		<td style="background:#fbfdfd;border-bottom:0;"></td>
+		<td style="background:#fbfdfd;border-bottom:0;"></td>
+	</tr>
+	</table>
+
+<?php if( $tpl['_block'] !== true ){?>
+</div>
+<?php }?>
+<?php } ?>

@@ -1,0 +1,141 @@
+<?php if( $tpl['_block'] !== true ){ include(DIR_ADMIN_TPL.'header.html'); }?>
+
+
+<?php if( $tpl['_body'] == 'backup' ){ ?>
+<form id="wfm-dbbackup-fill" onkeydown="deal_wfm_keyboard(event,this);">
+<div class="table-header"><i></i><span>备份类型</span></div>
+<div class="list-div" style="border-bottom:0;">
+	<table>
+	<tr>
+		<td width="120" style="padding-left:5px;">
+			<input type="radio" name="backup_type" value="full" id="wfm-dbbackup-backtype-all" checked="checked" class="radio" 
+			onclick="document.getElementById('wfm-dbbackup-dbtablebox').style.display='none'"/><label for="wfm-dbbackup-backtype-all">全部备份</label>
+		</td>
+		<td style="color:#999">&nbsp;备份数据库所有表</td>
+	</tr>
+	<tr>
+		<td style="padding-left:5px;">
+			<input type="radio" name="backup_type" value="custom" id="wfm-dbbackup-backtype-custom" class="radio" 
+			onclick="document.getElementById('wfm-dbbackup-dbtablebox').style.display=''"/><label for="wfm-dbbackup-backtype-custom">自定义备份</label>
+		</td>
+		<td style="color:#999">&nbsp;根据自行选择备份数据表</td>
+	</tr>
+	<tr style="display:none" id="wfm-dbbackup-dbtablebox">
+		<td colspan="2">
+			<table>
+			<tr>
+				<td style="padding-left:4px; border:0;">
+					<input type="checkbox" id="wfm-dbbackup-selall" onclick="Formc.cbSyncCbg(this,null,'wfm-dbbackup-customtable')" class="checkbox"/>
+					<label for="wfm-dbbackup-selall"><b>全选</b></label>
+				</td>
+			</tr>
+			<tr><td id="wfm-dbbackup-customtable" style="padding-left:4px; border-bottom:0;"><?php echo $tpl['cbg_custom_table']; ?></td></tr>
+			</table>
+		</td>
+	</tr>
+	</table>
+</div>
+
+<div class="table-header"><i></i><span>其他选项</span></div>
+<div class="list-div" style="border-bottom:0;">
+	<table>
+	<tr>
+		<td width="170" style="padding-left:10px;">数据插入</td>
+		<td>
+			<input type="checkbox" name="columns" id="wfm-dbbackup-columns" value="1" class="checkbox" checked="checked"/><label 
+			for="wfm-dbbackup-columns">显示字段</label>
+			<input type="checkbox" name="extended" id="wfm-dbbackup-extended" value="1" class="checkbox"/><label 
+			for="wfm-dbbackup-extended">扩展插入</label>
+		</td>
+	</tr>
+	<tr>
+		<td style="padding-left:10px;">分卷备份 - 文件长度限制(KB)</td>
+		<td>&nbsp;<input type="text" name="vol_size" value="1536" class="fillbox" style="width:155px"/></td>
+	</tr>
+	<tr>
+		<td style="padding-left:10px;">备份文件名</td>
+		<td>&nbsp;<input type="text" name="file" value="<?php e($tpl['file_name'],'formc'); ?>" class="fillbox" style="width:155px"/></td>
+	</tr>
+	</table>
+</div>
+</form>
+
+
+<?php }elseif( $tpl['_body'] == 'list' ){ ?>
+<?php if( $tpl['_block'] !== true ){?>
+<div id="tabitem-dbbackup" class="tabitem-div" onclick="tabbar(this.id,'tabbody-dbbackup',event)"><i></i>
+	<span class="on">&nbsp;服务器上的文件</span><span>上传SQL文件</span>
+</div>
+<div id="tabbody-dbbackup">
+	<div id="list-dbbackup" class="list-div" onmouseover="ListTable.init(this.id,'modules/db/db_backup.php','?act=query');">
+<?php }?>
+
+	<table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
+	<tr>
+		<th width="5%"><input type="checkbox" id="list-dbbackup-touch" class="checkbox" onclick="ListTable.achoice(this.checked,'list-dbbackup-ids')"/></th>
+		<th width="29%">文件名</th>
+		<th width="19%">备份时间</th>
+		<th width="14%">大小</th>
+		<th width="12%">卷</th>
+		<th width="21%">操作</th>
+	</tr>
+	<?php if( $tpl['error'] ){?>
+	<tr><td colspan="6"><div class="warn-div"><span><?php echo $tpl['error']; ?></span></div></td></tr>
+	<?php }else{?>
+        <?php if( !empty($tpl['all']) ){ foreach( $tpl['all'] AS $r ){?>
+        <tr class="<?php echo $r['level']; ?>" style="<?php if( $r['type'] == 'volumes' ){ echo 'display:none;color:#999'; } ?>" align="center">
+            <td>
+                <?php if( $r['type'] != 'volumes' ){?>
+                <input type="checkbox" name="list-dbbackup-ids" value="<?php e($r['file'],'formc'); ?>" class="checkbox" 
+                onclick="ListTable.mchoice(this,'<?php e($r['file'],'hstr'); ?>');Formc.cbgSyncCb(this.name,null,'list-dbbackup-touch')"/>
+                <?php }?>
+            </td>
+            <td align="left"><?php echo $r['name']; ?></td>
+            <td><?php echo $r['date']; ?></td>
+            <td><?php echo $r['file_size']; ?></td>
+            <td><?php echo $r['vol']; ?></td>
+            <td class="action"><?php echo $r['_acts']; ?></td>
+        </tr>
+        <?php }}else{?>
+        <tr><td colspan="6"><div class="warn-div"><span>无数据</span></div></td></tr>
+        <?php }?>
+    <?php }?>
+	</table>
+	<div class="table-footer">
+		<div class="action">
+			<div class="hddl" onmouseover="this.className+=' hddlon'" onmouseout="this.className='hddl'">
+				<a href="javascript:void(0)" onclick="ListTable.achoice(-1,'list-dbbackup-ids','list-dbbackup-touch')">选择<span>&nbsp;</span></a><div>
+					<a href="javascript:void(0);" onclick="ListTable.achoice(1,'list-dbbackup-ids','list-dbbackup-touch')">全选</a>
+					<a href="javascript:void(0);" onclick="ListTable.achoice(-1,'list-dbbackup-ids','list-dbbackup-touch')">反选</a>
+					<a href="javascript:void(0);" onclick="ListTable.achoice(0,'list-dbbackup-ids','list-dbbackup-touch')">不选</a></div>
+			</div>
+			<a href="javascript:void(0)" onclick="ListTable.batch('?act=del',{},'确认删除？')">删除</a>
+		</div>
+	</div>
+
+<?php if( $tpl['_block'] !== true ){?>
+	</div>
+
+	<div style="display:none">
+	<form onsubmit="deal_form_submit(this,'modules/db/db_backup.php?act=upload',deal_dbbackup_upload);">
+		<div class="table-header"><i></i><span>请上传扩展名为.sql , 容量小于2048 KB 的文件</span></div>
+		<div class="form-div" style="border-bottom:0;">
+            <table cellspacing="1">
+            <tr>
+                <td width="95"><h1>本地SQL文件：</h1></td>
+                <td>
+                    <div class="filecbox">
+                        <input type="text" class="textbox" readonly/>
+                        <a class="clear" href="javascript:void(0)" onclick="deal_filecbox_clear(this)" onmouseover="deal_combobox_mouseover(this)" title="清除"></a>
+                        <a class="overlay" href="javascript:void(0)" onmouseover="deal_combobox_mouseover(this)" title="选择文件" style="border-right:0;"><input name="file" type="file" class="filebox" size="1" onchange="deal_filecbox_change(this,'sql');"/></a>
+                        <a class="upload" href="javascript:void(0)" onclick="deal_filecbox_upload(this,'确定上传SQL文件？')" onmouseover="deal_combobox_mouseover(this)" title="上传"></a>
+                    </div>
+                </td>
+            </tr>
+            </table>
+		</div>
+	</form>
+	</div>	
+</div>
+<?php }?>
+<?php } ?>

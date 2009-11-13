@@ -1,0 +1,108 @@
+<?php if( $tpl['_block'] !== true ){ include(DIR_ADMIN_TPL.'header.html'); }?>
+
+
+<?php if( $tpl['_body'] == 'list' ){ ?>
+<?php if( $tpl['_block'] !== true ){?>
+<form class="search-form" onsubmit="deal_search_list(this);return false;" onmouseover="ListTable.init('list-admin','modules/admin/admin.php','?act=query');"><i></i>
+	<table>
+	<tr>
+		<td width="45"><h1>帐号：</h1></td>
+		<td width="100"><input type="text" name="username" class="textbox" style="width:100px"/></td>
+		<td width="45"><h1>姓名：</h1></td>
+		<td width="100"><input type="text" name="name" class="textbox" style="width:100px"/></td>
+		<td style="padding-left:15px;">
+            <input type="submit" value="搜 索" class="submit"/>
+            <a href="javascript:void(0)" class="flush" onmouseover="deal_combobox_mouseover(this)" onclick="deal_search_init()" title="初始化搜索"></a>
+        </td>
+	</tr>
+	</table>
+</form>
+
+<div id="list-admin" class="list-div" onmouseover="ListTable.init(this.id,'modules/admin/admin.php','?act=query');">
+<?php }?>
+
+    <table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
+    <tr>
+        <th width="5%"><input type="checkbox" id="list-admin-touch" class="checkbox" onclick="ListTable.achoice(this.checked,'list-admin-ids')"/></th>
+        <th width="19%"><a href="javascript:void(0)" onclick="ListTable.orderBy('username')">管理员帐号</a><?php echo $tpl['img_username']; ?></th>
+        <th width="19%"><a href="javascript:void(0)" onclick="ListTable.orderBy('name')">管理员姓名</a><?php echo $tpl['img_name']; ?></th>
+        <th width="20%"><a href="javascript:void(0)" onclick="ListTable.orderBy('rht')">管理员角色</a><?php echo $tpl['img_rht']; ?></th>
+        <th width="22%"><a href="javascript:void(0)" onclick="ListTable.orderBy('in_time')">添加时间</a><?php echo $tpl['img_in_time']; ?></th>
+		<th width="15%">操作</th>
+    </tr>
+    <?php if( !empty($tpl['list']['data']) ){ foreach( $tpl['list']['data'] AS $r ){?>
+    <tr align="center">
+        <td>
+            <input type="checkbox" name="list-admin-ids" value="<?php echo $r['admin_id'] ?>" class="checkbox" 
+			onclick="ListTable.mchoice(this,'<?php echo $r['admin_id'] ?>');Formc.cbgSyncCb(this.name,null,'list-admin-touch')"/>
+        </td>
+
+        <?php if( admin_privilege_valid('admin.php', 'edit', false) ){?>
+        <td class="edit" title="<?php e($r['username'],'html'); ?>">
+            <a onclick="ListTable.edit(this,<?php echo $r['admin_id'] ?>,'username')"><?php e($r['username'],'html'); ?></a>
+        </td>
+        <td class="edit" title="<?php e($r['name'],'html'); ?>">
+            <a onclick="ListTable.edit(this,<?php echo $r['admin_id'] ?>,'name')"><?php e($r['name'],'html'); ?></a>
+        </td>
+        <?php }else{?>
+        <td title="<?php e($r['username'],'html'); ?>"><?php e($r['username'],'html'); ?></td>
+        <td title="<?php e($r['name'],'html'); ?>"><?php e($r['name'],'html'); ?></td>
+        <?php }?>
+
+        <td><?php e($r['role_name'],'default',f($_LANG['str_role_no'],'color')); ?></td>
+		<td><?php e($r['in_time'],'date'); ?></td>
+        <td class="action"><?php echo $r['_acts']; ?></td>
+    </tr>
+    <?php }}else{?>
+	<tr><td colspan="6"><div class="warn-div"><span>无数据</span></div></td></tr>
+	<?php }?>
+    </table>
+	<div class="table-footer">
+        <div class="action">
+			<div class="hddl" onmouseover="this.className+=' hddlon'" onmouseout="this.className='hddl'">
+				<a href="javascript:void(0)" onclick="ListTable.achoice(-1,'list-admin-ids','list-admin-touch')">选择<span>&nbsp;</span></a><div>
+					<a href="javascript:void(0);" onclick="ListTable.achoice(1,'list-admin-ids','list-admin-touch')">全选</a>
+					<a href="javascript:void(0);" onclick="ListTable.achoice(-1,'list-admin-ids','list-admin-touch')">反选</a>
+					<a href="javascript:void(0);" onclick="ListTable.achoice(0,'list-admin-ids','list-admin-touch')">不选</a></div>
+			</div>
+		</div>
+        <div class="pager"><?php echo $tpl['list']['pager']['html']; ?></div>
+    </div>
+
+<?php if( $tpl['_block'] !== true ){?>
+</div>
+<?php }?>
+
+
+<?php }elseif( $tpl['_body'] == 'add' || $tpl['_body'] == 'edit' ){ ?>
+<form id="wfm-admin-fill" onkeydown="deal_wfm_keyboard(event,this);">
+<div class="table-header"><i></i><span>基本信息</span></div>
+<div class="form-div" style="border-bottom:0;">
+	<table>
+	<tr>
+		<td width="90"><h1>管理员帐号：</h1></td>
+		<td width="180"><input type="text" name="username" class="fillbox" value="<?php e($tpl['admin']['username'],'formc'); ?>"/></td>
+		<td width="90"><h1>管理员姓名：</h1></td>
+		<td><input type="text" name="name" class="fillbox" value="<?php e($tpl['admin']['name'],'formc'); ?>"/></td>
+	</tr>
+	<tr>
+		<td><h1>管理员密码：</h1></td>
+		<td><input type="text" name="password" class="<?php echo $tpl['_body'] == 'add' ? 'fillbox' : 'textbox'; ?>"/></td>
+		<td><h1>管理员角色：</h1></td>
+		<td><?php echo $tpl['formc_role']; ?></td>	
+	</tr>
+	</table>
+</div>
+
+<div class="table-header"><i></i><span>辅助权限</span></div>
+<div class="form-div" style="border-bottom:0;">
+    <?php if( $tpl['html_privilege_table'] ){?>
+        <?php echo $tpl['html_privilege_table']; ?>
+    <?php }else{?>
+        <div class="warn-div"><span>您无可分配的辅助权限！</span></div>
+    <?php }?>
+</div>
+
+<input type="hidden" name="admin_id" value="<?php echo $tpl['admin']['admin_id'] ?>"/>
+</form>
+<?php } ?>

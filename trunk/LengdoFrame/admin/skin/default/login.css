@@ -1,0 +1,89 @@
+/* ------------------------------------------------------ */
+/* - 标签兼容
+/* ------------------------------------------------------ */
+html{ width:100%; height:100%; }
+form{ margin:0; display:inline; }
+
+body{ width:100%; height:100%; margin:0; background-color:#FAFAFA; font:12px "sans-serif"; }
+
+
+/* ------------------------------------------------------ */
+/* - 异步加载提示框和文档加载遮掩层
+/* ------------------------------------------------------ */
+#aloading-div{ width:140px; height:9px; background:url(images/doglide.gif); filter:alpha(opacity=90); opacity:0.9; font-size:0; position:absolute; z-index:50; }
+#dloading-div{ width:100%; height:100%; position:absolute; background:#fff; filter:alpha(opacity=80); opacity:0.8; z-index:99; }
+#dloading-div a{ padding:0 5px; display:inline-block; color:#fff; background:#050; text-decoration:none; }
+
+
+/* ------------------------------------------------------ */
+/* - LOGO层
+/* ------------------------------------------------------ */
+.logo-div{ width:100%; height:69px; background:url(images/login_fy.gif) 0 -12px; }
+.logo-div a.lengdo{ width:140px; height:69px; float:left; background:url(images/login_fxy.gif) 0 -7px; }
+.logo-div a.lengdosys{ width:100px; height:35px; margin:25px 0 0 0; float:left; background:url(images/login_fxy.gif) -140px -32px; }
+
+
+/* ------------------------------------------------------ */
+/* - 登陆层
+/* ------------------------------------------------------ */
+.login-div{ width:400px; height:242px; background:url(images/login_fxy.gif) 0 -76px; position:relative; }
+.login-div .login-box{ width:300px; height:170px; position:absolute; right:0; bottom:0; }
+.login-div .login-box table td{ height:50px; vertical-align:middle; }
+
+.login-div .login-box table td pre{ display:inline; margin:0; }
+
+.login-div .login-box table td span.textbox{ float:left; *float:none; }
+.login-div .login-box table td span.textbox input{ width:177px; padding:5px 3px; margin:0; font-size:14px; font-weight:bold; font-family:Verdana,Arial,Helvetica,sans-serif; }
+.login-div .login-box table td span.username{ border:1px solid #C0D5E6; }
+.login-div .login-box table td span.username input{ border:1px solid #0B8FDA; background:#E8F9FF; }
+.login-div .login-box table td span.password{ border:1px solid #EBDBD2; }
+.login-div .login-box table td span.password input{ border:1px solid #FE5900; background:#FFF0E9; }
+
+.login-div .login-box table td input.button{ width:86px; height:33px; border:0; background:url(images/login_fxy.gif) -417px -4px; font-size:14px; font-weight:bold; color:#0D6ABA; cursor:pointer; line-height:35px; }
+
+
+/* ------------------------------------------------------ */
+/* - Footer层
+/* ------------------------------------------------------ */
+.footer-div{ width:100%; height:41px; background:url(images/login_fy.gif) 0 -100px; }
+
+
+/* ------------------------------------------------------ */
+/* - 窗口层
+/* ------------------------------------------------------ */
+
+/* 窗口层和遮掩层 */
+.wnd-div{ height:auto; width:auto; position:absolute; }
+.wnd-overlay{ top:0; left:0; background:#fff; position:absolute; }
+
+/* 标题层 */
+.wnd-title{ height:27px; background:url(images/style_fy.gif) 0 0; cursor:move; }
+.wnd-title div.sidelft{ width:5px; height:27px; float:left; background:url(images/style_fxy.gif) -413px -5px; }
+.wnd-title div.siderht{ width:5px; height:27px; float:right; background:url(images/style_fxy.gif) -422px -5px; }
+
+.wnd-title div.title{ margin:5px 0 0 5px; float:left; color:#fff; }
+.wnd-title div.title i{ width:14px; height:14px; float:left; margin:1px 2px 0 0; _margin:1px 0 0 0; }
+.wnd-title div.title i.plaint{ background:url(images/style_fxy.gif) -373px -213px; }
+
+.wnd-title a{ width:16px; height:16px; float:right; margin:5px 3px 0 0; font-size:0; }
+.wnd-title a.close{ background:url(images/style_fxy.gif) -265px -126px; }
+.wnd-title a.close:hover{ background:url(images/style_fxy.gif) -265px -138px; }
+
+/* 客户区 */
+.wnd-client{ border-left:1px solid #7799B5; border-right:1px solid #7799B5; background-color:#fff; overflow:hidden; }
+
+/* 客户区 - 加载层 */
+.wnd-client-loading { width:100%; border-collapse:collapse; text-align:center; vertical-align:middle; }
+.wnd-client-loading i{ width:140px; height:9px; display:inline-block; overflow:hidden; background:url(images/doglide.gif); }
+
+/* 客户区 - 消息层 */
+.wnd-client-sysmsg{ background:#fff; }
+.wnd-client-sysmsg table{ width:100%; height:90px; }
+.wnd-client-sysmsg table td.i{ width:80px; }
+.wnd-client-sysmsg table td.i i.plaint{ width:37px; height:37px; float:right; background:url(images/style_fxy.gif) -602px -2px; margin:0 10px 0 33px; }
+.wnd-client-sysmsg table td.t{ font-size:14px; color:#293e42; line-height:150%; }
+
+/* 控制区 */
+.wnd-control{ height:23px; padding:10px; border:1px solid #7799B5; border-top:0; text-align:right; background:url(images/style_fy.gif) 0 -40px; }
+.wnd-control input{ width:67px; height:22px; color:#5981a9; border:0px; font-size:12px; *font-size:10px; *padding-top:2px; cursor:pointer; margin-left:5px; background:url(images/style_fxy.gif) -246px -9px; }
+

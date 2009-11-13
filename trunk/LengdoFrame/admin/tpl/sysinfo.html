@@ -1,0 +1,56 @@
+<div class="table-header"><i></i><span>运行环境</span></div>
+<div class="form-div" style="border-bottom:0;">
+	<table>
+	<tr>
+		<td width="95" align="right"><h1>PHP 版本：</h1></td>
+		<td><h2><?php echo $tpl['env']['php']; ?></h2></td>
+	</tr>
+	<tr>
+		<td align="right"><h1>Mysql 版本：</h1></td>
+		<td><h2><?php echo $tpl['env']['mysql']; ?></h2></td>
+	</tr>
+	<tr>
+		<td align="right"><h1>System 内核：</h1></td>
+		<td><h2><?php echo $tpl['env']['kernel']; ?></h2></td>
+	</tr>
+	</table>
+</div>
+
+<form id="wfm-sysinfo-fill">
+<div class="table-header"><i></i><span>目录权限</span></div>
+<div class="form-div" style="border-bottom:0;">
+	<table>
+	<tr>
+		<td width="95" align="right"><h1>图 片 上 传：</h1></td>
+		<td width="280"><?php echo $tpl['dir']['path_img']; ?></td>
+		<td align="center"><?php echo $tpl['dir']['priv_img']; ?></td>
+	</tr>
+	<tr>
+		<td align="right"><h1>编辑器上传：</h1></td>
+		<td><?php echo $tpl['dir']['path_jseditor']; ?></td>
+		<td align="center"><?php echo $tpl['dir']['priv_jseditor']; ?></td>
+	</tr>
+	<tr>
+		<td align="right"><h1>权 限 文 件：</h1></td>
+		<td><?php echo $tpl['dir']['path_pfile']; ?></td>
+		<td align="center"><?php echo $tpl['dir']['priv_pfile']; ?></td>
+	</tr>
+	<tr>
+		<td align="right"><h1>数 据 缓 存：</h1></td>
+		<td><?php echo $tpl['dir']['path_dbd']; ?></td>
+		<td align="center"><?php echo $tpl['dir']['priv_dbd']; ?></td>
+	</tr>
+	<tr>
+		<td align="right"><h1>数据库缓存：</h1></td>
+		<td><?php echo $tpl['dir']['path_dbc']; ?></td>
+		<td align="center"><?php echo $tpl['dir']['priv_dbc']; ?></td>
+	</tr>
+	<tr>
+		<td align="right"><h1>数据库备份：</h1></td>
+		<td><?php echo $tpl['dir']['path_sql']; ?></td>
+		<td align="center"><?php echo $tpl['dir']['priv_sql']; ?></td>
+	</tr>
+   
+	</table>
+</div>
+</form>

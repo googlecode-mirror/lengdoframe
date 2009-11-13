@@ -1,0 +1,59 @@
+<?php if( $tpl['_block'] !== true ){ include(DIR_ADMIN_TPL.'header.html'); }?>
+
+
+<?php if( $tpl['_body'] == 'list' ){ ?>
+<?php if( $tpl['_block'] !== true ){?>
+<div id="list-role" class="list-div" style="border-top:0;border-bottom:0;" onmouseover="ListTable.init(this.id,'modules/admin/role.php','?act=query');">
+<?php }?>
+
+	<table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
+	<tr>
+		<th width="6%">标识</th>
+		<th width="74%">角色名称</th>
+		<th width="20%">操作</th>
+	</tr>
+	<?php if( !empty($tpl['all']) ){ foreach( $tpl['all'] AS $r ){?>
+	<tr class="<?php echo $r['lvl']; ?>" align="center">
+		<td><?php echo $r['role_id']; ?></td>
+
+        <?php if( admin_privilege_valid('role.php', 'edit', false) ){?>
+        <td align="left" class="edit" title="<?php e($r['name'],'html'); ?>">
+            <?php echo $r['pre']; ?><a onclick="ListTable.edit(this,<?php echo $r['role_id'] ?>,'name')"><?php e($r['name'],'html'); ?></a>
+        </td>
+        <?php }else{?>
+        <td align="left" title="<?php e($r['name'],'html'); ?>"><?php echo $r['pre'],f($r['name'],'html'); ?></td>
+        <?php }?>
+
+		<td class="action"><?php echo $r['_acts']; ?></td>
+	</tr>
+	<?php }}else{?>
+	<tr><td colspan="3"><div class="warn-div"><span>无数据</span></div></td></tr>
+	<?php }?>
+	</table>
+
+<?php if( $tpl['_block'] !== true ){?>
+</div>
+<?php }?>
+
+
+<?php }elseif( $tpl['_body'] == 'add' || $tpl['_body'] == 'edit' ){ ?>
+<form id="wfm-role-fill" onkeydown="deal_wfm_keyboard(event,this);">
+<div class="table-header"><i></i><span>基本信息</span></div>
+<div class="form-div" style="border-bottom:0;">
+	<table>
+	<tr>
+		<td width="75"><h1>角色名称：</h1></td>
+		<td width="170"><input type="text" name="name" class="fillbox" style="width:150px;" value="<?php e($tpl['role']['name'],'formc'); ?>"/></td>
+		<td width="75"><h1>上级角色：</h1></td>
+		<td><?php echo $tpl['formc_role']; ?></td>
+	</tr>
+	</table>
+	
+</div>
+
+<div class="table-header"><i></i><span>角色权限</span></div>
+<div id="div-role-privilegetbl" class="form-div" style="border-bottom:0;"><?php echo $tpl['html_privilege_table']; ?></div>
+
+<input type="hidden" name="role_id" value="<?php echo $tpl['role']['role_id']; ?>"/>
+</form>
+<?php } ?>

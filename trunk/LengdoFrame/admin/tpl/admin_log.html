@@ -1,0 +1,65 @@
+<?php if( $tpl['_block'] !== true ){ include(DIR_ADMIN_TPL.'header.html'); }?>
+
+
+<?php if( $tpl['_body'] == 'list' ){ ?>
+<?php if( $tpl['_block'] !== true ){?>
+<form class="search-form" onsubmit="deal_search_list(this);return false;" onmouseover="ListTable.init('list-adminlog','modules/admin/admin_log.php','?act=query');"><i></i>
+	<table>
+	<tr>
+		<td width="45"><h1>时间：</h1></td>
+		<td width="210">
+			<div class="datecbox">
+			<input type="text" name="datef" class="textbox" style="width:70px;"/><input type="button" onmouseover="deal_combobox_mouseover(this)" onclick="deal_jscalendar_show(this.previousSibling)" class="choice"/>
+			</div>
+            <font style="color:#7f9db9;">-</font>
+			<div class="datecbox">
+			<input type="text" name="datet" class="textbox" style="width:70px;"/><input type="button" onmouseover="deal_combobox_mouseover(this)" onclick="deal_jscalendar_show(this.previousSibling)" class="choice"/>
+			</div>
+		</td>
+		<td width="60"><h1>关键字：</h1></td>
+		<td width="100"><input type="text" class="textbox" style="width:100px" name="info"></td>
+		<td style="padding-left:15px;">
+            <input type="submit" value="搜 索" class="submit"/>
+            <a href="javascript:void(0)" class="flush" onmouseover="deal_combobox_mouseover(this)" onclick="deal_search_init()" title="初始化搜索"></a>
+        </td>
+	</tr>
+	</table>
+</form>
+
+<div id="list-adminlog" class="list-div" onmouseover="ListTable.init(this.id,'modules/admin/admin_log.php','?act=query');">
+<?php }?>
+
+	<table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
+	<tr>
+		<th width="14%">IP</th>
+		<th width="20%">时间</th>
+		<th width="10%">操作人</th>
+		<th width="56%">操作</th>
+	</tr>
+	<?php if( !empty($tpl['list']['data']) ){ foreach( $tpl['list']['data'] AS $r ){?>
+	<tr align="center">
+		<td><?php echo $r['ip']; ?></td>
+		<td><?php echo date('Y-m-d H:i:s', $r['in_time']); ?></td>
+		<td onmousemove="tagtitle(event,'<?php e($r['admin_name'],'hstr'); ?>')"><?php e($r['admin_name'],'html'); ?></td>
+		<td align="left" style="background-color:#FFFDDF; padding-left:8px;" onmousemove="tagtitle(event,'<?php e($r['info'],'hstr'); ?>')"><?php e($r['info'],'html'); ?></td>
+	</tr>
+	<?php }}else{?>
+	<tr><td colspan="4"><div class="warn-div"><span>无数据</span></div></td></tr>
+	<?php }?>
+	</table>
+	<div class="table-footer">
+		<div class="action">
+			<div class="hddl" onmouseover="this.className+=' hddlon'" onmouseout="this.className='hddl'">
+				<a href="javascript:void(0)">删除<span>&nbsp;</span></a><div>
+					<a href="javascript:void(0);" onclick="ListTable.del(this,500,'确定删除前500条日志？')">前500条</a>
+					<a href="javascript:void(0);" onclick="ListTable.del(this,200,'确定删除前200条日志？')">前200条</a>
+					<a href="javascript:void(0);" onclick="ListTable.del(this,100,'确定删除前100条日志？')">前100条</a></div>
+			</div>
+		</div>
+		<div class="pager"><?php echo $tpl['list']['pager']['html']; ?></div>
+	</div>
+	
+<?php if( $tpl['_block'] !== true ){?>
+</div>
+<?php }?>
+<?php } ?>
