@@ -10,7 +10,7 @@ pre{ margin:0; }
 form{ margin:0; display:inline; }
 
 label{ margin:0 0 0 3px; *margin:0; cursor:pointer; }
-select{ height:20px; vertical-align:middle; font-size:12px; font-family:Garamonds,Tahoma; }
+select{ height:20px; font-size:12px; font-family:Garamonds,Tahoma; vertical-align:middle; }
 textarea{ _margin:0 0 0 1px; padding:1px; border:1px solid #7F9DB9; font-size:12px; }
 
 
@@ -38,12 +38,19 @@ textarea.fillbox{ background:#FFFCE3; }
 /* ------------------------------------------------------ */
 /* - 通用全局类
 /* ------------------------------------------------------ */
+
+/* Do */
 a.do{ width:14px; height:14px; background:url(images/docircle.gif); display:inline-block; }
+
+/* No, Yes, Up, Down, Plus, Minus */
 a.no, a.yes, a.up, a.down, a.plus, a.minus{ cursor:pointer; }
+
 a.no, span.no{ width:14px; height:14px; margin:0 1px; display:inline-block; background:url(images/style_fxy.gif) -333px -213px; }
 a.yes, span.yes{ width:14px; height:14px; margin:0 1px; display:inline-block; background:url(images/style_fxy.gif) -333px -173px; }
+
 a.up, span.up{ width:14px; height:14px; margin:0 1px; display:inline-block; background:url(images/style_fxy.gif) -54px -207px; }
 a.down, span.down{ width:14px; height:14px; margin:0 1px; display:inline-block; background:url(images/style_fxy.gif) -54px -221px; }
+
 a.plus, span.plus{ width:16px; height:15px; *height:17px; display:inline-block; background:url(images/style_fxy.gif) -373px -121px; }
 a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block; background:url(images/style_fxy.gif) -373px -138px; }
 
@@ -133,8 +140,10 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 
 /* 索引页顶部 */
 .layout-top{ width:100%; height:42px; background:url(images/header.gif); position:absolute; }
+
 .layout-top .lft{ margin:5px 0 0 15px; float:left; display:inline; }
 .layout-top .lft h1{ margin:0; font-size:20px; color:#66C7DA; font-family:Georgia; }
+
 .layout-top .rht{ margin:5px 10px 0 0; float:right; display:inline; color:#008856; }
 .layout-top .rht a{ text-decoration:none; color:#3CA00A; }
 .layout-top .rht a:hover{ text-decoration:underline; }
@@ -147,29 +156,32 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 
 /* 索引页左侧 - 快速菜单层 */
 .layout-lft .quick_menu{ height:37px; background:url(images/style_fy.gif) 0 -96px; text-align:right; }
+
 .layout-lft .quick_menu a{ width:32px; height:36px; float:right; }
 .layout-lft .quick_menu a:hover{ background:url(images/style_fxy.gif) -4px -202px; }
 .layout-lft .quick_menu a.logout:hover{ background:url(images/style_fxy.gif) -4px -162px; }
+
 .layout-lft .quick_menu a i{ width:20px; height:20px; margin:8px 6px; float:right; cursor:pointer; }
 .layout-lft .quick_menu a i.mdown{ margin-top:9px; }
-.layout-lft .quick_menu a.logout i{ background:url(images/style_fxy.gif) -210px -130px; }
-.layout-lft .quick_menu a.flush i{ background:url(images/style_fxy.gif) -170px -130px; }
+
 .layout-lft .quick_menu a.home i{ background:url(images/style_fxy.gif) -130px -130px; }
+.layout-lft .quick_menu a.flush i{ background:url(images/style_fxy.gif) -170px -130px; }
+.layout-lft .quick_menu a.logout i{ background:url(images/style_fxy.gif) -210px -130px; }
 
 /* 索引页左侧 - 模块菜单层 */
 .layout-lft .module_mtree{ width:200px; margin:10px 0 0 0; }
 .layout-lft .module_mtree a{ display:block; text-decoration:none; }
-.layout-lft .module_mtree i{ width:12px; height:12px; display:inline-block; margin:0 4px 0 0; font-size:0; }
+.layout-lft .module_mtree i{ width:12px; height:12px; margin:0 4px 0 0; display:inline-block; font-size:0; }
 
 .layout-lft .module_mtree a.root{ height:20px; padding:7px 0 0 0; color:#023A55; background:url(images/style_fxy.gif) -133px -206px; }
 .layout-lft .module_mtree a.root i{ background:url(images/style_fxy.gif) -606px -222px; cursor:pointer; }
 .layout-lft .module_mtree a.rooton i{ background:url(images/style_fxy.gif) -566px -203px; cursor:pointer; }
 
-.layout-lft .module_mtree div a.parent{ height:20px; color:#005075; margin-right:30px; padding:7px 0 0 0; }
+.layout-lft .module_mtree div a.parent{ height:20px; margin-right:30px; padding:7px 0 0 0; color:#005075; }
 .layout-lft .module_mtree div a.parent i{ background:url(images/style_fxy.gif) -606px -222px; filter:alpha(opacity=50); opacity:0.5; cursor:pointer; }
 .layout-lft .module_mtree div a.parenton i{ background:url(images/style_fxy.gif) -566px -203px; filter:alpha(opacity=40); opacity:0.4; cursor:pointer; }
-.layout-lft .module_mtree div a.leaf{ height:20px; color:#005075; margin-right:30px; padding:7px 0 0 0; }
-.layout-lft .module_mtree div a.leafon{ color:#005075; background:url(images/style_fxy.gif) -135px -166px; padding-right:1px; }
+.layout-lft .module_mtree div a.leaf{ height:20px; margin-right:30px; padding:7px 0 0 0; color:#005075; }
+.layout-lft .module_mtree div a.leafon{ padding-right:1px; color:#005075; background:url(images/style_fxy.gif) -135px -166px; }
 
 /* 索引页右侧 */
 .layout-rht{ padding:42px 0 0 0; vertical-align:top; }
@@ -181,9 +193,11 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 
 /* 头部 */
 .home-header{ height:74px; background:url(images/style_fy.gif) 0 -146px; }
+
 .home-header a{ width:62px; height:69px; margin:2px 0 0 2px; float:left; text-align:center; text-decoration:none; color:#53627E; }
 .home-header a:hover{ background:url(images/style_fxy.gif) -450px -6px; }
 .home-header a.mdown i{ margin-top:6px; }
+
 .home-header a i{ width:40px; height:40px; margin:5px 0 5px 11px; float:left; cursor:pointer; }
 .home-header a i.account{ background:url(images/style_fxy.gif) -520px 0; }
 .home-header a i.journey{ background:url(images/style_fxy.gif) -520px -40px; }
@@ -256,7 +270,7 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 /* 按钮的下拉列表样式 */
 .title-div div.btn div.ddl{ display:none; position:absolute; border:1px solid #A5C7DE; background:#FFF; }
 .title-div div.btn div.ddl a{ margin:0; padding:0 5px 0 5px; display:block; line-height:200%; color:#5D8EAE; text-decoration:none; text-align:left; }
-.title-div div.btn div.ddl a:hover{ color:#2673A6; background:#E8F2F8; }
+.title-div div.btn div.ddl a:hover{ background:#E8F2F8; color:#2673A6; }
 .title-div div.btn div.ddlon{ display:block; }
 
 .title-div div.btn div.ddl i{ height:20px; width:20px; float:left; }
@@ -303,7 +317,7 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 
 .form-div table th{ height:27px; padding:0 0 0 10px; background:url(images/style_fy.gif) 0 -440px; text-align:left; }
 
-.form-div table td{ border:1px solid #F1F2F4; padding:2px; border-top:0; border-left:0; }
+.form-div table td{ padding:2px; border:1px solid #F1F2F4; border-top:0; border-left:0; }
 .form-div table td h1{ margin:4px 0 4px 9px; display:block; font-size:12px; font-weight:normal; vertical-align:middle; color:#00183B; white-space:nowrap; }
 .form-div table td h2{ margin:4px 0 4px 7px; display:block; font-size:12px; font-weight:normal; vertical-align:middle; }
 
@@ -317,7 +331,7 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 
 /* 列表层 */
 .list-div{ border:1px solid #D4D4D4; border-left:0; border-right:0; }
-.list-div table{ width:100%; *width:auto; table-layout:fixed; border-collapse:collapse; border-bottom:1px solid #F0F0F0; }
+.list-div table{ width:100%; *width:auto; border-bottom:1px solid #F0F0F0; table-layout:fixed; border-collapse:collapse; }
 
 /* 单层TH */
 .list-div table tr th{ height:27px; padding:0; border-bottom:1px solid #E4E4E4; background:url(images/style_fy.gif) 0 -440px; color:#00183C; }
@@ -348,20 +362,20 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 .list-div table tr td.edit input{ height:16px; border:1px solid #000; border-color:#888 #EEE #DDD #999; color:#666; line-height:16px; font-size:12px; cursor:text; }
 
 /* 操作样式 */
-.list-div table tr td.action a{ color:#114300; margin:1px; }
+.list-div table tr td.action a{ margin:1px; color:#114300; }
 .list-div table tr td.action a:hover { color:#31AC00; }
 
 /* 操作层 */
 .list-div table tr td div.action{ *width:200px; margin-top:-1px; float:left; *position:absolute; color:#888; }
-.list-div table tr td div.action a{ margin-right:5px; line-height:200%; color:#555; float:left; text-decoration:none; }
+.list-div table tr td div.action a{ margin-right:5px; float:left; line-height:200%; color:#555; text-decoration:none; }
 .list-div table tr td div.action a:hover{ color:#000; }
 
 /* 水平操作层 */
 .list-div table tr td div.action .hddl{ float:left; }
 .list-div table tr td div.action .hddl a{ color:#555; }
 .list-div table tr td div.action .hddl a span{ margin-left:1px; padding:8px 3px 6px; *padding:6px 2px; background:url(images/style_fxy.gif) -331px -137px; font-size:0; line-height:100%; }
-.list-div table tr td div.action .hddl div{ position:absolute; background:#FFF; border:1px solid #CCC; display:none; }
-.list-div table tr td div.action .hddl div a{ padding:4px; line-height:125%; margin:0; float:left; }
+.list-div table tr td div.action .hddl div{ display:none; position:absolute; background:#FFF; border:1px solid #CCC; }
+.list-div table tr td div.action .hddl div a{ padding:4px; margin:0; float:left; line-height:125%; }
 .list-div table tr td div.action .hddl div a:hover{ background:#F3F3F3; }
 .list-div table tr td div.action .hddlon a{ color:#000; text-decoration:none; }
 .list-div table tr td div.action .hddlon a span{ background:url(images/style_fxy.gif) -343px -137px; }
@@ -372,7 +386,7 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 /* - 表格头部层
 /* ------------------------------------------------------ */
 .table-header{ height:27px; background:url(images/style_fy.gif) 0 -560px; }
-.table-header i{ width:25px; height:25px; float:left; background:url(images/style_fxy.gif) -447px -167px; *background-position:-447px -168px; _background-position:-447px -167px; }
+.table-header i{ width:25px; height:25px; float:left; background:url(images/style_fxy.gif) -447px -167px; }
 .table-header span{ padding:6px 0 0 0; float:left; color:#062D75; filter:dropshadow(color=#FFFFFF,offx=1,offy=1); background:url(images/style_fy.gif) 0 -560px; }
 
 
@@ -382,15 +396,15 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 .table-footer{ height:30px; background:#FBFDFD; }
 
 /* 操作层 */
-.table-footer div.action{ float:left; margin:3px 0 5px 10px; color:#888; display:inline; }
-.table-footer div.action a{ line-height:200%; color:#555; margin-right:10px; float:left; text-decoration:none; }
+.table-footer div.action{ margin:3px 0 5px 10px; float:left; display:inline; color:#888; }
+.table-footer div.action a{ margin-right:10px; float:left; line-height:200%; color:#555; text-decoration:none; }
 .table-footer div.action a:hover{ color:#000; }
 
 /* 下拉操作层 */
 .table-footer div.action .hddl{ float:left; }
 .table-footer div.action .hddl a{ display:block; float:none; color:#555; }
 .table-footer div.action .hddl a span{ margin-left:2px; padding:6px 4px; *padding:4px; background:url(images/style_fxy.gif) -290px -139px; font-size:0; line-height:100%; }
-.table-footer div.action .hddl div{ position:absolute; border:1px solid #CCC; background:#FFF; display:none; }
+.table-footer div.action .hddl div{ display:none; position:absolute; border:1px solid #CCC; background:#FFF; }
 .table-footer div.action .hddl div a{ margin:0; padding:4px; float:left; line-height:125%; }
 .table-footer div.action .hddl div a:hover{ background:#F0F0F0; }
 .table-footer div.action .hddlon a{ color:#000; }
@@ -427,8 +441,8 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 .wnd-title div.sidelft{ width:5px; height:27px; float:left; background:url(images/style_fxy.gif) -413px -5px; }
 .wnd-title div.siderht{ width:5px; height:27px; float:right; background:url(images/style_fxy.gif) -422px -5px; }
 
-.wnd-title div.title{ margin:5px 0 0 5px; float:left; color:#FFF; }
-.wnd-title div.title i{ width:14px; height:14px; float:left; margin:1px 2px 0 0; _margin:1px 0 0 0; }
+.wnd-title div.title{ margin:5px 0 0 2px; float:left; color:#FFF; }
+.wnd-title div.title i{ width:14px; height:14px; float:left; margin:1px 4px 0 0; _margin:1px 0 0 0; }
 .wnd-title div.title i.plaint{ background:url(images/style_fxy.gif) -373px -213px; }
 
 .wnd-title a{ width:16px; height:16px; margin:5px 3px 0 0; float:right; font-size:0; }
@@ -446,12 +460,12 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 .wnd-client-sysmsg{ background:#FFF; }
 .wnd-client-sysmsg table{ width:100%; height:90px; }
 .wnd-client-sysmsg table td.i{ width:80px; }
-.wnd-client-sysmsg table td.i i.plaint{ width:37px; height:37px; float:right; background:url(images/style_fxy.gif) -602px -2px; margin:0 10px 0 33px; }
+.wnd-client-sysmsg table td.i i.plaint{ width:37px; height:37px; margin:0 10px 0 33px; float:right; background:url(images/style_fxy.gif) -602px -2px; }
 .wnd-client-sysmsg table td.t{ font-size:14px; color:#293E42; line-height:150%; }
 
 /* 控制区 */
 .wnd-control{ height:23px; padding:10px; border:1px solid #7799B5; border-top:0; text-align:right; background:url(images/style_fy.gif) 0 -40px; }
-.wnd-control input{ width:67px; height:22px; color:#5981A9; border:0px; font-size:12px; *font-size:10px; *padding-top:2px; cursor:pointer; margin-left:5px; background:url(images/style_fxy.gif) -246px -9px; }
+.wnd-control input{ width:67px; height:22px; margin-left:5px; border:0px; color:#5981A9; font-size:12px; *padding-top:2px; background:url(images/style_fxy.gif) -246px -9px; cursor:pointer; }
 
 
 /* ------------------------------------------------------ */
@@ -462,20 +476,20 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 .roundbox{ margin:6px 0 0 6px; float:left; font-size:12px; display:inline; }
 
 .roundbox .linea,
-.roundbox .lined{ height:1px; margin:0 2px; overflow:hidden; background:#B4BDD4; }
+.roundbox .lined{ height:1px; margin:0 2px; background:#B4BDD4; overflow:hidden; }
 .roundbox .lineb,
-.roundbox .linec{ height:1px; margin:0 1px; overflow:hidden; border:1px solid #B4BDD4; border-top:0; border-bottom:0; }
+.roundbox .linec{ height:1px; margin:0 1px; border:1px solid #B4BDD4; border-top:0; border-bottom:0; overflow:hidden; }
 
 .roundbox .header{ height:30px; border:1px solid #B4BDD4; border-top:0; border-bottom:0; background:#EEF4FB; overflow:hidden; }
 .roundbox .header span.title{ padding:8px 0 0 10px; float:left; font-weight:bold; vertical-align:middle; }
-.roundbox .header a.more{ padding:9px 10px 0 0; float:right; text-decoration:none; color:#545D74; }
+.roundbox .header a.more{ padding:9px 10px 0 0; float:right; color:#545D74; text-decoration:none; }
 
 .roundbox .body{ padding:0 7px 7px; border:1px solid #B4BDD4; border-top:0; border-bottom:0; background:#EEF4FB; overflow:hidden; }
-.roundbox .body .content{ border:1px solid #B4BDD4; border-top:0; border-bottom:0; background:#EEF4FB; overflow:hidden; background:#fff; padding:3px 3px 3px 5px; }
+.roundbox .body .content{ padding:3px 3px 3px 5px; border:1px solid #B4BDD4; border-top:0; border-bottom:0; background:#FFF; overflow:hidden; }
 .roundbox .body .content p{ padding:0; margin:0; *display:inline-block; text-indent:2em; }
 .roundbox .body .content table.list{ width:100%; table-layout:fixed; border-collapse:collapse; }
-.roundbox .body .content table.list td{ white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
-.roundbox .body .content table.list td a{ text-decoration:none; color:#444; }
+.roundbox .body .content table.list td{ text-overflow:ellipsis; white-space:nowrap; overflow:hidden; }
+.roundbox .body .content table.list td a{ color:#444; text-decoration:none; }
 .roundbox .body .content table.list td a:hover{ color:#000; }
 
 /* 配色方案(灰色) */
@@ -488,7 +502,7 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 /* ------------------------------------------------------ */
 /* - TAG TITLE
 /* ------------------------------------------------------ */
-.tagtitle-div{ padding:1px 3px 1px; line-height:130%; position:absolute; background:#FFFFE1; border:1px solid #000; }
+.tagtitle-div{ padding:1px 3px 1px; border:1px solid #000; line-height:130%; background:#FFFFE1; position:absolute; }
 
 
 /* ------------------------------------------------------ */

@@ -38,7 +38,7 @@
 
 <?php }elseif( $tpl['_body'] == 'add' || $tpl['_body'] == 'edit' ){ ?>
 <form id="wfm-role-fill" onkeydown="deal_wfm_keyboard(event,this);">
-<div class="table-header"><i></i><span>基本信息</span></div>
+<div class="table-header"><i></i><span>基本信息&nbsp;</span></div>
 <div class="form-div" style="border-bottom:0;">
 	<table>
 	<tr>
@@ -51,7 +51,7 @@
 	
 </div>
 
-<div class="table-header"><i></i><span>角色权限</span></div>
+<div class="table-header"><i></i><span>角色权限&nbsp;</span></div>
 <div id="div-role-privilegetbl" class="form-div" style="border-bottom:0;"><?php echo $tpl['html_privilege_table']; ?></div>
 
 <input type="hidden" name="role_id" value="<?php echo $tpl['role']['role_id']; ?>"/>
