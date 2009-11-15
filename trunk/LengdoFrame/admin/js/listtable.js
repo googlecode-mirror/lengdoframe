@@ -248,15 +248,15 @@ var ListTable = {
      * 删除记录行
      * 默认提交 act,id 三个参数以及对应的数据
      *
-     * @params obj  obj  事件发生对象
-     * @params mix  id   数据：记录ID
-     * @params str  msg  删除提示消息
-     * @params str  url  要提交的URL，默认使用 ListTable.sUrl + '?act=del'
+     * @params obj  caller  调用者对象
+     * @params mix  id      数据：记录ID
+     * @params str  msg     删除提示消息
+     * @params str  url     要提交的URL，默认使用 ListTable.sUrl + '?act=del'
      * @params obj  callbacks  回调函数
      *         fun  callbacks.ok   处理成功时回调的函数(不与默认的重载列表事件同时执行)
      *         fun  callbacks.fail 处理失败时回调的函数
      */
-    del : function( obj, id, msg, url, callbacks ){
+    del : function( caller, id, msg, url, callbacks ){
         /* 删除提示 */
         msg ? wnd_confirm(msg, {'ok':callback}) : callback();
 
@@ -278,7 +278,7 @@ var ListTable = {
 			if( result.error == 0 ){
                 /* 函数回调 */
                 if( callbacks && typeof(callbacks.ok) == 'function' ){
-                    callbacks.ok(obj);
+                    callbacks.ok(caller);
                 }
                 /* 默认重载列表 */
                 else{
@@ -288,7 +288,7 @@ var ListTable = {
             /* 处理失败 */
             else{
                 /* 函数回调 */
-                if( callbacks && typeof(callbacks.fail) == 'function' ) callbacks.fail(obj);
+                if( callbacks && typeof(callbacks.fail) == 'function' ) callbacks.fail(caller);
             }
 		}
     },
@@ -297,35 +297,35 @@ var ListTable = {
      * 创建一个编辑区
      * 默认提交 act,id,field,val 四个参数以及对应的数据
      *
-     * @params obj  obj    事件发生对象
-     * @params int  id     数据：记录的ID
-     * @params str  field  要更新的字段名
-     * @params str  url    要提交的URL，默认使用 ListTable.sUrl + '?act=ufield'
+     * @params obj  caller  调用者对象
+     * @params int  id      数据：记录的ID
+     * @params str  field   要更新的字段名
+     * @params str  url     要提交的URL，默认使用 ListTable.sUrl + '?act=ufield'
      * @params obj  callbacks  回调函数
      *         fun  callbacks.ok   处理成功时回调的函数
      *         fun  callbacks.fail 处理失败时回调的函数
      */
-    edit : function( obj, id, field, url, callbacks ){
+    edit : function( caller, id, field, url, callbacks ){
         /* 防止重复点击创建输入框 */
-        if( obj.firstChild && obj.firstChild.tagName && obj.firstChild.tagName.toLowerCase() == 'input' ) return false;
+        if( caller.firstChild && caller.firstChild.tagName && caller.firstChild.tagName.toLowerCase() == 'input' ) return false;
 
         /* 保存原来的内容 - 过滤首尾空白 */
-        var s_html = f(obj.innerHTML, 'trim');
-        var s_text = f((window.ActiveXObject ? obj.innerText : obj.textContent), 'trim');
+        var s_html = f(caller.innerHTML, 'trim');
+        var s_text = f((window.ActiveXObject ? caller.innerText : caller.textContent), 'trim');
 
         /* 创建一个输入框 */
         var input = document.createElement('INPUT');
 
         /* 单元格宽度 */
-        var len = this._rec(obj, 'td').offsetWidth;
+        var len = this._rec(caller, 'td').offsetWidth;
 
         /* 输入框赋值 */
         input.value = s_text;
-        input.style.width = (obj.offsetWidth+11 > len ? len-11 : obj.offsetWidth+11) + 'px';
+        input.style.width = (caller.offsetWidth+11 > len ? len-11 : caller.offsetWidth+11) + 'px';
 
         /* 隐藏对象中的内容，并将输入框加入到对象中 */
-        obj.innerHTML = '';
-        obj.appendChild(input);
+        caller.innerHTML = '';
+        caller.appendChild(input);
 
         /* 输入框聚焦选中 */
         input.focus(); input.select();
@@ -337,7 +337,7 @@ var ListTable = {
 
             /* Enter, Esc */
             if( evt.keyCode == 13 ){ this.blur(); return false; }
-            if( evt.keyCode == 27 ){ obj.innerHTML = s_html; }
+            if( evt.keyCode == 27 ){ caller.innerHTML = s_html; }
         }
 
         /* 编辑区失去焦点的处理函数 */
@@ -347,7 +347,7 @@ var ListTable = {
 
             /* 字段值未发生变化 */
             if( this.value == s_text ){
-                obj.innerHTML = s_html;
+                caller.innerHTML = s_html;
             }
 
             /* 字段值发生变化 */
@@ -365,10 +365,10 @@ var ListTable = {
                         /* 处理成功，事件源对象赋值 */
                         if( result.error == 0 ){
                             /* 显示结果 */
-                            obj.innerHTML = result.content === '' ? f(input.value,'html') : result.content;
+                            caller.innerHTML = result.content === '' ? f(input.value,'html') : result.content;
 
                             /* 函数回调 */
-                            if( callbacks && typeof(callbacks.ok) == 'function' ) callbacks.ok(obj);
+                            if( callbacks && typeof(callbacks.ok) == 'function' ) callbacks.ok(caller);
                         }
                         /* 处理出错，恢复到未编辑状态 */
                         else{
@@ -379,7 +379,7 @@ var ListTable = {
                             input.focus(); input.select();
 
                             /* 函数回调 */
-                            if( callbacks && typeof(callbacks.fail) == 'function' ) callbacks.fail(obj);
+                            if( callbacks && typeof(callbacks.fail) == 'function' ) callbacks.fail(caller);
                         }
                     }
 
@@ -397,23 +397,23 @@ var ListTable = {
      * 异步切换状态
      * 默认提交 act,id,field,val 四个参数以及对应的数据
      *
-     * @params obj  obj        事件发生对象
-     * @params int  id         数据：记录ID
-     * @params str  field      要切换状态的字段名称
-     * @params str  url        要提交的URL，默认使用 ListTable.sUrl + '?act=ufield'
+     * @params obj  caller  调用者对象
+     * @params int  id      数据：记录ID
+     * @params str  field   要切换状态的字段名称
+     * @params str  url     要提交的URL，默认使用 ListTable.sUrl + '?act=ufield'
      * @params obj  callbacks  回调函数
      *         fun  callbacks.ok   处理成功时回调的函数
      *         fun  callbacks.fail 处理失败时回调的函数
      */
-    toggle : function( obj, id, field, url, callbacks ){
+    toggle : function( caller, id, field, url, callbacks ){
         /* 正在处理中 */
-        if( obj.className == 'do' ) return false;
+        if( caller.className == 'do' ) return false;
 
         /* 切换后的值 */
-        var val = obj.className == 'yes' ? 0 : 1;
+        var val = caller.className == 'yes' ? 0 : 1;
 
         /* 处理中的样式类 */
-        obj.className = 'do';
+        caller.className = 'do';
 
         /* 初始化URL */
         url = typeof(url) == 'string' && url ? url : '?act=ufield';
@@ -428,18 +428,18 @@ var ListTable = {
                 /* 处理成功，替换图片值 */
                 if( result.error == 0 ){
                     /* 更改对象的样式类 */
-                    obj.className = result.content === '' ? (val?'yes':'no') : (result.content==1?'yes':'no');
+                    caller.className = result.content === '' ? (val?'yes':'no') : (result.content==1?'yes':'no');
 
                     /* 函数回调 */
-                    if( callbacks && typeof(callbacks.ok) == 'function' ) callbacks.ok(obj);
+                    if( callbacks && typeof(callbacks.ok) == 'function' ) callbacks.ok(caller);
                 }
                 /* 处理出错，恢复原状态 */
                 else{
                     /* 恢复对象的样式类 */
-                    obj.className = val ? 'no' : 'yes';
+                    caller.className = val ? 'no' : 'yes';
 
                     /* 函数回调 */
-                    if( callbacks && typeof(callbacks.fail) == 'function' ) callbacks.fail(obj);
+                    if( callbacks && typeof(callbacks.fail) == 'function' ) callbacks.fail(caller);
                 }
             }
 
@@ -456,19 +456,19 @@ var ListTable = {
      * 创建一个下拉框
      * 默认提交 act,id,field,val 三个参数以及对应的数据
      *
-     * @params obj  obj    事件发生对象
-     * @params int  id     数据：记录的ID
-     * @params str  field  要更新的字段名
-     * @params str  opts   JSON格式，下拉框的项[{val:xx,txt:xx}]
-     * @params str  url    要提交的URL，默认使用 ListTable.sUrl + '?act=ufield'
+     * @params obj  caller  调用者对象
+     * @params int  id      数据：记录的ID
+     * @params str  field   要更新的字段名
+     * @params str  opts    JSON格式，下拉框的项[{val:xx,txt:xx}]
+     * @params str  url     要提交的URL，默认使用 ListTable.sUrl + '?act=ufield'
      */
-    ddl : function( obj, id, field, opts, url ){
+    ddl : function( caller, id, field, opts, url ){
         /* 防止重复点击创建 */
-        if( obj.firstChild && obj.firstChild.tagName && obj.firstChild.tagName.toLowerCase() == 'select' ) return false;
+        if( caller.firstChild && caller.firstChild.tagName && caller.firstChild.tagName.toLowerCase() == 'select' ) return false;
 
         /* 保存原来的内容 */
-        var s_html = f(obj.innerHTML, 'trim');
-        var s_text = f((window.ActiveXObject ? obj.innerText : obj.textContent), 'trim');
+        var s_html = f(caller.innerHTML, 'trim');
+        var s_text = f((window.ActiveXObject ? caller.innerText : caller.textContent), 'trim');
 
         /* 创建一个下拉框 */
         var sel = document.createElement("SELECT");
@@ -489,8 +489,8 @@ var ListTable = {
         }
 
         /* 隐藏对象中的内容，并将下拉框加入到对象中 */
-        obj.innerHTML = '';
-        obj.appendChild(sel);
+        caller.innerHTML = '';
+        caller.appendChild(sel);
 
         sel.focus();
 
@@ -501,7 +501,7 @@ var ListTable = {
 
             /* 字段值未发生变化 */
             if( text == s_text ){
-                obj.innerHTML = s_html;
+                caller.innerHTML = s_html;
             }
             /* 字段值发生变化 */
             else{
@@ -522,11 +522,11 @@ var ListTable = {
 
                 /* 事件源对象赋值 */
                 if( result.error == 0 ){
-                    obj.innerHTML = text;
+                    caller.innerHTML = text;
                 }
                 /* 出错，恢复到原编辑状态 */
                 else{
-                    obj.innerHTML = s_html;
+                    caller.innerHTML = s_html;
                 }
             }
         }
@@ -719,16 +719,16 @@ var ListTable = {
      * 选择项并高亮选中项(单选)
      * 同一时刻只有一项被选中，再次单击撤销选中
      *
-     * @params obj  obj    事件源对象
-     * @params mix  id     数据：记录ID
-     * @params mix  data   数据：记录数据
-     * @params str  label  要高亮的标签，通过obj向上递归到该标签，然后高亮。(默认高亮 TR)
-     *                     false或空字符表示不高亮，同时失去多点触发功能
-     * @params str  color  高亮的颜色，默认为#FFFCC1
+     * @params obj  caller  调用者对象
+     * @params mix  id      数据：记录ID
+     * @params mix  data    数据：记录数据
+     * @params str  label   要高亮的标签，通过obj向上递归到该标签，然后高亮。(默认高亮 TR)
+     *                      false或空字符表示不高亮，同时失去多点触发功能
+     * @params str  color   高亮的颜色，默认为#FFFCC1
      *
      * @return mix  1表示选中成功，0表示撤销成功，false表示失败
      */
-    schoice : function( obj, id, data, label, color ){
+    schoice : function( caller, id, data, label, color ){
         /* 初始化高亮标签 */
         label = typeof(label) == 'string' || label === false ? label : 'tr';
 
@@ -745,7 +745,7 @@ var ListTable = {
             }
 
             /* 再次单击撤销选中 - 移除数据并恢复背景色 - 多点触发 */
-            if( this._rec(this.oChoiced[i].object,label) == this._rec(obj,label) ){
+            if( this._rec(this.oChoiced[i].object,label) == this._rec(caller,label) ){
                 /* 恢复背景色 */
                 try{ label ? (this._rec(this.oChoiced[i].object,label).style.backgroundColor = '') : ''; }catch(e){}
 
@@ -759,10 +759,10 @@ var ListTable = {
         }
 
         /* 保存选中记录ID */
-        this.oChoiced[id] = {'id':id, 'object':obj, 'data':data};
+        this.oChoiced[id] = {'id':id, 'caller':caller, 'data':data};
 
         /* 设置背景色 */
-        try{ label ? (this._rec(obj,label).style.backgroundColor = typeof(color)=='string'?color:'#FFFCC1') : ''; }catch(e){}
+        try{ label ? (this._rec(caller,label).style.backgroundColor = typeof(color)=='string'?color:'#FFFCC1') : ''; }catch(e){}
 
         return 1;
     },
@@ -771,16 +771,16 @@ var ListTable = {
      * 选择项并高亮选中项(多选)
      * 同一时刻可以多项被选中，再次单击撤销选中
      *
-     * @params obj  obj    事件源对象
-     * @params int  id     数据：记录ID
-     * @params mix  data   数据：记录数据
-     * @params str  label  要高亮的标签，通过obj向上递归到该标签，然后高亮。(默认高亮 TR)
-     *                     false或空字符表示不高亮，同时失去多点触发功能
-     * @params str  color  高亮的颜色，默认为#FFFCC1
+     * @params obj  caller  调用者对象
+     * @params int  id      数据：记录ID
+     * @params mix  data    数据：记录数据
+     * @params str  label   要高亮的标签，通过obj向上递归到该标签，然后高亮。(默认高亮 TR)
+     *                      false或空字符表示不高亮，同时失去多点触发功能
+     * @params str  color   高亮的颜色，默认为#FFFCC1
      *
      * @return mix  1表示选中成功，0表示撤销成功，false表示失败
      */
-    mchoice : function( obj, id, data, label, color ){
+    mchoice : function( caller, id, data, label, color ){
         /* 初始化剩余多选限制数 */
         var limit = this.iMCLimit;
 
@@ -793,7 +793,7 @@ var ListTable = {
             if( typeof(this.oChoiced[i]) != 'object' ) continue;
 
             /* 再次单击撤销选中 - 移除数据并恢复背景色 - 多点触发 */
-            if( this._rec(this.oChoiced[i].object,label) == this._rec(obj,label) ){
+            if( this._rec(this.oChoiced[i].object,label) == this._rec(caller,label) ){
                 /* 恢复背景色 */
                 try{ label ? (this._rec(this.oChoiced[i].object,label).style.backgroundColor = '') : ''; }catch(e){}
 
@@ -808,10 +808,10 @@ var ListTable = {
         }
 
         /* 保存选中记录ID */
-        this.oChoiced[id] = {'id':id, 'object':obj, 'data':data};
+        this.oChoiced[id] = {'id':id, 'caller':caller, 'data':data};
 
         /* 设置背景色 */
-        try{ label ? (this._rec(obj,label).style.backgroundColor = typeof(color)=='string'?color:'#FFFCC1') : ''; }catch(e){}
+        try{ label ? (this._rec(caller,label).style.backgroundColor = typeof(color)=='string'?color:'#FFFCC1') : ''; }catch(e){}
 
         return 1;
     },
