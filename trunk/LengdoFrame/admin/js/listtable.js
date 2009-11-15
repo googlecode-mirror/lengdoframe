@@ -56,8 +56,8 @@ var ListTable = {
 
     /**
      * 初始化列表绑定或重绑定
-     * 如果列表已经绑定中，那么设置新的配置(如果提供配置数据)
-     * 如果列表未绑定，那么备份上个绑定的列表配置数据，调出并设置即将要绑定列表的旧数据，再设置新的配置(如果提供配置数据)
+     * 如果列表已绑定中，那么设置新的配置(如果提供配置数据)
+     * 如果列表未绑定，那么备份上个绑定的列表配置数据，然后调出并设置即将要绑定列表的旧数据，再设置新的配置(如果提供配置数据)
      *
      * @params str  id       要重新绑定的列表ID
      * @params str  url      基础URL
@@ -253,7 +253,7 @@ var ListTable = {
      * @params str  msg  删除提示消息
      * @params str  url  要提交的URL，默认使用 ListTable.sUrl + '?act=del'
      * @params obj  callbacks  回调函数
-     *         fun  callbacks.ok   处理成功时回调的函数(不与默认重载列表事件同时执行)
+     *         fun  callbacks.ok   处理成功时回调的函数(不与默认的重载列表事件同时执行)
      *         fun  callbacks.fail 处理失败时回调的函数
      */
     del : function( obj, id, msg, url, callbacks ){
