@@ -8,60 +8,78 @@
 <script type="text/javascript" src="<?php echo URL_ROOT; ?>js/window.js"></script>
 <script type="text/javascript" src="<?php echo URL_ROOT; ?>js/common.js"></script>
 
-<script type="text/javascript" src="js/login.js"></script>
-
 <title><?php echo $_LANG['sys_title']; ?></title>
 </head>
 
 
 <body onload="deal_webpage_loaded()">
 
-<div id="dloading-div"><a>页面加载中...</a></div>
-<div id="aloading-div" style="display:none"></div>
+    <div id="dloading-div"><a>页面加载中...</a></div>
+    <div id="aloading-div" style="display:none"></div>
 
-<br /><br /><br /><br />
+    <br /><br /><br /><br />
 
-<table width="100%" cellspacing="0" cellpadding="0" border="0">
-<tr>
-	<td width="30%" height="0"></td>
-	<td width="395"></td>
-	<td></td>
-</tr>
-<tr>
-	<td valign="bottom"></td>
-	<td colspan="2">
-		<div class="logo-div">
-			<a target="_blank" href="http://www.lengdo.com" class="lengdo"></a>
-			<a class="lengdosys"></a>
-		</div>
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td width="30%" height="0"></td>
+        <td width="395"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td valign="bottom"></td>
+        <td colspan="2">
+            <div class="logo-div">
+                <a target="_blank" href="http://www.lengdo.com" class="lengdo"></a>
+                <a class="lengdosys"></a>
+            </div>
 
-		<div class="login-div">
-			<div class="login-box">
-			<form id="fm-login-fill" onsubmit="deal_login_fill(); return false;">
-                <table border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                    <td width="50"><pre>用户名</pre></td>
-                    <td width="185"><span class="textbox username"><input type="text" name="username"/></span></td>
-                </tr>
-                <tr>
-                    <td><pre>密  码</pre></td>
-                    <td><span class="textbox password"><input type="password" name="password"/></span></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td align="center"><input type="submit" name="submit" class="button" value="登  陆" /></td>
-                </tr>
-                </table>
-			</form>
-			</div>
-		</div>		
-	</td>
-</tr>
-<tr>
-	<td colspan="2"><div class="footer-div"></div></td>
-	<td>&nbsp;</td>
-</tr>
-</table>
+            <div class="login-div">
+                <div class="login-box">
+                <form id="fm-login-fill" onsubmit="deal_login_fill(); return false;">
+                    <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td width="50"><pre>用户名</pre></td>
+                        <td width="185"><span class="textbox username"><input type="text" name="username"/></span></td>
+                    </tr>
+                    <tr>
+                        <td><pre>密  码</pre></td>
+                        <td><span class="textbox password"><input type="password" name="password"/></span></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="center"><input type="submit" name="submit" class="button" value="登  陆" /></td>
+                    </tr>
+                    </table>
+                </form>
+                </div>
+            </div>		
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2"><div class="footer-div"></div></td>
+        <td>&nbsp;</td>
+    </tr>
+    </table>
 
+    <script>
+        function deal_login_fill()
+        {
+            /* 回调函数 */
+            function callback( result, text ){
+                if( result.error == 0 ){
+                    /* 显示页面加载中 */
+                    deal_webpage_load();
+
+                    /* 页面跳转 */
+                    window.location.href = 'index.php';
+                }else{
+                    wnd_alert(result.message, {'overlay':0});
+                }
+            }
+
+            /* 异步提交(异步等待) */
+            Ajax.call('index.php?act=loginsubmit', deal_form_params('fm-login-fill'), callback, 'POST', 'JSON');
+        }    
+    </script>
 </body>
 </html>
