@@ -12,24 +12,20 @@
 
 var ListTable = {
     /**
-     * 列表的容器层ID
+     * 列表容器层ID
      */
     sId : '',
 
     /**
-     * 列表的基础URL
+     * 列表基础URL
      */
     sUrl : '',
 
     /**
-     * 异步查询的URL
+     * 列表请求和查询URL
      */
+    sUList  : '',
     sUQuery : '',
-
-    /**
-     * 多选时数量限制，0表示不限制. 针对 ListTable.mchoice()
-     */
-    iMCLimit : 0,
 
     /**
      * 过滤条件
@@ -39,9 +35,15 @@ var ListTable = {
 
     /**
      * 列表选中项
-     * 存储格式：记录ID => 数据对象{'id':$id,'object':$obj,'data':$data}
+     * 存储格式：记录ID => 数据对象：{'id':$id,'caller':$caller,'data':$data}
      */
     oChoiced : {},
+
+    /**
+     * 多选时数量限制
+     * 0表示不限制. 针对 ListTable.mchoice()
+     */
+    iMCLimit : 0,
 
     /**
      * 列表集的配置数据
@@ -59,32 +61,31 @@ var ListTable = {
      * 如果列表已绑定中，那么设置新的配置(如果提供配置数据)
      * 如果列表未绑定，那么备份上个绑定的列表配置数据，然后调出并设置即将要绑定列表的旧数据，再设置新的配置(如果提供配置数据)
      *
-     * @params str  id       要重新绑定的列表ID
-     * @params str  url      基础URL
-     * @params str  uquery   异步查询的URL
-     * @params int  mclimit  多选时数量限制，0表示不限制
+     * @params str  id       要绑定的列表ID
+     * @params str  url      列表基础的URL，例如：'module.php'
+     * @params str  uquery   列表查询的URL，例如：'?act=query'
+     * @params str  ulist    列表请求的URL，例如：'?act=list'
      */
-    init : function( id, url, uquery, mclimit ){
+    init : function( id, url, uquery, ulist ){
         /* 初始化 */
         var listtable = document.getElementById(id);
 
         /* 无效的列表ID */
-        if( !listtable ){
-            alert('ListTable Id Error!'); return;
-        }
+        if( !listtable ){ alert('ListTable Id Error!'); return; }
 
         /* 补充全URL */
+        if( typeof(ulist)  == 'string' && ulist.substr(0,1)  == '?' ) ulist  = url + ulist;
         if( typeof(uquery) == 'string' && uquery.substr(0,1) == '?' ) uquery = url + uquery;
 
         /* 列表同步机制 - 无同步标识 */
         if( listtable.className.indexOf(' LIST-SYNC') == -1 ){
-            /* 初始化空数据 - 如果列表已绑定中 */
+            /* 如果列表已绑定中，重置数据 */
             if( this.sId == id ){
                 this.oFilter  = {};
                 this.oChoiced = {};
             }
 
-            /* 初始化空数据 - 如果列表已绑定过 */
+            /* 如果列表已绑定过，重置数据 */
             if( this._cfg[id] ){
                 this._cfg[id].oFilter  = {};
                 this._cfg[id].oChoiced = {};
@@ -97,36 +98,38 @@ var ListTable = {
         /* 列表已绑定 */
         if( this.sId == id ){
             /* 设置列表的新配置数据 */
-            if( typeof(url)     == 'string' && url ) this.sUrl = url;
-            if( typeof(uquery)  == 'string' && uquery ) this.sUQuery = uquery;
-            if( typeof(mclimit) == 'number' && mclimit >= 0 ) this.iMCLimit = mclimit;
+            if( typeof(url)    == 'string' && url ) this.sUrl = url;
+            if( typeof(ulist)  == 'string' && ulist ) this.sUList = ulist;
+            if( typeof(uquery) == 'string' && uquery ) this.sUQuery = uquery;
 
             return true;
         }
 
-        /* 列表重绑定 - 保存上个绑定列表的配置数据 */
+        /* 列表重绑定 - 保存当前绑定中的列表配置数据 */
         if( this.sId ){
             this._cfg[this.sId] = {
                                     'sUrl'     : this.sUrl,
+                                    'sUList'   : this.sUList,
                                     'sUQuery'  : this.sUQuery,
-                                    'iMCLimit' : this.iMCLimit,
                                     'oFilter'  : this.oFilter,
-                                    'oChoiced' : this.oChoiced
+                                    'oChoiced' : this.oChoiced,
+                                    'iMCLimit' : this.iMCLimit
                                   };
         }
 
         /* 列表重绑定 - 设置列表的原配置数据 */
         this.sUrl     = this._cfg[id] ? this._cfg[id].sUrl     : '';
+        this.sUList   = this._cfg[id] ? this._cfg[id].sUList   : '';
         this.sUQuery  = this._cfg[id] ? this._cfg[id].sUQuery  : '';
         this.oFilter  = this._cfg[id] ? this._cfg[id].oFilter  : {};
         this.oChoiced = this._cfg[id] ? this._cfg[id].oChoiced : {};
         this.iMCLimit = this._cfg[id] ? this._cfg[id].iMCLimit : 0;
 
         /* 列表重绑定 - 设置列表的新配置数据 */
-        if( typeof(id)      == 'string' && id ) this.sId = id;
-        if( typeof(url)     == 'string' && url ) this.sUrl = url;
-        if( typeof(uquery)  == 'string' && uquery ) this.sUQuery = uquery;
-        if( typeof(mclimit) == 'number' && mclimit >= 0 ) this.iMCLimit = mclimit;
+        if( typeof(id)     == 'string' && id ) this.sId = id;
+        if( typeof(url)    == 'string' && url ) this.sUrl = url;
+        if( typeof(ulist)  == 'string' && ulist ) this.sUList = ulist;
+        if( typeof(uquery) == 'string' && uquery ) this.sUQuery = uquery;
     },
 
 
@@ -150,18 +153,6 @@ var ListTable = {
     },
 
     /**
-     * 异步搜索(初始化过滤条件)
-     *
-     * @params obj  filter  过滤条件对象
-     */
-    search : function( filter ){
-        /* 设置过滤变量 */
-        this.oFilter = typeof(filter) == 'object' ? filter : {};
-
-        this.loadList();
-    },
-
-    /**
      * 异步跳页
      *
      * @params int  page  页号
@@ -169,7 +160,8 @@ var ListTable = {
     pageTo : function( page ){
         /* 设置过滤变量 */
         this.oFilter['page'] = typeof(page) == 'number' ? page : 1;
-
+        
+        /* 加载列表 */
         this.loadList();
     },
 
@@ -179,17 +171,32 @@ var ListTable = {
      * @params str  field  排序字段名
      */
     orderBy : function( field ){
+        /* 设置过滤变量 */
         this.oFilter['order_fd']   = field;
         this.oFilter['order_type'] = this.oFilter['order_type'] == 'DESC' ? 'ASC' : 'DESC';
+        
+        /* 加载列表 */
+        this.loadList();
+    },
 
+    /**
+     * 异步搜索(初始化过滤条件)
+     *
+     * @params obj  filter  过滤条件对象
+     */
+    search : function( filter ){
+        /* 设置过滤变量 */
+        this.oFilter = typeof(filter) == 'object' ? filter : {};
+
+        /* 加载列表 */
         this.loadList();
     },
 
     /**
      * 载入列表
      *
-     * @params bol  asyn  异步请求方式[true表示异步等待(默认)，false表示同步等待]
-     * @params bol  quiet 是否安静模式请求(默认flase)
+     * @params bol  asyn  异步请求方式。true 表示异步等待(默认)，false表示同步等待
+     * @params bol  quiet 是否安静模式请求。默认flase
      */
     loadList : function( asyn, quiet ){
         /* 常量对象指针 */
@@ -202,24 +209,21 @@ var ListTable = {
         Ajax.call(this.sUQuery, this.buildFilter(), callback, 'POST', 'JSON', asyn, quiet);
 
         /**
-         * 回调函数，负责将列表插入到由 ListTable.sId 指定的容器
+         * 回调函数
+         * 负责将列表插入到由 ListTable.sId 指定的容器
          */
         function callback( result, text ){
             /* 错误 - 服务器段返回错误 */
-            if( result.error != 0 ){
-                wnd_alert('Server Error!'); return false;
-            }
+            if( result.error != 0 ){ wnd_alert('Server Error!'); return false; }
 
             /* 初始化选中记录 */
-            self.ichoice(false);
+            self.initChoice(false);
 
             /* 填充新的列表HTML */
             document.getElementById(self.sId).innerHTML = result.content;
 
             /* 重新赋值过滤条件 */
-            if( typeof(result.filter) == 'object' ){
-                self.oFilter = result.filter;
-            }
+            if( typeof(result.filter) == 'object' ){ self.oFilter = result.filter; }
         }
     },
 
@@ -246,13 +250,13 @@ var ListTable = {
 
     /**
      * 删除记录行
-     * 默认提交 act,id 三个参数以及对应的数据
+     * 提交 act,id 参数
      *
      * @params obj  caller  调用者对象
      * @params mix  id      数据：记录ID
      * @params str  msg     删除提示消息
      * @params str  url     要提交的URL，默认使用 ListTable.sUrl + '?act=del'
-     * @params obj  callbacks  回调函数
+     * @params obj  callbacks      回调函数
      *         fun  callbacks.ok   处理成功时回调的函数(不与默认的重载列表事件同时执行)
      *         fun  callbacks.fail 处理失败时回调的函数
      */
@@ -261,47 +265,47 @@ var ListTable = {
         msg ? wnd_confirm(msg, {'ok':callback}) : callback();
 
         /* 回调函数 */
-		function callback(){
-	        /* 初始化URL */
+        function callback(){
+            /* 初始化URL */
             url = typeof(url) == 'string' && url ? url : '?act=del';
             if( url.substr(0,1) == '?' ) url = ListTable.sUrl + url;
 
-			/* 异步传输(同步等待) */
-			var result = Ajax.call(url, 'id='+id, null, 'POST', 'JSON', false);
+            /* 异步传输(同步等待) */
+            var result = Ajax.call(url, 'id='+id, null, 'POST', 'JSON', false);
 
-			/* 显示消息 */
-			if( result.message ){
-				wnd_alert(result.message);
-			}
+            /* 显示消息 */
+            if( result.message ){
+                wnd_alert(result.message);
+            }
 
-			/* 处理成功，加载列表 */
-			if( result.error == 0 ){
+            /* 删除成功 */
+            if( result.error == 0 ){
                 /* 函数回调 */
                 if( callbacks && typeof(callbacks.ok) == 'function' ){
                     callbacks.ok(caller);
                 }
-                /* 默认重载列表 */
+                /* 重载列表(默认) */
                 else{
                     ListTable.loadList();
                 }
-			}
-            /* 处理失败 */
+            }
+            /* 删除失败 */
             else{
                 /* 函数回调 */
                 if( callbacks && typeof(callbacks.fail) == 'function' ) callbacks.fail(caller);
             }
-		}
+        }
     },
 
     /**
      * 创建一个编辑区
-     * 默认提交 act,id,field,val 四个参数以及对应的数据
+     * 提交 act,id,field,val 参数
      *
      * @params obj  caller  调用者对象
      * @params int  id      数据：记录的ID
      * @params str  field   要更新的字段名
      * @params str  url     要提交的URL，默认使用 ListTable.sUrl + '?act=ufield'
-     * @params obj  callbacks  回调函数
+     * @params obj  callbacks      回调函数
      *         fun  callbacks.ok   处理成功时回调的函数
      *         fun  callbacks.fail 处理失败时回调的函数
      */
@@ -316,8 +320,12 @@ var ListTable = {
         /* 创建一个输入框 */
         var input = document.createElement('INPUT');
 
+        /* 单元格对象 */
+        var td = caller.parentNode;
+        while( td && td.tagName && td.tagName.toLowerCase() != 'td' ){ td = td.parentNode; }
+
         /* 单元格宽度 */
-        var len = this._rec(caller, 'td').offsetWidth;
+        var len = td.offsetWidth;
 
         /* 输入框赋值 */
         input.value = s_text;
@@ -395,13 +403,13 @@ var ListTable = {
 
     /**
      * 异步切换状态
-     * 默认提交 act,id,field,val 四个参数以及对应的数据
+     * 提交 act,id,field,val 参数
      *
      * @params obj  caller  调用者对象
      * @params int  id      数据：记录ID
      * @params str  field   要切换状态的字段名称
      * @params str  url     要提交的URL，默认使用 ListTable.sUrl + '?act=ufield'
-     * @params obj  callbacks  回调函数
+     * @params obj  callbacks      回调函数
      *         fun  callbacks.ok   处理成功时回调的函数
      *         fun  callbacks.fail 处理失败时回调的函数
      */
@@ -535,14 +543,18 @@ var ListTable = {
     /**
      * 批量处理
      * 数据为 ListTable.oChoiced 中的ID值
-     * 默认提交 ids[] 一个参数以及对应的数据
+     * 提交 act,ids[] 参数以及附加参数
      *
+     * @params obj  caller  调用者对象
      * @params str  url     要提交的URL，默认使用 ListTable.sUrl + url(如果url的格式为'?xx=xx&...')
      * @params obj  params  附加参数{$param:$value}
      * @params str  msg     消息提示，如果没填则表示不提示消息。
      *                      消息中的%d将会被转换为批处理记录个数
+     * @params obj  callbacks      回调函数
+     *         fun  callbacks.ok   处理成功时回调的函数
+     *         fun  callbacks.fail 处理失败时回调的函数
      */
-    batch : function( url, params, msg ){
+    batch : function( caller, url, params, msg, callbacks ){
         /* 补充全URL */
         if( url.substr(0,1) == '?' ) url = ListTable.sUrl + url;
 
@@ -552,39 +564,48 @@ var ListTable = {
         /* 构建记录IDS参数 */
         var count = 0, param = '';
         for( var id in this.oChoiced ){
-            if( typeof(this.oChoiced[id]) != 'function' ){
-                param += '&ids[]='+id; count++;
-            }
+            param += '&ids[]='+id; count++;
         }
 
-        /* 消息提示 */
+        /* 无记录提示 */
         if( count == 0 ){
             wnd_alert('请选择记录！'); return false;
         }
 
-		msg ? wnd_confirm(msg.replace('%d', count), {'ok':callback}) : callback();
+        /* 确认提交提示 */
+        typeof(msg) == 'string' && msg ? wnd_confirm(msg.replace('%d', count), {'ok':callback}) : callback();
 
-		function callback(){
-			/* 增加附加参数 */
-			for( var i in params ){
-				if( typeof(params[i]) != 'function' ){
-					param += '&'+ i +'='+ params[i];
-				}
-			}
+        function callback(){
+            /* 增加附加参数 */
+            for( var i in params ){
+                param += '&'+ i +'='+ encodeURIComponent(params[i]);
+            }
 
-			/* 异步传输(同步等待) */
-			var result = Ajax.call(url, param, null, "POST", "JSON", false);
+            /* 异步传输(同步等待) */
+            var result = Ajax.call(url, param, null, 'POST', 'JSON', false);
 
-			/* 显示消息 */
-			if( result.message ){
-				wnd_alert(result.message);
-			}
+            /* 显示消息 */
+            if( result.message ){
+                wnd_alert(result.message);
+            }
 
-			/* 处理成功，加载列表 */
-			if( result.error == 0 ){
-				ListTable.loadList();
-			}
-		}
+            /* 处理成功 */
+            if( result.error == 0 ){
+                /* 函数回调 */
+                if( callbacks && typeof(callbacks.ok) == 'function' ){
+                    callbacks.ok(caller);
+                }
+                /* 重载列表(默认) */
+                else{
+                    ListTable.loadList();
+                }
+            }
+            /* 删除失败 */
+            else{
+                /* 函数回调 */
+                if( callbacks && typeof(callbacks.fail) == 'function' ) callbacks.fail(caller);
+            }
+        }
     },
 
 
@@ -596,9 +617,9 @@ var ListTable = {
      * 获取选中的值
      *
      * @params str  type  返回值类型
-     *                    'VALUE'    表示返回 ID [$id] - 默认
-     *                    'ASSOC'    表示返回 ID映射数据对象 {$id:{'id':$id,'object':$obj,'data':$data}}
-     *                    'UNASSOC'  表示返回 数据对象 [{'id':$id,'object':$obj,'data':$data}]
+     *                    'VALUE'    表示返回 ID：[$id] - 默认
+     *                    'ASSOC'    表示返回 ID关联数据对象：{$id:{'id':$id,'caller':$caller,'data':$data}}
+     *                    'UNASSOC'  表示返回 无关联数据对象：[{'id':$id,'caller':$caller,'data':$data}]
      *
      * @return mix  返回数据对象或数组
      */
@@ -608,16 +629,14 @@ var ListTable = {
 
         /* 构建返回值 */
         for( var id in this.oChoiced ){
-            if( typeof(this.oChoiced[id]) != 'function' ){
-                if( type == 'ASSOC' ){
-                    arr.id = this.oChoiced[id];
-                }
-                else if( type == 'UNASSOC' ){
-                    arr.push(this.oChoiced[id]);
-                }
-                else{
-                    arr.push(id);
-                }
+            if( type == 'ASSOC' ){
+                arr.id = this.oChoiced[id];
+            }
+            else if( type == 'UNASSOC' ){
+                arr.push(this.oChoiced[id]);
+            }
+            else{
+                arr.push(id);
             }
         }
         
@@ -626,178 +645,153 @@ var ListTable = {
     },
 
     /**
-     * 初始化选中记录(清空记录，恢复背景色)
+     * 初始化选中记录
      *
-     * @params str  label  要消除背景色的标签 (默认消除背景色 TR)
-     *                     false或空字符表示不消除背景色
-     *                     一般与 ListTable.schoice/mchoice 中的 label 参数是同值
+     * @params bool  load  是否重载列表，默认 true
      */
-    ichoice : function( label ){
-        /* 初始化高亮标签 */
-        label = typeof(label) == 'string' || label === false ? label : 'tr';
+    initChoice : function( reload ){
+        /* 初始化选中数据 */
+        this.oChoiced = {};
 
-        /* 已选中数据处理 */
-        for( var id in this.oChoiced ){
-            /* 无效数据 */
-            if( typeof(this.oChoiced[id]) != 'object' ) continue;
-
-            /* 恢复背景色(异常：对象被移除了HTML) */
-            try{ label ? (this._rec(this.oChoiced[id].object,label).style.backgroundColor = '') : ''; }catch(e){}
-
-            /* 移除数据 */
-            delete this.oChoiced[id];
-        }
+        /* 重载列表 */
+        reload === false ? '' : this.loadList();
     },
 
     /**
-     * 选择所有行，由复选框触发(全选)
+     * 选择所有行(全选)
      *
-     * @params bol  type   1/true表示全选, 0/false表示不选, -1表示反选.
-     * @params str  cbs    复选框组的名字
-     * @params str  touch  触发全选(或者不选)的复选框ID
-     * @params str  label  要高亮的标签，通过obj向上递归到该标签，然后高亮。 (默认高亮 TR)
-     *                     false或空字符表示不高亮，同时失去多点触发功能
+     * @params bol  type     1/true表示全选, 0/false表示不选, -1表示反选.
+     * @params str  touch    触发 全选/不选/反选 的对象ID
+     * @params str  touchs   复选框组的名字
+     * @params obj  callbacks           回调函数
+     *              callbacks.choice    选中后回调的函数
+     *              callbacks.unchoice  撤选后回调的函数
      */
-    achoice : function( type, cbs, touch, label ){
-        /* 复选框组 */
-        cbs = document.getElementsByName(cbs);
+    achoice : function( type, touch, touchs, callbacks ){
+        /* 初始化 */
+        touch  = document.getElementById(touch);
+        touchs = document.getElementsByName(touchs);
 
         /* 初始化 */
-        var i, len = cbs.length;
+        var i, len = touchs.length;
 
         /* 无记录情况 */
-        if( len == 0 ) return;
+        if( len == 0 ) return false;
 
         /* 操作类型：不选 */
         if( type === 0 || type === false ){
-            /* 初始化选中数据 */
-            this.ichoice('tr');
+            /* 初始化选中记录 */
+            this.initChoice(false);
 
-            /* 撤销选中的复选框 */
+            /* 撤销选中 */
             for( i=0; i < len; i++){
-                if( cbs[i].type && cbs[i].type.toLowerCase() == 'checkbox' ){
-                    cbs[i].checked = false;
-                }
+                callbacks.unchoice(touchs[i], 'caller');
             }
 
-            /* 撤销触发复选框选中状态。 */
-            try{ document.getElementById(touch).checked = false }catch(e){}
+            /* 撤销触发项 */
+            callbacks.unchoice(touch, 'touch');
         }
 
         /* 操作类型：全选 */
         else if( type === 1 || type === true ){
+            /* 初始化选中记录 */
+            this.initChoice(false);
+
             for( i=0; i < len; i++){
-                if( cbs[i].type && cbs[i].type.toLowerCase() == 'checkbox' && cbs[i].checked != true ){
-                    this.mchoice(cbs[i], cbs[i].value, '', label); cbs[i].checked = true;
-                }
+                /* 撤销/选中 */
+                if( this.mchoice(touchs[i], touchs[i].value, callbacks) === false ) return false;
             }
 
-            /* 触发复选框选中状态 */
-            try{ document.getElementById(touch).checked = true }catch(e){}
+            /* 撤销触发项 */
+            callbacks.unchoice(touch, 'touch');
         }
 
         /* 操作类型：反选 */
         else if( type === -1 ){
-            var checked = true;
+            var flag, checked = 0;
 
             for( i=0; i < len; i++ ){
-                if( cbs[i].type && cbs[i].type.toLowerCase() == 'checkbox' ){
-                    this.mchoice(cbs[i], cbs[i].value, '', label);
+                /* 撤销/选中 */
+                flag = this.mchoice(touchs[i], touchs[i].value, callbacks);
 
-                    cbs[i].checked = cbs[i].checked == true ? false : true;
+                /* 撤销/选中时失败 */
+                if( flag === false ) return false;
 
-                    checked = checked && cbs[i].checked;
-                }
+                /* 统计选中项 */
+                checked += flag;
             }
 
-            /* 触发复选框选中状态 */
-            try{ document.getElementById(touch).checked = checked; }catch(e){}
+            checked == len ? callbacks.choice(touch, 'touch') : callbacks.unchoice(touch, 'touch');
         }
     },
 
     /**
      * 选择项并高亮选中项(单选)
-     * 同一时刻只有一项被选中，再次单击撤销选中
+     * 同一时刻只有一项被选中，再次点击撤销选中
      *
      * @params obj  caller  调用者对象
      * @params mix  id      数据：记录ID
      * @params mix  data    数据：记录数据
-     * @params str  label   要高亮的标签，通过obj向上递归到该标签，然后高亮。(默认高亮 TR)
-     *                      false或空字符表示不高亮，同时失去多点触发功能
-     * @params str  color   高亮的颜色，默认为#FFFCC1
+     * @params obj  callbacks           回调函数
+     *              callbacks.choice    选中后回调的函数
+     *              callbacks.unchoice  撤选后回调的函数
      *
-     * @return mix  1表示选中成功，0表示撤销成功，false表示失败
+     * @return mix  1表示选中成功，0表示撤销成功
      */
-    schoice : function( caller, id, data, label, color ){
-        /* 初始化高亮标签 */
-        label = typeof(label) == 'string' || label === false ? label : 'tr';
-
-        /* 已选中数据处理 */
+    schoice : function( caller, id, data, callbacks ){
+        /* 处理已选中的数据 */
         for( var i in this.oChoiced ){
-            /* 无效数据 */
-            if( typeof(this.oChoiced[i]) != 'object' ) continue;
-
-            /* 恢复上个选中的背景色，如果出现异常(对象被移除了HTML)则移除数据并返回 */
-            try{
-                label ? (this._rec(this.oChoiced[i].object,label).style.backgroundColor = '') : '';
-            }catch(e){
-                delete this.oChoiced[i]; return false;
+            /* 撤销选中时的回调函数 */
+            if( callbacks && typeof(callbacks.unchoice) == 'function' ){
+                callbacks.unchoice(this.oChoiced[i].caller);
             }
 
-            /* 再次单击撤销选中 - 移除数据并恢复背景色 - 多点触发 */
-            if( this._rec(this.oChoiced[i].object,label) == this._rec(caller,label) ){
-                /* 恢复背景色 */
-                try{ label ? (this._rec(this.oChoiced[i].object,label).style.backgroundColor = '') : ''; }catch(e){}
+            /* 撤销选中 */
+            delete this.oChoiced[i];
 
-                /* 移除数据 */
-                delete this.oChoiced[i]; return 0;
-            }
-            /* 移除数据 */
-            else{
-                delete this.oChoiced[i];
-            }
+            /* 再次点击触发的撤销选中 */
+            if( i == id ) return 0;
         }
 
         /* 保存选中记录ID */
         this.oChoiced[id] = {'id':id, 'caller':caller, 'data':data};
 
-        /* 设置背景色 */
-        try{ label ? (this._rec(caller,label).style.backgroundColor = typeof(color)=='string'?color:'#FFFCC1') : ''; }catch(e){}
+        /* 选中时的回调函数 */
+        if( callbacks && typeof(callbacks.choice) == 'function' ){
+            callbacks.choice(caller);
+        }
 
+        /* 返回 */
         return 1;
     },
 
     /**
      * 选择项并高亮选中项(多选)
-     * 同一时刻可以多项被选中，再次单击撤销选中
+     * 同一时刻可以多项被选中，再次点击撤销选中
      *
      * @params obj  caller  调用者对象
      * @params int  id      数据：记录ID
      * @params mix  data    数据：记录数据
-     * @params str  label   要高亮的标签，通过obj向上递归到该标签，然后高亮。(默认高亮 TR)
-     *                      false或空字符表示不高亮，同时失去多点触发功能
-     * @params str  color   高亮的颜色，默认为#FFFCC1
+     * @params obj  callbacks           回调函数
+     *              callbacks.choice    选中后回调的函数
+     *              callbacks.unchoice  撤选后回调的函数
      *
      * @return mix  1表示选中成功，0表示撤销成功，false表示失败
      */
-    mchoice : function( caller, id, data, label, color ){
+    mchoice : function( caller, id, data, callbacks ){
         /* 初始化剩余多选限制数 */
         var limit = this.iMCLimit;
 
-        /* 初始化高亮标签 */
-        label = typeof(label) == 'string' || label === false ? label : 'tr';
-
-        /* 已选中数据处理 */
+        /* 处理已选中的数据 */
         for( var i in this.oChoiced ){
-            /* 无效数据 */
-            if( typeof(this.oChoiced[i]) != 'object' ) continue;
+            /* 再次点击触发的撤销选中 */
+            if( i == id ){
+                /* 撤销选中时的回调函数 */
+                if( callbacks && typeof(callbacks.unchoice) == 'function' ){
+                    callbacks.unchoice(this.oChoiced[i].caller);
+                }
 
-            /* 再次单击撤销选中 - 移除数据并恢复背景色 - 多点触发 */
-            if( this._rec(this.oChoiced[i].object,label) == this._rec(caller,label) ){
-                /* 恢复背景色 */
-                try{ label ? (this._rec(this.oChoiced[i].object,label).style.backgroundColor = '') : ''; }catch(e){}
-
-                /* 移除数据 */
+                /* 撤销选中 */
                 delete this.oChoiced[i]; return 0;
             }
 
@@ -810,42 +804,11 @@ var ListTable = {
         /* 保存选中记录ID */
         this.oChoiced[id] = {'id':id, 'caller':caller, 'data':data};
 
-        /* 设置背景色 */
-        try{ label ? (this._rec(caller,label).style.backgroundColor = typeof(color)=='string'?color:'#FFFCC1') : ''; }catch(e){}
+        /* 选中时的回调函数 */
+        if( callbacks && typeof(callbacks.choice) == 'function' ){
+            callbacks.choice(caller);
+        }
 
         return 1;
     },
-
-
-    /* ------------------------------------------------------ */
-    // - 私有函数
-    /* ------------------------------------------------------ */
-
-    /**
-     * 向上递归寻找指定标签的对象
-     *
-     * @params obj  obj    源对象
-     * @params str  label  目标对象标签
-     *
-     * @return obj  成功返回目标对象，失败返回源对象
-     */
-    _rec : function( obj, label ){
-        /* 无效标签 */
-        if( !label ) return obj;
-
-        /* 初始化目标对象 */
-        var obj_dest = obj;
-
-        /* 递归查找标签为label的对象 */
-        while( obj_dest && obj_dest.tagName && obj_dest.tagName.toLowerCase() != label ){
-            obj_dest = obj_dest.parentNode;
-        }
-
-        /* 返回目标对象 */
-        if( obj_dest && obj_dest.tagName && obj_dest.tagName.toLowerCase() == label ){
-            return obj_dest;
-        }
-
-        return obj;
-    }
 }
