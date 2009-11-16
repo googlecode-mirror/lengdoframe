@@ -610,7 +610,7 @@ var ListTable = {
 
 
     /* ------------------------------------------------------ */
-    // - 表格项选中函数集
+    // - 列表项选中函数集
     /* ------------------------------------------------------ */
 
     /**
@@ -655,6 +655,15 @@ var ListTable = {
 
         /* 重载列表 */
         reload === false ? '' : this.loadList();
+    },
+
+    /**
+     * 设置多选时数量限制
+     */
+    setMCLimit : function( limit ){
+        if( typeof(limit) == 'number' && limit >= 0 )
+            this.iMCLimit = limit;
+        }
     },
 
     /**
@@ -708,6 +717,7 @@ var ListTable = {
 
         /* 操作类型：反选 */
         else if( type === -1 ){
+            /* 初始化 */
             var flag, checked = 0;
 
             for( i=0; i < len; i++ ){
@@ -721,6 +731,7 @@ var ListTable = {
                 checked += flag;
             }
 
+            /* 选中/撤销触发项 */
             checked == len ? callbacks.choice(touch, 'touch') : callbacks.unchoice(touch, 'touch');
         }
     },
@@ -811,4 +822,9 @@ var ListTable = {
 
         return 1;
     },
+
+
+    /* ------------------------------------------------------ */
+    // - 
+    /* ------------------------------------------------------ */
 }
