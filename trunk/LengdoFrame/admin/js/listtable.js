@@ -71,7 +71,7 @@ var ListTable = {
         var listtable = document.getElementById(id);
 
         /* 无效的列表ID */
-        if( !listtable ){ alert('ListTable Id Error!'); return; }
+        if( !listtable ){ alert('ListTable Id Error!'); return false; }
 
         /* 补充全URL */
         if( typeof(ulist)  == 'string' && ulist.substr(0,1)  == '?' ) ulist  = url + ulist;
@@ -147,7 +147,7 @@ var ListTable = {
         if( typeof(filter) == 'object' ){
             this.oFilter = filter;
         }
-        else if( typeof(filter) == 'string' || typeof(filter) == 'number' ){
+        else if( typeof(value) != 'undefined' ){
             this.oFilter[filter] = value;
         }
     },
@@ -160,7 +160,7 @@ var ListTable = {
     pageTo : function( page ){
         /* 设置过滤变量 */
         this.oFilter['page'] = typeof(page) == 'number' ? page : 1;
-        
+
         /* 加载列表 */
         this.loadList();
     },
@@ -174,7 +174,7 @@ var ListTable = {
         /* 设置过滤变量 */
         this.oFilter['order_fd']   = field;
         this.oFilter['order_type'] = this.oFilter['order_type'] == 'DESC' ? 'ASC' : 'DESC';
-        
+
         /* 加载列表 */
         this.loadList();
     },
@@ -199,9 +199,6 @@ var ListTable = {
      * @params bol  quiet 是否安静模式请求。默认flase
      */
     loadList : function( asyn, quiet ){
-        /* 常量对象指针 */
-        var self = this;
-
         /* 初始化参数 */
         asyn = asyn === false ? false : true;
 
@@ -216,14 +213,12 @@ var ListTable = {
             /* 错误 - 服务器段返回错误 */
             if( result.error != 0 ){ wnd_alert('Server Error!'); return false; }
 
-            /* 初始化选中记录 */
-            self.initChoice(false);
+            /* 初始化选中数据和搜索条件 */
+            ListTable.initChoice(false);
+            ListTable.filter(result.filter);
 
             /* 填充新的列表HTML */
-            document.getElementById(self.sId).innerHTML = result.content;
-
-            /* 重新赋值过滤条件 */
-            if( typeof(result.filter) == 'object' ){ self.oFilter = result.filter; }
+            document.getElementById(ListTable.sId).innerHTML = result.content;
         }
     },
 
@@ -245,12 +240,103 @@ var ListTable = {
 
 
     /* ------------------------------------------------------ */
+    // - 重置列表
+    /* ------------------------------------------------------ */
+
+    /**
+     * 重置列表
+     *
+     * @params bol  asyn     异步请求方式。true 表示异步等待(默认)，false表示同步等待
+     * @params bol  loading  使用窗口Loading，默认true
+     */
+    resetList : function( asyn, loading ){
+        /* 初始化参数 */
+        asyn = asyn === false ? false : true;
+        loading = loading === false ? false : true;
+
+        /* 构建BOX加载层 */
+        loading ? this.buildListLoading() : '';
+
+        /* 异步调用 */
+        Ajax.call(this.sUList, '', callback, 'POST', 'JSON', asyn, true);
+
+        /**
+         * 回调函数
+         * 负责将列表插入到由 ListTable.sId 指定的容器
+         */
+        function callback( result, text ){
+            /* 错误 - 服务器段返回错误 */
+            if( result.error != 0 ){
+                /* 移除BOX加载层 */
+                loading ? ListTable.removeListLoading() : '';
+
+                /* 提示并返回 */
+                wnd_alert('Server Error!'); return false; 
+            }
+
+            /* 初始化选中数据和搜索条件 */
+            ListTable.initChoice(false);
+            ListTable.filter({});
+
+            /* 填充新的列表BOX层HTML */
+            document.getElementById(ListTable.sId).parentNode.innerHTML = result.content;
+        }
+    },
+
+    /* ------------------------------------------------------ */
+    // - 列表BOX加载层
+    /* ------------------------------------------------------ */
+
+    /**
+     * 构建BOX加载层
+     */
+    buildListLoading : function(){
+        /* 列表BOX层 */
+        var box = document.getElementById(this.sId).parentNode;
+
+        /* 创建层 */
+        var overlay = document.createElement('DIV');
+        var o = document.createElement('DIV')
+        var i = document.createElement('DIV');
+
+        /* 节点写入DOM */
+        overlay.appendChild(o);
+        overlay.appendChild(i);
+        box.insertBefore(overlay, box.childNodes[0]);
+
+        /* 设置属性 */
+        overlay.id            = 'list-box-loading-' + this.sId;
+        overlay.className     = 'list-box-loading';
+        overlay.style.width   = box.offsetWidth + 'px';
+        overlay.style.height  = box.offsetHeight + 'px';
+
+        o.className    = 'overlay';
+        o.style.width  = box.offsetWidth + 'px';
+        o.style.height = box.offsetHeight + 'px';
+
+        i.className = 'loading';
+        i.style.top = (box.offsetHeight-10)/2 + 'px';
+    },
+    
+    /**
+     * 移除BOX加载层
+     */
+    removeListLoading : function(){
+        /* 获取对象 */
+        var o = document.getElementById('list-box-loading-'+this.sId);
+
+        /* 移除对象 */
+        if( o ) o.parentNode.removeChild(o);
+    },
+
+
+    /* ------------------------------------------------------ */
     // - 数据操作函数集
     /* ------------------------------------------------------ */
 
     /**
      * 删除记录行
-     * 提交 act,id 参数
+     * 默认提交 act,id 参数
      *
      * @params obj  caller  调用者对象
      * @params mix  id      数据：记录ID
@@ -299,7 +385,7 @@ var ListTable = {
 
     /**
      * 创建一个编辑区
-     * 提交 act,id,field,val 参数
+     * 默认提交 act,id,field,val 参数
      *
      * @params obj  caller  调用者对象
      * @params int  id      数据：记录的ID
@@ -403,7 +489,7 @@ var ListTable = {
 
     /**
      * 异步切换状态
-     * 提交 act,id,field,val 参数
+     * 默认提交 act,id,field,val 参数
      *
      * @params obj  caller  调用者对象
      * @params int  id      数据：记录ID
@@ -543,7 +629,7 @@ var ListTable = {
     /**
      * 批量处理
      * 数据为 ListTable.oChoiced 中的ID值
-     * 提交 act,ids[] 参数以及附加参数
+     * 默认提交 act,ids[] 参数以及附加参数
      *
      * @params obj  caller  调用者对象
      * @params str  url     要提交的URL，默认使用 ListTable.sUrl + url(如果url的格式为'?xx=xx&...')
@@ -561,10 +647,14 @@ var ListTable = {
         /* 初始化附加属性 */
         if( typeof(params) != 'object' || !params ) params={};
 
-        /* 构建记录IDS参数 */
+        /* 初始化 */
         var count = 0, param = '';
-        for( var id in this.oChoiced ){
-            param += '&ids[]='+id; count++;
+
+        /* 构建记录IDS参数 */
+        if( typeof(params) == 'object' && params ){
+            for( var id in this.oChoiced ){
+                param += '&ids[]='+id; count++;
+            }
         }
 
         /* 无记录提示 */
@@ -610,7 +700,7 @@ var ListTable = {
 
 
     /* ------------------------------------------------------ */
-    // - 列表项选中函数集
+    // - 列表项选择函数集
     /* ------------------------------------------------------ */
 
     /**
@@ -639,7 +729,7 @@ var ListTable = {
                 arr.push(id);
             }
         }
-        
+
         /* 返回 */
         return arr;
     },
@@ -661,7 +751,7 @@ var ListTable = {
      * 设置多选时数量限制
      */
     setMCLimit : function( limit ){
-        if( typeof(limit) == 'number' && limit >= 0 )
+        if( typeof(limit) == 'number' && limit >= 0 ){
             this.iMCLimit = limit;
         }
     },
@@ -670,16 +760,17 @@ var ListTable = {
      * 选择所有行(全选)
      *
      * @params bol  type     1/true表示全选, 0/false表示不选, -1表示反选.
-     * @params str  touch    触发 全选/不选/反选 的对象ID
-     * @params str  touchs   复选框组的名字
+     * @params str  touch    触发 全选/不选/反选 的对象或者ID
+     * @params str  touchs   触发子项的对象或者NAME
      * @params obj  callbacks           回调函数
      *              callbacks.choice    选中后回调的函数
      *              callbacks.unchoice  撤选后回调的函数
      */
     achoice : function( type, touch, touchs, callbacks ){
         /* 初始化 */
-        touch  = document.getElementById(touch);
-        touchs = document.getElementsByName(touchs);
+        touch     = typeof(touch) == 'string'  ? document.getElementById(touch)     : touch;
+        touchs    = typeof(touchs) == 'string' ? document.getElementsByName(touchs) : touchs;
+        callbacks = typeof(callbacks) == 'object' && callbacks ? callbacks : listtable_achoice_callbacks_default;
 
         /* 初始化 */
         var i, len = touchs.length;
@@ -708,11 +799,11 @@ var ListTable = {
 
             for( i=0; i < len; i++){
                 /* 撤销/选中 */
-                if( this.mchoice(touchs[i], touchs[i].value, callbacks) === false ) return false;
+                if( this.mchoice(touchs[i], touchs[i].value, null, callbacks) === false ) return false;
             }
 
             /* 撤销触发项 */
-            callbacks.unchoice(touch, 'touch');
+            callbacks.choice(touch, 'touch');
         }
 
         /* 操作类型：反选 */
@@ -722,7 +813,7 @@ var ListTable = {
 
             for( i=0; i < len; i++ ){
                 /* 撤销/选中 */
-                flag = this.mchoice(touchs[i], touchs[i].value, callbacks);
+                flag = this.mchoice(touchs[i], touchs[i].value, null, callbacks);
 
                 /* 撤销/选中时失败 */
                 if( flag === false ) return false;
@@ -750,6 +841,9 @@ var ListTable = {
      * @return mix  1表示选中成功，0表示撤销成功
      */
     schoice : function( caller, id, data, callbacks ){
+        /* 初始化 */
+        callbacks = typeof(callbacks) == 'object' && callbacks ? callbacks : listtable_schoice_callbacks_default;
+
         /* 处理已选中的数据 */
         for( var i in this.oChoiced ){
             /* 撤销选中时的回调函数 */
@@ -790,8 +884,9 @@ var ListTable = {
      * @return mix  1表示选中成功，0表示撤销成功，false表示失败
      */
     mchoice : function( caller, id, data, callbacks ){
-        /* 初始化剩余多选限制数 */
+        /* 初始化 */
         var limit = this.iMCLimit;
+        callbacks = typeof(callbacks) == 'object' && callbacks ? callbacks : listtable_schoice_callbacks_default;
 
         /* 处理已选中的数据 */
         for( var i in this.oChoiced ){
@@ -821,10 +916,45 @@ var ListTable = {
         }
 
         return 1;
+    }
+}
+
+
+/* ------------------------------------------------------ */
+// - 列表项选择回调函数集
+/* ------------------------------------------------------ */
+
+/* 单选回调函数 */
+var listtable_schoice_callbacks_default = {
+    choice   : function ( caller ){ TableAct.hiLight(caller, 'tr', 'protect'); },
+    unchoice : function ( caller ){ TableAct.hiLight(caller, 'tr', '#FFFFFF'); }
+}
+
+/* 全选回调函数 */
+var listtable_achoice_callbacks_default = {
+    choice : function ( touch, type ){
+        /* 初始化 */
+        type = typeof(type) == 'string' && type ? type : 'caller';
+
+        if( touch.type && touch.type.toLowerCase() == 'checkbox' ){
+            /* 选中复选框 */
+            touch.checked = true;
+
+            /* 高亮表格行 */
+            if( type == 'caller' ) TableAct.hiLight(touch, 'tr', 'protect');
+        }
     },
 
+    unchoice : function ( touch, type ){
+        /* 初始化 */
+        type = typeof(type) == 'string' && type ? type : 'caller';
 
-    /* ------------------------------------------------------ */
-    // - 
-    /* ------------------------------------------------------ */
+        if( touch.type && touch.type.toLowerCase() == 'checkbox' ){
+            /* 撤销复选框 */
+            touch.checked = false;
+
+            /* 撤销高亮表格行 */
+            if( type == 'caller' ) TableAct.hiLight(touch, 'tr', '#FFFFFF');
+        }
+    }
 }

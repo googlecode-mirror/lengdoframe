@@ -72,7 +72,7 @@
 
 	<table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
 	<tr>
-		<th width="5%"><input type="checkbox" id="list-dbbackup-touch" class="checkbox" onclick="ListTable.achoice(this.checked,'list-dbbackup-ids')"/></th>
+		<th width="5%"><input type="checkbox" id="list-dbbackup-touch" class="checkbox" onclick="ListTable.achoice(this.checked,this,'list-dbbackup-ids')"/></th>
 		<th width="29%">文件名</th>
 		<th width="19%">备份时间</th>
 		<th width="14%">大小</th>
@@ -104,12 +104,12 @@
 	<div class="table-footer">
 		<div class="action">
 			<div class="hddl" onmouseover="this.className+=' hddlon'" onmouseout="this.className='hddl'">
-				<a href="javascript:void(0)" onclick="ListTable.achoice(-1,'list-dbbackup-ids','list-dbbackup-touch')">选择<span>&nbsp;</span></a><div>
-					<a href="javascript:void(0);" onclick="ListTable.achoice(1,'list-dbbackup-ids','list-dbbackup-touch')">全选</a>
-					<a href="javascript:void(0);" onclick="ListTable.achoice(-1,'list-dbbackup-ids','list-dbbackup-touch')">反选</a>
-					<a href="javascript:void(0);" onclick="ListTable.achoice(0,'list-dbbackup-ids','list-dbbackup-touch')">不选</a></div>
+				<a href="javascript:void(0)" onclick="ListTable.achoice(-1,'list-dbbackup-touch','list-dbbackup-ids')">选择<span>&nbsp;</span></a><div>
+					<a href="javascript:void(0);" onclick="ListTable.achoice(1,'list-dbbackup-touch','list-dbbackup-ids')">全选</a>
+					<a href="javascript:void(0);" onclick="ListTable.achoice(-1,'list-dbbackup-touch','list-dbbackup-ids')">反选</a>
+					<a href="javascript:void(0);" onclick="ListTable.achoice(0,'list-dbbackup-touch','list-dbbackup-ids')">不选</a></div>
 			</div>
-			<a href="javascript:void(0)" onclick="ListTable.batch('?act=del',{},'确认删除？')">删除</a>
+			<a href="javascript:void(0)" onclick="ListTable.batch(this,'?act=del',{},'确认删除？')">删除</a>
 		</div>
 	</div>
 
