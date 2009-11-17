@@ -247,7 +247,7 @@ var ListTable = {
      * 重置列表
      *
      * @params bol  asyn     异步请求方式。true 表示异步等待(默认)，false表示同步等待
-     * @params bol  loading  使用窗口Loading，默认true
+     * @params bol  loading  使用列表Loading，默认true
      */
     resetList : function( asyn, loading ){
         /* 初始化参数 */
