@@ -535,27 +535,6 @@ function deal_search_list( form, filter, id )
     ListTable.search(filter);
 }
 
-/**
- * 通用 - 当前列表搜索初始化
- *        载入方式1：通过重载模块(如果不提供 wndele 参数)
- *        载入方式2：通过重载窗口(如果提供了 wndele 的参数)
- *
- * @params mix  wnd      窗体内元素或者要重载的窗口ID
- * @params obj  attribs  窗体重载时的参数
- */
-function deal_search_init( wndele, attribs )
-{
-    if( typeof(wndele) == 'string' ){
-        Wnds.find(wndele).reinner(attribs)
-    }
-    else if( typeof(wndele) == 'object' ){
-        Wnds.findByElement(wndele).reinner(attribs);
-    }
-    else{
-        module_mtree_request(window.MODULE_URL, true);
-    }
-}
-
 
 /* ------------------------------------------------------ */
 // - 列表 - 导出

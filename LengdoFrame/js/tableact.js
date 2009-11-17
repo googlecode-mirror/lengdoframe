@@ -12,6 +12,17 @@
 
 var TableAct = {
     /**
+     * 保护色
+     * 表格单元着色最高等级颜色，可以防止随意被修改
+     */
+    aProtectColor : ['#FFFCC1','RGB(255, 252, 193)'],
+
+
+    /* ------------------------------------------------------ */
+    // - 表格行操作
+    /* ------------------------------------------------------ */
+
+    /**
      * 增加表格行
      *
      * @params mix  table      表格对象或者ID
@@ -154,6 +165,11 @@ var TableAct = {
         }
     },
 
+
+    /* ------------------------------------------------------ */
+    // - 表格单元着色
+    /* ------------------------------------------------------ */
+
     /**
      * 为表格增加选择高亮(再次选择则取消高亮)。
      *
@@ -170,18 +186,19 @@ var TableAct = {
         elabel = typeof(elabel) == 'string' ? elabel : 'td';
 
         table.onclick = function(e){
+            /* 事件源 */
             var obj = window.ActiveXObject ? window.event.srcElement : e.target;;
-
-            if( obj.tagName.toLowerCase() != elabel.toLowerCase() ){
-                return ;
-            }
-
+            
+            /* 无效的触发标签 */
+            if( obj.tagName.toLowerCase() != elabel.toLowerCase() )return ;
+            
+            /* 高亮对象 */
             obj = TableAct._rec(obj, label);
 
-            /* 设置背景色，如果当前背景色不为#FFFCC1[该颜色为列表的默认选中的高亮色] */
+            /* 设置背景色，过滤保护色 */
             if( !obj.style.backgroundColor || 
-                !(obj.style.backgroundColor.toUpperCase() == '#FFFCC1' || 
-                  obj.style.backgroundColor.toUpperCase() == 'RGB(255, 252, 193)') 
+                !(obj.style.backgroundColor.toUpperCase() == TableAct.aProtectColor[0] || 
+                  obj.style.backgroundColor.toUpperCase() == TableAct.aProtectColor[1] ) 
             ){
                 obj.style.backgroundColor = obj.style.backgroundColor == '' ? color : '';
             }
@@ -217,7 +234,7 @@ var TableAct = {
      *
      * @params mix  obj    事件源
      * @params str  label  要高亮的标签，通过obj向上递归到该标签，然后高亮。默认高亮tr
-     * @params str  color  高亮的颜色，默认为#FFFCC7
+     * @params str  color  高亮的颜色，默认为#FFFCC7。'protect'表示使用保护色
      */
     hiLight : function( obj, label, color ){
         /* 初始化对象 */
@@ -225,10 +242,15 @@ var TableAct = {
 
         /* 初始化参数 */
         label = label == 'td' ? 'td' : 'tr';
-        color = typeof(color) == 'string' ? color : '#FFFCC7';
+        color = typeof(color) == 'string' ? (color=='protect'?this.aProtectColor[0]:color) : '#FFFCC7';
 
         try{ TableAct._rec(obj,label).style.backgroundColor = color; }catch(e){}
     },
+
+
+    /* ------------------------------------------------------ */
+    // - 私有函数
+    /* ------------------------------------------------------ */
 
     /**
      * 向上递归寻找指定标签的对象

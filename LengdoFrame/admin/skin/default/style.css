@@ -299,6 +299,7 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 
 /* 搜索层 */
 .search-form{ background:url(images/style_fy.gif) 0 -560px; display:block; }
+.search-form table{}
 .search-form table td i{ width:35px; height:28px; display:block; background:url(images/style_fxy.gif) -397px -165px; }
 .search-form table td h1{ margin:5px 0 5px 9px; display:block; color:#00183B; font-size:12px; font-weight:normal; vertical-align:middle; }
 .search-form table td span{ margin:5px 0 3px 9px; display:block; }
@@ -328,6 +329,14 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 /* ------------------------------------------------------ */
 /* - 列表层
 /* ------------------------------------------------------ */
+
+/* 列表BOX层 */
+.list-box{}
+
+/* 列表BOX加载层 */
+.list-box-loading{ position:absolute; }
+.list-box-loading .overlay{ top:0; left:0; background:#000; filter:alpha(opacity=10); opacity:0.1; z-index:98; position:absolute; }
+.list-box-loading .loading{ width:140px; height:9px; margin:0 auto; overflow:hidden; background:url(images/doglide.gif); z-index:99; position:relative; }
 
 /* 列表层 */
 .list-div{ border:1px solid #D4D4D4; border-left:0; border-right:0; }
