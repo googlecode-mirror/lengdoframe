@@ -35,7 +35,7 @@ var ListTable = {
 
     /**
      * 列表选中项
-     * 存储格式：记录ID => 数据对象：{'id':$id,'caller':$caller,'data':$data}
+     * 存储格式：$id => {'id':$id,'caller':$caller,'data':$data}
      */
     oChoiced : {},
 
