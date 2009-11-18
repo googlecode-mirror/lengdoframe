@@ -3,11 +3,8 @@
 
 <?php if( $tpl['_body'] == 'list' ){ ?>
 
-    <?php if( $tpl['_block'] !== true ){ ?>
+    <?php if( $tpl['_bodysub'] != 'query' ){ ?>
     <div class="list-box" onmouseover="ListTable.init('list-admin','modules/admin/admin.php','?act=list');">
-    <?php }?>
-
-        <?php if( $tpl['_bblock'] !== true ){?>
         <form class="search-form" onsubmit="deal_search_list(this);return false;">
             <table>
             <tr>
@@ -22,7 +19,7 @@
         </form>
 
         <div id="list-admin" class="list-div">
-        <?php }?>
+    <?php }?>
 
             <table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
             <tr>
@@ -60,6 +57,7 @@
             <tr><td colspan="6"><div class="warn-div"><span>无数据</span></div></td></tr>
             <?php }?>
             </table>
+
             <div class="table-footer">
                 <div class="action">
                     <div class="hddl" onmouseover="this.className+=' hddlon'" onmouseout="this.className='hddl'">
@@ -72,44 +70,41 @@
                 <div class="pager"><?php echo $tpl['list']['pager']['html']; ?></div>
             </div>
 
-        <?php if( $tpl['_bblock'] !== true ){?>
+    <?php if( $tpl['_bodysub'] != 'query' ){ ?>
         </div>
-        <?php }?>
-
-    <?php if($tpl['_block'] !== true ){ ?>
     </div>
     <?php }?>
 
 
 <?php }elseif( $tpl['_body'] == 'add' || $tpl['_body'] == 'edit' ){ ?>
     <form id="wfm-admin-fill" onkeydown="deal_wfm_keyboard(event,this);">
-    <div class="table-header"><i></i><span>基本信息&nbsp;</span></div>
-    <div class="form-div" style="border-bottom:0;">
-        <table>
-        <tr>
-            <td width="90"><h1>管理员帐号：</h1></td>
-            <td width="180"><input type="text" name="username" class="fillbox" value="<?php e($tpl['admin']['username'],'formc'); ?>"/></td>
-            <td width="90"><h1>管理员姓名：</h1></td>
-            <td><input type="text" name="name" class="fillbox" value="<?php e($tpl['admin']['name'],'formc'); ?>"/></td>
-        </tr>
-        <tr>
-            <td><h1>管理员密码：</h1></td>
-            <td><input type="text" name="password" class="<?php echo $tpl['_body'] == 'add' ? 'fillbox' : 'textbox'; ?>"/></td>
-            <td><h1>管理员角色：</h1></td>
-            <td><?php echo $tpl['formc_role']; ?></td>	
-        </tr>
-        </table>
-    </div>
+        <div class="table-header"><i></i><span>基本信息&nbsp;</span></div>
+        <div class="form-div" style="border-bottom:0;">
+            <table>
+            <tr>
+                <td width="90"><h1>管理员帐号：</h1></td>
+                <td width="180"><input type="text" name="username" class="fillbox" value="<?php e($tpl['admin']['username'],'formc'); ?>"/></td>
+                <td width="90"><h1>管理员姓名：</h1></td>
+                <td><input type="text" name="name" class="fillbox" value="<?php e($tpl['admin']['name'],'formc'); ?>"/></td>
+            </tr>
+            <tr>
+                <td><h1>管理员密码：</h1></td>
+                <td><input type="text" name="password" class="<?php echo $tpl['_body'] == 'add' ? 'fillbox' : 'textbox'; ?>"/></td>
+                <td><h1>管理员角色：</h1></td>
+                <td><?php echo $tpl['formc_role']; ?></td>	
+            </tr>
+            </table>
+        </div>
 
-    <div class="table-header"><i></i><span>辅助权限&nbsp;</span></div>
-    <div class="form-div" style="border-bottom:0;">
-        <?php if( $tpl['html_privilege_table'] ){?>
-            <?php echo $tpl['html_privilege_table']; ?>
-        <?php }else{?>
-            <div class="warn-div"><span>您无可分配的辅助权限！</span></div>
-        <?php }?>
-    </div>
+        <div class="table-header"><i></i><span>辅助权限&nbsp;</span></div>
+        <div class="form-div" style="border-bottom:0;">
+            <?php if( $tpl['html_privilege_table'] ){?>
+                <?php echo $tpl['html_privilege_table']; ?>
+            <?php }else{?>
+                <div class="warn-div"><span>您无可分配的辅助权限！</span></div>
+            <?php }?>
+        </div>
 
-    <input type="hidden" name="admin_id" value="<?php echo $tpl['admin']['admin_id'] ?>"/>
+        <input type="hidden" name="admin_id" value="<?php echo $tpl['admin']['admin_id'] ?>"/>
     </form>
 <?php } ?>
