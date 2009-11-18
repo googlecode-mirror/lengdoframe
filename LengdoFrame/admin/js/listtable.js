@@ -253,7 +253,7 @@ var ListTable = {
      * 重置列表
      *
      * @params bol  asyn     异步请求方式。true 表示异步等待(默认)，false表示同步等待
-     * @params bol  loading  使用列表BOX加载层。默认true
+     * @params bol  loading  显示列表BOX加载层。默认true
      */
     resetList : function( asyn, loading ){
         /* 初始化参数 */
@@ -284,7 +284,10 @@ var ListTable = {
             ListTable.initChoice();
             ListTable.filter({});
 
-            /* 填充新的列表BOX层HTML */
+            /* 移除列表BOX层的首尾标签代码 */
+            result.content = result.content.substring( result.content.indexOf('>')+1, result.content.lastIndexOf('</div>') );
+
+            /* 填充新的HTML内容到列表BOX层 */
             document.getElementById(ListTable.sId).parentNode.innerHTML = result.content;
         }
     },
