@@ -462,8 +462,12 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 .wnd-client{ border-left:1px solid #7799B5; border-right:1px solid #7799B5; background-color:#FFF; overflow:hidden; }
 
 /* 客户区 - 加载层 */
-.wnd-client-loading { width:100%; border-collapse:collapse; text-align:center; vertical-align:middle; }
-.wnd-client-loading i{ width:140px; height:9px; display:inline-block; overflow:hidden; background:url(images/doglide.gif); }
+.wnd-client-loading{ position:absolute; }
+.wnd-client-loading .overlay{ top:0; left:0; background:#000; filter:alpha(opacity=10); opacity:0.1; z-index:98; position:absolute; }
+.wnd-client-loading .loading{ width:140px; height:9px; margin:0 auto; overflow:hidden; background:url(images/doglide.gif); z-index:99; position:relative; }
+
+.wnd-client-loading-relative{ position:relative; }
+.wnd-client-loading-relative .overlay{ background:#FFF; }
 
 /* 客户区 - 消息层 */
 .wnd-client-sysmsg{ background:#FFF; }

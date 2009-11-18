@@ -194,14 +194,14 @@ function tname( $tname )
 /* ----------------------------------------------------------------------- */
 
 /**
- * 通用的采用dbd做为数据的DDL构建函数
+ * 构建DDL - 采用$_DBD作为数据
  *
- * @params str  $dbd       指定dbd的数据
- * @params str  $name      下拉框的名字和ID
+ * @params str  $dbd       $_DBD数组的下标
+ * @params str  $name      DDL的名字和ID
  * @params str  $selected  选中的值
  * @params arr  $appends   追加到顶部的下拉项
  * @params arr  $filter    需要过滤掉的Key值
- * @params bol  $contain   过滤方式 - true表示包含，false表示不包含
+ * @params bol  $contain   Key值的过滤方式  - true表示包含，false表示不包含
  */
 function ddl_dbd( $dbd, $name, $selected = '', $appends = array(), $attribs = array(), $filter = array(), $contain = false )
 {
@@ -236,16 +236,16 @@ function ddl_dbd( $dbd, $name, $selected = '', $appends = array(), $attribs = ar
 }
 
 /**
- * 通用的采用数据库做为数据的DDL构建函数
+ * 构建DDL - 采用数据库作为数据
  *
  * @params str  $name      下拉框的名字和ID
  * @params str  $table     数据库表
- * @params arr  $fields    做为下拉项值和文本的字段 array( '$value_fields' => '$text_fields' )
+ * @params arr  $fields    作为DDL项的值和文本的字段 array( '$value_fields' => '$text_fields' )
  * @params str  $where     SQL WHERE条件
  * @params str  $selected  选中的值
  * @params arr  $appends   追加到顶部的下拉项
  * @params arr  $filter    需要过滤掉的Key值
- * @params bol  $contain   过滤方式 - true表示包含，false表示不包含
+ * @params bol  $contain   Key值的过滤方式 - true表示包含，false表示不包含
  */
 function ddl_db( $name, $table, $fields, $where = '', $selected = '', $appends = array(), $attribs = array(), $filter = array(), $contain = false )
 {
@@ -284,13 +284,13 @@ function ddl_db( $name, $table, $fields, $where = '', $selected = '', $appends =
 }
 
 /**
- * 通用的采用dbd做为数据的RADIO构建函数
+ * 构建RADIO - 采用$_DBD作为数据
  *
- * @params str  $dbd      指定dbd的数据
+ * @params str  $dbd      $_DBD数组的下标
  * @params str  $name     复选框的名字
  * @params int  $checked  要选中的值
  * @params arr  $filter   需要过滤掉的Key值
- * @params bol  $contain  过滤方式 - true表示包含，false表示不包含
+ * @params bol  $contain  Key值的过滤方式 - true表示包含，false表示不包含
  */
 function radio_dbd( $dbd, $name, $checked, $filter = array(), $contain = false )
 {
@@ -310,12 +310,12 @@ function radio_dbd( $dbd, $name, $checked, $filter = array(), $contain = false )
 }
 
 /**
- * 通用的采用dbd做为数据的复选框构建函数
+ * 构建CB - 采用$_DBD作为数据
  *
- * @params str  $dbd      指定dbd的数据
+ * @params str  $dbd      $_DBD数组的下标
  * @params arr  $checked  要选中的值
  * @params arr  $filter   需要过滤掉的Key值
- * @params bol  $contain  过滤方式 - true表示包含，false表示不包含
+ * @params bol  $contain  Key值的过滤方式 - true表示包含，false表示不包含
  */
 function cb_dbd( $dbd, $checked = array(), $filter = array(), $contain = false )
 {
