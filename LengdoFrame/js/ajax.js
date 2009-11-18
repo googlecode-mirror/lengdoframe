@@ -42,7 +42,7 @@ var Ajax = {
         }
 
         asyn = asyn === false ? false : true;
-        responseType = typeof(responseType) === 'string' && ((responseType = responseType.toUpperCase()) === 'JSON' || responseType === 'XML') ? responseType : 'TEXT';
+        responseType = typeof(responseType) === 'string' && ((responseType=responseType.toUpperCase()) === 'JSON' || responseType === 'XML') ? responseType : 'TEXT';
 
         /* 处理HTTP请求和响应 */
         var xhr = this.createXMLHttpRequest();

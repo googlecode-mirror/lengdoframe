@@ -56,7 +56,7 @@ function deal_admin_fill()
     function callback( result, text ){
         if( result.error == 0 ){
             /* 初始化并重载列表 */
-            ListTable.init('list-admin', url, '?act=query');
+            ListTable.init('list-admin', url, '?act=list');
             ListTable.loadList();
 
             wnd.hidden();
@@ -115,7 +115,7 @@ function deal_role_fill()
     function callback( result, text ){
         if( result.error == 0 ){
             /* 初始化并重载列表 */
-            ListTable.init('list-role', url, '?act=query');
+            ListTable.init('list-role', url, '?act=list');
             ListTable.loadList();
 
             wnd.hidden();
@@ -157,7 +157,7 @@ function deal_dboptimize()
 
         if( result.error == 0 ){
             /* 初始化并重载列表 */
-            ListTable.init('list-dboptimize', url, '?act=query');
+            ListTable.init('list-dboptimize', url, '?act=list');
             ListTable.loadList(true, true);
         }
     }
@@ -215,7 +215,7 @@ function deal_dbbackup_fill( params )
             wnd_alert(result.message);
 
             /* 初始化并重载列表 */
-            ListTable.init('list-dbbackup', url, '?act=query');
+            ListTable.init('list-dbbackup', url, '?act=list');
             ListTable.loadList(true, true);
         }
     }
@@ -326,7 +326,7 @@ function deal_module_fill()
     function callback( result, text ){
         if( result.error == 0 ){
             /* 初始化并重载列表 */
-            ListTable.init('list-module', url, '?act=query');
+            ListTable.init('list-module', url, '?act=list');
             ListTable.loadList();
 
             wnd.hidden();
@@ -385,7 +385,7 @@ function deal_privilege_fill()
     function callback( result, text ){
         if( result.error == 0 ){
             /* 初始化并重载列表 */
-            ListTable.init('list-privilege', url, '?act=query');
+            ListTable.init('list-privilege', url, '?act=list');
             ListTable.loadList();
 
             wnd.hidden();

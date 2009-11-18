@@ -62,11 +62,11 @@ var ListTable = {
      * 如果列表未绑定，那么备份上个绑定的列表配置数据，然后调出并设置即将要绑定列表的旧数据，再设置新的配置(如果提供配置数据)
      *
      * @params str  id       要绑定的列表ID
-     * @params str  url      列表基础的URL，例如：'module.php'
-     * @params str  uquery   列表查询的URL，例如：'?act=query'
-     * @params str  ulist    列表请求的URL，例如：'?act=list'
+     * @params str  url      列表基础的URL。例如：'module.php'
+     * @params str  ulist    列表请求的URL。例如：'?act=list'
+     * @params str  uquery   列表查询的URL。例如：'?act=query'，默认：ulist+'&actsub=query'
      */
-    init : function( id, url, uquery, ulist ){
+    init : function( id, url, ulist, uquery ){
         /* 初始化 */
         var listtable = document.getElementById(id);
 
@@ -74,11 +74,11 @@ var ListTable = {
         if( !listtable ){ alert('ListTable Id Error!'); return false; }
 
         /* 补充全URL */
-        if( typeof(ulist)  == 'string' && ulist.substr(0,1)  == '?' ) ulist  = url + ulist;
-        if( typeof(uquery) == 'string' && uquery.substr(0,1) == '?' ) uquery = url + uquery;
+        ulist  = typeof(ulist)  == 'string' && ulist.substr(0,1)  == '?' ? (url+ulist) : ulist;
+        uquery = typeof(uquery) == 'string' ? (uquery.substr(0,1)=='?' ? url+uquery : uquery) : (ulist+'&actsub=query');
 
         /* 列表同步机制 - 无同步标识 */
-        if( listtable.className.indexOf(' LIST-SYNC') == -1 ){
+        if( listtable.className.indexOf(' LISTTABLE-SYNC-FLAG') == -1 ){
             /* 如果列表已绑定中，重置数据 */
             if( this.sId == id ){
                 this.oFilter  = {};
@@ -92,7 +92,7 @@ var ListTable = {
             }
 
             /* 设置同步标别 */
-            listtable.className += ' LIST-SYNC';
+            listtable.className += ' LISTTABLE-SYNC-FLAG';
         }
 
         /* 列表已绑定 */
@@ -210,11 +210,17 @@ var ListTable = {
          * 负责将列表插入到由 ListTable.sId 指定的容器
          */
         function callback( result, text ){
-            /* 错误 - 服务器段返回错误 */
-            if( result.error != 0 ){ wnd_alert('Server Error!'); return false; }
+            /* 错误 - 服务器端返回错误 */
+            if( result.error != 0 ){
+                /* 错误提示 */
+                wnd_alert( result.message ? result.message : 'Server Error!' );
+
+                /* 返回 */
+                return false;
+            }
 
             /* 初始化选中数据和搜索条件 */
-            ListTable.initChoice(false);
+            ListTable.initChoice();
             ListTable.filter(result.filter);
 
             /* 填充新的列表HTML */
@@ -247,14 +253,14 @@ var ListTable = {
      * 重置列表
      *
      * @params bol  asyn     异步请求方式。true 表示异步等待(默认)，false表示同步等待
-     * @params bol  loading  使用列表Loading，默认true
+     * @params bol  loading  使用列表BOX加载层。默认true
      */
     resetList : function( asyn, loading ){
         /* 初始化参数 */
         asyn = asyn === false ? false : true;
         loading = loading === false ? false : true;
 
-        /* 构建BOX加载层 */
+        /* 构建列表BOX加载层 */
         loading ? this.buildListLoading() : '';
 
         /* 异步调用 */
@@ -267,15 +273,15 @@ var ListTable = {
         function callback( result, text ){
             /* 错误 - 服务器段返回错误 */
             if( result.error != 0 ){
-                /* 移除BOX加载层 */
+                /* 移除列表BOX加载层 */
                 loading ? ListTable.removeListLoading() : '';
 
                 /* 提示并返回 */
-                wnd_alert('Server Error!'); return false; 
+                wnd_alert('Server Error!'); return false;
             }
 
             /* 初始化选中数据和搜索条件 */
-            ListTable.initChoice(false);
+            ListTable.initChoice();
             ListTable.filter({});
 
             /* 填充新的列表BOX层HTML */
@@ -288,38 +294,40 @@ var ListTable = {
     /* ------------------------------------------------------ */
 
     /**
-     * 构建BOX加载层
+     * 构建列表BOX加载层
      */
     buildListLoading : function(){
         /* 列表BOX层 */
         var box = document.getElementById(this.sId).parentNode;
 
         /* 创建层 */
-        var overlay = document.createElement('DIV');
-        var o = document.createElement('DIV')
+        var b = document.createElement('DIV');
+        var o = document.createElement('DIV');
         var i = document.createElement('DIV');
 
-        /* 节点写入DOM */
-        overlay.appendChild(o);
-        overlay.appendChild(i);
-        box.insertBefore(overlay, box.childNodes[0]);
+        /* 构建加载层节点 */
+        b.appendChild(o);
+        b.appendChild(i);
+
+        /* 写入节点到BOX层 */
+        box.insertBefore(b, box.childNodes[0]);
 
         /* 设置属性 */
-        overlay.id            = 'list-box-loading-' + this.sId;
-        overlay.className     = 'list-box-loading';
-        overlay.style.width   = box.offsetWidth + 'px';
-        overlay.style.height  = box.offsetHeight + 'px';
+        b.id           = 'list-box-loading-' + this.sId;
+        b.className    = 'list-box-loading';
+        b.style.width  = box.offsetWidth + 'px';
+        b.style.height = box.offsetHeight + 'px';
 
         o.className    = 'overlay';
-        o.style.width  = box.offsetWidth + 'px';
-        o.style.height = box.offsetHeight + 'px';
+        o.style.width  = b.style.width;
+        o.style.height = b.style.height;
 
-        i.className = 'loading';
-        i.style.top = (box.offsetHeight-10)/2 + 'px';
+        i.className    = 'loading';
+        i.style.top    = (box.offsetHeight-10)/2 + 'px';
     },
-    
+
     /**
-     * 移除BOX加载层
+     * 移除列表BOX加载层
      */
     removeListLoading : function(){
         /* 获取对象 */
@@ -737,14 +745,14 @@ var ListTable = {
     /**
      * 初始化选中记录
      *
-     * @params bool  load  是否重载列表，默认 true
+     * @params bool  load  是否重载列表，默认 false
      */
     initChoice : function( reload ){
         /* 初始化选中数据 */
         this.oChoiced = {};
 
         /* 重载列表 */
-        reload === false ? '' : this.loadList();
+        reload === true ? this.loadList() : '';
     },
 
     /**
@@ -781,7 +789,7 @@ var ListTable = {
         /* 操作类型：不选 */
         if( type === 0 || type === false ){
             /* 初始化选中记录 */
-            this.initChoice(false);
+            this.initChoice();
 
             /* 撤销选中 */
             for( i=0; i < len; i++){
@@ -795,7 +803,7 @@ var ListTable = {
         /* 操作类型：全选 */
         else if( type === 1 || type === true ){
             /* 初始化选中记录 */
-            this.initChoice(false);
+            this.initChoice();
 
             for( i=0; i < len; i++){
                 /* 撤销/选中 */

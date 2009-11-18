@@ -68,8 +68,8 @@ var Wnds = {
  *          fun  callbacks.complete  当窗口加载完成后调用此函数
  * @params  obj  configs             配置集
  *          str  configs.title       窗口标题
- *          int  configs.width       窗口宽度. 注：客户区宽度=窗口宽度-2
- *          int  configs.height      客户区高度
+ *          int  configs.width       窗口宽度。  默认：'200px' 注：客户区宽度=窗口宽度-2
+ *          int  configs.height      客户区高度。默认：'auto'
  *          int  configs.action      标题栏的操作按钮 000(最小化，最大化，关闭)，默认001. 注：前辍0省略
  *          str  configs.control     控制区类型(ok/cannel/empty/custom/default)，默认default. 注：通过&组合按钮
  *          obj  configs.buttons     控制区自定义按钮集。[{'index':str, 'text':str, 'click':fun}]
@@ -82,7 +82,7 @@ function Wnd( id, callbacks, configs ){
 
     this.sId       = id;
     this.sTitle    = typeof(configs.title)    == 'string' ? configs.title : '';
-    this.sWidth    = typeof(configs.width)    == 'number' ? configs.width  + 'px' : 'auto';
+    this.sWidth    = typeof(configs.width)    == 'number' ? configs.width  + 'px' : '200px';
     this.sHeight   = typeof(configs.height)   == 'number' ? configs.height + 'px' : 'auto';
     this.iAction   = typeof(configs.action)   == 'number' ? configs.action : 1;
     this.aControl  = typeof(configs.control)  == 'string' ? configs.control.split('&') : ['default'];
@@ -177,7 +177,7 @@ Wnd.prototype.overlay = function( overlay ){
 /**
  * 设置/返回窗口宽度
  *
- * @params mix  width  int或'auto'表示设置宽度，undefined表示返回宽度
+ * @params int  width  宽度值，undefined表示返回宽度
  *
  * @return str
  */
@@ -187,14 +187,14 @@ Wnd.prototype.width = function( width ){
         return this.sWidth;
     }
 
-    /* 设置宽度 - 参数有效 */
-    if( width == 'auto' || (typeof(width) == 'number' && width >= 2) ){
+    /* 设置宽度 */
+    if( typeof(width) == 'number' && width >= 2 ){
         /* 更新配置 */
-        this.sWidth = width == 'auto' ? 'auto' : width+'px';
+        this.sWidth = width + 'px';
 
         /* 设置宽度 */
         this.oWnd.style.width    = this.sWidth;
-        this.oClient.style.width = this.sWidth == 'auto' ? 'auto' : (width-2+'px');
+        this.oClient.style.width = width-2 + 'px';
     }
 }
 
@@ -317,8 +317,8 @@ Wnd.prototype.getData = function( index ){
  * @params str  type     载入类型(url, html)，默认html
  * @params obj  attribs  载入属性
  *         bol  attribs.move     加载完后窗口自动居中，默认true
- *         bol  attribs.clear    清空窗口客户区内容，默认true
- *         bol  attribs.loading  使用窗口Loading，默认true
+ *         bol  attribs.loading  客户区内容填充加载层，默认true
+ *         bol  attribs.complete 加载完后执行回调函数，默认true
  */
 Wnd.prototype.inner = function( str, type, attribs ){
     /* 初始化 */
@@ -327,13 +327,29 @@ Wnd.prototype.inner = function( str, type, attribs ){
     /* 保存配置 */
     this.oInner = {'str':str, 'type':type};
 
+    /* 客户区内容填充加载层 */
+    if( attribs.loading !== false ){
+        /* 初始化加载层宽度和高度 */
+        var w = parseInt(this.sWidth)-2;
+        var h = this.sHeight == 'auto' ? 60 : parseInt(this.sHeight);
+
+        /* 填充客户区加载层 */
+        this.oClient.innerHTML = '';
+        this.buildClientLoading(w, h, true);
+    }
+
     /* 加载类型 */
     switch( type ){
         /**
-         * 类型说明：通过URL直接取得内容，异步取得
+         * 类型说明：通过URL直接取得内容。通过AJAX方式取得内容
          * 数据说明：参数 str 为链接地址
          */
         case 'url':
+        case 'url xml':
+        case 'url json':
+            /* 初始化返回数据类型 */
+            var rtype = type == 'url json' ? 'JSON' : (type=='url xml' ? 'XML' :'TEXT');
+
             /* 必要组件检测 */
             if( typeof(Ajax) != 'object' ){
                 wnd_alert('Please Load Ajax Object'); return false;
@@ -342,84 +358,89 @@ Wnd.prototype.inner = function( str, type, attribs ){
             /* 引用this指针 */
             var self = this;
 
-            /* 清空窗口客户区 */
-            if( attribs.clear !== false ){
-                /* 清空窗口客户区内容 */
-                this.oClient.innerHTML = '';
-
-                /* 窗口居中 */
-                if( attribs.move !== false ) this.moved();
-            }
-
-            /* 使用窗口Loading */
-            if( attribs.loading !== false ){
-                /* 初始化 */
-                var html = '';
-
-                /* 构建Loading代码 */
-                if( this.oClient.offsetHeight > 0 ){
-                    html  = '<div class="wnd-client-loading" style="filter:alpha(opacity=30);opacity:0.3;background:#999;height:';
-                    html += this.oClient.offsetHeight +'px;width:'+ (this.oClient.offsetWidth-2) +'px;position:absolute;z-index:98;"></div>';
-                    html += '<table class="wnd-client-loading" style="height:';
-                    html += this.oClient.offsetHeight +'px;position:absolute;z-index:99;"><tr><td><i></i></td></tr></table>';
-                    html += this.oClient.innerHTML;
-                }else{
-                    html  = '<table class="wnd-client-loading" style="height:';
-                    html += (parseInt(this.sHeight) > 0 ? this.sHeight : '80px') +'"><tr><td><i></i></td></tr></table>';
-                }
-
-                /* 写入Loading代码 */
-                this.oClient.innerHTML = html;
-            }
-
             /* 异步回调函数 */
             function callback( result, text ){
                 /* 写入内容到客户区 */
-                self.oClient.innerHTML = text;
+                self.oClient.innerHTML = rtype == 'TEXT' ? result : result.content;
 
                 /* 窗口居中 */
                 if( attribs.move !== false ) self.moved();
 
-                /* 回调加载完成后的处理函数 */
-                if( attribs.clear !== false ) self.fComplete();
+                /* 执行加载完成后的回调函数 */
+                if( attribs.complete !== false ) self.fComplete();
             }
 
             /* 异步加载 */
-            Ajax.call(str, '', callback, 'GET', 'TEXT', true, true);
+            Ajax.call(str, '', callback, 'GET', rtype, true, true);
 
             break;
 
         /**
-         * 类型说明：直接插入str的字符
+         * 类型说明：直接写入HTML
          * 数据说明：参数 str 为HTML代码
          */
         default:
-            this.oClient.innerHTML = str; break;
+            /* 写入HTML */
+            this.oClient.innerHTML = str; 
+
+            /* 执行加载完成后的回调函数 */
+            if( attribs.complete !== false ) this.fComplete();
+
+            break;
     }
 
     /* 窗口居中 */
     if( attribs.move !== false ) this.moved();
-
-    /* 回调加载完成后的处理函数 */
-    if( type != 'url' ) this.fComplete();
 
     return true;
 }
 
 /**
  * 客户区内容重载入
- *
- * @params obj  attribs  载入属性
- *         bol  attribs.move     加载完后窗口自动居中，默认false
- *         bol  attribs.clear    清空窗口客户区内容，默认false
- *         bol  attribs.loading  使用窗口Loading，默认true
  */
-Wnd.prototype.reinner = function( attribs ){
-    /* 默认载入属性 */
-    attribs = typeof(attribs) == 'object' ? attribs : {'move':false,'clear':false,'loading':true};
+Wnd.prototype.reinner = function(){
+    /* 构建客户区加载层 */
+    this.buildClientLoading(this.oClient.offsetWidth-2, this.oClient.offsetHeight);
 
     /* 重新载入 */
-    this.inner(this.oInner.str, this.oInner.type, attribs);
+    this.inner( this.oInner.str, this.oInner.type, {'loading':false,'move':false,'complete':false} );
+}
+
+/**
+ * 构建客户区加载层
+ *
+ * @params int width     宽度
+ * @params int height    高度
+ * @params bol relative  使用 position:relative 加载层。默认：false
+ */
+Wnd.prototype.buildClientLoading = function( width, height, relative )
+{
+    /* 初始化参数 */
+    if( !(width > 0 && height > 0) ) return false;
+
+    /* 创建层 */
+    var b = document.createElement('DIV');
+    var o = document.createElement('DIV');
+    var i = document.createElement('DIV');
+
+    /* 构建加载层节点 */
+    b.appendChild(o);
+    b.appendChild(i);
+
+    /* 写入节点到客户区 */
+    this.oClient.childNodes[0] ? this.oClient.insertBefore(b, this.oClient.childNodes[0]) : this.oClient.appendChild(b);
+
+    /* 设置属性 */
+    b.className    = 'wnd-client-loading' + (relative===true ? ' wnd-client-loading-relative' : '');
+    b.style.width  = width + 'px';
+    b.style.height = height + 'px';
+
+    o.className    = 'overlay';
+    o.style.width  = b.style.width;
+    o.style.height = b.style.height;
+
+    i.className    = 'loading';
+    i.style.top    = (height-10)/2 + 'px';
 }
 
 /**
@@ -578,7 +599,7 @@ Wnd.prototype.remax = function(){
     this.oWnd.style.top       = this.iTop  + 'px';
     this.oWnd.style.left      = this.iLeft + 'px';
     this.oWnd.style.width     = this.sWidth;
-    this.oClient.style.width  = this.sWidth == 'auto' ? 'auto' : parseInt(this.sWidth)-2 +'px';
+    this.oClient.style.width  = parseInt(this.sWidth)-2 + 'px';
     this.oClient.style.height = this.sHeight;
 }
 
@@ -730,7 +751,7 @@ Wnd.prototype.createClient = function(){
     /* 客户区层基本属性 */
     this.oClient.className       = 'wnd-client';
     this.oClient.style.height    = this.sHeight;
-    this.oClient.style.width     = this.sWidth  == 'auto' ? 'auto' : parseInt(this.sWidth)-2 +'px';
+    this.oClient.style.width     = parseInt(this.sWidth)-2 +'px';
     this.oClient.style.overflowX = parseInt(this.iOverflow%100/10) ? 'hidden' : (parseInt(this.iOverflow/1000) ? 'scroll' : '');
     this.oClient.style.overflowY = this.iOverflow%10 ? 'hidden' : (parseInt(this.iOverflow%1000/100) ? 'scroll' : '');
 
