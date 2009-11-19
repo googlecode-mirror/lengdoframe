@@ -109,7 +109,7 @@ elseif( $_REQUEST['act'] == 'del' ){
 
 
 /* ------------------------------------------------------ */
-// - 异步 - 列表(默认页)
+// - 异步 - 默认首页，列表页
 /* ------------------------------------------------------ */
 else{
     /* 权限检查 */
@@ -136,35 +136,41 @@ else{
         $tpl['list']['data'][$i]['_acts'] = format_module_acts($m_ac, $attribs, 'a');
     }
 
+    /* HTML控件 */
+    $append = array('value'=>'', 'text'=>$_LANG['ddl_all_module']);
+    $tpl['formc_module'] = ddl_module('module_id', $_GET['module_id'], $append);
+
     /* 初始化页面信息 */
     $tpl['_body'] = 'list';
 
 
     /* ------------------------------------------------------ */
-    // - 异步 - 列表查询
+    // - 异步 - 列表页，列表查询
     /* ------------------------------------------------------ */
-    if( $_REQUEST['act'] == 'query' ){
+    if( $_REQUEST['act'] == 'list' ){
         /* 初始化页面信息 */
         $tpl['_block'] = true;
+
+        /* 列表查询 */
+        if( $_REQUEST['actsub'] == 'query' ){
+            /* 初始化页面信息 */
+            $tpl['_bodysub'] = 'query';
+        }
 
         /* 返回JSON */
         make_json_ok( '', tpl_fetch('privilege.html',$tpl) );
     }
 
     /* ------------------------------------------------------ */
-    // - 异步 - 列表
+    // - 异步 - 默认首页
     /* ------------------------------------------------------ */
     else{
-        /* HTML控件 */
-        $append = array('value'=>'', 'text'=>$_LANG['ddl_all_module']);
-        $tpl['formc_module'] = ddl_module('module_id', $_GET['module_id'], $append);
-
         /* 初始化参数 */
-        $_GET['module_id'] = intval($_GET['module_id']);
+        $_GET['module_id'] = trim($_GET['module_id']);
 
         /* 取得管理员的增加操作 */
         $m_ab = filter_module_acts($m_aa, array('add'), true);
-        
+
         /* 操作属性 */
         $attribs = array();
         $attribs['add']['onclick'] = "wnd_privilege_fill(this,'add')";

@@ -2,82 +2,85 @@
 
 
 <?php if( $tpl['_body'] == 'list' ){ ?>
-<?php if( $tpl['_block'] !== true ){?>
-<form class="search-form" onsubmit="deal_search_list(this);return false;" onmouseover="ListTable.init('list-privilege','modules/kernel/privilege.php','?act=query');">
-	<table>
-	<tr>
-        <td width="30"><i></i></td>
-		<td width="45"><h1>模块：</h1></td>
-		<td><?php echo $tpl['formc_module']; ?></td>
-		<td style="padding-left:15px;"><input type="submit" value="搜 索" class="submit"/><input type="button" class="flush" onmouseover="deal_combobox_mouseover(this)" onclick="deal_search_init()" title="初始化搜索"/></td>
-	</tr>
-	</table>
-</form>
 
-<div id="list-privilege" class="list-div" onmouseover="ListTable.init(this.id,'modules/kernel/privilege.php','?act=query');">
-<?php }?>
+    <?php if( $tpl['_bodysub'] != 'query' ){?>
+    <div class="list-box" onmouseover="ListTable.init('list-privilege','modules/kernel/privilege.php','?act=list');ListTable.filter('module_id','<?php echo $_GET['module_id']; ?>');">
+        <form class="search-form" onsubmit="deal_search_list(this);return false;">
+            <table>
+            <tr>
+                <td width="30"><i></i></td>
+                <td width="45"><h1>模块：</h1></td>
+                <td><?php echo $tpl['formc_module']; ?></td>
+                <td style="padding-left:15px;"><input type="submit" value="搜 索" class="submit"/><input type="button" class="flush" onmouseover="deal_combobox_mouseover(this)" onclick="ListTable.resetList()" title="初始化搜索"/></td>
+            </tr>
+            </table>
+        </form>
 
-    <?php if($_GET['module_id']){?><div onmouseover="ListTable.filter('module_id',<?php echo $_GET['module_id'];?>)"><?php }?>
+        <div id="list-privilege" class="list-div">
+    <?php }?>       
 
-        <table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
-        <tr>
-            <th width="5%">标识</th>
-            <th width="20%">权限名</th>
-            <th width="16%">模块</th>
-            <th width="14%">模块操作码</th>
-            <th width="12%">模块操作名</th>
-            <th width="12%">排序</th>
-            <th width="21%">操作</th>
-        </tr>
-        <?php if( !empty($tpl['list']['data']) ){ foreach( $tpl['list']['data'] AS $r ){?>
-        <tr align="center">
-            <td><?php echo $r['privilege_id']; ?></td>
-            <td><?php e($r['name'],'html'); ?></td>
-            <td><?php e($r['module_name'],'html'); ?></td>
-            <td><?php e($r['module_act_code'],'html'); ?></td>
-            <td><?php e($r['module_act_name'],'html'); ?></td>
-            <td><?php echo $r['order']; ?></td>
-            <td class="action"><?php echo $r['_acts']; ?></td>
-        </tr>
-        <?php }}else{?>
-        <tr><td colspan="7"><div class="warn-div"><span>无数据</span></div></td></tr>
-        <?php }?>
-        </table>
-        <div class="table-footer"><div class="pager"><?php echo $tpl['list']['pager']['html']; ?></div></div>
+            <table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
+            <tr>
+                <th width="5%">标识</th>
+                <th width="20%">权限名</th>
+                <th width="16%">模块</th>
+                <th width="14%">模块操作码</th>
+                <th width="12%">模块操作名</th>
+                <th width="12%">排序</th>
+                <th width="21%">操作</th>
+            </tr>
+            <?php if( !empty($tpl['list']['data']) ){ foreach( $tpl['list']['data'] AS $r ){?>
+            <tr align="center">
+                <td><?php echo $r['privilege_id']; ?></td>
+                <td><?php e($r['name'],'html'); ?></td>
+                <td><?php e($r['module_name'],'html'); ?></td>
+                <td><?php e($r['module_act_code'],'html'); ?></td>
+                <td><?php e($r['module_act_name'],'html'); ?></td>
+                <td><?php echo $r['order']; ?></td>
+                <td class="action"><?php echo $r['_acts']; ?></td>
+            </tr>
+            <?php }}else{?>
+            <tr><td colspan="7"><div class="warn-div"><span>无数据</span></div></td></tr>
+            <?php }?>
+            </table>
 
-    <?php if($_GET['module_id']){?></div><?php }?>
+            <div class="table-footer"><div class="pager"><?php echo $tpl['list']['pager']['html']; ?></div></div>
 
-<?php if( $tpl['_block'] !== true ){?>
-</div>
-<?php }?>
+    <?php if( $tpl['_bodysub'] != 'query' ){?>
+        </div>
+    </div>
+    <?php }?>
 
 
 <?php }elseif( $tpl['_body'] == 'add' || $tpl['_body'] == 'edit' ){ ?>
-<form id="wfm-privilege-fill" onkeydown="deal_wfm_keyboard(event,this);">
-<div class="form-div" style="border-top:0;border-bottom:0;">
-	<table>
-	<tr>
-		<td width="75"><h1>权限名称：</h1></td>
-		<td><input type="text" name="name" class="fillbox" value="<?php e($tpl['privilege']['name'],'formc'); ?>"/></td>
-	</tr>
-	<tr>
-		<td><h1>所属模块：</h1></td>
-		<td><?php echo $tpl['formc_module']; ?></td>
-	</tr>
-	<tr>
-		<td><h1>操作名称：</h1></td>
-		<td><input type="text" name="module_act_name" class="fillbox" value="<?php e($tpl['privilege']['module_act_name'],'formc'); ?>"/></td>
-	</tr>
-	<tr>
-		<td><h1>操作代码：</h1></td>
-		<td><input type="text" name="module_act_code" class="fillbox" value="<?php e($tpl['privilege']['module_act_code'],'formc'); ?>"/></td>
-	</tr>
-	<tr>
-		<td><h1>排序：</h1></td>
-		<td><input type="text" class="textbox" name="order" value="<?php e($tpl['privilege']['order'],'default','1'); ?>"/></td>
-	</tr>
-	</table>
-</div>
-<input type="hidden" name="privilege_id" value="<?php echo $tpl['privilege']['privilege_id']; ?>"/>
-</form>
+    <form id="wfm-privilege-fill" onkeydown="deal_wfm_keyboard(event,this);">
+        <div class="form-div" style="border-top:0;border-bottom:0;">
+            <table>
+            <tr>
+                <td width="75"><h1>权限名称：</h1></td>
+                <td><input type="text" name="name" class="fillbox" value="<?php e($tpl['privilege']['name'],'formc'); ?>"/></td>
+            </tr>
+            <tr>
+                <td><h1>所属模块：</h1></td>
+                <td><?php echo $tpl['formc_module']; ?></td>
+            </tr>
+            <tr>
+                <td><h1>操作名称：</h1></td>
+                <td><input type="text" name="module_act_name" class="fillbox" value="<?php e($tpl['privilege']['module_act_name'],'formc'); ?>"/></td>
+            </tr>
+            <tr>
+                <td><h1>操作代码：</h1></td>
+                <td><input type="text" name="module_act_code" class="fillbox" value="<?php e($tpl['privilege']['module_act_code'],'formc'); ?>"/></td>
+            </tr>
+            <tr>
+                <td><h1>排序：</h1></td>
+                <td><input type="text" class="textbox" name="order" value="<?php e($tpl['privilege']['order'],'default','1'); ?>"/></td>
+            </tr>
+            </table>
+        </div>
+
+        <input type="hidden" name="privilege_id" value="<?php echo $tpl['privilege']['privilege_id']; ?>"/>
+    </form>
+
+
 <?php } ?>

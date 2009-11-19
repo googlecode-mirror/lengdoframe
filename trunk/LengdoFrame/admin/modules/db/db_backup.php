@@ -323,7 +323,7 @@ elseif( $_REQUEST['act'] == 'del' ){
 
 
 /* ------------------------------------------------------ */
-// - 异步 - 备份文件列表(默认页)
+// - 异步 - 默认首页，列表页
 /* ------------------------------------------------------ */
 else{
     /* 权限检查 */
@@ -336,28 +336,35 @@ else{
     $tpl['all'] = list_sqlfile_format( list_sqlfile() );
 
     /* 初始化页面信息 */
-    $tpl['_body'] = 'list';
+    $tpl['_body'] = 'index';
 
 
     /* ------------------------------------------------------ */
-    // - 异步 - 列表查询
+    // - 异步 - 列表页，列表查询
     /* ------------------------------------------------------ */
-    if( $_REQUEST['act'] == 'query' ){
+    if( $_REQUEST['act'] == 'list' ){
         /* 初始化页面信息 */
+        $tpl['_body'] = 'list';
         $tpl['_block'] = true;
+
+        /* 列表查询 */
+        if( $_REQUEST['actsub'] == 'query' ){
+            /* 初始化页面信息 */
+            $tpl['_bodysub'] = 'query';
+        }
 
         /* 返回JSON */
         make_json_ok( '', tpl_fetch('db_backup.html',$tpl) );
     }
 
     /* ------------------------------------------------------ */
-    // - 列表
+    // - 异步 - 默认首页
     /* ------------------------------------------------------ */
     else{
         /* 取得管理员的备份操作 */
         $m_aa = admin_module_acts('db_backup.php');
         $m_ab = filter_module_acts($m_aa, array('backup'), true);
-        
+
         /* 操作属性 */
         $attribs = array();
         $attribs['backup']['onclick'] = 'wnd_dbbackup_fill()';

@@ -287,7 +287,7 @@ function ddl_db( $name, $table, $fields, $where = '', $selected = '', $appends =
  * 构建RADIO - 采用$_DBD作为数据
  *
  * @params str  $dbd      $_DBD数组的下标
- * @params str  $name     复选框的名字
+ * @params str  $name     单选框的名字
  * @params int  $checked  要选中的值
  * @params arr  $filter   需要过滤掉的Key值
  * @params bol  $contain  Key值的过滤方式 - true表示包含，false表示不包含

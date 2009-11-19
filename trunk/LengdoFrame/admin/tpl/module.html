@@ -2,60 +2,66 @@
 
 
 <?php if( $tpl['_body'] == 'list' ){ ?>
-<?php if( $tpl['_block'] !== true ){?>
-<div id="list-module" class="list-div" style="border-top:0;border-bottom:0;" onmouseover="ListTable.init(this.id,'modules/kernel/module.php','?act=query');">
-<?php }?>
 
-	<table cellpadding="0" cellspacing="0" onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
-	<tr>
-		<th width="10%">标识</th>
-		<th width="35%">模块名称</th>
-		<th width="25%">文件名</th>
-        <th width="10%">显示</th>
-		<th width="20%">操作</th>
-	</tr>
-	<?php foreach( $tpl['all'] AS $r ){?>
-	<tr class="<?php echo $r['lvl']; ?>" align="center" style="<?php if( $r['lvl'] > 1 ){ echo 'display:none'; } ?>">
-		<td><?php echo $r['module_id']; ?></td>
-		<td align="left" title="<?php e($r['name'],'html'); ?>"><?php echo $r['pre'].f($r['name'],'html'); ?></td>
-		<td align="left" style="text-indent:<?php echo ($r['lvl']-1)*2; ?>em;"><?php echo $r['file']; ?></td>
+    <?php if( $tpl['_bodysub'] != 'query' ){?>
+    <div class="list-box" onmouseover="ListTable.init('list-module','modules/kernel/module.php','?act=list');">
+        <div id="list-module" class="list-div" style="border-top:0;border-bottom:0;">
+    <?php }?>
 
-        <?php if( admin_privilege_valid('module.php','edit',false) ){?>
-        <td><a class="<?php echo $r['hidden']?'no':'yes'; ?>" onclick="ListTable.toggle(this,<?php echo $r['module_id']; ?>,'hidden')"></a></td>
-        <?php }else{?>
-        <td><span class="<?php echo $r['hidden']?'no':'yes'; ?>"></span></td>
-        <?php }?>
+            <table cellpadding="0" cellspacing="0" onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
+            <tr>
+                <th width="10%">标识</th>
+                <th width="35%">模块名称</th>
+                <th width="25%">文件名</th>
+                <th width="10%">显示</th>
+                <th width="20%">操作</th>
+            </tr>
+            <?php foreach( $tpl['all'] AS $r ){?>
+            <tr class="<?php echo $r['lvl']; ?>" align="center" style="<?php if( $r['lvl'] > 1 ){ echo 'display:none'; } ?>">
+                <td><?php echo $r['module_id']; ?></td>
+                <td align="left" title="<?php e($r['name'],'html'); ?>"><?php echo $r['pre'].f($r['name'],'html'); ?></td>
+                <td align="left" style="text-indent:<?php echo ($r['lvl']-1)*2; ?>em;"><?php echo $r['file']; ?></td>
 
-		<td class="action"><?php echo $r['_acts']; ?></td>
-	</tr>
-	<?php }?>
-	</table>
+                <?php if( admin_privilege_valid('module.php','edit',false) ){?>
+                <td><a class="<?php echo $r['hidden']?'no':'yes'; ?>" onclick="ListTable.toggle(this,<?php echo $r['module_id']; ?>,'hidden')"></a></td>
+                <?php }else{?>
+                <td><span class="<?php echo $r['hidden']?'no':'yes'; ?>"></span></td>
+                <?php }?>
 
-<?php if( $tpl['_block'] !== true ){?>
-</div>
-<?php }?>
+                <td class="action"><?php echo $r['_acts']; ?></td>
+            </tr>
+            <?php }?>
+            </table>
+
+    <?php if( $tpl['_bodysub'] != 'query' ){?>
+        </div>
+    </div>
+    <?php }?>
 
 
 <?php }elseif( $tpl['_body'] == 'add' || $tpl['_body'] == 'edit' ){ ?>
-<form id="wfm-module-fill" onkeydown="deal_wfm_keyboard(event,this);">
-<div class="form-div" style="border-bottom:0;">
-	<table>
-	<tr>
-		<td width="75"><h1>模块名称：</h1></td>
-		<td><input type="text" name="name" class="fillbox" style="width:150px" value="<?php e($tpl['module']['name'],'formc'); ?>"/></td>
-	</tr>
-	<tr>
-		<td><h1>处理文件：</h1></td>
-		<td><input type="text" name="file" class="fillbox" style="width:150px" value="<?php e($tpl['module']['file'],'formc'); ?>"/></td>
-	</tr>
-	<?php if( $tpl['_body'] == 'add' ){?>
-	<tr>
-		<td><h1>所属模块：</h1></td>
-		<td><?php echo $tpl['formc_pmodule']; ?></td>
-	</tr>
-	<?php }?>
-	</table>
-</div>
-<input type="hidden" name="module_id" value="<?php echo $tpl['module']['module_id'] ?>"/>
-</form>
+    <form id="wfm-module-fill" onkeydown="deal_wfm_keyboard(event,this);">
+        <div class="form-div" style="border-bottom:0;">
+            <table>
+            <tr>
+                <td width="75"><h1>模块名称：</h1></td>
+                <td><input type="text" name="name" class="fillbox" style="width:150px" value="<?php e($tpl['module']['name'],'formc'); ?>"/></td>
+            </tr>
+            <tr>
+                <td><h1>处理文件：</h1></td>
+                <td><input type="text" name="file" class="fillbox" style="width:150px" value="<?php e($tpl['module']['file'],'formc'); ?>"/></td>
+            </tr>
+            <?php if( $tpl['_body'] == 'add' ){?>
+            <tr>
+                <td><h1>所属模块：</h1></td>
+                <td><?php echo $tpl['formc_pmodule']; ?></td>
+            </tr>
+            <?php }?>
+            </table>
+        </div>
+
+        <input type="hidden" name="module_id" value="<?php echo $tpl['module']['module_id'] ?>"/>
+    </form>
+
+
 <?php } ?>
