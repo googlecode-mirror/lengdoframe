@@ -1,12 +1,10 @@
-x. 替换组合框的按钮标签A为INPUT并精简CSS
-x. 重构列表HTML，添加列表重载功能
+x. 增强TABBAR功能
 x. 解决等入超时问题
 
 x. format_module_acts等函数添加按钮其他属性 style,onmousemove 等HTML属性通用化
 
 x. 增加模块Tabbar功能，左侧菜单的每次请求都将重新载入，Tabbar标签的请求则使用Dom缓存
 
-x. 添加数字加减组合框JS功能
 x. 添加下拉组合框JS功能
 
 x. 网页在线编辑组件化
