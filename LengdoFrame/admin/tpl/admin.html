@@ -3,7 +3,7 @@
 
 <?php if( $tpl['_body'] == 'list' ){ ?>
 
-    <?php if( $tpl['_bodysub'] != 'query' ){ ?>
+    <?php if( $tpl['_bodysub'] != 'query' ){?>
     <div class="list-box" onmouseover="ListTable.init('list-admin','modules/admin/admin.php','?act=list');">
         <form class="search-form" onsubmit="deal_search_list(this);return false;">
             <table>
@@ -70,7 +70,7 @@
                 <div class="pager"><?php echo $tpl['list']['pager']['html']; ?></div>
             </div>
 
-    <?php if( $tpl['_bodysub'] != 'query' ){ ?>
+    <?php if( $tpl['_bodysub'] != 'query' ){?>
         </div>
     </div>
     <?php }?>
@@ -107,4 +107,6 @@
 
         <input type="hidden" name="admin_id" value="<?php echo $tpl['admin']['admin_id'] ?>"/>
     </form>
+
+
 <?php } ?>

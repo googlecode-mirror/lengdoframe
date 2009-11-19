@@ -144,10 +144,14 @@ var ListTable = {
      * @params mix  value   字段值
      */
     filter : function( filter, value ){
-        if( typeof(filter) == 'object' ){
+        if( typeof(filter) == 'object' && filter ){
             this.oFilter = filter;
         }
-        else if( typeof(value) != 'undefined' ){
+
+        else if( typeof(filter) == 'string' && 
+                 typeof(value)  == 'string' &&
+                 typeof(value)  == 'number'
+        ){
             this.oFilter[filter] = value;
         }
     },
