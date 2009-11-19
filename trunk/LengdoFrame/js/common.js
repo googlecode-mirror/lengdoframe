@@ -285,6 +285,56 @@ function deal_filecbox_uploaded_del( caller, url, msg, fok, merge )
 
 
 /* ------------------------------------------------------ */
+// - 常规组件函数 - 组合框 - 数字步长组合框
+/* ------------------------------------------------------ */
+
+/**
+ * 数字步长组合框 - 数字增减
+ *
+ * @params obj  caller  调用者对象
+ * @params num  step    步长值
+ * @params obj  config  
+ *         mix  config.limit  上下限(步长大于0时为上限，小于0时为下限)
+ *         int  config.fixed  小数点后精度长度
+ */
+function deal_numscbox( caller, step, config )
+{
+    /* 初始化参数 */
+    step = typeof(step) == 'number' && isFinite(step) ? step : 0;
+    config = config && typeof(config) == 'object' ? config : {};
+
+    /* 初始化文本框对象和增减后的数字变量 */
+	var tb = caller.parentNode.parentNode.cells[0].childNodes[0];
+    var nm = deal_numscbox_calc( parseFloat(tb.value), step );
+
+    /* 赋值 */
+    if( typeof(nm) == 'number' && isFinite(nm) ){
+        if( step > 0 && nm > config.limit ) return false;
+        if( step < 0 && nm < config.limit ) return false;
+
+        tb.value = config.fixed ? nm.toFixed(config.fixed) : nm;
+    }else{
+        return false;
+    }
+}
+
+/**
+ * 数字步长组合框 - 浮点数精确计算
+ */
+function deal_numscbox_calc( num, step )
+{
+    var ln, ls, m;
+
+    try{ ln = num.toString().split(".")[1].length;  }catch(e){ ln = 0 }    
+    try{ ls = step.toString().split(".")[1].length; }catch(e){ ls = 0 }
+
+    m = Math.pow( 10, Math.max(ln,ls) );
+
+    return ( parseInt(num*m)+parseInt(step*m) )/m;
+}
+
+
+/* ------------------------------------------------------ */
 // - 常规组件函数 - 组合框 - 按钮效果
 /* ------------------------------------------------------ */
 
@@ -494,6 +544,30 @@ function tabbar_tabitem_evtsrc( tabitems_id, event, index )
 
     /* 默认返回发生事件源的Tabitem对象 */
     return window.ActiveXObject ? window.event.srcElement : event.target;
+}
+
+/**
+ * Tabitem滑动
+ */
+function tabbar_tabitem_slide( tabitems_id, lftrht )
+{
+    /* 初始化 */
+    var tabitems = document.getElementById(tabitems_id);
+    var tabsilde = tabitems.parentNode;
+    
+    /* 获取 margin-left */
+    var marginlft = parseInt(tabitems.style.marginLeft);alert(marginlft);
+    marginlft = marginlft < 0 ? marginlft : 0;
+    
+    /* 初始化 maring-left */
+    tabitems.style.marginLeft = marginlft + 'px';
+    
+    if( lftrht == 'left' ){
+        
+    }
+
+    else{
+    }
 }
 
 
