@@ -64,16 +64,8 @@
 <?php }elseif( $tpl['_body'] == 'index' || $tpl['_body'] == 'list' ){ ?>
 
     <?php if( $tpl['_body'] == 'index' ){?>
-    <div class="tabitem-box"><i class="icon"></i>
-        <a class='slidel' href="javascript:void(0)" onclick="tabbar_tabitem_slide('tabitem-dbbackup','left')"><i></i></a>
-
-        <div class="tabitem-slide" style="width:200px;">
-            <div class="tabitem-div" id="tabitem-dbbackup" onclick="tabbar(this.id,'tabbody-dbbackup',event)" style="width:400px;">
-                <span class="on">&nbsp;服务器上的文件</span><span>上传SQL文件</span>
-            </div>
-        </div>
-
-        <a class='slider' href="javascript:void(0)" onclick="tabbar_tabitem_slide('tabitem-dbbackup','right')"><i></i></a>
+    <div class="tabitem-box" id="tabitem-dbbackup" onclick="tabbar(this.id,'tabbody-dbbackup',event)"><i class="icon"></i>
+        <span class="on">&nbsp;服务器上的文件</span><span>上传SQL文件</span>
     </div>
     <div id="tabbody-dbbackup">
     <?php }?>

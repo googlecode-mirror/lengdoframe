@@ -507,25 +507,27 @@ function tabbar( tabitems_id, tabbodys_id, event, index )
         if( !tabitem.tagName || tabitem.tagName.toLowerCase() != 'span' ) continue;
 
         /* 过滤空白节点 */
-        while( !tabbody.tagName || tabbody.tagName.toLowerCase() != 'div' ){
+        while( tabbody && (!tabbody.tagName || tabbody.tagName.toLowerCase() != 'div') ){
             tabbody = tabbody.nextSibling;
         }
 
         /* 撤销已选中项 */
         if( tabitem.className == 'on' ){
-            tabitem.className = ''; tabbody.style.display = 'none';
+            tabitem.className = ''; 
+            tabbody ? tabbody.style.display = 'none' : '';
         }
 
         /* 设置新选中项 */
         if( tabitem == obj ){
-            tabitem.className = 'on'; tabbody.style.display = 'block';
+            tabitem.className = 'on';
+            tabbody ? tabbody.style.display = 'block' : '';
         }
 
-        tabbody = tabbody.nextSibling;
+        tabbody = tabbody ? tabbody.nextSibling : tabbody;
     }while( tabitem = tabitem.nextSibling );
 }
 /**
- * 发生事件源的Tabitem对象
+ * 发生事件源的TABITEM项对象
  */
 function tabbar_tabitem_evtsrc( tabitems_id, event, index )
 {
@@ -547,27 +549,57 @@ function tabbar_tabitem_evtsrc( tabitems_id, event, index )
 }
 
 /**
- * Tabitem滑动
+ * TABITEM滑动
  */
-function tabbar_tabitem_slide( tabitems_id, lftrht )
+function tabbar_tabitem_slide( caller, tabitems_id, lftrht, step )
 {
     /* 初始化 */
-    var tabitems = document.getElementById(tabitems_id);
-    var tabsilde = tabitems.parentNode;
-    
-    /* 获取 margin-left */
-    var marginlft = parseInt(tabitems.style.marginLeft);alert(marginlft);
-    marginlft = marginlft < 0 ? marginlft : 0;
-    
-    /* 初始化 maring-left */
-    tabitems.style.marginLeft = marginlft + 'px';
-    
-    if( lftrht == 'left' ){
-        
+    var tabitems  = document.getElementById(tabitems_id);
+    var tabsilde  = tabitems.parentNode;
+
+    /* 初始化 */
+    step = typeof(step) == 'number' && step > 0 ? step : 80;
+
+    /* 初始化TABITEM层的宽度 */
+    if( tabitems.className.indexOf(' TABBAR_TABITEM_WIDTH_INIT') == -1 ){
+        tabbar_tabitem_width_init(caller, tabitems_id);
     }
 
-    else{
+    /* 获取 margin-left */
+    var marginlft = parseInt(tabitems.style.marginLeft);
+    marginlft = marginlft < 0 ? marginlft : 0;
+
+    /* 初始化 maring-left */
+    tabitems.style.marginLeft = marginlft + 'px';
+
+    /* 向左滑动 */
+    if( lftrht == 'left' ){
+        tabitems.style.marginLeft = (marginlft>-step ? 0 : (marginlft+step)) + 'px';
     }
+    /* 向右滑动 */
+    else if( lftrht == 'right' && tabitems.offsetWidth > tabsilde.offsetWidth ){
+        tabitems.style.marginLeft = (tabitems.offsetWidth-tabsilde.offsetWidth<step-marginlft ? tabsilde.offsetWidth-tabitems.offsetWidth : marginlft-step)+'px';
+    }
+}
+
+/**
+ * 初始化TABITEM层的宽度
+ */
+function tabbar_tabitem_width_init( caller, tabitems_id )
+{
+    /* 初始化 */
+    var width = 0;
+    var tabitems = document.getElementById(tabitems_id);
+    var tabchild = tabitems.childNodes;
+    
+    /* 累加宽度值 */
+    for( var i=0,j=tabchild.length; i < j; i++ ){
+        width += tabchild[i].offsetWidth > 0 ? tabchild[i].offsetWidth : 0;
+    }
+    
+    /* 设置属性 */
+    tabitems.style.width = width + 'px';
+    tabitems.className += ' TABBAR_TABITEM_WIDTH_INIT';
 }
 
 
@@ -729,52 +761,6 @@ function wnd_sysmsg( msg, configs, type, active )
         /* 激活 */
         wnd.activeControl(active, keypress);
     }
-}
-
-
-/* ------------------------------------------------------ */
-// - 窗口功能函数 - 需加载 window.js
-/* ------------------------------------------------------ */
-
-/**
- * 图像查看
- */
-function wnd_image_view( url, width, height )
-{
-    /* 路径检查 */
-    if( typeof(url) != 'string' || url == '' ){
-        wnd_alert('未指定图像路径'); return;
-    }
-    /* 扩展名检查 */
-    else{
-        var ext = url.substr( url.lastIndexOf('.') ).toLowerCase();
-
-        if( ext != '.jpg' && ext != '.gif' ){
-            wnd_alert('无效的图片格式'); return ;
-        }
-    }
-
-    /* 获取窗口 */
-    var wnd = Wnds.find('wnd-image-view');
-
-    /* 构建窗口 */
-	if( !wnd ){
-        width  = width  > 0 ? width  : 520;
-        height = height > 0 ? height : 300;
-
-		wnd = new Wnd('wnd-image-view', null, {'width':width, 'height':height, 'overflow':11, 'control':'ok'});
-		wnd.create();
-
-		wnd.title('浏览图片');
-        wnd.zindex(50);
-	}else{
-        if( width  ) wnd.width(width);
-        if( height ) wnd.height(height);
-    }
-
-    /* 显示窗口 */
-	wnd.inner('<img onmousemove="Img.slideImgAuto(this,event)" src="'+ url +'" style="cursor:crosshair"/>', 'html');
-    wnd.show();
 }
 
 
