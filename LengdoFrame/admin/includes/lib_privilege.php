@@ -503,14 +503,12 @@ function admin_pfile_init( $admin_id = 0 )
  *                           $module_act[]['module_act_code']
  *
  * @params arr  $attribs     按钮的属性
- *                           $attribs[$module_act_code]['ico']      - 不对按钮类型为超链接起作用
- *                           $attribs[$module_act_code]['href']     - 只对按钮类型为超链接起作用
- *                           $attribs[$module_act_code]['type']     - 按钮类型，默认使用第三个参数$type
- *                           $attribs[$module_act_code]['title']    - Title属性的值
- *                           $attribs[$module_act_code]['onclick']  - 按钮点击事件
+ *                           $attribs[$module_act_code]['...']      - 按钮的HTML标签属性
+ *                           $attribs[$module_act_code]['type']     - 按钮类型(继承按钮类型(默认))
+ *                           $attribs[$module_act_code]['icon']     - 不对按钮类型为超链接起作用
  *                           $attribs[$module_act_code]['ddlwidth'] - 下拉列表宽度
  *
- * @params arr  $type        按钮类型
+ * @params arr  $type        按钮类型(默认)
  *                           'a'    表示超链接
  *                           'btn'  表示一般按钮
  *                           'mdd'  表示移动下拉按钮
@@ -518,7 +516,7 @@ function admin_pfile_init( $admin_id = 0 )
  *                           'cddl' 表示点击下拉按钮(带分隔线)
  *
  * @params arr  items        下拉列表项
- *                           items[$module_act_code][]['ico']     = ''
+ *                           items[$module_act_code][]['icon']    = ''
  *                           items[$module_act_code][]['text']    = ''
  *                           items[$module_act_code][]['onclick'] = ''
  *
@@ -528,6 +526,8 @@ function format_module_acts( $module_acts, $attribs = array(), $type = '', $item
 {
     /* 初始化 */
     $html = '';
+    $brks = array('type', 'attribs');
+    $natt = array('icon', 'ddlwidth');
 
     /* 构建操作的HTML */
     foreach( $module_acts AS $r ){
@@ -535,22 +535,34 @@ function format_module_acts( $module_acts, $attribs = array(), $type = '', $item
         $attrib = $attribs[$r['module_act_code']];
         $attrib = empty($attrib) ? array() : $attrib;
 
-        /* 按钮类型 */
-        $tpl['type'] = $attrib['type'] ? $attrib['type'] : $type;
-
-        /* 按钮信息 - 标识，图标，标题，备注，单击事件，下拉列表宽度 */
+        /* 按钮属性过滤处理 */
         $tpl['info'] = array();
         $tpl['info']['id'] = md5( implode(',',$r).implode(',',$attrib) );
-        $tpl['info']['ico'] = $attrib['ico'] ? $attrib['ico'] : $r['module_act_code'];
-        $tpl['info']['href'] = $attrib['href'] ? $attrib['href'] : 'javascript:void(0)';
+
+        $tpl['info']['icon'] = $r['module_act_code'];
         $tpl['info']['text'] = $r['module_act_name'];
-        $tpl['info']['title'] = $attrib['title'];
-        $tpl['info']['onclick'] = $attrib['onclick'];
-        $tpl['info']['ddlwidth'] = intval($attrib['ddlwidth']) ? intval($attrib['ddlwidth']) : 100;
+
+        $tpl['info']['attribs'] = array();
+        $tpl['info']['attribs']['href'] = 'javascript:void(0)';
+
+        foreach( $attrib AS $key => $val ){
+            /* 过滤无效key */
+            if( in_array($key,$brks) ) continue;
+            
+            /* 按标签属性过滤key */
+            if( in_array($key,$natt) ){
+                $tpl['info'][$key] = $val;
+            }else{
+                $tpl['info']['attribs'][$key] = $val;
+            }
+        }
 
         /* 下拉列表 */
-        $tpl['items'] = $items[ $r['module_act_code'] ];
+        $tpl['items'] = $items[$r['module_act_code']];
         $tpl['items'] = empty($tpl['items']) ? array() : $tpl['items'];
+
+        /* 初始化页面信息 */
+        $tpl['_body'] = $attrib['type'] ? $attrib['type'] : $type;
 
         /* 取得HTML */
         $html .= tpl_fetch('tbtn.html', $tpl);
