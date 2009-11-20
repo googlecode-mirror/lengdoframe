@@ -1,0 +1,13 @@
+// 滑动 TABBAR
+
+    <div class="tabitem-box"><i class="icon"></i>
+        <a class='slidel' href="javascript:void(0)" onclick="tabbar_tabitem_slide('tabitem-dbbackup','left');"><i></i></a>
+
+        <div class="tabitem-slide" style="width:500px;">
+            <div class="tabitem-div" id="tabitem-dbbackup" onclick="tabbar(this.id,'tabbody-dbbackup',event)">
+                <span class="on">&nbsp;服务器上的文件</span><span>上传SQL文件</span>
+            </div>
+        </div>
+
+        <a class='slider' href="javascript:void(0)" onclick="tabbar_tabitem_slide('tabitem-dbbackup','right');"><i></i></a>
+    </div>
