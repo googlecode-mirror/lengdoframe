@@ -35,11 +35,11 @@ var Img = {
         /* 获取当前鼠标位置 */
         var x = typeof(e.offsetX) == 'number' ? e.offsetX : (e.layerX - obj.offsetLeft);
         var y = typeof(e.offsetY) == 'number' ? e.offsetY : (e.layerY - obj.offsetTop);
-        
+
         /* 设置容器背景图位置 */
         obj.style.backgroundPosition = (-parseInt(x*(img_w-obj_w)/obj_w)) +'px '+ (-parseInt(y*(img_h-obj_h)/obj_h)) + 'px';
     },
-	
+
 	/**
 	 * 自动滑动图片(根据鼠标相对于容器位置比例)
 	 *
