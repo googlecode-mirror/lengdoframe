@@ -118,7 +118,7 @@ else{
 
         /* 操作属性 */
         $attribs = array();
-        $attribs['optimize']['ico']     = 'optimize';
+        $attribs['optimize']['icon']    = 'optimize';
         $attribs['optimize']['onclick'] = 'deal_dboptimize()';
 
         /* 初始化页面信息 */

@@ -277,7 +277,7 @@ else{
         $attribs = array();
         $attribs['add'] = array('onclick'=>"wnd_admin_fill(this,'add')");
 
-        $attribs['export']['ico']      = 'xls';
+        $attribs['export']['icon']     = 'xls';
         $attribs['export']['type']     = 'cddl';
         $attribs['export']['title']    = $_LANG['act_export_choice'];
         $attribs['export']['onclick']  = "deal_list_export('list-admin',null,'modules/admin/admin.php?act=exportdo','choice')";
@@ -285,9 +285,9 @@ else{
 
         /* 构建管理员的导出操作 */
         $items = array();
-        $items['export'][] = array('ico'=>'all'    ,'text'=>$_LANG['act_export_all']    ,'onclick'=>"deal_list_export('list-admin',null,'modules/admin/admin.php?act=exportdo','all')");
-        $items['export'][] = array('ico'=>'page'   ,'text'=>$_LANG['act_export_page']   ,'onclick'=>"deal_list_export('list-admin',null,'modules/admin/admin.php?act=exportdo','page')");
-        $items['export'][] = array('ico'=>'choice' ,'text'=>$_LANG['act_export_choice'] ,'onclick'=>"deal_list_export('list-admin',null,'modules/admin/admin.php?act=exportdo','choice')");
+        $items['export'][] = array('icon'=>'all'    ,'text'=>$_LANG['act_export_all']    ,'onclick'=>"deal_list_export('list-admin',null,'modules/admin/admin.php?act=exportdo','all')");
+        $items['export'][] = array('icon'=>'page'   ,'text'=>$_LANG['act_export_page']   ,'onclick'=>"deal_list_export('list-admin',null,'modules/admin/admin.php?act=exportdo','page')");
+        $items['export'][] = array('icon'=>'choice' ,'text'=>$_LANG['act_export_choice'] ,'onclick'=>"deal_list_export('list-admin',null,'modules/admin/admin.php?act=exportdo','choice')");
 
         /* 初始化页面信息 */
         $tpl['acts']  = format_module_acts($m_ab, $attribs, 'btn', $items); //格式化模块的操作(非内嵌)
