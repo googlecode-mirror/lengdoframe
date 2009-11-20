@@ -298,16 +298,20 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 /* ------------------------------------------------------ */
 /* - TABBAR
 /* ------------------------------------------------------ */
-.tabitem-box{ height:28px; padding:9px 0 9px; background:url(images/style_fy.gif) 0 -560px; }
 
+/* 初始化 */
+.tabitem-box{ height:28px; padding:9px 0 9px; background:url(images/style_fy.gif) 0 -560px; }
 .tabitem-box i.icon{ width:45px; height:28px; float:left; background:url(images/style_fxy.gif) -399px -206px; }
 
-.tabitem-box span{ height:26px; padding:0 15px 0 13px; float:left; border:1px solid #DEDEDE; line-height:25px; color:#969696; cursor:pointer; background:url(images/style_fy.gif) 0 -362px repeat-x; }
-.tabitem-box span.on{ border:1px solid #A4B2BD; background:url(images/style_fy.gif) 0 -402px repeat-x; color:#496985; font-weight:bold; }
+/* 默认TABITEM - 项 */
+.tabitem-box span{ height:26px; padding:0 15px 0 13px; float:left; border:1px solid #DEDEDE; line-height:25px; color:#969696; background:url(images/style_fy.gif) 0 -362px repeat-x; overflow:hidden; cursor:pointer; }
+.tabitem-box span.on{ border:1px solid #8D9EAC; background:url(images/style_fy.gif) 0 -402px repeat-x; color:#385975; }
 
+/* 默认TABITEM - 附加项 */
 .tabitem-box a{ height:26px; padding:0 15px 0 13px; float:left; border:1px solid #DEDEDE; line-height:25px; color:#969696; background:url(images/style_fy.gif) 0 -440px repeat-x; text-decoration:none; }
 .tabitem-box a:hover{ border:1px solid #6498CD; color:#5490CD; }
 
+/* 滑动TABITEM - LEFT，RIGHT */
 .tabitem-box a.slidel{ padding:0 2px 0 4px; }
 .tabitem-box a.slidel i{ width:15px; height:15px; margin:5px 0 0 0; display:inline-block; background:url(images/style_fxy.gif) -623px -222px; }
 .tabitem-box a.slidel:hover i{ background-position:-623px -204px; cursor:pointer; }
@@ -315,9 +319,11 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 .tabitem-box a.slider i{ width:15px; height:15px; margin:5px 0 0 0; display:inline-block; background:url(images/style_fxy.gif) -604px -222px; }
 .tabitem-box a.slider:hover i{ background-position:-604px -204px; cursor:pointer; }
 
-.tabitem-slide{ height:28px; float:left; overflow:hidden; }
+/* 滑动TABITEM - 滑动层 */
+.tabitem-box .tabitem-slide{ height:28px; float:left; overflow:hidden; }
 
-.tabitem-div{}
+/* 滑动TABITEM - TABITEM层和项 */
+.tabitem-box .tabitem-slide .tabitem-div{ width:1024px; }
 
 
 /* ------------------------------------------------------ */
