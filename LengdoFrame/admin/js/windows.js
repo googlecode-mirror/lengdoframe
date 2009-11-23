@@ -408,7 +408,7 @@ function deal_privilege_fill()
 function wnd_myaccount_fill()
 {
     /* 初始化 */
-    var url = 'modules/sys/my_account.php';
+    var url = 'modules/sys/myaccount.php';
     var wnd = Wnds.find('wnd-myaccount-fill');
 
     /* 构建窗口 */
@@ -428,7 +428,7 @@ function wnd_myaccount_fill()
 function deal_myaccount_fill()
 {
     /* 初始化 */
-    var url = 'modules/sys/my_account.php?act=update';
+    var url = 'modules/sys/myaccount.php?act=update';
     var wnd = Wnds.find('wnd-myaccount-fill');
 
     /* 异步提交(异步等待) */
@@ -451,17 +451,13 @@ function deal_myaccount_fill()
 }
 
 
-/* ------------------------------------------------------ */
-// - 通用模块
-/* ------------------------------------------------------ */
-
 /**
  * 系统信息
  */
 function wnd_sysinfo_view()
 {
     /* 初始化 */
-    var url = 'modules/common/sysinfo.php';
+    var url = 'modules/sys/sysinfo.php';
     var wnd = Wnds.find('wnd-sysinfo-view');
 
     /* 构建窗口 */
