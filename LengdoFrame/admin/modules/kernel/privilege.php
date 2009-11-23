@@ -101,10 +101,10 @@ elseif( $_REQUEST['act'] == 'del' ){
     admin_privilege_valid('privilege.php', 'del');
 
     /* 删除权限 */
-    del_privilege( array('privilege_id'=>$_POST['id']) ); 
+    del_privilege( array('privilege_id'=>$_POST['id']) );
 
     /* 初始化管理员的权限文件时间，刷新权限系统和系统提示 */
-    admin_pfile_init(0); flush_privilege_sys(); make_json_ok(); 
+    admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
 }
 
 
@@ -195,7 +195,7 @@ function ctl_fill( $act )
     global $_LANG, $tpl;
 
     /* 所属模块 */
-    $attrib = array('width'=>153);
+    $attrib = array('style'=>'width:153px');
     $append = array('value'=>'', 'text'=>$_LANG['ddl_select']);
     $tpl['formc_module'] = ddl_module('parent_id', $tpl['privilege']['module_id'], $append, $attrib);
 }

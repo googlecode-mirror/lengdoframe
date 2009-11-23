@@ -69,7 +69,7 @@ if( !get_magic_quotes_gpc() ){
 $_REQUEST = array_merge($_GET, $_POST);
 
 /* 初始化数据库类, 设置全局变量 $db */
-$db = new Mysql($_CFG['dbhost'], $_CFG['dbuser'], $_CFG['dbpass'], $_CFG['dbname'], $_CFG['dbcset'], $_CFG['dbpcon'], $_CFG['dblink']);
+$db = new Mysql($_CFG['dbhost'], $_CFG['dbuser'], $_CFG['dbpass'], $_CFG['dbname'], $_CFG['dbcset'], $_CFG['dbpcon']);
 
 /* 初始化 $_REQUEST['act'] */
 if( !isset($_REQUEST['act']) ) $_REQUEST['act'] = '';

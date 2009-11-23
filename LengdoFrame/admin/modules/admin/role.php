@@ -43,7 +43,7 @@ if( $_REQUEST['act'] == 'add' ){
     $onchange = "Ajax.call('modules/admin/role.php?act=privtable&prole_id='+this.value,'',function(result,text){document.getElementById('div-role-privilegetbl').innerHTML=text})";
 
     /* HTML控件 */
-    $tpl['formc_role'] = ddl_role_custom( $sub_role, 'parent_id', '', array(), array('width'=>130,'onchange'=>$onchange) );
+    $tpl['formc_role'] = ddl_role_custom( $sub_role, 'parent_id', '', array(), array('style'=>'width:130px','onchange'=>$onchange) );
     $tpl['html_privilege_table'] = html_privilege_table('privilege_ids', '', $role_priv_ids);
 
     /* 初始化页面信息 */
@@ -78,10 +78,10 @@ elseif( $_REQUEST['act'] == 'insert' ){
         post_privilege_insert( $db->insertId() );
 
         /* 写入日志 */
-        admin_log($_LANG['add:'].$fields['name']); 
+        admin_log($_LANG['add:'].$fields['name']);
 
         /* 初始化管理员的权限文件时间, 刷新权限系统和系统提示 */
-        admin_pfile_init(0); flush_privilege_sys(); make_json_ok(); 
+        admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
     }
 }
 
@@ -156,7 +156,7 @@ elseif( $_REQUEST['act'] == 'update' ){
         post_privilege_insert($info['role_id']);
 
         /* 写入日志 */
-        admin_log($_LANG['edit:'].$info['name']); 
+        admin_log($_LANG['edit:'].$info['name']);
 
         /* 初始化管理员的权限文件时间，刷新权限系统和系统提示 */
         admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
@@ -177,10 +177,10 @@ elseif( $_REQUEST['act'] == 'ufield' ){
         post_role_check( array($_POST['field']=>$_POST['val']) );
 
         /* 角色信息 */
-        $info = info_role( array('role_id'=>$_POST['id']) ); 
+        $info = info_role( array('role_id'=>$_POST['id']) );
 
         /* 更新数据库 */
-        $db->update( tname('role'), array($_POST['field']=>trim($_POST['val'])), 'role_id='.$info['role_id'] ); 
+        $db->update( tname('role'), array($_POST['field']=>trim($_POST['val'])), 'role_id='.$info['role_id'] );
 
         /* 写入日志和系统提示 */
         admin_log($_LANG['edit:'].$info['name']); make_json_ok();

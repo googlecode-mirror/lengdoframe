@@ -92,7 +92,7 @@ elseif( $_REQUEST['act'] == 'update' ){
     admin_privilege_valid('admin.php', 'edit');
 
     /* 管理员信息(连表角色，拥有信任的角色信息) */
-    $info = info_admin( array('admin_id'=>$_POST['admin_id']) ); 
+    $info = info_admin( array('admin_id'=>$_POST['admin_id']) );
 
     /* 允许编辑检查 */
     allow_edit($info);
@@ -113,7 +113,7 @@ elseif( $_REQUEST['act'] == 'update' ){
 
         /* 删除管理员的权限文件 */
         @unlink( admin_pfile($info['username']) );
- 
+
         /* 写入日志和系统提示 */
         admin_log($_LANG['edit:'].$info['name']); make_json_ok();
     }
@@ -132,10 +132,10 @@ elseif( $_REQUEST['act'] == 'ufield' ){
         post_admin_check( array($_POST['field']=>$_POST['val']) );
 
         /* 管理员信息 */
-        $info = info_admin( array('admin_id'=>$_POST['id']) ); 
+        $info = info_admin( array('admin_id'=>$_POST['id']) );
 
         /* 更新数据库 */
-        $db->update( tname('admin'), array($_POST['field']=>trim($_POST['val'])), 'admin_id='.$info['admin_id'] ); 
+        $db->update( tname('admin'), array($_POST['field']=>trim($_POST['val'])), 'admin_id='.$info['admin_id'] );
 
         /* 写入日志和系统提示 */
         admin_log($_LANG['edit:'].$info['name']); make_json_ok();
@@ -314,11 +314,11 @@ function ctl_fill( $act )
     if( empty($sub_role) ){
         $tpl['formc_role'] = '<span style="color:#ff0000">&nbsp;'. $_LANG['fill_admin_role'] .'</span>';
     }else{
-        $tpl['formc_role'] = ddl_role_custom($sub_role, 'role_id', $tpl['admin']['role_id'], array(), array('width'=>153));
+        $tpl['formc_role'] = ddl_role_custom($sub_role, 'role_id', $tpl['admin']['role_id'], array(), array('style'=>'width:153px'));
     }
 
     /* 辅助权限表 */
-    $privilege_ids = $act == 'add' ? array() : privilege_ids( array('admin_id'=>$_GET['admin_id']) ); //提交的管理员的细粒度权限IDS
+    $privilege_ids = $act == 'add' ? array() : privilege_ids( array('admin_id'=>$_GET['admin_id']) );  //提交的管理员的细粒度权限IDS
     $tpl['html_privilege_table'] = html_privilege_table( 'privilege_ids', $privilege_ids, admin_privilege_ids() );
 }
 

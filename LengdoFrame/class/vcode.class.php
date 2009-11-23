@@ -153,19 +153,19 @@ class VCode{
         $len = strlen($this->sCode);
 
         for( $i = 0; $i < $len; $i++ ){
-            //字体随机大小
+            /* 字体随机大小 */
             $font_size =rand($this->iFontSize-2, $this->iFontSize+3);
 
-            //字体随机颜色
+            /* 字体随机颜色 */
             $font_color = imagecolorallocate( $this->hImg, rand(15, 100), rand(15, 100), rand(15, 100) );
 
-            //字体随机角度
+            /* 字体随机角度 */
             $angle = rand(-20, 20);
 
-            //取得每次的位置
+            /* 取得每次的位置 */
             $x = ceil($this->iWidth/20) + ($this->iWidth-$this->iWidth/8)/$len*$i;
 
-            //取得每次的高度
+            /* 取得每次的高度 */
             $y = rand($this->iHeight-5, $this->iHeight-7);
 
             imagettftext($this->hImg, $font_size, $angle, $x + 5, $y, $font_color, $this->sFontFile, $this->sCode{$i});
@@ -178,13 +178,13 @@ class VCode{
     function setCode()
     {
         switch( strtoupper($this->sFontType) ){
-            case 'EN' :     $str_seed = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';            break;
-            case 'NUM':     $str_seed = '0123456789';                                                      break;
-            case 'ENL':     $str_seed = 'abcdefghijklmnopqrstuvwxyz';                                      break;
-            case 'ENU':     $str_seed = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';                                      break;
-            case 'EN_NUM':  $str_seed = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';  break;
-            case 'ENL_NUM': $str_seed = 'abcdefghijklmnopqrstuvwxyz0123456789';                            break;
-            case 'ENU_NUM': $str_seed = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';                            break;
+            case 'EN' :     $str_seed = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';           break;
+            case 'NUM':     $str_seed = '0123456789';                                                     break;
+            case 'ENL':     $str_seed = 'abcdefghijklmnopqrstuvwxyz';                                     break;
+            case 'ENU':     $str_seed = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';                                     break;
+            case 'EN_NUM':  $str_seed = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; break;
+            case 'ENL_NUM': $str_seed = 'abcdefghijklmnopqrstuvwxyz0123456789';                           break;
+            case 'ENU_NUM': $str_seed = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';                           break;
         }
 
         $len = strlen($str_seed);

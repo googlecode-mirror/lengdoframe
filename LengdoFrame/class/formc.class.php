@@ -13,15 +13,15 @@
 
 class FormControl{
     /**
-     * 表单控件 - 下拉框
+     * 表单控件 - 下拉列表
      *
-     * @params str  $name     下拉框NAME
-     * @params arr  $items    下拉框OPTION项
-     *         mix            $items[]['...']      - 下拉框项的HTML标签属性
-     *         str            $items[]['text']     - 下拉框项的文本内容
-     * @params str  $attribs  下拉框属性
-     *         mix            $attribs['...']      - 下拉框的HTML标签属性
-     *         str            $attribs['selected'] - 下拉框默认选中值(字符或整型，程序最后自动转为字符比较)
+     * @params str  $name     下拉列表名称
+     * @params arr  $items    下拉列表项
+     *         mix            $items[]['...']      - 下拉列表项的HTML标签属性
+     *         str            $items[]['text']     - 下拉列表项的文本内容
+     * @params str  $attribs  下拉列表项属性
+     *         mix            $attribs['...']      - 下拉列表项的HTML标签属性
+     *         str            $attribs['selected'] - 下拉列表项默认选中值(字符或整型，程序最后自动转为字符比较)
      */
     public function ddl( $name, $items, $attribs = array() )
     {
@@ -120,6 +120,7 @@ class FormControl{
             $html .= ' '. $key .'="'. $val .'"';
         }
         $html .= '>'. $item['text'] .'</label>&nbsp;';
+
 
         /* 返回 */
         return $html;

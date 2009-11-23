@@ -2,7 +2,7 @@
 
 
 <div class="home-header">
-    <?php if( admin_privilege_valid('syspriv.php', 'myaccount', false) ){?>
+    <?php if( admin_privilege_valid('sysmodule.php', 'myaccount', false) ){?>
 	<a href="javascript:void(0)" onmousedown="this.className='mdown'" onmouseup="this.className=''" onmouseout="this.className=''" onfocus="this.blur()" onclick="wnd_myaccount_fill();"><i class="account"></i>我的帐号</a>
 	<?php }?>
     <a href="javascript:void(0)" onmousedown="this.className='mdown'" onmouseup="this.className=''" onmouseout="this.className=''" onfocus="this.blur()" onclick="wnd_sysinfo_view();"><i class="sysinfo"></i>系统信息</a>
@@ -49,7 +49,7 @@
 		<div class="body"><div class="linea"></div><div class="lineb"></div>
 			<div class="content" style="line-height:150%; height:300px; overflow-y:scroll;">
                 <span>[20091123] 更新内核版本 /admin/lang/zh.php</span><br />
-                <span>[20091123] 增强 /class/formc.class.php 参数通用性</span>
+                <span>[20091123] 增强 /class/formc.class.php 参数通用性</span><br />
                 <br />
                 <span>[20091120] 更新内核版本 /admin/lang/zh.php</span><br />
                 <span>[20091120] 增加滑动TABITEM功能</span><br />
