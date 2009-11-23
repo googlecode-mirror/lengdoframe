@@ -55,7 +55,7 @@ else{
 
 
 /* 加载视图 */
-include(DIR_ADMIN_TPL.'my_account.html');
+include(DIR_ADMIN_TPL.'myaccount.html');
 ?>
 
 <?php
