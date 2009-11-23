@@ -20,7 +20,6 @@ $_CFG['dbuser'] = 'root';           //数据库登陆帐号
 $_CFG['dbpass'] = '';               //数据库登陆密码
 $_CFG['tblpre'] = '';               //数据表名前辍
 
-$_CFG['dblink'] = true;             //数据库即时连接
 $_CFG['dbpcon'] = false;            //数据库持续连接
 $_CFG['dbcset'] = 'utf8';           //数据库连接字符集
 
@@ -44,8 +43,8 @@ define( 'SN_ADMIN', md5(__FILE__) );
 /* ----------------------------------------------------------------------- */
 
 /* 根路径的相对路径和绝对路径(开头保留斜杠) */
-define('DIR_ROOT', str_ireplace( 'includes/config.php', '', str_replace("\\", '/', __FILE__) ) );
-define('URL_ROOT', str_ireplace( rtrim(str_replace("\\", '/', $_SERVER['DOCUMENT_ROOT']),'/'), '', DIR_ROOT) );
+define('DIR_ROOT', str_ireplace( 'includes/config.php', '', str_replace("\\",'/',__FILE__) ) );
+define('URL_ROOT', str_ireplace( rtrim(str_replace("\\",'/',$_SERVER['DOCUMENT_ROOT']),'/'), '', DIR_ROOT) );
 
 /* 前台基本文件夹路径 */
 define('DIR_TPL'         , DIR_ROOT  . 'tpl/');
