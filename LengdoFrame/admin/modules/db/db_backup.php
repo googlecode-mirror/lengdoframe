@@ -30,7 +30,7 @@ if( $_REQUEST['act'] == 'backup' ){
 
     /* 生成所有表 */
     $tables = $db->getCol("SHOW TABLES");
-    $onclick= "Formc.cbgSyncCb(null, 'wfm-dbbackup-customtable','wfm-dbbackup-selall')";
+    $onclick= "Formc.cbgSyncCb(null,'wfm-dbbackup-customtable','wfm-dbbackup-selall')";
 
     foreach( $tables AS $table ){
         $items[] = array('value'=>$table, 'text'=>$table, 'onclick'=>$onclick, 'class'=>'checkbox');
@@ -38,7 +38,7 @@ if( $_REQUEST['act'] == 'backup' ){
 
     /* HTML 控件 */
     $formc = new FormControl();
-    $tpl['cbg_custom_table'] = $formc->cbg('custom_tables', $items);
+    $tpl['cbg_custom_table'] = $formc->cbg('custom_tables[]', $items);
 
     /* 初始化页面信息 */
     $tpl['_body']  = 'backup';

@@ -167,6 +167,6 @@ function ddl_module( $name, $selected = '', $appends = array(), $attribs = array
     }
 
     $fc = new FormControl();
-    return $fc->ddl( $name, $items, array_merge(array('selected'=>$selected), $attribs) );
+    return $fc->ddl( $name, $items, array_merge(array('selected'=>$selected),$attribs) );
 }
 ?>
