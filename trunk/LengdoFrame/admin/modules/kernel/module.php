@@ -264,7 +264,7 @@ function ctl_fill( $act )
     global $_LANG, $tpl;
 
     /* 所属模块 */
-    $attrib = array('width'=>154);
+    $attrib = array('style'=>'width:154px');
     $append = array('value'=>'1', 'text'=>$_LANG['ddl_top_module']);
     $tpl['formc_pmodule'] = ddl_module('parent_id', $_GET['parent_id'], $append, $attrib);
 }

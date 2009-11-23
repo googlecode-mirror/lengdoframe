@@ -23,7 +23,7 @@ require('../../includes/lib_admin.php');
 /* ------------------------------------------------------ */
 if( $_REQUEST['act'] == 'update' ){
     /* 权限检查 */
-    admin_privilege_valid('syspriv.php', 'myaccount');
+    admin_privilege_valid('sysmodule.php', 'myaccount');
 
     /* 数据提取 */
     $fields = post_myaccount();
@@ -47,7 +47,7 @@ if( $_REQUEST['act'] == 'update' ){
 /* ------------------------------------------------------ */
 else{
     /* 权限检查 */
-    admin_privilege_valid('syspriv.php', 'myaccount');
+    admin_privilege_valid('sysmodule.php', 'myaccount');
 
     /* 管理员信息 */
     $tpl['info'] = info_admin( array('admin_id'=>admin_id()) );

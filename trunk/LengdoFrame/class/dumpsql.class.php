@@ -37,7 +37,6 @@ class DumpSql
      *
      * @params obj  $db    数据库对象
      * @params int  $size  默认2M(字节为单位)
-     *
      */
     function __construct( &$db, $size = 2097152 )
     {
@@ -71,7 +70,7 @@ class DumpSql
 
         /* DROP SQL部分 */
         $sql .= $drop ? "DROP TABLE IF EXISTS `$table`;\r\n" : '';
-        
+
         $arr = $this->oDb->getRow("SHOW CREATE TABLE `$table`");
 
         /* 换行符 */
@@ -87,10 +86,10 @@ class DumpSql
     /**
      * 生成指定表数据的插入SQL
      *
-     * @params str  $table   表名
-     * @params int  $pos     备份开始位置(即记录条数)
+     * @params str  $table  表名
+     * @params int  $pos    备份开始位置(即记录条数)
      *
-     * @return int  记录位置, -1表示数据已经全部写完，否则返回未写完的位置(即记录所在条数)
+     * @return int  记录位置，-1表示数据已经全部写完，否则返回未写完的位置(即记录所在条数)
      */
     function makeTableDate( $table, $pos )
     {
@@ -156,7 +155,7 @@ class DumpSql
                     /* 当是第一条记录时强制写入 */
                     if( $this->iSqlNum == 0 ){
                         $this->sDumpSql .= $temp_sql;
-                        $this->iSqlNum++;
+                        $this->iSqlNum++; //记录sql条数
                         $move_pos++;
                     }
 
@@ -180,7 +179,7 @@ class DumpSql
     }
 
     /**
-     *  备份一个数据表
+     * 备份一个数据表
      *
      * @params str  $path  保存数据表备份位置的文件路径
      * @params int  $vol   卷标号
@@ -192,17 +191,14 @@ class DumpSql
         /* 数据表备份位置 */
         $tables = $this->getTablesList($path);
 
-        if( $tables === false ){
-            return false;
-        }
+        /* 数据表定位文件打开失败 */
+        if( $tables === false ) return false;
 
         /* 文件头 */
         $this->sDumpSql = $this->makeHeader($vol);
-        
+
         /* 备份结束 */
-        if( empty($tables) ){
-            return array();
-        }
+        if( empty($tables) ) return array();
 
         /* 备份表和表数据 */
         foreach( $tables as $table => $pos ){
@@ -236,7 +232,7 @@ class DumpSql
             }
 
             /* 该表未完成。说明将要到达上限,记录备份数据位置 */
-            else{ 
+            else{
                 $tables[$table] = $move_pos; break;
             }
         }
@@ -247,7 +243,7 @@ class DumpSql
     }
 
     /**
-     *  生成备份文件头
+     * 生成备份文件头
      *
      * @params int  $vol  文件卷标号
      *
@@ -260,7 +256,7 @@ class DumpSql
         $date      = date('Y-m-d H:i:s');
         $php_ver   = PHP_VERSION;
         $mysql_ver = $this->oDb->version();
-        
+
         $header = "-- LengdoFrame SQL Dump\r\n".
                   "-- \r\n".
                   "-- date: {$date}\r\n".
@@ -272,7 +268,7 @@ class DumpSql
     }
 
     /**
-     *  获取备份文件头信息
+     * 获取并解析备份文件头信息
      *
      * @params str  $path  备份文件路径
      *
@@ -289,6 +285,7 @@ class DumpSql
 
         fclose($fp);
 
+        /* 解析为数组 */
         $arr = explode("\n", $str);
 
         /* 解析sql文件头字符串 */
@@ -296,16 +293,15 @@ class DumpSql
             $pos = strpos($val, ':');
 
             if( intval($pos) == 0 ) continue;
-            
-            $type  = trim( substr($val, 0, $pos), "-\n\r\t " );
-            $value = trim( substr($val, $pos+1), "/\n\r\t " );
+
+            $type  = trim( substr($val,0,$pos), "-\n\r\t " );
+            $value = trim( substr($val,$pos+1), "/\n\r\t " );
 
             switch( $type ){
-                case 'date' : $sql_info['date']  = $value; break;
-                case 'mysql': $sql_info['mysql'] = $value; break;
                 case 'php'  : $sql_info['php']   = $value; break;
                 case 'vol'  : $sql_info['vol']   = $value; break;
-                default     : break;
+                case 'date' : $sql_info['date']  = $value; break;
+                case 'mysql': $sql_info['mysql'] = $value; break;
             }
         }
 
@@ -313,7 +309,7 @@ class DumpSql
     }
 
     /**
-     * 将文件中数据表位置列表取出
+     * 将文件中数据表定位数据取出
      *
      * @params str  $path  文件路径
      *
@@ -323,19 +319,23 @@ class DumpSql
     {
         /* 无效文件 */
         if( !is_file($path) ) return false;
-        
+
         /* 初始化 */
         $arr = array();
         $str = @file_get_contents($path);
-        
+
         /* 无效文件 */
         if( @file_put_contents($path, $str) === false ){
             return false;
         }
 
+        /* 无数据 */
         if( empty($str) ) return array();
-        
+
+        /* 解析为数组 */
         $tmp_arr = explode("\n", $str);
+
+        /* 重构数组数据 */
         foreach( $tmp_arr as $val ){
             $val = trim($val, "\r;");
 
@@ -349,22 +349,25 @@ class DumpSql
     }
 
     /**
-     * 将数据表位置列表写入指定文件
+     * 将数据表定位数据写入指定文件
      *
      * @params  str  $path  文件路径
      * @params  arr  $arr   要写入的数据
      *
-     * @return  bol true表示写入成功，false表示写入失败
+     * @return  bol  true表示写入成功，false表示写入失败
      */
     function putTablesList( $path, $arr )
     {
+        /* 无效参数 */
         if( !is_array($arr) ) return false;
 
+        /* 构建数据 */
         $str = '';
         foreach( $arr as $key => $val ){
             $str .= $key .':'. $val .";\r\n";
         }
-        
+
+        /* 写入数据 */
         if( @file_put_contents($path, $str) === false ){
             return false;
         }
@@ -382,5 +385,4 @@ class DumpSql
         return date('Ymd[His]');
     }
 }
-
 ?>

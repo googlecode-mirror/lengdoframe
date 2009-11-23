@@ -259,12 +259,12 @@ function del_role_privilege( $filter = array() )
 
 /**
  * 下拉列表 - 自定义的角色
- * 
+ *
  * @params arr  $roles     角色数据
- * @params str  $name      列表名称
- * @params mix  $selected  选中的值
- * @params arr  $appends   追加到顶部的下拉项
- * @params arr  $attribs   下拉属性
+ * @params str  $name      下拉列表名称
+ * @params mix  $selected  下拉列表选中项
+ * @params arr  $appends   下拉列表追加项
+ * @params arr  $attribs   下拉列表属性
  */
 function ddl_role_custom( $roles, $name, $selected = '', $appends = array(), $attribs = array() )
 {

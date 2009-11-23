@@ -52,7 +52,7 @@ function list_admin( $filter = array() )
 
     $where .= admin_id() == 1 ? ' AND ('. tname('admin') .'.role_id = 0' : ' AND (1<>1';
     $where .= $f['role_lft'] === null ? '' : ' OR ('. tname('role') .'.lft>'. $f['role_lft'];
-    $where .= $f['role_rht'] === null ? '' : ' AND '. tname('role') .'.rht<'. $f['role_rht'] .'))'; 
+    $where .= $f['role_rht'] === null ? '' : ' AND '. tname('role') .'.rht<'. $f['role_rht'] .'))';
 
     /* 设置分页信息 */
     $p['rows_page']  = intval($_REQUEST['rows_page']) ? intval($_REQUEST['rows_page']) : 16;
@@ -317,11 +317,11 @@ function list_admin_log()
 
 /**
  * 下拉列表 - 所有管理员列表
- * 
- * @params str  $name      列表名称
- * @params mix  $selected  选中的值
- * @params arr  $appends   追加到顶部的下拉项
- * @params arr  $attribs   下拉属性
+ *
+ * @params str  $name      下拉列表名称
+ * @params mix  $selected  下拉列表选中项
+ * @params arr  $appends   下拉列表追加项
+ * @params arr  $attribs   下拉列表属性
  */
 function ddl_all_admin( $name, $selected = '', $appends = array(), $attribs = array() )
 {

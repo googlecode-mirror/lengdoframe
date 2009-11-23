@@ -11,15 +11,12 @@
 // $Id$
 
 
-class MySql
+class Mysql
 {
     /* 数据库连接句柄 */
     var $hLink = null;
-    
-    /* 数据库连接参数 */
-    var $aArg = array();
-    
-    /* sql语句执行信息 */
+
+    /* SQL语句执行信息 */
     var $aQueryLog   = array();
     var $iQueryTime  = null;
     var $iQueryCount = 0;
@@ -30,7 +27,7 @@ class MySql
     /* 最后的错误消息 */
     var $aError = array();
 
-    
+
     /**
      * 构造函数
      *
@@ -38,28 +35,17 @@ class MySql
      * @params str  $dbuser    数据库登陆帐号
      * @params str  $dbpass    数据库登陆密码
      * @params str  $dbname    数据库名
-     * @params str  $charset   字符集
-     * @params bol  $pconnect  持续连接
-     * @params bol  $link      是否马上连接数据库
+     * @params str  $charset   字符集， 默认'utf8'
+     * @params bol  $pconnect  持续连接，默认false
      */
-    function __construct( $dbhost, $dbuser, $dbpass, $dbname = '', $charset = 'utf8', $pconnect = false, $link = false )
+    function __construct( $dbhost, $dbuser, $dbpass, $dbname = '', $charset = 'utf8', $pconnect = false )
     {
         $this->MySql($dbhost, $dbuser, $dbpass, $dbname, $charset, $pconnect, $link);
     }
 
-    function MySql( $dbhost, $dbuser, $dbpass, $dbname = '', $charset = 'utf8', $pconnect = false, $link = false )
+    function MySql( $dbhost, $dbuser, $dbpass, $dbname = '', $charset = 'utf8', $pconnect = false )
     {
-        if( $link ){
-            $this->connect($dbhost, $dbuser, $dbpass, $dbname, $charset, $pconnect);
-        }else{
-            $this->aArg = array( 'dbhost'   => $dbhost,
-                                 'dbuser'   => $dbuser,
-                                 'dbpass'   => $dbpass,
-                                 'dbname'   => $dbname,
-                                 'charset'  => $charset,
-                                 'pconnect' => $pconnect
-                               );
-        }
+        $this->connect($dbhost, $dbuser, $dbpass, $dbname, $charset, $pconnect);
     }
 
     /**
@@ -69,10 +55,10 @@ class MySql
      * @params str  $dbuser    数据库登陆帐号
      * @params str  $dbpass    数据库登陆密码
      * @params str  $dbname    数据库名
-     * @params str  $charset   字符集
-     * @params bol  $pconnect  持续连接
+     * @params str  $charset   字符集， 默认'utf8'
+     * @params bol  $pconnect  持续连接，默认false
      *
-     * @return bol  true表示连接成功，false表示失败
+     * @return bol  true表示连接成功，否则中断显示错误
      */
     function connect( $dbhost, $dbuser, $dbpass, $dbname = '', $charset = 'utf8', $pconnect = false )
     {
@@ -85,7 +71,7 @@ class MySql
             if( PHP_VERSION >= '4.2' ){
                 $this->hLink = @mysql_connect($dbhost, $dbuser, $dbpass, true);
             }else{
-                $this->hLink = @mysql_connect($dbhost, $dbuser, $dbpass);                
+                $this->hLink = @mysql_connect($dbhost, $dbuser, $dbpass);
             }
             if( !$this->hLink ){
                 $this->halt("Can't Connect MySQL Server($dbhost)!");
@@ -95,7 +81,7 @@ class MySql
         /* 获取Mysql版本 */
         $this->sVersion = mysql_get_server_info($this->hLink);
 
-        /* 如果mysql 版本是 4.1+ 以上，需要对字符集进行初始化 */
+        /* 如果Mysql版本是 4.1+ 以上，需要对字符集进行初始化 */
         if( $this->sVersion > '4.1' ){
             if( $charset != 'latin1' ){
                 mysql_query("SET character_set_connection=$charset, character_set_results=$charset, character_set_client=binary", $this->hLink);
@@ -111,7 +97,7 @@ class MySql
                 $this->halt("Can't select MySQL database($dbname)!");
             }
         }
-        
+
         return true;
     }
 
@@ -125,13 +111,7 @@ class MySql
      */
     function query( $sql, $halt = true )
     {
-        /* 数据库未连接 */
-        if( $this->hLink === null ){
-            $this->connect($this->aArg['dbhost'], $this->aArg['dbuser'], $this->aArg['dbpass'], $this->aArg['dbname'], $this->aArg['charset'], $this->aArg['pconnect']);
-            $this->aArg = array();
-        }
-
-        /* sql 语句的执行信息 */
+        /* SQL语句的执行信息 */
         if( $this->iQueryCount++ <= 99 ){
             $this->aQueryLog[] = $sql;
         }
@@ -161,21 +141,15 @@ class MySql
      */
     function version()
     {
-        /* 数据库未连接 */
-        if( $this->hLink === NULL ){
-            $this->connect($this->aArg['dbhost'], $this->aArg['dbuser'], $this->aArg['dbpass'], $this->aArg['dbname'], $this->aArg['charset'], $this->aArg['pconnect']);
-            $this->aArg = array();
-        }
-
-        return $this->sVersion; 
+        return $this->sVersion;
     }
 
     /**
      * 取得上一步 INSERT 操作产生的 ID
      */
     function insertId()
-    { 
-        return mysql_insert_id($this->hLink); 
+    {
+        return mysql_insert_id($this->hLink);
     }
 
     /**
@@ -211,7 +185,9 @@ class MySql
     }
 
 
-    /* 仿真 Adodb 函数 */
+    /* ------------------------------------------------------ */
+    // - 仿真 Adodb 函数
+    /* ------------------------------------------------------ */
 
 	/**
 	 * 取得第一条记录的第一个字段的值
@@ -226,12 +202,12 @@ class MySql
 
         if( $result !== false ){
             $row = mysql_fetch_row($result);
-            
+
             if( $row ){
                 return $row[0];
             }
         }
-        
+
         return '';
     }
 
@@ -261,7 +237,7 @@ class MySql
 
 	/**
 	 * 取得记录集第一条记录
-     * 
+     *
      * @params str  $sql  查询的SQL
      *
      * @return arr  失败返回空数组
@@ -355,7 +331,7 @@ class MySql
         /* 初始化 */
         $sets = array();
 
-        /* 过滤$fields_values中无效的字段，提取有效字段和字段值 */
+        /* 过滤 $fields_values 中无效的字段，提取有效字段和字段值 */
         foreach( $field_names AS $field ){
             if( array_key_exists($field, $field_values) == true ){
                 $sets[] = '`'. $field. '` = "'. $field_values[$field] .'"';
@@ -367,7 +343,7 @@ class MySql
             $sql = 'UPDATE `'. $table .'` SET '. implode(',',$sets) .' WHERE '. $where;
         }
 
-        /* 执行 SQL */
+        /* 执行SQL */
         if( $sql ){
             return $this->query($sql);
         }
