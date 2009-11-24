@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="index.css">
+<title>LengdoFrame 安装向导!</title>
+</head>
+
+<body>
+
+
+<?php if( $tpl['_body'] == 'envcheck' ){ ?>
+    <table class="envcheck-filepriv" width="100%" cellspacing="0" cellpadding="0">
+    <tr>
+        <td colspan="3"><b>目录、文件权限检查</b></td>
+    </tr>
+    <tr>
+        <th width="50%">目录文件</th>
+        <th width="25%">所需状态</th>
+        <th width="25%">当前状态</th>
+    </tr>
+    <?php foreach( $tpl['files'] AS $i=>$r ){?>
+    <tr>
+        <td><?php echo $r['file']; ?></td>
+        <td><?php echo $r['e']; ?></td>
+        <td><?php echo $r['pcode']; ?></td>
+    </tr>
+    <?php }?>
+    </table>
+
+    <table class="envcheck-funcexist" width="100%" cellspacing="0" cellpadding="0">
+    <tr>
+        <td colspan="3"><b>函数依赖检查</b></td>
+    </tr>
+    <tr>
+        <th width="50%">函数名称</th>
+        <th width="25%">所需状态</th>
+        <th width="25%">当前状态</th>
+    </tr>
+    <?php foreach( $tpl['funcs'] AS $i=>$r ){?>
+    <tr>
+        <td><?php echo $r['func']; ?></td>
+        <td><?php echo $r['e']; ?></td>
+        <td><?php echo $r['exist']; ?></td>
+    </tr>
+    <?php }?>
+    </table>
+
+
+<?php }elseif( $tpl['_body'] == 'dbcreate' ){ ?>
+    <table class="dbcreate-info">
+    <tr>
+        <td colspan="3">填写数据库配置</td>
+    </tr>
+    <tr>
+        <th>数据库服务器:</th>
+        <td><input type="text" class="textbox" name="dbhost" value="localhost" /></td>
+        <td></td>
+    </tr>
+    <tr>
+        <th>数据库名:</th>
+        <td><input type="text" class="textbox" name="dbname" value="" /></td>
+        <td></td>
+    </tr>
+    <tr>
+        <th>数据库用户名:</th>
+        <td><input type="text" class="textbox" name="dbuser" value="" /></td>
+        <td></td>
+    </tr>
+    <tr>
+        <th>数据库密码:</th>
+        <td><input type="text" class="textbox" name="dbpass" value="" /></td>
+        <td></td>
+    </tr>
+    <tr>
+        <th>数据表前缀:</th>
+        <td><input type="text" class="textbox" name="tblpre" value="" /></td>
+        <td></td>
+    </tr>
+    </table>
+
+    <table class="dbcreate-info">
+    <tr>
+        <td colspan="3">填写数据库配置</td>
+    </tr>
+    <tr>
+        <th>管理员账号:</th>
+        <td><input type="text" class="textbox" name="admin_username" value="administrator" /></td>
+        <td></td>
+    </tr>
+    <tr>
+        <th>管理员密码:</th>
+        <td><input type="text" class="textbox" name="admin_password" value="" /></td>
+        <td></td>
+    </tr>
+    <tr>
+        <th>管理员姓名:</th>
+        <td><input type="text" class="textbox" name="admin_name" value="" /></td>
+        <td></td>
+    </tr>
+    </table>
+
+
+<?php } ?>
+
+</body>
+</html>
