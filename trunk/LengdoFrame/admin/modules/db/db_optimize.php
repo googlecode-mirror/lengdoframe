@@ -129,5 +129,5 @@ else{
 
 
 /* 加载视图 */
-include(DIR_ADMIN_TPL.'db_optimize.html');
+include($_CFG['DIR_ADMIN_TPL'] . 'db_optimize.html');
 ?>

@@ -183,7 +183,7 @@ else{
 
 
 /* 加载视图 */
-include(DIR_ADMIN_TPL.'privilege.html');
+include($_CFG['DIR_ADMIN_TPL'] . 'privilege.html');
 ?>
 
 <?php

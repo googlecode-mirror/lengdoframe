@@ -349,7 +349,7 @@ else{
 
 
 /* 加载视图 */
-include(DIR_ADMIN_TPL.'role.html');
+include($_CFG['DIR_ADMIN_TPL'] . 'role.html');
 ?>
 
 <?php

@@ -52,7 +52,7 @@ class VCode{
         $this->iFontLen  = intval($fonts['len'])  ? intval($fonts['len'])  : 4;
         $this->iFontSize = intval($fonts['size']) ? intval($fonts['size']) : 15;
         $this->sFontType = in_array($fonts['type'], array('ENL','ENU','EN','NUM')) ? $fonts['type'] : 'NUM';
-        $this->sFontFile = DIR_INC . 'class/fonts/candarai.ttf';
+        $this->sFontFile = DIR_ROOT . 'class/fonts/candarai.ttf';
     }
 
     /**

@@ -26,29 +26,28 @@ error_reporting(E_ALL & ~E_NOTICE);
 // - 加载
 /* ------------------------------------------------------ */
 
-/* 加载整站公用配置库和公用函数库 */
-require( str_replace('admin/includes/init.php', '', str_replace("\\", '/', __FILE__) ) . 'includes/config.php' );
-require( str_replace('admin/includes/init.php', '', str_replace("\\", '/', __FILE__) ) . 'includes/func.php' );
-
 /* 加载整站公用配置库 */
-@include(DIR_INC. '/systemconfig.php');
+require_once( preg_replace('/[^\/]+\/includes\/init.php/i', '', str_replace("\\",'/', __FILE__)) . 'includes/config.php' );
 
-/* 加载数据辅助库 */
-require(DIR_CLS . '/mysql.class.php');
+/* 加载整站公用函数库 */
+require_once($_CFG['DIR_INC'] . 'func.php');
+
+/* 加载Mysql数据库类 */
+require_once($_CFG['DIR_CLS'] . 'mysql.class.php');
 
 /* 加载后台公用函数库 */
-require(DIR_ADMIN_INC . 'lib_func.php');
+require_once($_CFG['DIR_ADMIN_INC'] . 'lib_func.php');
 
 /* 加载权限系统库 */
-require(DIR_ADMIN_INC . 'lib_privilege.php');
+require_once($_CFG['DIR_ADMIN_INC'] . 'lib_privilege.php');
 
-/* 加载后台公用语言库，加载全局变量 $_LANG */
-require(DIR_ADMIN  . 'lang/zh.php');
-@include(DIR_ADMIN . 'lang/system_zh.php');
+/* 加载后台公用语言库 - 加载全局变量 $_LANG */
+require_once($_CFG['DIR_ADMIN_LNG'] . 'zh.php');
+@include_once($_CFG['DIR_ADMIN_LNG'] . 'system_zh.php');
 
 
 /* ------------------------------------------------------ */
-// - 配置
+// - 环境配置
 /* ------------------------------------------------------ */
 
 /* 设置时区 */
@@ -66,7 +65,7 @@ if( !get_magic_quotes_gpc() ){
     if( !empty($_GET) )  $_GET  = addslashes_deep($_GET);
     if( !empty($_POST) ) $_POST = addslashes_deep($_POST);
 
-    $_COOKIE  = addslashes_deep($_COOKIE);
+    $_COOKIE = addslashes_deep($_COOKIE);
 }
 
 /* 重构$_REQUEST数据(只保留$_GET和$_POST) */
@@ -86,24 +85,24 @@ $tpl = array();
 // - 登陆前后逻辑层
 /* ------------------------------------------------------ */
 
-/* [管理员未登录时]检测URL，开放可用URL */
+/* [管理员登陆前]检测URL，过滤可用URL */
 if( admin_logined() == false ){
-    /* 未登陆时非index.php的强制跳转 */
-    if( trim($_SERVER['PHP_SELF'],'/') != trim(URL_ADMIN.'index.php','/') ){
-        redirect(URL_ADMIN.'index.php?act=login');
+    /* 文件访问保护，开放index.php访问权限 */
+    if( trim($_SERVER['PHP_SELF'],'/') != trim($_CFG['URL_ADMIN'].'index.php','/') ){
+        redirect($_CFG['URL_ADMIN'] . 'index.php?act=login');
     }
 
-    /* 未登陆时index.php文件可访问act模块和强制跳转 */
+    /* 操作访问保护，开放index.php的 vcode, login, loginsubmit 这三个模块权限 */
     switch( $_REQUEST['act'] ){
-        case 'vcode': break;        //验证码模块
-        case 'login': break;        //登陆模块
+        case 'vcode'      : break;  //验证码模块
+        case 'login'      : break;  //登陆页面模块
         case 'loginsubmit': break;  //登陆提交模块
 
-        default: redirect(URL_ADMIN.'index.php?act=login');
+        default: redirect($_CFG['URL_ADMIN'] . 'index.php?act=login');
     }
 }
 
-/* [管理员在登陆后]要加载的文件或初始化的变量 */
+/* [管理员登陆后]要加载的文件或初始化的变量 */
 else{
     /* 权限文件运行时异常，重新刷新权限系统 */
     if( !admin_pfile_valid() ){ flush_privilege_sys(); } 
@@ -112,11 +111,11 @@ else{
     $_PRIV = admin_pfile_parse();
 
     /* 加载数据辅助库 */
-    require(DIR_CLS . 'formc.class.php');
+    require_once($_CFG['DIR_CLS'] . 'formc.class.php');
 
-    /* 加载数据库数据(文件格式), 加载全局变量 $_DBD */
-    @include(DIR_INC . 'systemdbd.php');
-    @include(DIR_DB_DATA . 'dbd/systemdbd.php');
+    /* 加载数据库数据(文件格式) - 加载全局变量 $_DBD */
+    @include_once($_CFG['DIR_INC'] . 'systemdbd.php');
+    @include_once($_CFG['DIR_DB_DATA'] . 'dbd/systemdbd.php');
 }
 
 

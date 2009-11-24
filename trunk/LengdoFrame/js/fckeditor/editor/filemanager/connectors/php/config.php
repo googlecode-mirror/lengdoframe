@@ -24,8 +24,7 @@
 
 global $Config ;
 
-require( preg_replace('/\/js\/(.*)/i', '', str_replace('\\', '/', __FILE__) ) .'/includes/config.php' );
-require( preg_replace('/\/js\/(.*)/i', '', str_replace('\\', '/', __FILE__) ) .'/includes/systemconfig.php' );
+require_once( preg_replace('/\/js\/(.*)/i', '', str_replace('\\', '/', __FILE__) ) .'/includes/config.php' );
 
 // SECURITY: You must explicitly enable this "connector". (Set it to "true").
 // WARNING: don't just set "$Config['Enabled'] = true ;", you must be sure that only 
@@ -34,13 +33,13 @@ $Config['Enabled'] = true ;
 
 
 // Path to user files relative to the document root.
-$Config['UserFilesPath'] = URL_JSEDITOR_UPLOAD ;
+$Config['UserFilesPath'] = $_CFG['URL_JSEDITOR_UPLOAD'] ;
 
 // Fill the following value it you prefer to specify the absolute path for the
 // user files directory. Useful if you are using a virtual directory, symbolic
 // link or alias. Examples: 'C:\\MySite\\userfiles\\' or '/root/mysite/userfiles/'.
 // Attention: The above 'UserFilesPath' must point to the same directory.
-$Config['UserFilesAbsolutePath'] = DIR_JSEDITOR_UPLOAD ;
+$Config['UserFilesAbsolutePath'] = $_CFG['DIR_JSEDITOR_UPLOAD'] ;
 
 // Due to security issues with Apache modules, it is recommended to leave the
 // following setting enabled.
