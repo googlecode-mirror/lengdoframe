@@ -68,17 +68,17 @@ if( !get_magic_quotes_gpc() ){
     $_COOKIE = addslashes_deep($_COOKIE);
 }
 
-/* 重构$_REQUEST数据(只保留$_GET和$_POST) */
+/* 初始化模板变量 */
+$tpl = array();
+
+/* 初始化请求变量 */
 $_REQUEST = array_merge($_GET, $_POST);
+
+/* 初始化操作变量 */
+$_REQUEST['act'] = $_REQUEST['act'] ? trim($_REQUEST['act']) : '';
 
 /* 初始化数据库类, 设置全局变量 $db */
 $db = new Mysql($_CFG['dbhost'], $_CFG['dbuser'], $_CFG['dbpass'], $_CFG['dbname'], $_CFG['dbcset'], $_CFG['dbpcon']);
-
-/* 初始化 $_REQUEST['act'] */
-if( !isset($_REQUEST['act']) ) $_REQUEST['act'] = '';
-
-/* 初始化模板变量 */
-$tpl = array();
 
 
 /* ------------------------------------------------------ */

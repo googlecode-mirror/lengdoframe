@@ -289,16 +289,15 @@ function list_file_img( $rpath, $upath, $filter = '', $contain = '', $page = tru
 }
 
 /**
- * 文件或目录权限检查函数
+ * 文件(夹)权限检查函数
  *
- * @params str  $file_path   文件路径(或文件夹路径)
- * @params bol  $rename_prv  是否在检查修改权限时检查执行rename()函数的权限
+ * @params str  $file_path   文件(夹)路径
  *
  * @return int  返回 8421 码
- *              如果是文件夹，则代表
- *              目录下文件可执行rename()函数、目录下文件可改、目录可写、目录可读。
- *              如果是文件，则代表
- *              文件可执行rename()函数、文件可改、可写、文件可读。
+ *              如果是文件，分别代表
+ *                  文件可执行rename()函数、文件可改、可写、文件可读。
+ *              如果是文件夹，分别代表
+ *                  目录下文件可执行rename()函数、目录下文件可改、目录可写、目录可读。
  */
 function file_privilege( $file_path )
 {
