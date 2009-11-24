@@ -22,7 +22,7 @@ require('includes/init.php');
 /* ------------------------------------------------------ */
 if( $_REQUEST['act'] == 'vcode' ){
     /* 加载VCode类 */
-    require_once(DIR_CLS.'vcode.class.php');
+    require_once($_CFG['DIR_CLS'] . 'vcode.class.php');
 
     $vcode = new VCode();
     $vcode->image();
@@ -35,11 +35,11 @@ if( $_REQUEST['act'] == 'vcode' ){
 elseif( $_REQUEST['act'] == 'login' ){
     /* 已登陆，直接转到系统框架页 */
     if( admin_logined() ){
-        redirect(URL_ADMIN.'index.php');
+        redirect($_CFG['URL_ADMIN'] . 'index.php');
     }
 
     /* 加载视图 */
-    include(DIR_ADMIN_TPL.'login.html');
+    include($_CFG['DIR_ADMIN_TPL'] . 'login.html');
 }
 
 elseif( $_REQUEST['act'] == 'loginsubmit' ){
@@ -47,7 +47,8 @@ elseif( $_REQUEST['act'] == 'loginsubmit' ){
     if( !isset($_POST['submit']) ) sys_msg($_LANG['lawless_submit']);
 
     /* 加载VCode类 */
-    require_once(DIR_CLS.'vcode.class.php');
+    require_once($_CFG['DIR_CLS'] . 'vcode.class.php');
+
     $vcode = new VCode();
 
     /* 用户名或密码空检查 */
@@ -82,8 +83,11 @@ elseif( $_REQUEST['act'] == 'logout' ){
 // - 系统刷新
 /* ------------------------------------------------------ */
 elseif( $_REQUEST['act'] == 'flush'){
-    /* 刷新权限系统并跳转到首页框架页 */
-    flush_privilege_sys(); redirect(URL_ADMIN.'index.php');
+    /* 刷新权限系统 */
+    flush_privilege_sys(); 
+
+    /* 跳转到后台首页 */
+    redirect($_CFG['URL_ADMIN'] . 'index.php');
 }
 
 
@@ -91,8 +95,11 @@ elseif( $_REQUEST['act'] == 'flush'){
 // - 内容首页
 /* ------------------------------------------------------ */
 elseif( $_REQUEST['act'] == 'home' ){
-    /* 初始化页面信息并加载视图 */
-    $tpl['_title'] = false; include(DIR_ADMIN_TPL.'home.html');
+    /* 初始化页面信息 */
+    $tpl['_title'] = false; 
+    
+    /* 加载视图 */
+    include($_CFG['DIR_ADMIN_TPL'] . 'home.html');
 }
 
 
@@ -100,7 +107,10 @@ elseif( $_REQUEST['act'] == 'home' ){
 // - 进入首页(默认,框架页)
 /* ------------------------------------------------------ */
 else{
-    /* 初始化页面信息并加载视图 */
-    $tpl['home'] = 'index.php?act=home'; include(DIR_ADMIN_TPL.'index.html');
+    /* 初始化页面信息 */
+    $tpl['home'] = 'index.php?act=home'; 
+
+    /* 加载视图 */
+    include($_CFG['DIR_ADMIN_TPL'] . 'index.html');
 }
 ?>

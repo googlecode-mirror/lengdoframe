@@ -82,8 +82,14 @@ function admin_destroy()
  */
 function admin_logout()
 {
-    /* 注销并跳转到登陆窗口 */
-    admin_destroy(); redirect(URL_ADMIN.'index.php?act=login');
+    /* 初始化 */
+    global $_CFG;
+
+    /* 注销登陆 */
+    admin_destroy();
+
+    /* 跳转到后台登陆窗口 */
+    redirect($_CFG['URL_ADMIN'] . 'index.php?act=login');
 }
 
 
@@ -417,10 +423,14 @@ function admin_name()
  */
 function admin_pfile( $username = '' )
 {
+    /* 初始化 */
+    global $_CFG;
+
+    /* 返回权限文件路径 */
     if( $username == '' ){
-        return DIR_ADMIN_PFILE.$_SESSION[SN_ADMIN]['username'].'.php';
+        return $_CFG['DIR_ADMIN_PFILE'].$_SESSION[SN_ADMIN]['username'].'.php';
     }else{
-        return DIR_ADMIN_PFILE.trim($username).'.php';
+        return $_CFG['DIR_ADMIN_PFILE'].trim($username).'.php';
     }
 }
 /**
@@ -547,7 +557,7 @@ function format_module_acts( $module_acts, $attribs = array(), $type = '', $item
         foreach( $attrib AS $key => $val ){
             /* 过滤无效key */
             if( in_array($key,$brks) ) continue;
-            
+
             /* 按标签属性过滤key */
             if( in_array($key,$natt) ){
                 $tpl['info'][$key] = $val;

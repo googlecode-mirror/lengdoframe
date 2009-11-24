@@ -76,5 +76,5 @@ else{
 
 
 /* 加载视图 */
-include(DIR_ADMIN_TPL.'admin_log.html');
+include($_CFG['DIR_ADMIN_TPL'] . 'admin_log.html');
 ?>

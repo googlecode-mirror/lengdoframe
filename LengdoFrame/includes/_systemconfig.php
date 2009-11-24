@@ -14,27 +14,23 @@
 /* ----------------------------------------------------------------------- */
 // - 数据库登陆信息
 /* ----------------------------------------------------------------------- */
-$_CFG['dbhost'] = 'localhost';
-$_CFG['dbname'] = '';
-$_CFG['dbuser'] = '';
-$_CFG['dbpass'] = '';
-$_CFG['tblpre'] = '';
+$_CFG['dbhost'] = '';       //数据库服务器
+$_CFG['dbname'] = '';       //数据库名称
+$_CFG['dbuser'] = '';       //数据库登陆帐号
+$_CFG['dbpass'] = '';       //数据库登陆密码
+$_CFG['tblpre'] = '';       //数据表名称前辍
 
 
 /* ----------------------------------------------------------------------- */
-// - 自定义目录路径信息(保留末尾斜干)
+// - 自定义目录路径信息(保留末尾斜杠)
 /* ----------------------------------------------------------------------- */
 
-/* 开放权限文件夹路径 - 上传的图片 */
-define('DIR_UPLOAD_IMG'  , DIR_ROOT . 'upload/images/');
-define('URL_UPLOAD_IMG'  , URL_ROOT . 'upload/images/');
+/* 上传的图片 */
+$_CFG['DIR_UPLOAD_IMG'] = $_CFG['DIR_ROOT'] . 'upload/images/';
+$_CFG['URL_UPLOAD_IMG'] = $_CFG['URL_ROOT'] . 'upload/images/';
 
-/* 开放权限文件夹路径 - XXXX的图片 */
-define('DIR_XXXX_IMG' , DIR_ROOT . 'upload/images/xxxx/');
-define('URL_XXXX_IMG' , URL_ROOT . 'upload/images/xxxx/');
-
-/* 编辑器控件基本路径信息 */
-define('DIR_JSEDITOR_UPLOAD' , DIR_ROOT . 'upload/jseditor/');
-define('URL_JSEDITOR_UPLOAD' , URL_ROOT . 'upload/jseditor/');
-define('URL_JSEDITOR_FOLDER' , URL_ROOT . 'js/fckeditor/');
+/* 在线编辑器 */
+$_CFG['DIR_JSEDITOR_UPLOAD'] = $_CFG['DIR_ROOT'] . 'upload/jseditor/';
+$_CFG['URL_JSEDITOR_UPLOAD'] = $_CFG['URL_ROOT'] . 'upload/jseditor/';
+$_CFG['URL_JSEDITOR_FOLDER'] = $_CFG['URL_ROOT'] . 'js/fckeditor/';
 ?>

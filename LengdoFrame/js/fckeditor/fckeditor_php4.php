@@ -38,8 +38,10 @@ class FCKeditor
 	// PHP 4 Constructor
 	function FCKeditor( $instanceName ,$attribs = array() )
 	{
+        global $_CFG;
+
 		$this->InstanceName	= $instanceName ;
-		$this->BasePath		= URL_JSEDITOR_FOLDER ;
+		$this->BasePath		= $_CFG['URL_JSEDITOR_FOLDER'] ;
 		$this->Width		= isset($attribs['width']) ? $attribs['width'] : '100%' ;
 		$this->Height		= isset($attribs['height']) ? $attribs['height'] : '200' ;
 		$this->ToolbarSet	= isset($attribs['toolbar']) ? ucfirst($attribs['toolbar']) : 'Small' ;

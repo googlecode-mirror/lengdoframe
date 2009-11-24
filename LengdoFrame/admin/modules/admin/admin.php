@@ -297,7 +297,7 @@ else{
 
 
 /* 加载视图 */
-include(DIR_ADMIN_TPL.'admin.html');
+include($_CFG['DIR_ADMIN_TPL'] . 'admin.html');
 ?>
 
 <?php

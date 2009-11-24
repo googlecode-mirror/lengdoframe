@@ -127,7 +127,7 @@ function thumb_pic( $folder, $sfilename, $dfilename = '', $width = 0.5, $height 
     }
 
     /* 加载辅助库 */
-    require_once(DIR_CLS.'image.class.php');
+    require_once($_CFG['DIR_CLS'] . 'image.class.php');
 
     $img = new Image();
 
@@ -401,13 +401,22 @@ function file_privilege( $file_path )
  */
 function tpl_fetch( $file, $tpl )
 {
-    global $_LANG, $_DBD;
-
+    /* 初始化 */
+    global $_LANG, $_DBD, $_CFG;
+    
+    /* 缓存开始 */
     ob_start();
-    include(DIR_ADMIN_TPL.$file);
-    $html = ob_get_contents();
-    ob_end_clean();
 
+    /* 加载视图 */
+    include($_CFG['DIR_ADMIN_TPL'] . $file);
+    
+    /* 获取视HTML */
+    $html = ob_get_contents();
+    
+    /* 缓存结束 */
+    ob_end_clean();
+    
+    /* 返回 */
     return $html;
 }
 

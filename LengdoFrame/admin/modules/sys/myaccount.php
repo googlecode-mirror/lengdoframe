@@ -55,7 +55,7 @@ else{
 
 
 /* 加载视图 */
-include(DIR_ADMIN_TPL.'myaccount.html');
+include($_CFG['DIR_ADMIN_TPL'] . 'myaccount.html');
 ?>
 
 <?php
