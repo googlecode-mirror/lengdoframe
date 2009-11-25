@@ -13,67 +13,74 @@
     <div class="logo"></div>
 </div>
 
+<div class="install-version"><?php echo $_LANG[sys_kernel]; ?></div>
+
 <div class="install-main">
     <div class="install-main-header"></div>
 
+
     <div class="install-main-body">
+    <form method="post">
         <div class="install-main-body-step">
-            <i class="step step1"></i>
+            <i class="step <?php echo $tpl['step']; ?>"></i>
             <div class="title">
-                <b>环境检查</b><br />
-                <span>测试</span>
+                <b><?php echo $tpl['title']; ?></b><br />
+                <span><?php echo $tpl['subtitle']; ?></span>
             </div>
         </div>
 
-        <div class="install-main-body-process"></div>
+        <div class="install-main-body-line"></div>
+
 
         <?php if( $tpl['_body'] == 'envcheck' ){ ?>
-            <table class="envcheck-filepriv" width="100%" cellspacing="0" cellpadding="0" style="display:none;">
+            <table class="envcheck-table" cellspacing="0" cellpadding="0">
             <tr>
                 <td colspan="3"><b>目录、文件权限检查</b></td>
             </tr>
             <tr>
-                <th width="50%">目录文件</th>
-                <th width="25%">所需状态</th>
-                <th width="25%">当前状态</th>
+                <th width="60%" align="left">目录文件</th>
+                <th width="20%">所需状态</th>
+                <th width="20%">当前状态</th>
             </tr>
             <?php foreach( $tpl['files'] AS $i=>$r ){?>
-            <tr>
-                <td><?php echo $r['file']; ?></td>
-                <td><?php echo $r['e']; ?></td>
-                <td><?php echo $r['pcode']; ?></td>
+            <tr align="center">
+                <td align="left"><?php echo $r['url']; ?></td>
+                <td class="opacity"><?php echo $r['need']; ?></td>
+                <td><?php echo $r['filewrite']; ?></td>
             </tr>
             <?php }?>
             </table>
 
-            <table class="envcheck-funcexist" width="100%" cellspacing="0" cellpadding="0" style="display:none;">
+
+
+            <table class="envcheck-table" cellspacing="0" cellpadding="0">
             <tr>
                 <td colspan="3"><b>函数依赖检查</b></td>
             </tr>
             <tr>
-                <th width="50%">函数名称</th>
-                <th width="25%">所需状态</th>
-                <th width="25%">当前状态</th>
+                <th width="60%" align="left">函数名称</th>
+                <th width="20%">所需状态</th>
+                <th width="20%">当前状态</th>
             </tr>
             <?php foreach( $tpl['funcs'] AS $i=>$r ){?>
-            <tr>
-                <td><?php echo $r['func']; ?></td>
-                <td><?php echo $r['e']; ?></td>
-                <td><?php echo $r['exist']; ?></td>
+            <tr align="center">
+                <td align="left"><?php echo $r['func']; ?></td>
+                <td class="opacity"><?php echo $r['need']; ?></td>
+                <td><?php echo $r['support']; ?></td>
             </tr>
             <?php }?>
             </table>
 
 
         <?php }elseif( $tpl['_body'] == 'dbcreate' ){ ?>
-            <table class="dbcreate-info" style="display:none;">
+            <table class="dbcreate-table">
             <tr>
-                <td colspan="3">填写数据库配置</td>
+                <td colspan="3"><b>填写数据库配置</b></td>
             </tr>
             <tr>
-                <th>数据库服务器:</th>
-                <td><input type="text" class="textbox" name="dbhost" value="localhost" /></td>
-                <td></td>
+                <th width="25%">数据库服务器:</th>
+                <td width="35%"><input type="text" class="textbox" name="dbhost" value="localhost" /></td>
+                <td width="40%" class="remark">数据库服务地址，格式为 IP[:PORT]</td>
             </tr>
             <tr>
                 <th>数据库名:</th>
@@ -97,19 +104,19 @@
             </tr>
             </table>
 
-            <table class="dbcreate-info" style="display:none;">
+            <table class="dbcreate-table">
             <tr>
-                <td colspan="3">填写数据库配置</td>
+                <td colspan="3"><b>填写管理员信息</b></td>
             </tr>
             <tr>
-                <th>管理员账号:</th>
-                <td><input type="text" class="textbox" name="admin_username" value="administrator" /></td>
-                <td></td>
+                <th width="25%">管理员账号:</th>
+                <td width="35%"><input type="text" class="textbox" name="admin_username" value="administrator" /></td>
+                <td width="40%"></td>
             </tr>
             <tr>
                 <th>管理员密码:</th>
                 <td><input type="text" class="textbox" name="admin_password" value="" /></td>
-                <td></td>
+                <td class="remark">管理员密码不能为空</td>
             </tr>
             <tr>
                 <th>管理员姓名:</th>
@@ -117,9 +124,17 @@
                 <td></td>
             </tr>
             </table>
-
-
         <?php } ?>
+
+
+        <div class="install-main-body-line"></div>
+
+        <div class="install-main-body-acts">
+            <input type="submit" class="next" value="下一步" />
+            <input type="hidden" name='step' value="<?php echo $tpl['step']; ?>">
+        </div>
+
+    </form>
     </div>
 
     <div class="install-main-footer"></div>
