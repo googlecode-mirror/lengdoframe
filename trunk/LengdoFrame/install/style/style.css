@@ -5,25 +5,25 @@ html{ width:100%; height:100%; overflow:auto; }
 body{ width:100%; height:100%; margin:0; background:#FAFAFA; font:12px Garamonds,Tahoma; }
 
 
-.install-logo{ height:100px; background:url(style/images/style_fy.gif) 0 4px;  }
-.install-logo .logo{ width:285px; height:100px; float:left; background:url(style/images/style_fxy.gif) -30px -15px; }
+.install-logo{ height:100px; background:url(images/style_fy.gif) 0 4px;  }
+.install-logo .logo{ width:285px; height:100px; float:left; background:url(images/style_fxy.gif) -30px -15px; }
 
-.install-main{ width:730px; margin:0 auto; background:url(style/images/style_fx.gif) -20px 0; }
-.install-main-header{ height:13px; overflow:hidden; background:url(style/images/style_fxy.gif) -20px -175px; }
+.install-main{ width:730px; margin:0 auto; background:url(images/style_fx.gif) -20px 0; }
+.install-main-header{ height:13px; overflow:hidden; background:url(images/style_fxy.gif) -20px -175px; }
 
 .install-main-body-step{ height:80px; padding:0 10px; }
 .install-main-body-step .step{ width:75px; height:80px; float:left; }
-.install-main-body-step .step1{ background:url(style/images/style_fxy.gif) -366px -28px; }
+.install-main-body-step .step1{ background:url(images/style_fxy.gif) -366px -28px; }
 .install-main-body-step .title{ height:70px; padding:4px 0 0 0; float:left; overflow:hidden; }
 .install-main-body-step .title b{ color:#4F9BD5; font-size:35px; line-height:40px; }
 .install-main-body-step .title span{ padding:0 0 0 2px; color:#999; font-size:12px; }
 
-.install-main-body-process{ width:600px; height:10px; margin:0 auto; background:url(style/images/style_fxy.gif) -136px -133px; }
+.install-main-body-process{ width:600px; height:10px; margin:0 auto; background:url(images/style_fxy.gif) -136px -133px; }
 
 .install-main-body-form{}
 .install-main-body-acts{}
 
-.install-main-footer{ height:13px; overflow:hidden; background:url(style/images/style_fxy.gif) -20px -210px; }
+.install-main-footer{ height:13px; overflow:hidden; background:url(images/style_fxy.gif) -20px -210px; }
 
 /* ------------------------------------------------------ */
 /* - 环境检查
