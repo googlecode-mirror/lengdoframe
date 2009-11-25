@@ -5,26 +5,71 @@ html{ width:100%; height:100%; overflow:auto; }
 body{ width:100%; height:100%; margin:0; background:#FAFAFA; font:12px Garamonds,Tahoma; }
 
 
+/* ------------------------------------------------------ */
+/* - 通用全局类
+/* ------------------------------------------------------ */
+
+span.no{ color:#C50200; }
+span.no i{ width:15px; height:14px; margin:0 1px; display:inline-block; background:url(images/style_fxy.gif) -14px -213px; vertical-align:bottom; }
+
+span.yes{ color:#0E7C22; }
+span.yes i{ width:15px; height:14px; margin:0 1px; display:inline-block; background:url(images/style_fxy.gif) -14px -173px; vertical-align:bottom; }
+
+
+/* ------------------------------------------------------ */
+/* - LOGO层
+/* ------------------------------------------------------ */
 .install-logo{ height:100px; background:url(images/style_fy.gif) 0 4px;  }
 .install-logo .logo{ width:285px; height:100px; float:left; background:url(images/style_fxy.gif) -30px -15px; }
 
-.install-main{ width:730px; margin:0 auto; background:url(images/style_fx.gif) -20px 0; }
-.install-main-header{ height:13px; overflow:hidden; background:url(images/style_fxy.gif) -20px -175px; }
 
-.install-main-body-step{ height:80px; padding:0 10px; }
-.install-main-body-step .step{ width:75px; height:80px; float:left; }
-.install-main-body-step .step1{ background:url(images/style_fxy.gif) -366px -28px; }
-.install-main-body-step .title{ height:70px; padding:4px 0 0 0; float:left; overflow:hidden; }
+/* ------------------------------------------------------ */
+/* - LengdoFrame版本层
+/* ------------------------------------------------------ */
+.install-version{ width:700px; margin:0 auto; text-align:right; color:#969696; }
+
+
+/* ------------------------------------------------------ */
+/* - 主内容区层
+/* ------------------------------------------------------ */
+.install-main{ width:730px; margin:0 auto; background:url(images/style_fx.gif) -20px 0; }
+
+/* 页眉 */
+.install-main-header{ height:13px; overflow:hidden; background:url(images/style_fxy.gif) -60px -175px; }
+
+/* 步骤层 */
+.install-main-body-step{ height:70px; padding:5px 10px 0; }
+
+.install-main-body-step .step{ width:80px; height:100%; float:left; }
+.install-main-body-step .step1{ background:url(images/style_fxy.gif) -364px -28px; }
+.install-main-body-step .step2{ background:url(images/style_fxy.gif) -444px -28px; }
+
+.install-main-body-step .title{ height:60px; padding:4px 0 0 0; float:left; overflow:hidden; }
 .install-main-body-step .title b{ color:#4F9BD5; font-size:35px; line-height:40px; }
 .install-main-body-step .title span{ padding:0 0 0 2px; color:#999; font-size:12px; }
 
-.install-main-body-process{ width:600px; height:10px; margin:0 auto; background:url(images/style_fxy.gif) -136px -133px; }
+/* 分割线 */
+.install-main-body-line{ width:650px; height:10px; margin:0 auto; background:url(images/style_fxy.gif) -150px -133px no-repeat; }
 
-.install-main-body-form{}
-.install-main-body-acts{}
+/* 操作层 */
+.install-main-body-acts{ padding:15px 33px 10px; text-align:right; }
+.install-main-body-acts .next{ width:86px; height:33px; border:0; background:url(images/style_fxy.gif) -17px -124px; font-size:14px; font-weight:bold; color:#0D6ABA; cursor:pointer; line-height:35px; }
 
-.install-main-footer{ height:13px; overflow:hidden; background:url(images/style_fxy.gif) -20px -210px; }
+/* 页脚 */
+.install-main-footer{ height:13px; overflow:hidden; background:url(images/style_fxy.gif) -60px -210px; }
+
 
 /* ------------------------------------------------------ */
 /* - 环境检查
 /* ------------------------------------------------------ */
+.envcheck-table{ width:550px; margin:20px auto; border:0; }
+.envcheck-table th{ height:24px; padding:0; color:#379ED7; }
+.envcheck-table td{ height:23px; padding:0; color:#666666; }
+.envcheck-table td b{ color:#666666; }
+.envcheck-table td.opacity{ filter:alpha(opacity=60); opacity:0.6; }
+
+.dbcreate-table{ width:550px; margin:20px auto; border:0; }
+.dbcreate-table th{ height:24px; padding:0 0 0 14px; text-align:left; font-weight:normal; color:#666; }
+.dbcreate-table td{ height:23px; padding:0; color:#666; }
+.dbcreate-table td b{ color:#666; }
+.dbcreate-table td .textbox{ width:175px; height:16px; padding:1px; border:1px solid #91A4AF; vertical-align:middle; color:#444; font-family:Tahoma; }
