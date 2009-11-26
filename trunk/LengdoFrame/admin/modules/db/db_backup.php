@@ -527,20 +527,17 @@ function list_sqlfile_format( $files )
  */
 function sql_import( $path_file )
 {
-    $db_ver  = $GLOBALS['db']->version();
+    $sqls = array_filter(file($path_file), 'sql_comment_remove');
+    $sqls = str_replace( "\r", '', implode('',$sqls) );
+    $sqls = explode(";\n", $sqls);
 
-    $sql_str = array_filter(file($path_file), 'remove_comment');
-    $sql_str = str_replace( "\r", '', implode('',$sql_str) );
+    /* 执行SQL语句 */
+    foreach( $sql AS $i=>$sql ){
+        $sql = trim($sql, " \r\n;"); //移除多余信息
 
-    $ret = explode(";\n", $sql_str);
+        if( empty($sql) ) continue;
 
-    /* 执行sql语句 */
-    for($i = 0; $i < count($ret); $i++){
-        $ret[$i] = trim($ret[$i], " \r\n;"); //剔除多余信息
-
-        if( empty($ret[$i]) ) continue;
-
-        if( !$GLOBALS['db']->query($ret[$i], false) ){
+        if( !$GLOBALS['db']->query($sql,false) ){
             return false;
         }
     }
@@ -551,7 +548,7 @@ function sql_import( $path_file )
 /**
  * 移除SQL注释
  */
-function remove_comment($var)
+function sql_comment_remove($var)
 {
     return (substr(trim($var), 0, 2) != '--');
 }
