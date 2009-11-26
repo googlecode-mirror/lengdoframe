@@ -25,13 +25,27 @@ require($_CFG['DIR_ADMIN_INC'].'lib_func.php');
 
 
 /* ------------------------------------------------------ */
+// - $_CFG数据
+/* ------------------------------------------------------ */
+$_CFG['DIR_ADMIN_PFILE']  = $_CFG['DIR_ADMIN_PFILE'];
+$_CFG['URL_ADMIN_PFILE']  = './admin/data/pfile/';
+
+$_CFG['DIR_SYSTEMCONFIG'] = $_CFG['DIR_INC'].'_systemconfig.php';
+$_CFG['URL_SYSTEMCONFIG'] = './includes/_systemconfig.php';
+
+$_CFG['F_INSTALL_SQL'] = './lengdoframe.sql';
+$_CFG['F_SYSTEMCONFIG'] = '../includes/systemconfig.php';
+$_CFG['F_SYSTEMCONFIG_SRC'] = '../includes/_systemconfig.php';
+
+
+/* ------------------------------------------------------ */
 // - $_DBD数据
 /* ------------------------------------------------------ */
 $_DBD['support'] = array('0'=>'<span class="no"><i></i>不支持</span>', '1'=>'<span class="yes"><i></i>支持</span>');
 $_DBD['filewrite'] = array('0'=>'<span class="no"><i></i>不可写</span>', '1'=>'<span class="yes"><i></i>可写</span>');
 $_DBD['filerename'] = array('0'=>'<span class="no"><i></i>不可重命名</span>', '1'=>'<span class="yes"><i></i>可重命名</span>');
 
-$_DBD['dberror_1007'] = '数据库已存在，请重新填写数据库名!';
+$_DBD['dberror_1007'] = '数据库 "%s" 已存在，请重新填写数据库名!';
 $_DBD['dberror_1044'] = '无法创建新的数据库，请检查数据库名称填写是否正确!';
 $_DBD['dberror_1045'] = '无法连接数据库，请检查数据库用户名或者密码是否正确!';
 $_DBD['dberror_2003'] = '无法连接数据库，请检查数据库是否启动，数据库服务器地址是否正确!';
@@ -40,7 +54,7 @@ $_DBD['dberror_cret'] = '数据库创建失败!';
 
 
 /* ------------------------------------------------------ */
-// - 初始化操作步骤
+// - 初始化步骤和操作
 /* ------------------------------------------------------ */
 
 /* 初始化 */
@@ -62,9 +76,11 @@ if( $_REQUEST['act'] == 'envcheck' ){
     /* 错误标识 */
     $tpl['error'] = 0;
 
+
     /* 目录权限检查 */
-    $tpl['files'][] = array('type'=>'dir', 'file'=>$_CFG['DIR_ADMIN_PFILE'], 'url'=>'./admin/data/pfile/');
-    $tpl['files'][] = array('type'=>'file', 'file'=>$_CFG['DIR_INC'].'_systemconfig.php', 'url'=>'./includes/_systemconfig.php');
+
+    $tpl['files'][] = array('type'=>'dir', 'file'=>$_CFG['DIR_ADMIN_PFILE'], 'url'=>$_CFG['URL_ADMIN_PFILE']);
+    $tpl['files'][] = array('type'=>'file', 'file'=>$_CFG['DIR_SYSTEMCONFIG'], 'url'=>$_CFG['URL_SYSTEMCONFIG']);
 
     foreach( $tpl['files'] AS $i=>$r ){
         /* 文件权限检测 */
@@ -87,6 +103,7 @@ if( $_REQUEST['act'] == 'envcheck' ){
 
 
     /* 函数依赖检查 */
+
     $tpl['funcs'][] = array('func'=>'json_encode');
     $tpl['funcs'][] = array('func'=>'mysql_connect');
     $tpl['funcs'][] = array('func'=>'file_get_contents');
@@ -176,22 +193,26 @@ elseif( $_REQUEST['act'] == 'dbcreate' ){
             else{
                 /* 创建数据表 */
                 if( mysql_get_server_info() > '4.1' ){
-                    mysql_query("CREATE DATABASE `{$_POST['dbname']}` DEFAULT CHARACTER SET utf8");
+                    ///////mysql_query("CREATE DATABASE `{$_POST['dbname']}` DEFAULT CHARACTER SET utf8");
                 }else{
-                    mysql_query("CREATE DATABASE `{$_POST['dbname']}`");
+                    ///////mysql_query("CREATE DATABASE `{$_POST['dbname']}`");
                 }
 
                 if( $errno = mysql_errno() ){
-                    $tpl['errors']['error'] = $_DBD['dberror_'.$errno] ? $_DBD['dberror_'.$errno] : $_DBD['dberror_cret'];
+                    $tpl['errors']['error'] = $_DBD['dberror_'.$errno] ? sprintf($_DBD['dberror_'.$errno],$_POST['dbname']) : $_DBD['dberror_cret'];
                 }else{
-                    mysql_select_db($_POST['dbname']);
+                    ///////mysql_select_db($_POST['dbname']);
                 }
             }
+            
+            /* 数据库无连接错误 */
+            if( empty($tpl['errors']['error']) ){
+                /* 数据库导入 */
+                ///////sql_import();
 
-            /* 构建系统配置文件 */
-            //file_systemconfig();
-
-            sql_import();
+                /* 构建系统配置文件 */
+                file_systemconfig();
+            }
         }
 
         /* 初始化页面信息 */
@@ -206,15 +227,41 @@ include('index.html')
 
 <?php
 /**
+ * 构建系统配置文件
+ */
+function file_systemconfig()
+{
+    /* 初始化 */
+    global $_CFG;
+    
+    /* 获取文件字符 */
+    $str = file_get_contents($_CFG['F_SYSTEMCONFIG_SRC']);
+
+    /* 配置数据 */
+    $str = preg_replace("/$_CFG['dbhost'] = ''/i", '$_CFG[\'dbhost\'] = \''.$_POST['dbhost'].'\'', $str);
+    $str = preg_replace("/$_CFG['dbname'] = ''/i", '$_CFG[\'dbname\'] = \''.$_POST['dbname'].'\'', $str);
+    $str = preg_replace("/$_CFG['dbuser'] = ''/i", '$_CFG[\'dbuser\'] = \''.$_POST['dbuser'].'\'', $str);
+    $str = preg_replace("/$_CFG['dbpass'] = ''/i", '$_CFG[\'dbpass\'] = \''.$_POST['dbpass'].'\'', $str);
+    $str = preg_replace("/$_CFG['tblpre'] = ''/i", '$_CFG[\'tblpre\'] = \''.$_POST['tblpre'].'\'', $str);
+
+    /* 写入文件 */
+    file_put_contents($_CFG['F_SYSTEMCONFIG_SRC'], $str);
+
+    /* 重命名系统配置文件 */
+    rename($_CFG['F_SYSTEMCONFIG_SRC'], $_CFG['F_SYSTEMCONFIG']);
+}
+
+
+/**
  * SQL导入
  */
 function sql_import()
 {
     /* 初始化 */
-    $file = './lengdoframe.sql';
+    global $_CFG;
 
-    /* 初始化SQLS */
-    $sqls = array_filter(file($file), 'sql_comment_remove');
+    /* 初始化SQL数组 */
+    $sqls = array_filter(file($_CFG['F_INSTALL_SQL']), 'sql_comment_remove');
     $sqls = str_replace( "\r", '', implode('',$sqls) );
     $sqls = explode(";\n", $sqls);
 

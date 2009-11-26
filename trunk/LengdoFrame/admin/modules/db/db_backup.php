@@ -527,6 +527,7 @@ function list_sqlfile_format( $files )
  */
 function sql_import( $path_file )
 {
+    /* 初始化SQL数组 */
     $sqls = array_filter(file($path_file), 'sql_comment_remove');
     $sqls = str_replace( "\r", '', implode('',$sqls) );
     $sqls = explode(";\n", $sqls);
