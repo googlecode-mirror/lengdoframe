@@ -1,7 +1,8 @@
-功能简介：
+﻿功能简介：
     弹出Wnd窗口查看图片
 
 
 使用方法：
-    1. 拷贝 code.js 和 anime.js 两个文件中的代码到 /js/system.js 或者 /admin/js/system.js 文件中
-    2. 使用 wnd_image_view(..) 函数即可调用图片查看窗口
+    1. 拷贝 code.js 中的代码到 /js/system.js 或者 /admin/js/system.js
+    2. 拷贝 anime.js 中的代码到 /js/system.js 或者 /admin/js/system.js
+    3. 使用 wnd_image_view(..) 函数即可调用图片查看窗口

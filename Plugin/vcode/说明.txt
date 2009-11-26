@@ -1,0 +1,9 @@
+﻿功能简介：
+    图片验证码
+
+
+使用方法：
+    1. 拷贝 font 到 /includes/ 文件夹下
+    2. 拷贝 vcode.class.php 到 /class/ 文件夹下
+    3. 在程序中加载 /class/vcode.class.php 文件
+    4. 构建 Vcode 对象然后调用对象方法使用其功能
