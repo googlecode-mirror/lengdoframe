@@ -37,6 +37,7 @@ require_once($_CFG['DIR_CLS'] . 'mysql.class.php');
 
 /* 加载后台公用函数库 */
 require_once($_CFG['DIR_ADMIN_INC'] . 'lib_func.php');
+@include_once($_CFG['DIR_ADMIN_INC'] . 'systemfunc.php');
 
 /* 加载权限系统库 */
 require_once($_CFG['DIR_ADMIN_INC'] . 'lib_privilege.php');
@@ -92,9 +93,8 @@ if( admin_logined() == false ){
         redirect($_CFG['URL_ADMIN'] . 'index.php?act=login');
     }
 
-    /* 操作访问保护，开放index.php的 vcode, login, loginsubmit 这三个模块权限 */
+    /* 操作访问保护，开放index.php的 login, loginsubmit 两个模块的权限 */
     switch( $_REQUEST['act'] ){
-        case 'vcode'      : break;  //验证码模块
         case 'login'      : break;  //登陆页面模块
         case 'loginsubmit': break;  //登陆提交模块
 
