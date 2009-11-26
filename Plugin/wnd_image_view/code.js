@@ -1,21 +1,21 @@
 /**
- * Í¼Ïñ²é¿´
+ * æŸ¥çœ‹å›¾ç‰‡
  */
 function wnd_image_view( url, width, height )
 {
     if( typeof(url) != 'string' || url == '' ){
-        wnd_alert('Î´Ö¸¶¨Í¼ÏñÂ·¾¶'); return;
+        wnd_alert('æœªæŒ‡å®šå›¾ç‰‡è·¯å¾„'); return;
     }else{
         var ext = url.substr( url.lastIndexOf('.') ).toLowerCase();
 
         if( ext != '.jpg' && ext != '.gif' ){
-            wnd_alert('ÎÞÐ§µÄÍ¼Æ¬¸ñÊ½'); return ;
+            wnd_alert('æ— æ•ˆçš„å›¾ç‰‡æ ¼å¼'); return ;
         }
     }
 
     var wnd = Wnds.find('wnd-image-view');
 
-    /* ¹¹½¨´°¿Ú */
+    /* æž„å»ºçª—å£ */
 	if( !wnd ){
         width  = width  > 0 ? width  : 520;
         height = height > 0 ? height : 300;
@@ -23,13 +23,13 @@ function wnd_image_view( url, width, height )
 		wnd = new Wnd('wnd-image-view', null, {'width':width, 'height':height, 'overflow':11, 'control':'ok'});
 		wnd.create();
 
-		wnd.title('ä¯ÀÀÍ¼Æ¬');
+		wnd.title('æŸ¥çœ‹å›¾ç‰‡');
         wnd.zindex(50);
 	}else{
         if( width  ) wnd.width(width);
         if( height ) wnd.height(height);
     }
 
-	wnd.inner('<img onmousemove="Img.slideImgAuto(this,event)" src="'+ url +'" style="cursor:crosshair"/>', 'html');
+	wnd.inner('<img onmousemove="Anime.slideImgAuto(this,event)" src="'+ url +'" style="cursor:crosshair"/>', 'html');
     wnd.show();
 }
