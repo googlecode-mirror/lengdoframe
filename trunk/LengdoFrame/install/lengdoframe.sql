@@ -16,7 +16,9 @@ CREATE TABLE `%tblpre%admin` (
   `in_time` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`admin_id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='管理员表';
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='管理员表';
+
+INSERT INTO `%tblpre%admin` ( `admin_id`, `role_id`, `name`, `username`, `password`, `pfile_time`, `in_time` ) VALUES ( '1','1','','','','','' );
 
 
 DROP TABLE IF EXISTS `%tblpre%admin_log`;

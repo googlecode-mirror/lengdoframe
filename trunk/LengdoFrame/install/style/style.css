@@ -47,9 +47,10 @@ span.yes i{ width:15px; height:14px; margin:0 1px; display:inline-block; backgro
 .install-main-body-step .step{ width:80px; height:100%; float:left; }
 .install-main-body-step .step1{ background:url(images/style_fxy.gif) -364px -28px; }
 .install-main-body-step .step2{ background:url(images/style_fxy.gif) -444px -28px; }
+.install-main-body-step .step3{ background:url(images/style_fxy.gif) -524px -28px; }
 
-.install-main-body-step .title{ height:60px; padding:4px 0 0 0; float:left; overflow:hidden; }
-.install-main-body-step .title b{ color:#4F9BD5; font-size:35px; line-height:40px; }
+.install-main-body-step .title{ height:60px; padding:2px 0 0 0; float:left; overflow:hidden; }
+.install-main-body-step .title b{ color:#4F9BD5; font-size:35px; line-height:42px; }
 .install-main-body-step .title span{ padding:0 0 0 2px; color:#999; font-size:12px; }
 
 /* 分割线 */
@@ -84,7 +85,17 @@ span.yes i{ width:15px; height:14px; margin:0 1px; display:inline-block; backgro
 .dbcreate-table th{ height:24px; padding:0 0 0 14px; text-align:left; font-weight:normal; color:#666; }
 .dbcreate-table tr td{ height:23px; padding:0; color:#666; }
 .dbcreate-table tr td b{ color:#666; }
-.dbcreate-table tr td .textbox{ width:175px; height:16px; padding:1px; border:1px solid #91A4AF; vertical-align:middle; color:#444; font-family:Tahoma; font-size:12px; }
+.dbcreate-table tr td .textbox{ width:175px; height:16px; padding:3px 1px 1px 2px; border:1px solid #91A4AF; vertical-align:middle; color:#444; font-family:Tahoma; font-size:12px; }
 
 .dbcreate-table tr.error th{ color:#f00; }
 .dbcreate-table tr.error td{ color:#f00; }
+
+
+/* ------------------------------------------------------ */
+/* - 安装成功
+/* ------------------------------------------------------ */
+.complete-table{ width:550px; margin:0 auto; border:0; }
+
+.complete-table td.redirect{ color:#3686CE; font-family:'宋体'; }
+.complete-table td.redirect a{ color:#3686CE; text-decoration:none; }
+.complete-table td.redirect a:hover{ text-decoration:underline; }

@@ -58,7 +58,7 @@ $_DBD['dberror_cret'] = '数据库创建失败!';
 /* ------------------------------------------------------ */
 
 /* 初始化 */
-$acts = array('envcheck', 'dbcreate');
+$acts = array('envcheck', 'dbcreate', 'complete');
 
 /* 初始化STEP */
 $step = intval($_REQUEST['step']);
@@ -136,6 +136,7 @@ if( $_REQUEST['act'] == 'envcheck' ){
     /* ------------------------------------------------------ */
     if( isset($_POST['submit']) ){
         if( $tpl['error'] == 0 ){
+            /* 下一步 */
             header('location:index.php?step='.($step+1)); exit();
         }
     }
@@ -148,7 +149,10 @@ if( $_REQUEST['act'] == 'envcheck' ){
 elseif( $_REQUEST['act'] == 'dbcreate' ){
     /* 初始化注释信息 */
     $tpl['remarks']['dbhost'] = '数据库服务地址，格式为 IP[:PORT]';
-    $tpl['remarks']['admin_username'] = '管理员账号不能为空';
+    $tpl['remarks']['dbname'] = '<font style="color:#aaa">＊</font>';
+    $tpl['remarks']['dbuser'] = '<font style="color:#aaa">＊</font>';
+    $tpl['remarks']['admin_username'] = '<font style="color:#aaa">＊</font>';
+    $tpl['remarks']['admin_password'] = '<font style="color:#aaa">＊</font>';
 
     /* 初始化页面信息 */
     $tpl['_body'] = 'dbcreate';
@@ -164,14 +168,16 @@ elseif( $_REQUEST['act'] == 'dbcreate' ){
     /* ------------------------------------------------------ */
     if( isset($_POST['submit']) ){
         /* 初始化 */
+        $tpl['acts'] = 'rpn';
         $tpl['errors'] = array();
-        
+
         /* 填写错误检查 */
         if( trim($_POST['dbhost']) == '' ) $tpl['errors']['dbhost'] = '数据库服务地址不能为空!';
         if( trim($_POST['dbname']) == '' ) $tpl['errors']['dbname'] = '数据库名称不能为空!';
         if( trim($_POST['dbuser']) == '' ) $tpl['errors']['dbuser'] = '数据库用户名不能为空!';
 
         if( trim($_POST['admin_username']) == '' ) $tpl['errors']['admin_username'] = '管理员账号不能为空!';
+        if( trim($_POST['admin_password']) == '' ) $tpl['errors']['admin_password'] = '管理员密码不能为空!';
 
         /* 填写错误检查 - 重置备注 */
         foreach( $tpl['errors'] AS $k=>$v ){
@@ -193,31 +199,51 @@ elseif( $_REQUEST['act'] == 'dbcreate' ){
             else{
                 /* 创建数据表 */
                 if( mysql_get_server_info() > '4.1' ){
-                    ///////mysql_query("CREATE DATABASE `{$_POST['dbname']}` DEFAULT CHARACTER SET utf8");
+                    mysql_query("CREATE DATABASE `{$_POST['dbname']}` DEFAULT CHARACTER SET utf8");
                 }else{
-                    ///////mysql_query("CREATE DATABASE `{$_POST['dbname']}`");
+                    mysql_query("CREATE DATABASE `{$_POST['dbname']}`");
                 }
 
                 if( $errno = mysql_errno() ){
                     $tpl['errors']['error'] = $_DBD['dberror_'.$errno] ? sprintf($_DBD['dberror_'.$errno],$_POST['dbname']) : $_DBD['dberror_cret'];
                 }else{
-                    ///////mysql_select_db($_POST['dbname']);
+                    mysql_select_db($_POST['dbname']);
                 }
             }
-            
-            /* 数据库无连接错误 */
+
+            /* 数据库创建成功 */
             if( empty($tpl['errors']['error']) ){
                 /* 数据库导入 */
-                ///////sql_import();
+                if( sql_import() ){
+                    /* 构建系统配置文件 */
+                    file_systemconfig();
 
-                /* 构建系统配置文件 */
-                file_systemconfig();
+                    /* 更新管理员 */
+                    update_administrator();
+                    
+                    /* 下一步 */
+                    header('location:index.php?step='.($step+1)); exit();
+                }
             }
         }
-
-        /* 初始化页面信息 */
-        $tpl['acts'] = 'rpn';
     }
+}
+
+
+/* ------------------------------------------------------ */
+// - 安装完成
+/* ------------------------------------------------------ */
+elseif( $_REQUEST['act'] == 'complete' ){
+    /* 跳转地址 */
+    $tpl['redirect'] = $_CFG[URL_ADMIN].'index.php';
+
+    /* 初始化页面信息 */
+    $tpl['_body'] = 'complete';
+    
+    $tpl['acts'] = 'c';
+    $tpl['step'] = $step;
+    $tpl['title'] = '安装成功';
+    $tpl['subtitle'] = '完成LengdoFrame框架的安装';
 }
 
 
@@ -226,32 +252,6 @@ include('index.html')
 ?>
 
 <?php
-/**
- * 构建系统配置文件
- */
-function file_systemconfig()
-{
-    /* 初始化 */
-    global $_CFG;
-    
-    /* 获取文件字符 */
-    $str = file_get_contents($_CFG['F_SYSTEMCONFIG_SRC']);
-
-    /* 配置数据 */
-    $str = preg_replace("/$_CFG['dbhost'] = ''/i", '$_CFG[\'dbhost\'] = \''.$_POST['dbhost'].'\'', $str);
-    $str = preg_replace("/$_CFG['dbname'] = ''/i", '$_CFG[\'dbname\'] = \''.$_POST['dbname'].'\'', $str);
-    $str = preg_replace("/$_CFG['dbuser'] = ''/i", '$_CFG[\'dbuser\'] = \''.$_POST['dbuser'].'\'', $str);
-    $str = preg_replace("/$_CFG['dbpass'] = ''/i", '$_CFG[\'dbpass\'] = \''.$_POST['dbpass'].'\'', $str);
-    $str = preg_replace("/$_CFG['tblpre'] = ''/i", '$_CFG[\'tblpre\'] = \''.$_POST['tblpre'].'\'', $str);
-
-    /* 写入文件 */
-    file_put_contents($_CFG['F_SYSTEMCONFIG_SRC'], $str);
-
-    /* 重命名系统配置文件 */
-    rename($_CFG['F_SYSTEMCONFIG_SRC'], $_CFG['F_SYSTEMCONFIG']);
-}
-
-
 /**
  * SQL导入
  */
@@ -286,5 +286,43 @@ function sql_import()
 function sql_comment_remove($var)
 {
     return (substr(trim($var), 0, 2) != '--');
+}
+
+
+/**
+ * 构建系统配置文件
+ */
+function file_systemconfig()
+{
+    /* 初始化 */
+    global $_CFG;
+    
+    /* 获取文件字符 */
+    $str = file_get_contents($_CFG['F_SYSTEMCONFIG_SRC']);
+
+    /* 配置数据 */
+    $str = preg_replace('/\$_CFG\[\'dbhost\'\]\s+=\s+\'\'/i', '$_CFG[\'dbhost\'] = \''.$_POST['dbhost'].'\'', $str);
+    $str = preg_replace('/\$_CFG\[\'dbname\'\]\s+=\s+\'\'/i', '$_CFG[\'dbname\'] = \''.$_POST['dbname'].'\'', $str);
+    $str = preg_replace('/\$_CFG\[\'dbuser\'\]\s+=\s+\'\'/i', '$_CFG[\'dbuser\'] = \''.$_POST['dbuser'].'\'', $str);
+    $str = preg_replace('/\$_CFG\[\'dbpass\'\]\s+=\s+\'\'/i', '$_CFG[\'dbpass\'] = \''.$_POST['dbpass'].'\'', $str);
+    $str = preg_replace('/\$_CFG\[\'tblpre\'\]\s+=\s+\'\'/i', '$_CFG[\'tblpre\'] = \''.$_POST['tblpre'].'\'', $str);
+
+    /* 写入文件 */
+    file_put_contents($_CFG['F_SYSTEMCONFIG_SRC'], $str);
+
+    /* 重命名系统配置文件 */
+    rename($_CFG['F_SYSTEMCONFIG_SRC'], $_CFG['F_SYSTEMCONFIG']);
+}
+
+/**
+ * 更新管理员
+ */
+function update_administrator()
+{
+    $sql = ' UPDATE `'. $_POST['tblpre'] .'admin` SET';
+    $sql.= ' `name`="'. $_POST['admin_user'] .'",`username`="'. $_POST['admin_username'] .'"';
+    $sql.= ' `password`="'. md5($_POST['admin_`password`']) .'" WHERE `admin_id`=1';
+
+    mysql_query($sql);
 }
 ?>

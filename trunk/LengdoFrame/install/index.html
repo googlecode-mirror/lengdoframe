@@ -125,7 +125,7 @@
                 <td width="35%"><input type="text" class="textbox" name="admin_username" value="<?php echo isset($_POST['admin_username']) ? $_POST['admin_username'] : 'administrator'; ?>" /></td>
                 <td width="40%" class="remark"><?php echo $tpl['remarks']['admin_username']; ?></td>
             </tr>
-            <tr>
+            <tr<?php echo $tpl['errors']['admin_password'] ? ' class="error"' : ''; ?>>
                 <th>管理员密码:</th>
                 <td><input type="text" class="textbox" name="admin_password" value="<?php echo isset($_POST['admin_password']) ? $_POST['admin_password'] : ''; ?>" /></td>
                 <td class="remark"><?php echo $tpl['remarks']['admin_password']; ?></td>
@@ -134,6 +134,17 @@
                 <th>管理员姓名:</th>
                 <td><input type="text" class="textbox" name="admin_name" value="<?php echo isset($_POST['admin_name']) ? $_POST['admin_name'] : ''; ?>" /></td>
                 <td class="remark"><?php echo $tpl['remarks']['admin_name']; ?></td>
+            </tr>
+            </table>
+
+            <br />
+
+        <?php }elseif( $tpl['_body'] == 'complete' ){ ?>
+            <br />
+
+            <table class="complete-table">
+            <tr>
+                <td class="redirect">-&gt; <a href="<?php echo $tpl['redirect']; ?>">安装完成，点击进入</a></td>
             </tr>
             </table>
 
@@ -154,6 +165,10 @@
 
             <?php if( strpos($tpl['acts'],'n') !== false ){?>
             <input type="submit" name="submit" class="button" value="下一步" />
+            <?php }?>
+
+            <?php if( strpos($tpl['acts'],'c') !== false ){?>
+            <input type="button" class="button" value="完 成" onclick="window.location.href='<?php echo $tpl['redirect']; ?>'" />
             <?php }?>
         </div>
 
