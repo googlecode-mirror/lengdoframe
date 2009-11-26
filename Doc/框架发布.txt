@@ -9,6 +9,8 @@
 
         去掉 /admin/top/home.html 中的 LengdoFrame Version 和 LengdoFrame Log 两个模块信息
 
+	清空 /admin/data/pfile/ 文件夹下所有文件
+
         压缩文件夹
         (文件命名方式参见"框架版本.txt - 发布的压缩文件")
 

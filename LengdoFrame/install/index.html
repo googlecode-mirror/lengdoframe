@@ -20,7 +20,7 @@
 
 
     <div class="install-main-body">
-    <form method="post">
+    <form method="post" action="?step=<?php echo $tpl['step']; ?>">
         <div class="install-main-body-step">
             <i class="step step<?php echo $tpl['step']; ?>"></i>
             <div class="title">
@@ -33,6 +33,8 @@
 
 
         <?php if( $tpl['_body'] == 'envcheck' ){ ?>
+            <br />
+
             <table class="envcheck-table" cellspacing="0" cellpadding="0">
             <tr>
                 <td colspan="3"><b>目录、文件权限检查</b></td>
@@ -46,12 +48,12 @@
             <tr align="center"<?php echo $r['error']==1 ? ' class="error"' : ''; ?>>
                 <td align="left"><?php echo $r['url']; ?></td>
                 <td class="opacity"><?php echo $r['need']; ?></td>
-                <td><?php echo $r['filewrite']; ?></td>
+                <td><?php echo $r['filepriv']; ?></td>
             </tr>
             <?php }?>
             </table>
 
-
+            <br /><br />
 
             <table class="envcheck-table" cellspacing="0" cellpadding="0">
             <tr>
@@ -71,38 +73,48 @@
             <?php }?>
             </table>
 
+            <br />
+
 
         <?php }elseif( $tpl['_body'] == 'dbcreate' ){ ?>
+            <br />
+            
+            <?php if( $tpl['errors']['error'] ){?>
+                <div class="dbcreate-error"><?php echo $tpl['errors']['error']; ?><br /></div><br />
+            <?php }?>
+
             <table class="dbcreate-table">
             <tr>
                 <td colspan="3"><b>填写数据库配置</b></td>
             </tr>
             <tr<?php echo $tpl['errors']['dbhost'] ? ' class="error"' : ''; ?>>
                 <th width="25%">数据库服务器:</th>
-                <td width="35%"><input type="text" class="textbox" name="dbhost" value="localhost" /></td>
+                <td width="35%"><input type="text" class="textbox" name="dbhost" value="<?php echo isset($_POST['dbhost']) ? $_POST['dbhost'] : 'localhost'; ?>" /></td>
                 <td width="40%" class="remark"><?php echo $tpl['remarks']['dbhost']; ?></td>
             </tr>
             <tr<?php echo $tpl['errors']['dbname'] ? ' class="error"' : ''; ?>>
                 <th>数据库名:</th>
-                <td><input type="text" class="textbox" name="dbname" value="" /></td>
+                <td><input type="text" class="textbox" name="dbname" value="<?php echo isset($_POST['dbname']) ? $_POST['dbname'] : ''; ?>" /></td>
                 <td class="remark"><?php echo $tpl['remarks']['dbname']; ?></td>
             </tr>
             <tr<?php echo $tpl['errors']['dbuser'] ? ' class="error"' : ''; ?>>
                 <th>数据库用户名:</th>
-                <td><input type="text" class="textbox" name="dbuser" value="" /></td>
+                <td><input type="text" class="textbox" name="dbuser" value="<?php echo isset($_POST['dbuser']) ? $_POST['dbuser'] : ''; ?>" /></td>
                 <td class="remark"><?php echo $tpl['remarks']['dbuser']; ?></td>
             </tr>
             <tr>
                 <th>数据库密码:</th>
-                <td><input type="text" class="textbox" name="dbpass" value="" /></td>
+                <td><input type="text" class="textbox" name="dbpass" value="<?php echo isset($_POST['dbpass']) ? $_POST['dbpass'] : ''; ?>" /></td>
                 <td class="remark"><?php echo $tpl['remarks']['dbpass']; ?></td>
             </tr>
             <tr>
                 <th>数据表前缀:</th>
-                <td><input type="text" class="textbox" name="tblpre" value="" /></td>
+                <td><input type="text" class="textbox" name="tblpre" value="<?php echo isset($_POST['tblpre']) ? $_POST['tblpre'] : ''; ?>" /></td>
                 <td class="remark"><?php echo $tpl['remarks']['tblpre']; ?></td>
             </tr>
             </table>
+
+            <br /><br />
 
             <table class="dbcreate-table">
             <tr>
@@ -110,28 +122,39 @@
             </tr>
             <tr<?php echo $tpl['errors']['admin_username'] ? ' class="error"' : ''; ?>>
                 <th width="25%">管理员账号:</th>
-                <td width="35%"><input type="text" class="textbox" name="admin_username" value="administrator" /></td>
+                <td width="35%"><input type="text" class="textbox" name="admin_username" value="<?php echo isset($_POST['admin_username']) ? $_POST['admin_username'] : 'administrator'; ?>" /></td>
                 <td width="40%" class="remark"><?php echo $tpl['remarks']['admin_username']; ?></td>
             </tr>
             <tr>
                 <th>管理员密码:</th>
-                <td><input type="text" class="textbox" name="admin_password" value="" /></td>
+                <td><input type="text" class="textbox" name="admin_password" value="<?php echo isset($_POST['admin_password']) ? $_POST['admin_password'] : ''; ?>" /></td>
                 <td class="remark"><?php echo $tpl['remarks']['admin_password']; ?></td>
             </tr>
-            <tr>
+            <tr<?php echo $tpl['errors']['admin_name'] ? ' class="error"' : ''; ?>>
                 <th>管理员姓名:</th>
-                <td><input type="text" class="textbox" name="admin_name" value="" /></td>
+                <td><input type="text" class="textbox" name="admin_name" value="<?php echo isset($_POST['admin_name']) ? $_POST['admin_name'] : ''; ?>" /></td>
                 <td class="remark"><?php echo $tpl['remarks']['admin_name']; ?></td>
             </tr>
             </table>
+
+            <br />
         <?php } ?>
 
 
         <div class="install-main-body-line"></div>
 
         <div class="install-main-body-acts">
-            <input type="submit" name="submit" class="next" value="下一步" />
-            <input type="hidden" name="step" value="<?php echo $tpl['step']; ?>">
+            <?php if( strpos($tpl['acts'],'r') !== false ){?>
+                <input type="button" class="button" value="重  置" onclick="window.location.href = window.location.href;" />
+            <?php }?>
+
+            <?php if( strpos($tpl['acts'],'p') !== false ){?>
+                <input type="button" class="button" value="上一步" onclick="window.location.search = 'step=<?php echo $tpl['step']-1;?>';"/>
+            <?php }?>
+
+            <?php if( strpos($tpl['acts'],'n') !== false ){?>
+            <input type="submit" name="submit" class="button" value="下一步" />
+            <?php }?>
         </div>
 
     </form>
