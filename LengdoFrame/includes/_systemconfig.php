@@ -25,12 +25,12 @@ $_CFG['tblpre'] = '';       //数据表名称前辍
 // - 自定义目录路径信息(保留末尾斜杠)
 /* ----------------------------------------------------------------------- */
 
-/* 上传的图片 */
-$_CFG['DIR_UPLOAD_IMG'] = $_CFG['DIR_ROOT'] . 'upload/images/';
-$_CFG['URL_UPLOAD_IMG'] = $_CFG['URL_ROOT'] . 'upload/images/';
+/* 上传的文件夹 */
+// $_CFG['DIR_UPLOAD'] = $_CFG['DIR_ROOT'] . 'upload/';
+// $_CFG['URL_UPLOAD'] = $_CFG['URL_ROOT'] . 'upload/';
 
-/* 在线编辑器 */
-$_CFG['DIR_JSEDITOR_UPLOAD'] = $_CFG['DIR_ROOT'] . 'upload/jseditor/';
-$_CFG['URL_JSEDITOR_UPLOAD'] = $_CFG['URL_ROOT'] . 'upload/jseditor/';
-$_CFG['URL_JSEDITOR_FOLDER'] = $_CFG['URL_ROOT'] . 'js/fckeditor/';
+/* JS编辑器文件夹 */
+// $_CFG['DIR_JSEDITOR_UPLOAD'] = $_CFG['DIR_ROOT'] . 'upload/jseditor/';
+// $_CFG['URL_JSEDITOR_UPLOAD'] = $_CFG['URL_ROOT'] . 'upload/jseditor/';
+// $_CFG['URL_JSEDITOR_FOLDER'] = $_CFG['URL_ROOT'] . 'js/fckeditor/';
 ?>
