@@ -33,7 +33,7 @@ require_once( str_replace('includes/init.php', '', str_replace("\\", '/', __FILE
 require_once($_CFG['DIR_INC'] . 'func.php');
 
 /* 加载前台公用函数 */
-@include($_CFG['DIR_INC'] . 'systemfunc.php');
+@include_once($_CFG['DIR_INC'] . 'systemfunc.php');
 
 /* 加载Mysql数据库类 */
 require_once($_CFG['DIR_CLS'] . 'mysql.class.php');

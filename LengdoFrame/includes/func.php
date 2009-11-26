@@ -152,30 +152,6 @@ function trim_right( $str )
 }
 
 /**
- * 文件名追加字符
- *
- * @params str  $fname   文件名称或者文件路径，带扩展名
- * @params str  $append  要追加的字符
- *
- * @return str  
- */
-function fname_append( $fname, $append )
-{
-    /* 初始化文件名 */
-    $fname = trim($fname);
-
-    /* 无效的文件名 */
-    if( !preg_match('/\.[a-zA-Z0-9]+$/', $fname) ) return $fname;
-
-    /* 分解文件名 */
-    $arr = explode('.', $fname);
-    $arr[count($arr)-2] .= $append;
-
-    /* 重组文件名并返回 */
-    return implode('.', $arr);
-}
-
-/**
  * 获取数据表名（加前辍处理）
  *
  * @params str  $tname   数据表名

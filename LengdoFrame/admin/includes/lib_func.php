@@ -75,7 +75,7 @@ function upload_pic( $folder, $_file )
         $filename = date( 'Ym_d_His', time() ). $ext;
     }
 
-    /* 转移文件 */
+    /* 移动文件 */
     if( move_uploaded_file($_file['tmp_name'], $folder.$filename) ){
         return $filename;
     }else{
@@ -100,43 +100,6 @@ function delete_pic( $folder, $filename )
     return @unlink($folder.$filename);
 }
 
-/**
- * 缩放图片
- *
- * @params str  $folder     源文件所在文件夹路径
- * @params str  $sfilename  源文件名(相对$folder的路径)
- * @params str  $dfilename  目标文件名(相对$folder的路径 - 如果为空则使用$sfile构建目标文件名，文件名追加'_thumb')
- * @params mix  $width      目标宽度，宽度类型为float时，将采用百分比缩放图片
- * @params int  $height     目标高度，如果为null，那么将采用宽度的缩放比例（仅当$img_w类型为int时）
- *
- * @return str  返回文件名(相对于$folder的路径)
- */
-function thumb_pic( $folder, $sfilename, $dfilename = '', $width = 0.5, $height = null )
-{
-    /* 增加文件夹路径末尾斜干 */
-    $folder = rtrim(str_replace("\\","/",$folder), '/').'/';
-
-    /* 源文件存在检查 */
-    if( !is_file($folder.$sfilename) ){
-        return '';
-    }
-
-    /* 初始化目标文件路径 */
-    if( !trim($dfilename) ){
-        $dfilename = fname_append($sfilename, '_thumb');
-    }
-
-    /* 加载辅助库 */
-    require_once($_CFG['DIR_CLS'] . 'image.class.php');
-
-    $img = new Image();
-
-    $img->setSrcImg($folder.$sfilename);
-    $img->setDstImg($folder.$dfilename);
-    $img->createImg($width, $height);
-
-    return $dfilename;
-}
 
 /**
  * 获得排序图像HTML以及访问这个HTML的变量名

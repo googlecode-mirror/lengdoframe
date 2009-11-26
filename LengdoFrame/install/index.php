@@ -248,7 +248,7 @@ elseif( $_REQUEST['act'] == 'complete' ){
 
 
 /* 加载视图 */
-include('index.html')
+include('tpl/index.html')
 ?>
 
 <?php
