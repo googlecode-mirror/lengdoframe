@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------
-// | LengdoFrame - 图像验证码类
+// | LengdoFrame - 图像验证码类 v1.0.0
 // +----------------------------------------------------------------------
 // | Copyright (c) 2009 http://lengdo.com All rights reserved.
 // +----------------------------------------------------------------------
@@ -32,12 +32,12 @@ class VCode{
     /**
      * 构造函数
      *
-     * @params int   $width   图像宽度
-     * @params int   $height  图像高度
-     * @params int   $fonts   字体属性
-     *               $fonts['len']   字体个数
-     *               $fonts['type']  字体类型( ENL小写，ENU大写，EN单词，NUM数字 )
-     *               $fonts['size']  字体大小
+     * @params int  $width   图像宽度
+     * @params int  $height  图像高度
+     * @params int  $fonts   字体属性
+     *         int           $fonts['len']   字体个数
+     *         str           $fonts['type']  字体类型( ENL小写，ENU大写，EN单词，NUM数字 )
+     *         int           $fonts['size']  字体大小
      */
     function VCode( $width = 60, $height = 20, $fonts = array() )
     {
@@ -52,7 +52,7 @@ class VCode{
         $this->iFontLen  = intval($fonts['len'])  ? intval($fonts['len'])  : 4;
         $this->iFontSize = intval($fonts['size']) ? intval($fonts['size']) : 15;
         $this->sFontType = in_array($fonts['type'], array('ENL','ENU','EN','NUM')) ? $fonts['type'] : 'NUM';
-        $this->sFontFile = DIR_ROOT . 'includes/font/candarai.ttf';
+        $this->sFontFile = DIR_ROOT . 'class/candarai.ttf';
     }
 
     /**

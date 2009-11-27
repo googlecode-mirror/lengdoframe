@@ -1,8 +1,0 @@
-﻿功能简介：
-    弹出Wnd窗口查看图片
-
-
-使用方法：
-    1. 拷贝 code.js 中的代码到 /js/system.js 或者 /admin/js/system.js
-    2. 拷贝 anime.js 中的代码到 /js/system.js 或者 /admin/js/system.js
-    3. 使用 wnd_image_view(..) 函数即可调用图片查看窗口

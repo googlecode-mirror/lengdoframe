@@ -1,0 +1,11 @@
+﻿功能简介：
+    弹出窗口查看图片
+
+
+加载使用：
+    1. 拷贝 code.js 中的代码到 /js/system.js 或者 /admin/js/system.js
+    2. 在程序中调用 wnd_image_view(..) 函数使用
+
+
+联合使用：
+   1. 加载 Anime 组件即可以滑动图片查看
