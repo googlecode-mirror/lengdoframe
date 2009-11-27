@@ -11,7 +11,7 @@
 // $Id$
 
 
-class FormControl{
+class Formc{
     /**
      * 表单控件 - 下拉列表
      *
@@ -78,7 +78,7 @@ class FormControl{
     /**
      * 表单控件 - 复选框
      *
-     * @params str  $name  控件名称
+     * @params str  $name  复选框名称
      * @params arr  $item  复选框项属性
      *         mix         $item['...']   - 复选框的HTML标签属性
      *         str         $item['text']  - 复选框文本
@@ -129,8 +129,12 @@ class FormControl{
     /**
      * 表单控件 - 复选框组(包裹Table)
      *
-     * @params str  $name     控件名称
+     * @params str  $name     复选框名称
      * @params arr  $items    复选框项属性
+     *         mix            $items[]['...']   - 复选框的HTML标签属性
+     *         str            $items[]['text']  - 复选框文本
+     *         arr            $items[]['label'] - 复选框标签
+     *         mix                                $items[]['label']['...'] - 复选框标签的HTML标签属性
      * @params arr  $attribs  复选框组属性
      *         int            $attribs['len']     - 几个复选框为一行
      *         arr            $attribs['checked'] - 被选中的值
@@ -185,7 +189,7 @@ class FormControl{
     /**
      * 表单控件 - 单选框
      *
-     * @params str  $name  控件名称
+     * @params str  $name  单选框称
      * @params arr  $item  单选框项属性
      *         mix         $item['...']   - 单选框的HTML标签属性
      *         str         $item['text']  - 单选框文本
@@ -235,8 +239,12 @@ class FormControl{
     /**
      * 表单控件 - 单选框组(包裹Table)
      *
-     * @params str  $name     控件名称
+     * @params str  $name     单选框名称
      * @params arr  $items    单选框项
+     *         mix            $items[]['...']   - 单选框的HTML标签属性
+     *         str            $items[]['text']  - 单选框文本
+     *         arr            $items[]['label'] - 单选框标签
+     *         mix                                $items[]['label']['...'] - 单选框标签的HTML标签属性
      * @params arr  $attribs  单选框属性
      *         int            $attribs['len']     - 几个单选框为一行
      *         str            $attribs['checked'] - 被选中的值(字符或整型，程序最后自动转为字符比较)

@@ -32,9 +32,6 @@ $_CFG['dbuser'] = 'root';           //数据库登陆帐号
 $_CFG['dbpass'] = '';               //数据库登陆密码
 $_CFG['tblpre'] = '';               //数据表名称前辍
 
-$_CFG['dbpcon'] = false;            //数据库持续连接
-$_CFG['dbcset'] = 'utf8';           //数据库连接字符集
-
 
 /* ----------------------------------------------------------------------- */
 // - 环境配置
@@ -64,11 +61,15 @@ $_CFG['URL_ADMIN'] = URL_ROOT.'admin/';
 // - 子级路径配置
 /* ----------------------------------------------------------------------- */
 
-/* 前台文件夹路径 */
-$_CFG['DIR_TPL'] = isset($_CFG['DIR_TPL']) ? $_CFG['DIR_TPL'] : $_CFG['DIR_ROOT'].'tpl/';
-$_CFG['DIR_LNG'] = isset($_CFG['DIR_CLS']) ? $_CFG['DIR_CLS'] : $_CFG['DIR_ROOT'].'lang/';
+/* 公用文件夹路径 */
 $_CFG['DIR_CLS'] = isset($_CFG['DIR_CLS']) ? $_CFG['DIR_CLS'] : $_CFG['DIR_ROOT'].'class/';
 $_CFG['DIR_INC'] = isset($_CFG['DIR_INC']) ? $_CFG['DIR_INC'] : $_CFG['DIR_ROOT'].'includes/';
+
+
+/* 前台文件夹路径 */
+$_CFG['DIR_TPL'] = isset($_CFG['DIR_TPL']) ? $_CFG['DIR_TPL'] : $_CFG['DIR_ROOT'].'tpl/';
+$_CFG['DIR_LNG'] = isset($_CFG['DIR_LNG']) ? $_CFG['DIR_LNG'] : $_CFG['DIR_ROOT'].'lang/';
+
 
 /* 后台文件夹路径 */
 $_CFG['DIR_ADMIN_TPL']   = isset($_CFG['DIR_ADMIN_TPL'])   ? $_CFG['DIR_ADMIN_TPL']   : $_CFG['DIR_ADMIN'].'tpl/';

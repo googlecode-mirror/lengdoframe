@@ -13,7 +13,7 @@
 var TableAct = {
     /**
      * 保护色
-     * 表格单元着色最高等级颜色，可以防止随意被修改
+     * 保护单元格颜色不被 choiceHiLight() 函数修改
      */
     aProtectColor : ['#FFFCC1','RGB(255, 252, 193)'],
 
@@ -193,14 +193,14 @@ var TableAct = {
             if( obj.tagName.toLowerCase() != elabel.toLowerCase() )return ;
             
             /* 高亮对象 */
-            obj = TableAct._rec(obj, label);
-
-            /* 设置背景色，过滤保护色 */
-            if( !obj.style.backgroundColor || 
-                !(obj.style.backgroundColor.toUpperCase() == TableAct.aProtectColor[0] || 
-                  obj.style.backgroundColor.toUpperCase() == TableAct.aProtectColor[1] ) 
-            ){
-                obj.style.backgroundColor = obj.style.backgroundColor == '' ? color : '';
+            if( obj = TableAct._rec(obj,label) ){
+                /* 设置背景色，过滤保护色 */
+                if( !obj.style.backgroundColor || 
+                    !(obj.style.backgroundColor.toUpperCase() == TableAct.aProtectColor[0] || 
+                      obj.style.backgroundColor.toUpperCase() == TableAct.aProtectColor[1] ) 
+                ){
+                    obj.style.backgroundColor = obj.style.backgroundColor == '' ? color : '';
+                }
             }
         }
     },
@@ -220,12 +220,12 @@ var TableAct = {
 
         table.onmousemove = function(e){
             var obj = window.ActiveXObject ? window.event.srcElement : e.target;
-            try{ TableAct._rec(obj,label).bgColor = color; }catch(e){}
+            if( obj = TableAct._rec(obj,label) ) obj.bgColor = color;
         }
 
         table.onmouseout = function(e){
             var obj = window.ActiveXObject ? window.event.srcElement : e.target;
-            try{ TableAct._rec(obj,label).bgColor = ''; }catch(e){}
+            if( obj = TableAct._rec(obj,label) ) obj.bgColor = '';
         }
     },
 
@@ -243,8 +243,9 @@ var TableAct = {
         /* 初始化参数 */
         label = label == 'td' ? 'td' : 'tr';
         color = typeof(color) == 'string' ? (color=='protect'?this.aProtectColor[0]:color) : '#FFFCC7';
-
-        try{ TableAct._rec(obj,label).style.backgroundColor = color; }catch(e){}
+        
+        /* 着色 */
+        if( obj = TableAct._rec(obj,label) ) obj.style.backgroundColor = color;
     },
 
 

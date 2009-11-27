@@ -37,7 +37,7 @@ if( $_REQUEST['act'] == 'backup' ){
     }
 
     /* HTML 控件 */
-    $formc = new FormControl();
+    $formc = new Formc();
     $tpl['cbg_custom_table'] = $formc->cbg('custom_tables[]', $items);
 
     /* 初始化页面信息 */
@@ -395,9 +395,9 @@ function valid_dbbackup_folder()
     }
     elseif( $mask < 7 ){
         $msg = $_LANG['fail_dbbackup_fdpriv'];
-        if( ($mask&1) < 1 ) $tpl['error'] .= $_LANG['cannot_read']  .', ';
-        if( ($mask&2) < 1 ) $tpl['error'] .= $_LANG['cannot_write'] .', ';
-        if( ($mask&4) < 1 ) $tpl['error'] .= $_LANG['cannot_edit']  .'.';
+        if( ($mask&1) < 1 ) $tpl['error'] .= $_LANG['file_unread']  .', ';
+        if( ($mask&2) < 1 ) $tpl['error'] .= $_LANG['file_unwrite'] .', ';
+        if( ($mask&4) < 1 ) $tpl['error'] .= $_LANG['file_unedit']  .'.';
 
         $msg .= '<br />' . $_CFG['DIR_DB_DUMPSQL'];
     }

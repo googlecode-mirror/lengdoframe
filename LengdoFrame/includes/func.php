@@ -65,10 +65,10 @@ function f( $value, $modify, $attrib = '' )
         /* html中的JS字符常量编码(以单引号为边界). 编码( " ) 转义( ' => \' ) */
         case 'hstr': $value = addslashes(strtr( $value, array('"'=>'&quot;')) ); break;
 
-        /* 截取字符, 默认截取80个字 */
+        /* 截取字符。默认截取80个字 */
         case 'truncate': $value = sub_str($value, (intval($attrib)?intval($attrib):80), true); break;
 
-        /* 为变量加颜色, 格式化成FONT. (默认红色) */
+        /* 为变量加颜色，格式化成FONT。默认红色 */
         case 'color': $value = '<font color="'. ($attrib?$attrib:'#ff0000') .'">'. $value .'</font>'; break;
 
         /* 变量默认值( '', false, 0, '0', null, array() ) */
@@ -170,10 +170,10 @@ function tname( $tname )
 /* ----------------------------------------------------------------------- */
 
 /**
- * 构建DDL - 采用$_DBD作为数据
+ * 构建下拉列表 - 采用$_DBD作为数据
  *
  * @params str  $dbd       $_DBD数组的下标
- * @params str  $name      DDL的名字和ID
+ * @params str  $name      下拉列表的名称和ID
  * @params str  $selected  选中的值
  * @params arr  $appends   追加到顶部的下拉项
  * @params arr  $filter    需要过滤掉的Key值
@@ -207,17 +207,17 @@ function ddl_dbd( $dbd, $name, $selected = '', $appends = array(), $attribs = ar
         $items[] = array( 'value'=>$key, 'text'=>f($text,'html') );
     }
 
-    $formc = new FormControl();
+    $formc = new Formc();
     return $formc->ddl( $name, $items, array_merge(array('selected'=>$selected),$attribs) );
 }
 
 /**
- * 构建DDL - 采用数据库作为数据
+ * 构建下拉列表 - 采用数据库作为数据
  *
- * @params str  $name      下拉框的名字和ID
+ * @params str  $name      下拉列表的名称和ID
  * @params str  $table     数据库表
- * @params arr  $fields    作为DDL项的值和文本的字段 array( '$value_fields' => '$text_fields' )
- * @params str  $where     SQL WHERE条件
+ * @params arr  $fields    作为下拉列表项的值和文本的字段：array( '$value_fields' => '$text_fields' )
+ * @params str  $where     SQL中的WHERE条件
  * @params str  $selected  选中的值
  * @params arr  $appends   追加到顶部的下拉项
  * @params arr  $filter    需要过滤掉的Key值
@@ -245,7 +245,7 @@ function ddl_db( $name, $table, $fields, $where = '', $selected = '', $appends =
     $vfd  = key($fields);
     $tfd  = $fields[$vfd];
 
-    $sql  = "SELECT `{$vfd}`, `{$tfd}` FROM `{$table}`". ( empty($where) ? '' : (' WHERE '.$where) );
+    $sql  = "SELECT `{$vfd}`, `{$tfd}` FROM `{$table}`". (empty($where) ? '' : (' WHERE '.$where));
     $rows = $GLOBALS['db']->getAll($sql);
 
     foreach( $rows AS $r ){
@@ -255,15 +255,15 @@ function ddl_db( $name, $table, $fields, $where = '', $selected = '', $appends =
         $items[] = array( 'value'=>$r[$vfd], 'text'=>f($r[$tfd],'html') );
     }
 
-    $formc = new FormControl();
+    $formc = new Formc();
     return $formc->ddl( $name, $items, array_merge(array('selected'=>$selected),$attribs) );
 }
 
 /**
- * 构建RADIO - 采用$_DBD作为数据
+ * 构建单选框 - 采用$_DBD作为数据
  *
  * @params str  $dbd      $_DBD数组的下标
- * @params str  $name     单选框的名字
+ * @params str  $name     单选框的名称
  * @params int  $checked  要选中的值
  * @params arr  $filter   需要过滤掉的Key值
  * @params bol  $contain  Key值的过滤方式 - true表示包含，false表示不包含
@@ -273,7 +273,7 @@ function radio_dbd( $dbd, $name, $checked, $filter = array(), $contain = false )
     global $_DBD;
 
     $html  = '';
-    $formc = new FormControl();
+    $formc = new Formc();
 
     foreach( $_DBD[$dbd] AS $key=>$text ){
         if( $contain == true && !in_array($key,$filter) ) continue;
@@ -286,7 +286,7 @@ function radio_dbd( $dbd, $name, $checked, $filter = array(), $contain = false )
 }
 
 /**
- * 构建CB - 采用$_DBD作为数据
+ * 构建复选框 - 采用$_DBD作为数据
  *
  * @params str  $dbd      $_DBD数组的下标
  * @params arr  $checked  要选中的值
@@ -304,7 +304,7 @@ function cb_dbd( $dbd, $checked = array(), $filter = array(), $contain = false )
 
     /* 初始化 */
     $html  = '';
-    $formc = new FormControl();
+    $formc = new Formc();
 
     foreach( $_DBD[$dbd] AS $name=>$text ){
         if( $contain == true && !in_array($name,$filter) ) continue;

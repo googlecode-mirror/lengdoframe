@@ -1,5 +1,5 @@
 <?php if( $tpl['_body'] == 'btn' ){?>
-    <div class="btn" onmouseover="tbtn_init(this)" onclick="<?php echo $tpl['info']['attribs']['onclick']; ?>" title="<?php echo $tpl['info']['attribs']['title']; ?>">
+    <div class="btn" onmouseover="titleact_init(this)" onclick="<?php echo $tpl['info']['attribs']['onclick']; ?>" title="<?php echo $tpl['info']['attribs']['title']; ?>">
         <div class="l"><span class="side"></span></div>
         <div class="m"><i class="<?php echo $tpl['info']['icon']; ?>"></i><span><?php echo $tpl['info']['text']; ?>&nbsp;</span></div>
         <div class="r"><span class="side"></span></div>
@@ -7,7 +7,7 @@
 
 
 <?php }elseif( $tpl['_body'] == 'cdd' ){?>
-    <div class="btn" onmouseover="tbtn_init(this)" onclick="tbtn_cdd(event,'tbtn_ddl_<?php echo $tpl['info']['id']; ?>')" title="<?php echo $tpl['info']['attribs']['title']; ?>">
+    <div class="btn" onmouseover="titleact_init(this)" onclick="titleact_cdd(event,'titleact_ddl_<?php echo $tpl['info']['id']; ?>')" title="<?php echo $tpl['info']['attribs']['title']; ?>">
         <div class="l"><span class="side"></span></div>
         <div class="m">
             <i class="<?php echo $tpl['info']['icon']; ?>"></i>
@@ -15,7 +15,7 @@
         </div>
         <div class="r"><span class="ddl"></span><span class="side"></span></div>
         <br /><br />
-        <div class="ddl" id="tbtn_ddl_<?php echo $tpl['info']['id']; ?>" style="width:<?php echo $tpl['info']['ddlwidth']; ?>px;">
+        <div class="ddl" id="titleact_ddl_<?php echo $tpl['info']['id']; ?>" style="width:<?php echo $tpl['info']['ddlwidth']; ?>px;">
             <?php foreach( $tpl['items'] AS $r ){?>
             <a href="javascript:void(0)" onclick="<?php echo $r['onclick']; ?>">
                 <?php if($r['icon']){ echo '<i class="'. $r['icon'] .'"></i>'; } ?>
@@ -27,18 +27,18 @@
 
 
 <?php }elseif( $tpl['_body'] == 'cddl' ){?>
-    <div class="btn" onmouseover="tbtn_init_cddl(this)" onclick="<?php echo $tpl['info']['attribs']['onclick']; ?>">
-        <div class="l" onmousedown="tbtn_cddl_ldown(event,this)" title="<?php echo $tpl['info']['attribs']['title']; ?>"><span class="side"></span></div>
-        <div class="m" onmousedown="tbtn_cddl_ldown(event,this)" title="<?php echo $tpl['info']['attribs']['title']; ?>">
+    <div class="btn" onmouseover="titleact_init_cddl(this)" onclick="<?php echo $tpl['info']['attribs']['onclick']; ?>">
+        <div class="l" onmousedown="titleact_cddl_ldown(event,this)" title="<?php echo $tpl['info']['attribs']['title']; ?>"><span class="side"></span></div>
+        <div class="m" onmousedown="titleact_cddl_ldown(event,this)" title="<?php echo $tpl['info']['attribs']['title']; ?>">
             <i class="<?php echo $tpl['info']['icon']; ?>"></i>
             <span><?php echo $tpl['info']['text']; ?>&nbsp;</span>
         </div>
-        <div class="r" onmousedown="tbtn_cddl_rdown(event,this)" onclick="tbtn_cdd(event,'tbtn_ddl_<?php echo $tpl['info']['id']; ?>')">
+        <div class="r" onmousedown="titleact_cddl_rdown(event,this)" onclick="titleact_cdd(event,'titleact_ddl_<?php echo $tpl['info']['id']; ?>')">
             <span class="ddl"></span>
             <span class="side"></span>
         </div>
         <br /><br />
-        <div class="ddl" id="tbtn_ddl_<?php echo $tpl['info']['id']; ?>" style="width:<?php echo $tpl['info']['ddlwidth']; ?>px;">
+        <div class="ddl" id="titleact_ddl_<?php echo $tpl['info']['id']; ?>" style="width:<?php echo $tpl['info']['ddlwidth']; ?>px;">
             <?php foreach( $tpl['items'] AS $r ){?>
             <a href="javascript:void(0)" onclick="<?php echo $r['onclick']; ?>">
                 <?php if( $r['icon'] ) echo '<i class="'. $r['icon'] .'"></i>'; ?>
@@ -50,7 +50,7 @@
 
 
 <?php }elseif( $tpl['_body'] == 'mdd' ){?>
-    <div class="btn" onmouseover="tbtn_init_mdd(this,'tbtn_ddl_<?php echo $tpl['info']['id']; ?>')" title="<?php echo $tpl['info']['attribs']['title']; ?>">
+    <div class="btn" onmouseover="titleact_init_mdd(this,'titleact_ddl_<?php echo $tpl['info']['id']; ?>')" title="<?php echo $tpl['info']['attribs']['title']; ?>">
         <div class="l"><span class="side"></span></div>
         <div class="m">
             <i class="<?php echo $tpl['info']['icon']; ?>"></i>
@@ -58,7 +58,7 @@
         </div>
         <div class="r"><span class="ddl"></span><span class="side"></span></div>
         <br /><br />
-        <div class="ddl" id="tbtn_ddl_<?php echo $tpl['info']['id']; ?>" style="width:<?php echo $tpl['info']['ddlwidth']; ?>px;">
+        <div class="ddl" id="titleact_ddl_<?php echo $tpl['info']['id']; ?>" style="width:<?php echo $tpl['info']['ddlwidth']; ?>px;">
             <?php foreach( $tpl['items'] AS $r ){?>
             <a href="javascript:void(0)" onclick="<?php echo $r['onclick']; ?>">
                 <?php if( $r['icon'] ) echo '<i class="'. $r['icon'] .'"></i>'; ?>

@@ -24,7 +24,7 @@ class Mysql
     /* Mysql版本 */
     var $sVersion = '';
 
-    /* 最后的错误消息 */
+    /* 最新错误消息 */
     var $aError = array();
 
 
@@ -39,11 +39,6 @@ class Mysql
      * @params bol  $pconnect  持续连接，默认false
      */
     function __construct( $dbhost, $dbuser, $dbpass, $dbname = '', $charset = 'utf8', $pconnect = false )
-    {
-        $this->MySql($dbhost, $dbuser, $dbpass, $dbname, $charset, $pconnect, $link);
-    }
-
-    function MySql( $dbhost, $dbuser, $dbpass, $dbname = '', $charset = 'utf8', $pconnect = false )
     {
         $this->connect($dbhost, $dbuser, $dbpass, $dbname, $charset, $pconnect);
     }
@@ -178,7 +173,7 @@ class Mysql
                 echo "<tr><td valign='top'><b>{$k}: </b><td>{$v}<td></tr>";
             }
 
-            echo "</table>";
+            echo '</table>';
         }
 
         exit;
@@ -356,7 +351,7 @@ class Mysql
      */
     function delete( $table, $where )
     {
-        return $this->query('DELETE FROM `'. $table . '` WHERE '. $where);
+        return $this->query('DELETE FROM `'. $table .'` WHERE '. $where);
     }
 }
 ?>

@@ -70,11 +70,11 @@ var Wnds = {
  *          str  configs.title       窗口标题
  *          int  configs.width       窗口宽度。  默认：'200px' 注：客户区宽度=窗口宽度-2
  *          int  configs.height      客户区高度。默认：'auto'
- *          int  configs.action      标题栏的操作按钮 000(最小化，最大化，关闭)，默认001. 注：前辍0省略
- *          str  configs.control     控制区类型(ok/cannel/empty/custom/default)，默认default. 注：通过&组合按钮
+ *          int  configs.action      标题栏的操作按钮 000(最小化，最大化，关闭)，默认001.                注：前辍0省略
+ *          str  configs.control     控制区类型(ok/cannel/empty/custom/default)，默认default.            注：通过&组合按钮
  *          obj  configs.buttons     控制区自定义按钮集。[{'index':str, 'text':str, 'click':fun}]
- *          int  configs.overlay     是否使用遮掩层。false表示不显示，0-100表示透明度
- *          int  configs.overflow    窗口溢出时滚动条 0000(scroll-x，scroll-y，hidden-x，hidden-y). 注：前辍0省略
+ *          int  configs.overlay     遮掩层透明度。false表示不显示，0-100表示透明度
+ *          int  configs.overflow    窗口溢出时滚动条，默认0000(scroll-x，scroll-y，hidden-x，hidden-y). 注：前辍0省略
  */
 function Wnd( id, callbacks, configs ){
     /* 初始化参数 - 配置 */
@@ -82,7 +82,7 @@ function Wnd( id, callbacks, configs ){
 
     this.sId       = id;
     this.sTitle    = typeof(configs.title)    == 'string' ? configs.title : '';
-    this.sWidth    = typeof(configs.width)    == 'number' ? configs.width  + 'px' : '200px';
+    this.sWidth    = typeof(configs.width)    == 'number' ? configs.width + 'px' : '200px';
     this.sHeight   = typeof(configs.height)   == 'number' ? configs.height + 'px' : 'auto';
     this.iAction   = typeof(configs.action)   == 'number' ? configs.action : 1;
     this.aControl  = typeof(configs.control)  == 'string' ? configs.control.split('&') : ['default'];
@@ -123,7 +123,7 @@ function Wnd( id, callbacks, configs ){
 /* ------------------------------------------------------ */
 
 /**
- * 设置/返回z-index
+ * 设置/返回窗口z-index
  *
  * @params mix  zindex  int表示设置z-index，undefined表示返回z-index
  *
@@ -143,22 +143,22 @@ Wnd.prototype.zindex = function( zindex ){
 }
 
 /**
- * 设置/返回overlay透明度
+ * 设置/返回遮掩层透明度
  *
  * @params mix  overlay  int表示设置透明度，false表示隐掉overlay，undefined表示返回透明度
  *
  * @return int
  */
 Wnd.prototype.overlay = function( overlay ){
-    /* 返回overlay透明度 */
+    /* 返回遮掩层透明度 */
     if( typeof(overlay) == 'undefined' ){
         return this.iOverlay;
     }
 
-    /* overlay存在检查 */
+    /* 遮掩层存在检查 */
     if( !this.oOverlay ) return ;
 
-    /* 设置overlay透明度 */
+    /* 设置遮掩层透明度 */
     if( overlay === false ){
         this.oOverlay.style.display = 'none';
     }
@@ -172,6 +172,28 @@ Wnd.prototype.overlay = function( overlay ){
 
     /* 更新配置 */
     this.iOverlay = overlay;
+}
+
+/**
+ * 设置/返回窗口溢出时滚动条
+ *
+ * @params int  overflow  溢出时滚动显示情况
+ *                        xxxx(scroll-x，scroll-y，hidden-x，hidden-y). 注：前辍0省略
+ *
+ * @return int  xxxx
+ */
+Wnd.prototype.overflow = function( overflow ){
+    /* 返回溢出时滚动条显示情况 */
+    if( typeof(overflow) == 'undefined' ){
+        return this.iOverflow;
+    }
+
+    /* 设置滚动条 */
+    this.oClient.style.overflowX = parseInt(overflow%100/10) ? 'hidden' : (parseInt(overflow/1000) ? 'scroll' : '');
+    this.oClient.style.overflowY = overflow%10 ? 'hidden' : (parseInt(overflow%1000/100) ? 'scroll' : '');
+
+    /* 更新配置 */
+    this.iOverflow = overflow;
 }
 
 /**

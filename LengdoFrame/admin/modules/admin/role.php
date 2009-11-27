@@ -296,7 +296,7 @@ else{
 
         /* 删除操作 */
         if( ($r['rht'] - $r['lft']) > 1 ){
-            $del = "var self=this;wnd_confirm('{$_LANG[warn_roles_del]}',{'ok':function(){ListTable.del(self,{$r[role_id]},'";
+            $del = "var self=this;wnd_confirm('{$_LANG[warn_role_dels]}',{'ok':function(){ListTable.del(self,{$r[role_id]},'";
             $del.= f(sprintf($_LANG['spr_confirm_del'],$r['name']),'hstr');
             $del.= "')}})";
         }else{

@@ -31,8 +31,9 @@ function pager( $rows_page, $rows_total, $pages_group = 5 )
 	$pages_total = $pages_total <= 0 ? 1 : $pages_total;
 
 	/* 获得当前页 */
-    $cur = cur_page($rows_page, $rows_total, $page_param);
-    $url = rebuild_url();
+    $cur = pager_current($rows_page, $rows_total, $page_param);
+    $url = pager_url_rebuild();
+
 
     /* 构建HTML */
 
@@ -52,32 +53,32 @@ function pager( $rows_page, $rows_total, $pages_group = 5 )
 
     /* 第一页 */
     if( $beg > 1 ){
-        $_html .= '<a href="'. $url .'1" class="first">1</a>&nbsp;';
-        $_html .= '<a href="'. $url . ($cur-10<1?1:$cur-10) .')" class="first">..</a>&nbsp;';
+        $html .= '<a href="'. $url .'1" class="first">1</a>&nbsp;';
+        $html .= '<a href="'. $url . ($cur-10<1?1:$cur-10) .')" class="first">..</a>&nbsp;';
     }
 
     /* 分页组 */
     for( $i=$beg; $i <= $end; $i++ ){
         if( $i > $pages_total ) break;
 
-        $_html .= '<a href="'. $url . $i .'" class="';
-        $_html .= $i == $cur ? 'on' : 'num';
-        $_html .= '">'. $i .'</a>&nbsp;';
+        $html .= '<a href="'. $url . $i .'" class="';
+        $html .= $i == $cur ? 'on' : 'num';
+        $html .= '">'. $i .'</a>&nbsp;';
     }
 
     /* 尾页 */
     if( $end < $pages_total ){
-        $_html .= '<a href="'. $url . ($cur+10>$pages_total?$pages_total:$cur+10) .')" class="last">..</a>';
-        $_html .= '<a href="'. $url . $pages_total .'" class="last">'. $pages_total .'</a>';
+        $html .= '<a href="'. $url . ($cur+10>$pages_total?$pages_total:$cur+10) .')" class="last">..</a>';
+        $html .= '<a href="'. $url . $pages_total .'" class="last">'. $pages_total .'</a>';
     }
 
     /* 返回 */
-    return $_html;
+    return $html;
 }
 /**
  * 获取当前页号
  */
-function cur_page( $rows_page, $rows_total )
+function pager_current( $rows_page, $rows_total )
 {
 	/* 参数初始化 */
 	$pages_total = floor(($rows_total+$rows_page-1)/$rows_page);
@@ -95,7 +96,7 @@ function cur_page( $rows_page, $rows_total )
 /**
  * 重构当前URL
  */
-function rebuild_url()
+function pager_url_rebuild()
 {
     $url = $_SERVER['PHP_SELF'].'?';
 

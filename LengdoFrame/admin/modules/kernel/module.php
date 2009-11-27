@@ -209,7 +209,7 @@ else{
         /* 删除操作 */
         $attribs['del']['onclick'] = $r['lft'] == $r['rht'] - 1 ? 
                                      "ListTable.del(this,{$r[module_id]},'". f(sprintf($_LANG['spr_confirm_del'],$r['name']),'hstr') ."')" : 
-                                     "wnd_alert('{$_LANG[warn_modules_del]}'); return false;";
+                                     "wnd_alert('{$_LANG[warn_module_dels]}'); return false;";
 
         /* 绑定操作 */
         $tpl['all'][$i]['_acts'] .= format_module_acts($m_ac, $attribs, 'a');

@@ -1,0 +1,7 @@
+﻿功能简介：
+    上传图片
+
+
+加载使用： 
+    1. 拷贝 code.php 中的代码到 /includes/systemfunc.php 或者 /admin/includes/systemfunc.php
+    2. 在程序中调用 upload_pic(..) 函数使用
