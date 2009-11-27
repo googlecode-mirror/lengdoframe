@@ -22,7 +22,7 @@ function thumb_pic( $folder, $sfilename, $dfilename = '', $width = 0.5, $height 
 
     /* 初始化目标文件路径 */
     if( !trim($dfilename) ){
-        $dfilename = fname_append($sfilename, '_thumb');
+        $dfilename = thumb_pic_fname_append($sfilename, '_thumb');
     }
 
     /* 加载辅助库 */
@@ -38,14 +38,14 @@ function thumb_pic( $folder, $sfilename, $dfilename = '', $width = 0.5, $height 
 }
 
 /**
- * 文件名追加字符
+ * 图片文件名追加字符
  *
  * @params str  $fname   文件名称或者文件路径，带扩展名
  * @params str  $append  要追加的字符
  *
  * @return str  
  */
-function fname_append( $fname, $append )
+function thumb_pic_fname_append( $fname, $append )
 {
     /* 初始化文件名 */
     $fname = trim($fname);
