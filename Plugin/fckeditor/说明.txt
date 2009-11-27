@@ -2,8 +2,8 @@
     FCKeditor编辑器
 
 
-使用方法：
-    1. 拷贝 fckeditor.php 到 /includes/ 文件夹下
+加载使用：
+    1. 拷贝 fckeditor.php 文件到 /includes/ 文件夹下
     2. 拷贝 fckeditor 到 /js/ 文件夹下
 
     3. 在 /includes/systemconfig.php 配置编辑器的路径信息
@@ -11,6 +11,5 @@
           $_CFG['URL_JSEDITOR_UPLOAD'] = $_CFG['URL_ROOT'] . 'xxx/xxx';
           $_CFG['URL_JSEDITOR_FOLDER'] = $_CFG['URL_ROOT'] . 'js/fckeditor/';
 
-    4. 在程序中加载 fckeditor.php 
-
-    5. 构建 fckeditor 对象并使用其成员函数
+    4. 在程序中加载 /includes/fckeditor.php 文件
+    5. 在程序中构建 Fckeditor 对象调用其成员函数使用

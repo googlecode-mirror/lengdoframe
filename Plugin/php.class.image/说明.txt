@@ -4,4 +4,5 @@
 
 加载使用：
     1. 拷贝 image.class.php 文件到 /class/ 文件夹下
-    2. 在程序中构建 Image 对象并调用其成员函数使用
+    2. 在程序中加载 /class/image.class.php 文件
+    3. 在程序中构建 Image 对象并调用其成员函数使用
