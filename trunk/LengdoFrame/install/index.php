@@ -12,6 +12,14 @@
 
 
 /* ------------------------------------------------------ */
+// - 环境初始化
+/* ------------------------------------------------------ */
+
+/* SESSION启动 */
+session_start();
+
+
+/* ------------------------------------------------------ */
 // - 文件加载
 /* ------------------------------------------------------ */
 
@@ -25,8 +33,11 @@ require($_CFG['DIR_ADMIN_INC'].'lib_func.php');
 
 
 /* ------------------------------------------------------ */
-// - $_CFG数据
+// - 预定义常量和$_CFG数据
 /* ------------------------------------------------------ */
+
+define('SN_INSTALL', md5(__FILE__));
+
 $_CFG['DIR_ADMIN_PFILE']  = $_CFG['DIR_ADMIN_PFILE'];
 $_CFG['URL_ADMIN_PFILE']  = './admin/data/pfile/';
 
@@ -43,6 +54,7 @@ $_CFG['F_SYSTEMCONFIG_SRC'] = '../includes/_systemconfig.php';
 /* ------------------------------------------------------ */
 $_DBD['support'] = array('0'=>'<span class="no"><i></i>不支持</span>', '1'=>'<span class="yes"><i></i>支持</span>');
 $_DBD['filewrite'] = array('0'=>'<span class="no"><i></i>不可写</span>', '1'=>'<span class="yes"><i></i>可写</span>');
+$_DBD['fileexist'] = array('0'=>'<span class="no"><i></i>不存在</span>', '1'=>'<span class="yes"><i></i>存在</span>');
 $_DBD['filerename'] = array('0'=>'<span class="no"><i></i>不可重命名</span>', '1'=>'<span class="yes"><i></i>可重命名</span>');
 
 $_DBD['dberror_1007'] = '数据库 "%s" 已存在，请重新填写数据库名!';
@@ -64,9 +76,16 @@ $acts = array('envcheck', 'dbcreate', 'complete');
 $step = intval($_REQUEST['step']);
 $step = $step >= 1 && $step <= count($acts) ? $step : 1;
 
+/* 初始化SESSION */
+if( $step == 1 ) $_SESSION[SN_INSTALL] = array();
+
+/* 非法STEP */
+while( $step >= 2 && $_SESSION[SN_INSTALL][$step-1] != 'ok' ){
+    $step--;
+}
+
 /* 构建ACT */
 $_REQUEST['act'] = $acts[$step-1];
-
 
 
 /* ------------------------------------------------------ */
@@ -86,15 +105,23 @@ if( $_REQUEST['act'] == 'envcheck' ){
         /* 文件权限检测 */
         $filepriv = file_privilege($r['file']);
 
-        /* 重构数据 */
-        if( $r['type'] == 'dir' ){
-            $tpl['files'][$i]['need'] = $_DBD['filewrite'][1];
-            $tpl['files'][$i]['error'] = isset($_POST['submit']) ? 1*(($filepriv&2)==0) : 0;
-            $tpl['files'][$i]['filepriv'] = $_DBD['filewrite'][ (($filepriv&2)==2)*1 ];
+        /* 文件不存在 */
+        if( $filepriv == 0 ){
+            /* 重构数据 */
+            $tpl['files'][$i]['need'] = $_DBD['fileexist'][1];
+            $tpl['files'][$i]['error'] = isset($_POST['submit']) ? 1 : 0;
+            $tpl['files'][$i]['filepriv'] = $_DBD['fileexist'][0];
         }else{
-            $tpl['files'][$i]['need'] = ($filepriv&8) == 0 ? $_DBD['filerename'][1] : $_DBD['filewrite'][1];
-            $tpl['files'][$i]['error'] = isset($_POST['submit']) ? 1*(($filepriv&10)!=10) : 0;
-            $tpl['files'][$i]['filepriv'] = ($filepriv&8) == 0 ? $_DBD['filerename'][0] : $_DBD['filewrite'][ (($filepriv&2)==2)*1 ];
+            /* 重构数据 */
+            if( $r['type'] == 'dir' ){
+                $tpl['files'][$i]['need'] = $_DBD['filewrite'][1];
+                $tpl['files'][$i]['error'] = isset($_POST['submit']) ? 1*(($filepriv&2)==0) : 0;
+                $tpl['files'][$i]['filepriv'] = $_DBD['filewrite'][ (($filepriv&2)==2)*1 ];
+            }else{
+                $tpl['files'][$i]['need'] = ($filepriv&8) == 0 ? $_DBD['filerename'][1] : $_DBD['filewrite'][1];
+                $tpl['files'][$i]['error'] = isset($_POST['submit']) ? 1*(($filepriv&10)!=10) : 0;
+                $tpl['files'][$i]['filepriv'] = ($filepriv&8) == 0 ? $_DBD['filerename'][0] : $_DBD['filewrite'][ (($filepriv&2)==2)*1 ];
+            }
         }
 
         /* 统计错误 */
@@ -136,6 +163,9 @@ if( $_REQUEST['act'] == 'envcheck' ){
     /* ------------------------------------------------------ */
     if( isset($_POST['submit']) ){
         if( $tpl['error'] == 0 ){
+            /* 设置成功标识 */
+            $_SESSION[SN_INSTALL][$step] = 'ok';
+
             /* 下一步 */
             header('location:index.php?step='.($step+1)); exit();
         }
@@ -171,15 +201,20 @@ elseif( $_REQUEST['act'] == 'dbcreate' ){
         $tpl['acts'] = 'rpn';
         $tpl['errors'] = array();
 
+        /* 初始化$_POST */
+        foreach( $_POST AS $k=>$v ){
+            $_POST[$k] = trim($v);
+        }
+
         /* 填写错误检查 */
-        if( trim($_POST['dbhost']) == '' ) $tpl['errors']['dbhost'] = '数据库服务地址不能为空!';
-        if( trim($_POST['dbname']) == '' ) $tpl['errors']['dbname'] = '数据库名称不能为空!';
-        if( trim($_POST['dbuser']) == '' ) $tpl['errors']['dbuser'] = '数据库用户名不能为空!';
+        if( $_POST['dbhost'] == '' ) $tpl['errors']['dbhost'] = '数据库服务地址不能为空!';
+        if( $_POST['dbname'] == '' ) $tpl['errors']['dbname'] = '数据库名称不能为空!';
+        if( $_POST['dbuser'] == '' ) $tpl['errors']['dbuser'] = '数据库用户名不能为空!';
 
-        if( trim($_POST['admin_username']) == '' ) $tpl['errors']['admin_username'] = '管理员账号不能为空!';
-        if( trim($_POST['admin_password']) == '' ) $tpl['errors']['admin_password'] = '管理员密码不能为空!';
+        if( $_POST['admin_username'] == '' ) $tpl['errors']['admin_username'] = '管理员账号不能为空!';
+        if( $_POST['admin_password'] == '' ) $tpl['errors']['admin_password'] = '管理员密码不能为空!';
 
-        /* 填写错误检查 - 重置备注 */
+        /* 填写错误检查 - 修改备注 */
         foreach( $tpl['errors'] AS $k=>$v ){
             $tpl['remarks'][$k] = $v;
         }
@@ -220,7 +255,10 @@ elseif( $_REQUEST['act'] == 'dbcreate' ){
 
                     /* 更新管理员 */
                     update_administrator();
-                    
+
+                    /* 设置成功标识 */
+                    $_SESSION[SN_INSTALL][$step] = 'ok';
+
                     /* 下一步 */
                     header('location:index.php?step='.($step+1)); exit();
                 }
@@ -265,6 +303,9 @@ function sql_import()
     $sqls = str_replace( "\r", '', implode('',$sqls) );
     $sqls = explode(";\n", $sqls);
 
+    /* 设置数据编码 */
+    mysql_query('SET NAMES utf8');
+
     /* 执行SQL语句 */
     foreach( $sqls AS $i=>$sql ){
         $sql = trim($sql, " \r\n;"); //移除多余信息
@@ -290,22 +331,43 @@ function sql_comment_remove($var)
 
 
 /**
+ * 检测系统配置文件是否有效
+ */
+function file_systemconfig_valid()
+{
+    /* 初始化 */
+    global $_CFG;
+
+    /* 获取文件字符 */
+    $str = file_get_contents($_CFG['F_SYSTEMCONFIG_SRC']);
+    
+    /* 检验文件是否有效 */
+    if( strpos('$_CFG[\'dbhost\'] = \'\'',$str) === false ) return false;
+    if( strpos('$_CFG[\'dbname\'] = \'\'',$str) === false ) return false;
+    if( strpos('$_CFG[\'dbuser\'] = \'\'',$str) === false ) return false;
+    if( strpos('$_CFG[\'dbpass\'] = \'\'',$str) === false ) return false;
+    if( strpos('$_CFG[\'tblpre\'] = \'\'',$str) === false ) return false;
+
+    return true;
+}
+
+/**
  * 构建系统配置文件
  */
 function file_systemconfig()
 {
     /* 初始化 */
     global $_CFG;
-    
+
     /* 获取文件字符 */
     $str = file_get_contents($_CFG['F_SYSTEMCONFIG_SRC']);
 
     /* 配置数据 */
-    $str = preg_replace('/\$_CFG\[\'dbhost\'\]\s+=\s+\'\'/i', '$_CFG[\'dbhost\'] = \''.$_POST['dbhost'].'\'', $str);
-    $str = preg_replace('/\$_CFG\[\'dbname\'\]\s+=\s+\'\'/i', '$_CFG[\'dbname\'] = \''.$_POST['dbname'].'\'', $str);
-    $str = preg_replace('/\$_CFG\[\'dbuser\'\]\s+=\s+\'\'/i', '$_CFG[\'dbuser\'] = \''.$_POST['dbuser'].'\'', $str);
-    $str = preg_replace('/\$_CFG\[\'dbpass\'\]\s+=\s+\'\'/i', '$_CFG[\'dbpass\'] = \''.$_POST['dbpass'].'\'', $str);
-    $str = preg_replace('/\$_CFG\[\'tblpre\'\]\s+=\s+\'\'/i', '$_CFG[\'tblpre\'] = \''.$_POST['tblpre'].'\'', $str);
+    $str = str_replace('$_CFG[\'dbhost\'] = \'\'', '$_CFG[\'dbhost\'] = \''.$_POST['dbhost'].'\'', $str);
+    $str = str_replace('$_CFG[\'dbname\'] = \'\'', '$_CFG[\'dbname\'] = \''.$_POST['dbname'].'\'', $str);
+    $str = str_replace('$_CFG[\'dbuser\'] = \'\'', '$_CFG[\'dbuser\'] = \''.$_POST['dbuser'].'\'', $str);
+    $str = str_replace('$_CFG[\'dbpass\'] = \'\'', '$_CFG[\'dbpass\'] = \''.$_POST['dbpass'].'\'', $str);
+    $str = str_replace('$_CFG[\'tblpre\'] = \'\'', '$_CFG[\'tblpre\'] = \''.$_POST['tblpre'].'\'', $str);
 
     /* 写入文件 */
     file_put_contents($_CFG['F_SYSTEMCONFIG_SRC'], $str);
@@ -320,8 +382,8 @@ function file_systemconfig()
 function update_administrator()
 {
     $sql = ' UPDATE `'. $_POST['tblpre'] .'admin` SET';
-    $sql.= ' `name`="'. $_POST['admin_user'] .'",`username`="'. $_POST['admin_username'] .'"';
-    $sql.= ' `password`="'. md5($_POST['admin_`password`']) .'" WHERE `admin_id`=1';
+    $sql.= ' `name`="'. $_POST['admin_user'] .'", `username`="'. $_POST['admin_username'] .'",';
+    $sql.= ' `password`="'. md5($_POST['admin_password']) .'", in_time='. time() .' WHERE `admin_id`=1';
 
     mysql_query($sql);
 }
