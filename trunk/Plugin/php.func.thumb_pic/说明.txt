@@ -1,8 +1,0 @@
-﻿功能简介：
-    缩略图片
-
-
-加载使用：
-    1. 加载 php.class.image 组件 
-    2. 拷贝 code.php 中的代码到 /includes/systemfunc.php 或者 /admin/includes/systemfunc.php
-    3. 在程序中调用 thumb_pic(..) 函数使用
