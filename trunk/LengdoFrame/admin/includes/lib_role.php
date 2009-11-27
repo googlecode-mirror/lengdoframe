@@ -290,7 +290,7 @@ function ddl_role_custom( $roles, $name, $selected = '', $appends = array(), $at
         $items[] = array('value'=>$r['role_id'], 'text'=>$text);
     }
 
-    $fc = new FormControl();
+    $fc = new Formc();
     return $fc->ddl( $name, $items, array_merge(array('selected'=>$selected),$attribs) );
 }
 ?>

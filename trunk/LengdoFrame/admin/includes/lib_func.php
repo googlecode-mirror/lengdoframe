@@ -30,226 +30,8 @@ function sys_msg( $msg )
 
 
 /* ------------------------------------------------------ */
-// - 图片处理
-/* ------------------------------------------------------ */
-
-/**
- * 上传图片
- *
- * @params str  $folder  要上传的文件所在的文件夹
- * @params arr  $_file   文件域对象
- *
- * @return str  返回文件名(相对于$folder的路径)
- */
-function upload_pic( $folder, $_file )
-{
-    global $_LANG;
-
-    /* 文件域对象检测 */
-    if( !is_array($_file) || $_file['error'] != 0 || !$_file['size'] ) return '';
-
-    /* 增加文件夹路径末尾斜干 */
-    $folder = rtrim(str_replace("\\","/",$folder), '/').'/';
-
-    /* 检查文件格式 */
-    $ext = strtolower( substr($_file['name'],-4) );
-    if( !in_array($ext, array('.jpg','.gif')) ){
-        sys_msg($_LANG['file_ext_error_img']);
-    }
-
-    /* 上传的文件权限检查,尝试建立下级目录. 目录格式 YYYYMM/DD */
-    $d  = date('d', time());
-    $ym = date('Ym', time());
-    if( !file_exists($folder.$ym) ){
-        @mkdir($folder.$ym);
-    }
-    if( !file_exists($folder.$ym.'/'.$d) ){
-        @mkdir($folder.$ym.'/'.$d);
-    }
-    $mask = file_privilege($folder.$ym.'/'.$d);
-
-    /* 复制文件 */
-    if( $mask >= 7 ){
-        $filename = $ym .'/'. $d .'/'. date( 'His', time() ) .$ext;
-    }else{
-        $filename = date( 'Ym_d_His', time() ). $ext;
-    }
-
-    /* 移动文件 */
-    if( move_uploaded_file($_file['tmp_name'], $folder.$filename) ){
-        return $filename;
-    }else{
-        return '';
-    }
-}
-
-/**
- * 删除图片
- *
- * @params str  $folder    要删除的文件所在的文件夹
- * @params str  $filename  要删除的文件名(相对于$folder的路径)
- *
- * @return bol  true表示删除成功，false表示删除失败
- */
-function delete_pic( $folder, $filename )
-{
-    /* 增加文件夹路径末尾斜干 */
-    $folder = rtrim(str_replace("\\","/",$folder), '/').'/';
-
-    /* 删除文件 */
-    return @unlink($folder.$filename);
-}
-
-
-/**
- * 获得排序图像HTML以及访问这个HTML的变量名
- * 变量名格式：img_{$field}
- *
- * @params arr  $filter  过滤条件
- */
-function order_img( $filter )
-{
-    $flag['var'] = 'img_' . preg_replace('/^.*\./', '', $filter['order_fd']);
-    $flag['img'] = '<span class="'. strtolower($filter['order_type']) .'"></span>';
-
-    return $flag;
-}
-
-
-/* ------------------------------------------------------ */
 // - 文件类
 /* ------------------------------------------------------ */
-
-/**
- * 文件列表，递归文件夹
- *
- * @params str  $path     文件夹真实路径
- * @params arr  $ext      指定扩展名
- * @params str  $filter   过滤掉含指定词的文件名(多个词用 | 分隔)，默认不启用
- * @params str  $contain  选择含指定词的文件名(多个词用 | 分隔)，默认不启用
- * @params bol  $page     是否使用分页
- *
- * @return arr  列表数据
- */
-function list_file( $path, $ext = array(), $filter = '', $contain = '', $page = true )
-{
-    /* 初始化 */
-    $p = $list = array();
-
-    /* 目录有效性检查 */
-    if( !is_dir($path) ){
-        return $list;
-    }
-
-    /* 初始化路径格式,在路径末尾加上斜线 */
-    $path  = str_replace("\\", '/', $path);
-    $path .= preg_match('/[\/]$/',$path) ? '' : '/';
-
-    /* 初始化过滤词 */
-    $filters  = trim($filter)  ? explode('|', $filter)  : array();
-    $contains = trim($contain) ? explode('|', $contain) : array();
-
-    /* 保存文件夹下的文件信息 */
-    $files  = array();
-    $folder = opendir($path);
-    while( $file = readdir($folder) ){
-        /* 如果是文件 */
-        if( is_file($path.'/'.$file) ){
-            /* 过滤掉含指定词的文件名 */
-            if( !empty($filters) ){
-                $finded = false;
-
-                foreach( $filters AS $v ){
-                    if( strpos($file,$v) !== false ){
-                        $finded = true; break;
-                    }
-                }
-
-                if( $finded === true ) continue;
-            }
-            /* 选择含指定词的文件名 */
-            if( !empty($contains) ){
-                $finded = false;
-
-                foreach( $contains AS $v ){
-                    if( strpos($file,$v) !== false ){
-                        $finded = true; break;
-                    }
-                }
-
-                if( $finded === false ) continue;
-            }
-
-            /* 没指定扩展名 */
-            if( empty($ext) ){
-                $files[] = array( 'path'=>$path.$file, 'file'=>$file, 'ctime'=>filectime($path.$file) );
-            }
-
-            /* 指定扩展名 */
-            elseif( in_array(substr($file,strrpos($file,'.')+1), $ext) ){
-                $files[] = array( 'path'=>$path.$file, 'file'=>$file, 'ctime'=>filectime($path.$file) );
-            }
-        }
-
-        /* 如果是文件夹 */
-        elseif( !preg_match('/^\./',$file) && is_dir($path.$file) ){
-            $tlist = list_file($path.$file, $ext, $filter, $contain, false);
-            $files = array_merge($files, $tlist['data']);
-        }
-    }
-    closedir($folder);
-
-    /* 设置分页数据和信息 */
-    if( $page ){
-        $p['rows_page']  = intval($_REQUEST['rows_page']) ? intval($_REQUEST['rows_page']) : 15;
-        $p['rows_total'] = count($files);
-        $p['html']       = pager( $p['rows_page'], $p['rows_total'] );
-        $p['cur_page']   = cur_page( $p['rows_page'], $p['rows_total'] );
-        $p['row_start']  = ($p['cur_page']-1) * $p['rows_page'];
-
-        $list['data']    = array_slice($files, $p['row_start'], $p['rows_page']);
-        $list['pager']   = $p;
-    }else{
-        $list['data']    = $files;
-    }
-
-    /* 返回 */
-    return $list;
-}
-
-/**
- * 文件列表 - 图像
- *
- * @params str  $rpath    文件夹真实路径
- * @params str  $upath    文件夹相对路径
- * @params str  $filter   过滤掉含指定词的文件名，默认不启用
- * @params str  $contain  选择含指定词的文件名，默认不启用
- * @params bol  $page     是否使用分页
- *
- * @params arr  列表数据
- */
-function list_file_img( $rpath, $upath, $filter = '', $contain = '', $page = true )
-{
-    /* 初始化图像扩展名 */
-    $ext = array('jpg', 'gif', 'png');
-
-    /* 初始化路径格式,在路径末尾加上斜线 */
-    $rpath  = str_replace("\\", '/', $rpath);
-    $rpath .= preg_match( '/[\/]$/', $rpath ) ? '' : '/';
-    $upath  = str_replace("\\", '/', $upath);
-    $upath .= preg_match( '/[\/]$/', $upath ) ? '' : '/';
-
-    $list = list_file($rpath, $ext, $filter, $contain, $page);
-
-    /* 添加图片的URL访问路径 */
-    foreach( $list['data'] AS $i=>$file ){
-        $list['data'][$i]['upath'] = str_replace($rpath, $upath, $file['path']); //URL路径
-        $list['data'][$i]['bpath'] = str_replace($rpath, '', $file['path']);     //基本路径（相对于$rpath）
-    }
-
-    /* 返回 */
-    return $list;
-}
 
 /**
  * 文件(夹)权限检查函数
@@ -365,21 +147,44 @@ function tpl_fetch( $file, $tpl )
 {
     /* 初始化 */
     global $_LANG, $_DBD, $_CFG;
-    
+
     /* 缓存开始 */
     ob_start();
 
     /* 加载视图 */
     include($_CFG['DIR_ADMIN_TPL'] . $file);
-    
+
     /* 获取视HTML */
     $html = ob_get_contents();
-    
+
     /* 缓存结束 */
     ob_end_clean();
     
     /* 返回 */
     return $html;
+}
+
+
+/* ------------------------------------------------------ */
+// - 管理员日志
+/* ------------------------------------------------------ */
+
+/**
+ * 插入管理员日志
+ *
+ * @params str  $info  信息
+ */
+function admin_log( $info )
+{
+    $fields = array();
+
+    $fields['ip']         = $_SERVER['REMOTE_ADDR'];
+    $fields['info']       = addslashes(stripslashes($info));
+    $fields['admin_id']   = admin_id();
+    $fields['admin_name'] = addslashes(admin_name());
+    $fields['in_time']    = time();
+
+    $GLOBALS['db']->insert( tname('admin_log'), $fields );
 }
 
 
@@ -403,7 +208,7 @@ function pager( $rows_page, $rows_total, $pages_group = 5 )
 	$pages_total = $pages_total <= 0 ? 1 : $pages_total;
 
 	/* 获得当前页 */
-    $cur = cur_page($rows_page, $rows_total, $page_param);
+    $cur = pager_current($rows_page, $rows_total, $page_param);
 
     /* 构建HTML */
 
@@ -451,7 +256,7 @@ function pager( $rows_page, $rows_total, $pages_group = 5 )
 /**
  * 取得当前页号
  */
-function cur_page( $rows_page, $rows_total )
+function pager_current( $rows_page, $rows_total )
 {
 	/* 参数初始化 */
 	$pages_total = floor(($rows_total+$rows_page-1)/$rows_page);
@@ -523,21 +328,19 @@ function list_export_adjust( $str )
 
 
 /**
- * 插入管理员日志
+ * 构建排序图像HTML和访问这个HTML的变量名
+ * 变量名格式：img_{$field}
  *
- * @params str  $info  信息
+ * @params arr  $filter  过滤条件，含有order_fd，order_type值
+ *
+ * @return arr  
  */
-function admin_log( $info )
+function order_img( $filter )
 {
-    $fields = array();
+    $flag['var'] = 'img_' . preg_replace('/^.*\./', '', $filter['order_fd']);
+    $flag['img'] = '<span class="'. strtolower($filter['order_type']) .'"></span>';
 
-    $fields['ip']         = $_SERVER['REMOTE_ADDR'];
-    $fields['info']       = addslashes(stripslashes($info));
-    $fields['admin_id']   = admin_id();
-    $fields['admin_name'] = addslashes(admin_name());
-    $fields['in_time']    = time();
-
-    $GLOBALS['db']->insert( tname('admin_log'), $fields );
+    return $flag;
 }
 
 

@@ -574,7 +574,7 @@ function format_module_acts( $module_acts, $attribs = array(), $type = '', $item
         $tpl['_body'] = $attrib['type'] ? $attrib['type'] : $type;
 
         /* 取得HTML */
-        $html .= tpl_fetch('tbtn.html', $tpl);
+        $html .= tpl_fetch('titleact.html', $tpl);
     }
 
     return $html;
@@ -719,7 +719,7 @@ function list_privilege()
     $p['rows_page']  = intval($_REQUEST['rows_page']) ? intval($_REQUEST['rows_page']) : 16;
     $p['rows_total'] = $GLOBALS['db']->getOne($sql.$where);
     $p['html']       = pager($p['rows_page'], $p['rows_total']);
-    $p['cur_page']   = cur_page($p['rows_page'], $p['rows_total']);
+    $p['cur_page']   = pager_current($p['rows_page'], $p['rows_total']);
     $p['row_start']  = ($p['cur_page']-1) * $p['rows_page'];
 
     $f['page']       = $p['cur_page'];

@@ -196,7 +196,7 @@ function ctl_fill( $act )
 
     /* 所属模块 */
     $attrib = array('style'=>'width:153px');
-    $append = array('value'=>'', 'text'=>$_LANG['ddl_select']);
+    $append = array('value'=>'', 'text'=>$_LANG['ddl_sel']);
     $tpl['formc_module'] = ddl_module('parent_id', $tpl['privilege']['module_id'], $append, $attrib);
 }
 

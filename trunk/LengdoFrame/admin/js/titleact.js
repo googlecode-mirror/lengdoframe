@@ -13,7 +13,7 @@
 /**
  * 基本按钮初始化
  */
-function tbtn_init( caller )
+function titleact_init( caller )
 {
 	/* 基本动作样式 */
 	caller.onmouseover = function(){ this.className = 'btn btnover'; }
@@ -27,7 +27,7 @@ function tbtn_init( caller )
 /**
  * 点击下拉按钮初始化 - 有分割线
  */
-function tbtn_init_cddl( caller )
+function titleact_init_cddl( caller )
 {
 	/* 基本动作样式 */
 	caller.onmouseover = function(){ this.className = 'btn btnover btnddll'; }
@@ -45,7 +45,7 @@ function tbtn_init_cddl( caller )
 /**
  * 移动下拉按钮初始化
  */
-function tbtn_init_mdd( caller, id )
+function titleact_init_mdd( caller, id )
 {
 	/* 下拉列表 */
 	var ddl = document.getElementById(id);
@@ -65,7 +65,7 @@ function tbtn_init_mdd( caller, id )
 /**
  * 点击下拉按钮 - 显示下拉列表
  */
-function tbtn_cdd( evt, id )
+function titleact_cdd( evt, id )
 {
 	/* document.onclick重写前执行上一个onclick */
 	try{ document.onclick(); }catch(e){}
@@ -98,7 +98,7 @@ function tbtn_cdd( evt, id )
 /**
  * 点击下拉按钮 - 左侧部分点击
  */
-function tbtn_cddl_ldown( evt, lobj )
+function titleact_cddl_ldown( evt, lobj )
 {
 	/* document.onclick重写前执行上一个onclick */
 	try{ document.onclick(); }catch(e){}
@@ -112,7 +112,7 @@ function tbtn_cddl_ldown( evt, lobj )
 /**
  * 点击下拉按钮 - 右侧部分点击
  */
-function tbtn_cddl_rdown( evt, robj )
+function titleact_cddl_rdown( evt, robj )
 {
 	/* 阻塞此次mousedown事件 */
 	try{ window.event.cancelBubble = true; }catch(e){ evt.stopPropagation(); }

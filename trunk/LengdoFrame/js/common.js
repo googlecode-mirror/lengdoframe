@@ -801,7 +801,7 @@ function deal_form_params( form )
 }
 
 /**
- * 通用 - 为模拟异步提交表单初始化条件，并设置表单参数。 
+ * 初始化模拟异步提交表单的条件并设置表单参数。 
  *
  * @params obj  form  表单对象
  * @params str  url   提交的URL地址
@@ -879,7 +879,7 @@ function deal_form_submit( form, url, func, type, msg )
 
 
 /**
- * 通用 - 窗口表单默认键盘事件
+ * 窗口表单默认键盘事件
  *
  * @params obj event   事件对象
  * @params obj wndele  窗口内元素
@@ -896,7 +896,7 @@ function deal_wfm_keyboard( event, wndele )
 
         /* 回车不提交的事件源 */
         if( src.tagName && src.tagName.toLowerCase() == 'textarea' ){
-            return ;
+            return false;
         }
 
         /* 事件发生源失去焦点 */

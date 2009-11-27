@@ -29,22 +29,20 @@ error_reporting(E_ALL & ~E_NOTICE);
 /* 加载整站公用配置库 */
 require_once( preg_replace('/[^\/]+\/includes\/init.php/i', '', str_replace("\\",'/', __FILE__)) . 'includes/config.php' );
 
-/* 加载整站公用函数库 */
+/* 加载整站和后台公用函数库 */
 require_once($_CFG['DIR_INC'] . 'func.php');
+require_once($_CFG['DIR_ADMIN_INC'] . 'lib_func.php');
+@include_once($_CFG['DIR_ADMIN_INC'] . 'systemfunc.php');
 
 /* 加载Mysql数据库类 */
 require_once($_CFG['DIR_CLS'] . 'mysql.class.php');
-
-/* 加载后台公用函数库 */
-require_once($_CFG['DIR_ADMIN_INC'] . 'lib_func.php');
-@include_once($_CFG['DIR_ADMIN_INC'] . 'systemfunc.php');
 
 /* 加载权限系统库 */
 require_once($_CFG['DIR_ADMIN_INC'] . 'lib_privilege.php');
 
 /* 加载后台公用语言库 - 加载全局变量 $_LANG */
 require_once($_CFG['DIR_ADMIN_LNG'] . 'zh.php');
-@include_once($_CFG['DIR_ADMIN_LNG'] . 'system_zh.php');
+@include_once($_CFG['DIR_ADMIN_LNG'] . 'systemzh.php');
 
 
 /* ------------------------------------------------------ */
@@ -69,17 +67,17 @@ if( !get_magic_quotes_gpc() ){
     $_COOKIE = addslashes_deep($_COOKIE);
 }
 
-/* 初始化模板变量 */
-$tpl = array();
-
 /* 初始化请求变量 */
 $_REQUEST = array_merge($_GET, $_POST);
 
 /* 初始化操作变量 */
 $_REQUEST['act'] = $_REQUEST['act'] ? trim($_REQUEST['act']) : '';
 
+/* 初始化模板变量 */
+$tpl = array();
+
 /* 初始化数据库类, 设置全局变量 $db */
-$db = new Mysql($_CFG['dbhost'], $_CFG['dbuser'], $_CFG['dbpass'], $_CFG['dbname'], $_CFG['dbcset'], $_CFG['dbpcon']);
+$db = new Mysql($_CFG['dbhost'], $_CFG['dbuser'], $_CFG['dbpass'], $_CFG['dbname']);
 
 
 /* ------------------------------------------------------ */

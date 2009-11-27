@@ -58,7 +58,7 @@ function list_admin( $filter = array() )
     $p['rows_page']  = intval($_REQUEST['rows_page']) ? intval($_REQUEST['rows_page']) : 16;
     $p['rows_total'] = $GLOBALS['db']->getOne($sql.$where);
     $p['html']       = pager($p['rows_page'], $p['rows_total']);
-    $p['cur_page']   = cur_page($p['rows_page'], $p['rows_total']);
+    $p['cur_page']   = pager_current($p['rows_page'], $p['rows_total']);
     $p['row_start']  = ($p['cur_page']-1) * $p['rows_page'];
 
     $f['page']       = $p['cur_page'];
@@ -290,7 +290,7 @@ function list_admin_log()
     $p['rows_page']  = intval($_REQUEST['rows_page']) ? intval($_REQUEST['rows_page']) : 16;
     $p['rows_total'] = $GLOBALS['db']->getOne($sql.$where);
     $p['html']       = pager($p['rows_page'], $p['rows_total']);
-    $p['cur_page']   = cur_page($p['rows_page'], $p['rows_total']);
+    $p['cur_page']   = pager_current($p['rows_page'], $p['rows_total']);
     $p['row_start']  = ($p['cur_page']-1) * $p['rows_page'];
 
     $f['page']       = $p['cur_page'];
@@ -349,7 +349,7 @@ function ddl_all_admin( $name, $selected = '', $appends = array(), $attribs = ar
         $items[] = array( 'value'=>$r['admin_id'], 'text'=>f($r['name'],'html') );
     }
 
-    $fc = new FormControl();
+    $fc = new Formc();
     return $fc->ddl( $name, $items, array_merge(array('selected'=>$selected),$attribs) );
 }
 ?>

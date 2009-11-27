@@ -1,6 +1,6 @@
 <?php
 /**
- * 缩放图片
+ * 缩放图片 v1.0.0
  *
  * @params str  $folder     源文件所在文件夹路径
  * @params str  $sfilename  源文件名(相对$folder的路径)
