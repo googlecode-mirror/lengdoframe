@@ -1,19 +1,20 @@
 框架打包
-        CheckOut https://lengdoframe.googlecode.com/svn/trunk/LengdoFrame
+        Export https://lengdoframe.googlecode.com/svn/trunk/LengdoFrame
 
         重命名文件夹LengdoFrame 
-            (文件夹命名方式参见"框架版本.txt - 发布的文件夹")
+            ( 文件夹命名方式参见"框架版本.txt - 发布的文件夹" )
 
         修改 /admin/lang/zh.php 中的 $_LANG['sys_kernel'] 变量为版本号
-            (版本号命名方式参见"框架版本.txt - 版本格式")
+            ( 版本号命名方式参见"框架版本.txt - 版本格式" )
 
         去掉 /admin/top/home.html 中的 LengdoFrame Version 和 LengdoFrame Log 两个模块信息
 
 	清空 /admin/data/pfile/ 文件夹下所有文件
         清空 /admin/data/dumpsql/ 文件夹下所有文件
+	删除 /includes/systemconfig.php 文件
 
         压缩文件夹
-            (文件命名方式参见"框架版本.txt - 发布的压缩文件")
+            ( 文件命名方式参见"框架版本.txt - 发布的压缩文件" )
 
 框架发布
         更新框架包 http://www.lengdo.com/lengdoframe/download.php

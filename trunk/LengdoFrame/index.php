@@ -21,5 +21,9 @@ require('includes/func.php');
 /* ------------------------------------------------------ */
 // - 自动调转
 /* ------------------------------------------------------ */
-redirect($_CFG['URL_ADMIN'] . 'index.php?act=login');
+if( is_file($_CFG['DIR_INC'].'systemconfig.php') ){
+    redirect($_CFG['URL_ADMIN'] . 'index.php?act=login');
+}else{
+    redirect($_CFG['URL_ROOT'] . 'install/index.php');
+}
 ?>
