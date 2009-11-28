@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../../../LengdoFrame/admin/skin/default/style.css">
+<script type="text/javascript" src="../../../LengdoFrame/js/ajax.js"></script>
+<script type="text/javascript" src="../../../LengdoFrame/js/window.js"></script>
+<title>窗口内容</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
+<body>
+
+窗口内容，继<a target="_blank" href="manual.php?id=17" style="color:#000">窗口创建</a>之后的又一个重要部分！<br /><br />
+
+每一个窗口都应该有一个和用户交互的界面：也许是一个输入表单，也许是一份数据报表等等！而这些界面的构造代码恰恰就是窗口内容的核心数据！<br />
+但不要误会，这章我们讲的不是这些界面的代码如何构造，而是讲如何获取这些界面的构造代码的方法......<br /><br />
+
+窗口类 - 成员函数：<a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-inner'" style="color:#008ECD;font-weight:bold;">inner(...)</a>
+<br /><br />
+
+<b>1. 窗口内容 - HTML载入</b><br />
+<div style="margin-left:1.2em;">
+    <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        &lt;script type="application/javascript"&gt;<br />
+        <div style="margin-left:2em;">
+            var wnd = new Wnd( 'wnd-unique-id1', null, {'width':400} ); <br />
+            wnd.create();<br /><br />
+
+            wnd.inner('&lt;b&gt;HTML内容XXX&lt;/b&gt;', 'html');<br />
+            wnd.show();<br />
+        </div>
+        &lt;/script&gt;
+        <span style="color:#008ECD">
+            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id1',null,{'width':400});wnd.create();wnd.inner('<b>HTML内容XXX</b>');wnd.show();">演示</a>]
+        </span>
+    </div>
+    <div>
+        通过以上的代码，可以创建一个<a target="_blank" href="manual.php?id=17" style="color:#000">固定宽度窗口</a>并在客户区显示"<b>HTML内容XXX</b>"！<br />
+        [ <a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-inner'" style="color:#008ECD">API：窗口类-客户区内容载入</a> ]
+    </div>
+</div>
+
+<br />
+
+<b>2. 窗口内容 - URL载入</b><br />
+<div style="margin-left:1.2em;">
+    <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        &lt;script type="application/javascript"&gt;<br />
+        <div style="margin-left:2em;">
+            var wnd = new Wnd( 'wnd-unique-id2', null, {'width':400} ); <br />
+            wnd.create();<br /><br />
+
+            wnd.inner('http://www.lengdo.com/about.php', 'url');<br />
+            wnd.show();<br />
+        </div>
+        &lt;/script&gt;
+        <span style="color:#008ECD">
+            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id2',null,{'width':400});wnd.create();wnd.inner('http://www.lengdo.com/about.php','url');wnd.show();">演示</a>]
+        </span>
+    </div>
+    <div>
+        通过以上的代码，可以创建一个<a target="_blank" href="manual.php?id=17" style="color:#000">固定宽度窗口</a>并在客户区载入 http://www.lengdo.com/about.php 网页的内容！ <br />
+        [ <a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-inner'" style="color:#008ECD">API：窗口类-客户区内容载入</a> ]
+    </div>
+    <br />
+    <span>说明：</span>
+    <div style="margin-left:2em;">
+        1.1 URL载入采用异步请求数据，必须加载Ajax对象<br />
+        1.2 URL载入不能跨站请求数据<br />
+        1.3 载入的HTML代码中的Javascript代码不会被执行
+    </div>
+</div>
+
+<br />
+
+<b>3. 窗口内容 - 内容重载</b><br />
+<div style="margin-left:1.2em;">
+    就像表单的重置功能，客户区内容重载功能根据上次窗口的参数(载入数据)进行客户区内容的重新载入！<br />
+    <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        &lt;script type="application/javascript"&gt;<br />
+        <div style="margin-left:2em;">
+            var wnd = new Wnd( 'wnd-unique-id3', null, {'width':400} ); <br />
+            wnd.create();<br /><br />
+            
+            var html = '';<br />
+            html += '&lt;input type="buttom" value="重载" onclick="';<br />
+            html += "this.value='窗口内容重载中....';this.style.color='#f00'";<br />
+            html += "alert('点击确认后开始重载!');";<br />
+            html += "Wnds.find('wnd-unique-id3').reinner();";<br />
+            html += '"&gt;';<br /><br />
+
+            wnd.inner(html, 'html');<br />
+            wnd.show();<br />
+        </div>
+        &lt;/script&gt;
+        <span style="color:#008ECD">
+            [<a href="javascript:void(0)" style="color:#008ECD" onclick="wnd_unique_id3()">演示</a>]
+        </span>
+        <script>
+            function wnd_unique_id3()
+            {
+                var wnd = new Wnd('wnd-unique-id3', null, {'width':400});
+                wnd.create();
+
+                wnd.inner('<br /><input type="button" value="重载" onclick="this.value=\'窗口内容重载中....\';this.style.color=\'#f00\';alert(\'点击确认后重载!\');Wnds.find(\'wnd-unique-id3\').reinner();"><br /><br />', 'html');
+                wnd.show();
+            }
+        </script>
+    </div>
+    <div>
+        通过以上的代码，可以重载窗口的数据。[ <a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-reinner'" style="color:#008ECD">API：窗口类-客户区内容重载</a> ]
+    </div>
+</div>
+
+<br />
+
+<b>X. 附录</b><br />
+<div style="margin-left:1.2em;">
+    <a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-wndcls-inner');o.style.display=o.style.display=='none'?'':'none'" style="color:#008ECD;">1. API：窗口类-客户区内容载入</a>
+    <table style="margin-left:1.2em;padding:5px 0;font-size:12px;" id="lfm-wndcls-inner">
+    <tr>
+        <th colspan="4" align="left">Wnd.prototype.inner( str, type, attribs );</th>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center" width="60">@params</td>
+        <td align="center" width="30">mix</td>
+        <td width="100">str</td>
+        <td>载入数据</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center">@params</td>
+        <td align="center">str</td>
+        <td>type</td>
+        <td>载入类型(url, html)，默认html</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center">@params</td>
+        <td align="center">obj</td>
+        <td>attribs</td>
+        <td>载入属性</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center"></td>
+        <td align="center">bol</td>
+        <td>attribs.move</td>
+        <td>加载完后窗口自动居中，默认true</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center"></td>
+        <td align="center">bol</td>
+        <td>attribs.clear</td>
+        <td>清空窗口客户区内容，默认true</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center"></td>
+        <td align="center">bol</td>
+        <td>attribs.loading</td>
+        <td>使用窗口Loading，默认true</td>
+    </tr>
+    </table>
+</div>
+
+<br />
+
+<div style="margin-left:1.2em;">
+    <a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-wndcls-reinner');o.style.display=o.style.display=='none'?'':'none'" style="color:#008ECD;">2. API：窗口类-客户区内容重载</a>
+    <table style="margin-left:1.2em;padding:5px 0;font-size:12px;" id="lfm-wndcls-reinner">
+    <tr>
+        <th colspan="4" align="left">Wnd.prototype.reinner( attribs );</th>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center" width="60">@params</td>
+        <td align="center" width="30">obj</td>
+        <td width="100">attribs</td>
+        <td>载入属性</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center"></td>
+        <td align="center">bol</td>
+        <td>attribs.move</td>
+        <td>加载完后窗口自动居中，默认false</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center"></td>
+        <td align="center">bol</td>
+        <td>attribs.clear</td>
+        <td>清空窗口客户区内容，默认false</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center"></td>
+        <td align="center">bol</td>
+        <td>attribs.loading</td>
+        <td>使用窗口Loading，默认true</td>
+    </tr>
+    </table>
+</div>
+
+</body>
+</html>

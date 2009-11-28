@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../../../LengdoFrame/admin/skin/default/style.css">
+<script type="text/javascript" src="../../../LengdoFrame/js/window.js"></script>
+<title>窗口创建</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
+<body>
+
+窗口创建，作为开发过程中最基础的一步，它既简单又复杂！合理的配置参数，可以创建出各种类型的窗口！<br /><br />
+
+<b>1. 窗口创建 - 默认窗口</b><br />
+<div style="margin-left:1.2em;">
+    <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        &lt;script type="application/javascript"&gt;<br />
+        <div style="margin-left:2em;">
+            var wnd = new Wnd( 'wnd-unique-id' ); <br /><br />
+
+            wnd.create();<br />
+            wnd.show();
+        </div>
+        &lt;/script&gt;
+        <span style="color:#008ECD">
+            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id1');wnd.create();wnd.show();">演示</a>]
+        </span>
+    </div>
+    <div>
+        通过以上的代码，可以创建出一个默认的窗口！
+        [ <a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-buildparams'" style="color:#008ECD">API：窗口类-构造函数</a> ]
+    </div>
+</div>
+
+<br />
+
+<b>2. 窗口创建 - 固定宽度</b><br />
+<div style="margin-left:1.2em;">
+    <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        &lt;script type="application/javascript"&gt;<br />
+        <div style="margin-left:2em;">
+            var wnd = new Wnd( 'wnd-unique-id', null, {'width':400} ); <br /><br />
+
+            wnd.create();<br />
+            wnd.show();
+        </div>
+        &lt;/script&gt;
+        <span style="color:#008ECD">
+            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id2', null, {'width':400});wnd.create();wnd.show();">演示</a>]
+        </span>
+    </div>
+    <div>
+        通过以上的代码，可以创建出一个固定宽度的窗口！ 
+        [ <a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-buildparams'" style="color:#008ECD">API：窗口类-构造函数</a> ] - 
+        [ <a href="http://www.lengdo.com/lengdoframe/manual.php?id=20" target="_blank" style="color:#008ECD">窗口尺寸</a> ]
+    </div>
+</div>
+
+<br />
+
+<b>3. 窗口创建 - 窗口回调</b><br />
+<div style="margin-left:1.2em;">
+    <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        &lt;script type="application/javascript"&gt;<br />
+        <div style="margin-left:2em;">
+            var wnd = new Wnd( 'wnd-unique-id', {'ok':deal-unique-id} ); <br /><br />
+
+            wnd.create();<br />
+            wnd.show();<br /><br />
+
+            function deal-unique-id(){<br />
+                <div style="margin-left:18px">alert( 'You Click OK Button !' )</div>
+            }
+        </div>
+        &lt;/script&gt;
+        <span style="color:#008ECD">
+            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id3',{'ok':deal_unique_id3});wnd.create();wnd.show();function deal_unique_id3(){alert('You Click OK Button !')}">演示</a>]
+        </span>
+    </div>
+    <div>
+        在上面的代码中，我们演示的是当窗口的 '<b>确定</b>' 按钮被点击后窗口自动调用自定义函数！<br /> 
+        [ <a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-buildparams'" style="color:#008ECD">API：窗口类-构造函数</a> ] - 
+        [ <a href="http://www.lengdo.com/lengdoframe/manual.php?id=24" target="_blank" style="color:#008ECD">窗口回调</a> ]
+    </div>
+</div>
+
+<br />
+
+<b>X. 附录</b><br />
+<div style="margin-left:1.2em;">
+    <a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-wndcls-buildparams');o.style.display=o.style.display=='none'?'':'none'" style="color:#008ECD;">1. API：窗口类-构造函数</a>
+    <table style="margin-left:1.2em;padding:5px 0;font-size:12px;" id="lfm-wndcls-buildparams">
+    <tr>
+        <th colspan="4" align="left">new Wnd( id, callbacks, configs );</th>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center" width="60">@params</td>
+        <td align="center" width="30">str</td>
+        <td width="102">id</td>
+        <td>窗口ID</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center">@params</td>
+        <td align="center">obj</td>
+        <td>callbacks</td>
+        <td>回调函数集</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td></td>
+        <td align="center">fun</td>
+        <td>callbacks.ok</td>
+        <td>当点击确定，窗口消失后调用此函数</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td></td>
+        <td align="center">fun</td>
+        <td>callbacks.okb</td>
+        <td>当点击确定，窗口消失前调用此函数 - 当返回false时，ok函数终止</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td></td>
+        <td align="center">fun</td>
+        <td>callbacks.cannel</td>
+        <td>当点击取消，窗口消失后调用此函数</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td></td>
+        <td align="center">fun</td>
+        <td>callbacks.cannelb</td>
+        <td>当点击取消，窗口消失前调用此函数 - 当返回false时，cannel函数终止</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td></td>
+        <td align="center">fun</td>
+        <td>callbacks.hidden</td>
+        <td>当窗口隐藏时调用此函数</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td></td>
+        <td align="center">fun</td>
+        <td>callbacks.complete</td>
+        <td>当窗口加载完成后调用此函数</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center">@params</td>
+        <td align="center">obj</td>
+        <td>configs</td>
+        <td>配置集</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td></td>
+        <td align="center">str</td>
+        <td>configs.title</td>
+        <td>窗口标题</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td></td>
+        <td align="center">int</td>
+        <td>configs.width</td>
+        <td>窗口宽度. 注：客户区宽度=窗口宽度-2</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td></td>
+        <td align="center">int</td>
+        <td>configs.height</td>
+        <td>客户区高度</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td></td>
+        <td align="center">int</td>
+        <td>configs.action</td>
+        <td>标题栏的操作按钮 000(最小化，最大化，关闭)，默认001. 注：前辍0省略</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td></td>
+        <td align="center">str</td>
+        <td>configs.control</td>
+        <td>控制区类型(ok/cannel/empty/custom/default)，默认default. 注：通过&组合按钮</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td></td>
+        <td align="center">obj</td>
+        <td>configs.buttons</td>
+        <td>控制区自定义按钮集。[{'index':str, 'text':str, 'click':fun}]</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td></td>
+        <td align="center">int</td>
+        <td>configs.overlay</td>
+        <td>是否使用遮掩层。false表示不显示，0-100表示透明度</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td></td>
+        <td align="center">int</td>
+        <td>configs.overflow</td>
+        <td>窗口溢出时滚动条 0000(scroll-x，scroll-y，hidden-x，hidden-y). 注：前辍0省略</td>
+    </tr>
+    </table>
+</div>
+
+</body>
+</html>

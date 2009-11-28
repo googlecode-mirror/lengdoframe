@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>时间组合框</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
+<body>
+
+
+
+<div>时间组合框，可以调用JS日历控件的组合框！效果图如下：</div><br />
+<div style="text-align:center;"><img alt="图1" src="images/cbox_datecbox.gif" style="border:1px solid #ccc;"></div>
+<br />
+
+<b>1. 使用方法 - HTML代码</b><br />
+<div style="margin-left:1.2em;font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+    &lt;div class="datecbox"&gt;<br />
+		<div style="margin-left:1.5em;">
+            &lt;input type="text" class="textbox" style="width:70px;" name="..."/&gt;&lt;input type="button"<br />
+            &nbsp; onmouseover="deal_combobox_mouseover(this)" onclick="deal_jscalendar_show(this.previousSibling)" class="choice"/&gt;
+	    </div>
+    &lt;/div&gt;
+</div>
+<div style="margin-left:1.2em;"><br />
+    代码说明：
+    <div style="margin-left:1.2em;">1. 为了兼容浏览器，两个 &lt;input&gt; 标签务必紧挨着写在一起！</div>
+    <div style="margin-left:1.2em;">2. onmouseover="deal_combobox_mouseover(this)" 为按钮添加点击时样式变化</div>
+    <div style="margin-left:1.2em;">3. deal_jscalendar_show(this.previousSibling) 显示JS日历控件并自动绑定指定的输入文本框</div>
+</div>
+
+<br /><br />
+
+<b>2. 使用方法 - PHP生成</b><br />
+<div style="margin-left:1.2em;color:#090">// 待开发</div><br />
+
+
+
+</body>
+</html>
