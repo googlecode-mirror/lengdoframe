@@ -1,0 +1,481 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>目录结构</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+
+.lfm-dir-lvl a{ color:#000; }
+
+.lfm-dir-struct{ width:100%; *width:auto; border-bottom:1px solid #F0F0F0; table-layout:fixed; border-collapse:collapse; }
+.lfm-dir-struct tr td{ height:25px; padding:0; border-bottom:1px solid #F0F0F0; border-top:1px solid #F0F0F0; font-size:12px; }
+.lfm-dir-struct tr.lvl1 td{ padding-left:2em; color:#000; }
+.lfm-dir-struct tr.lvl1 td a{ color:#000; }
+.lfm-dir-struct tr.lvl2 td{ padding-left:3em; color:#333; }
+.lfm-dir-struct tr.lvl2 td a{ color:#333; }
+.lfm-dir-struct tr.lvl3 td{ padding-left:4em; color:#666; }
+.lfm-dir-struct tr.lvl3 td a{ color:#666; }
+.lfm-dir-struct tr.lvl4 td{ padding-left:5em; color:#999; }
+.lfm-dir-struct tr.lvl4 td a{ color:#999; }
+
+.lfm-dir-struct tr.lvlf td{ color:#f00; }
+</style>
+
+<script>
+function struct_show( index )
+{
+    /* 初始化 */
+    var i, j, c;
+    var tracks = {};
+
+    var tbl = document.getElementById('lfm-dir-struct');
+    
+    for( i=1; i <= index; i++ ){
+        tracks['lvl'+i] = 1;
+        tracks['lvl'+i+' lvlf'] = 1;
+    }
+
+    for( i=0,j=tbl.rows.length; i < j ; i++ ){
+        c = tbl.rows[i].className;
+
+        if( !c ) continue;
+
+        if( tracks[c] ){
+            tbl.rows[i].style.display = '';
+            tbl.rows[i].style.backgroundColor = c.indexOf('lvl'+index) == 0 && index > 1 ? '#FAFAFA' : '#FFFFFF';
+        }else{
+            tbl.rows[i].style.display = 'none';
+            tbl.rows[i].style.backgroundColor = '#FFFFFF';
+        }
+    }
+}
+
+function struct_expand( caller )
+{
+    var tr  = caller.parentNode.parentNode;
+    var lvl = 'lvl'+(tr.className.substr(3)*1+1);
+    var tbl = document.getElementById('lfm-dir-struct');
+
+    var flag = false;
+    var display = '';
+
+    for( var i=0,j=tbl.rows.length; i < j ; i++ ){
+        /* 标记并设置显示/隐藏 */
+        if( tbl.rows[i] == tr ){
+            flag = true;
+            display = tbl.rows[i+1] && tbl.rows[i+1].style.display ? '' : 'none';
+
+            continue;
+        }
+
+        /* 跳过 */
+        if( flag == false ) continue;
+
+        /* 跳出 */
+        if( tbl.rows[i].className < lvl ) break;
+
+        /* 设置显示/隐藏 */
+        tbl.rows[i].style.display = tbl.rows[i].className.indexOf(lvl) == 0 ? display : 'none';
+    }
+}
+</script>
+<body style="width:1000px;">
+
+
+<div class="lfm-dir-lvl">
+    目录层级：
+    <a href="javascript:void(0)" onclick="struct_show(1)">1级</a> 
+    <a href="javascript:void(0)" onclick="struct_show(2)">2级</a> 
+    <a href="javascript:void(0)" onclick="struct_show(3)">3级</a> 
+    <a href="javascript:void(0)" onclick="struct_show(4)">4级</a> 
+</div>
+
+<table id="lfm-dir-struct" class="lfm-dir-struct">
+<tr>
+    <td width="200">/</td>
+    <td>网站根目录</td>
+</tr>
+
+
+<tr class='lvl1'>
+    <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">admin/</a></td>
+    <td>网站后台文件夹</td>
+</tr>
+        <tr class='lvl2'>
+            <td>|-- <a href="javascript:void(0)" onclick="struct_expand(this)">data/</a></td>
+            <td>系统数据缓存文件夹</td>
+        </tr>
+                <tr class='lvl3'>
+                    <td>|--- cachesql/</td>
+                    <td>SQL缓存文件夹</td>
+                </tr>
+                <tr class='lvl3'>
+                    <td>|--- dbd/</td>
+                    <td>DBD数据文件夹</td>
+                </tr>
+                <tr class='lvl3'>
+                    <td>|--- dumpsql/</td>
+                    <td>SQL备份文件夹</td>
+                </tr>
+                <tr class='lvl3'>
+                    <td>|--- pfile/</td>
+                    <td>权限缓存文件夹</td>
+                </tr>
+
+        <tr class='lvl2'>
+            <td>|-- <a href="javascript:void(0)" onclick="struct_expand(this)">includes/</a></td>
+            <td>后台公用的库文件夹</td>
+        </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- _systemfunc.php</td>
+                    <td>[自定义文件] 后台公用函数库</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- init.php</td>
+                    <td>后台入口</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- lib_admin.php</td>
+                    <td>管理员函数库</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- lib_func.php</td>
+                    <td>后台公用函数库</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- lib_lrtree.php</td>
+                    <td>改进的前序遍历树函数库</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- lib_module.php</td>
+                    <td>模块函数库</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- lib_role.php</td>
+                    <td>角色函数库</td>
+                </tr>
+
+
+        <tr class='lvl2'>
+            <td>|-- <a href="javascript:void(0)" onclick="struct_expand(this)">js/</a></td>
+            <td>后台公用脚本文件夹</td>
+        </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- _system.js</td>
+                    <td>[自定义文件] 后台公用函数库</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- _systemwindows.js</td>
+                    <td>[自定义文件] 后台弹出窗口函数库</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- listtable.js</td>
+                    <td>列表对象</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- modulemenu.js</td>
+                    <td>模块菜单函数库</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- titleact.js</td>
+                    <td>标题按钮函数库</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- windows.js</td>
+                    <td>后台弹出窗口函数库</td>
+                </tr>
+
+
+        <tr class='lvl2'>
+            <td>|-- <a href="javascript:void(0)" onclick="struct_expand(this)">lang/</a></td>
+            <td>后台语言库文件夹</td>
+        </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- _systemzh.php</td>
+                    <td>[自定义文件] 后台公用语言库 - 中文</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- zh.php</td>
+                    <td>后台公用语言库 - 中文</td>
+                </tr>
+
+
+        <tr class='lvl2'>
+            <td>|-- <a href="javascript:void(0)" onclick="struct_expand(this)">modules/</a></td>
+            <td>后台模块文件夹</td>
+        </tr>
+                <tr class='lvl3'>
+                    <td>|--- <a href="javascript:void(0)" onclick="struct_expand(this)">admin</a></td>
+                    <td>管理员模块组</td>
+                </tr>
+                        <tr class='lvl4 lvlf'>
+                            <td>|---- admin.php</td>
+                            <td>管理员模块</td>
+                        </tr>
+                        <tr class='lvl4 lvlf'>
+                            <td>|---- admin_log.php</td>
+                            <td>管理员日志模块</td>
+                        </tr>
+                        <tr class='lvl4 lvlf'>
+                            <td>|---- role.php</td>
+                            <td>管理员角色模块</td>
+                        </tr>
+
+                <tr class='lvl3'>
+                    <td>|--- <a href="javascript:void(0)" onclick="struct_expand(this)">db</a></td>
+                    <td>数据库模块组</td>
+                </tr>
+                        <tr class='lvl4 lvlf'>
+                            <td>|---- db_backup.php</td>
+                            <td>数据库备份模块</td>
+                        </tr>
+                        <tr class='lvl4 lvlf'>
+                            <td>|---- db_optimize.php</td>
+                            <td>数据库优化模块</td>
+                        </tr>
+
+                <tr class='lvl3'>
+                    <td>|--- <a href="javascript:void(0)" onclick="struct_expand(this)">kernel</a></td>
+                    <td>系统内核模块组</td>
+                </tr>
+                        <tr class='lvl4 lvlf'>
+                            <td>|---- module.php</td>
+                            <td>模块管理</td>
+                        </tr>
+                        <tr class='lvl4 lvlf'>
+                            <td>|---- privilege.php</td>
+                            <td>权限模块</td>
+                        </tr>
+
+                <tr class='lvl3'>
+                    <td>|--- <a href="javascript:void(0)" onclick="struct_expand(this)">sys</a></td>
+                    <td>系统功能模块组</td>
+                </tr>
+                        <tr class='lvl4 lvlf'>
+                            <td>|---- myaccount.php</td>
+                            <td>我的帐号模块</td>
+                        </tr>
+                        <tr class='lvl4 lvlf'>
+                            <td>|---- sysinfo.php</td>
+                            <td>系统信息模块</td>
+                        </tr>
+
+
+        <tr class='lvl2'>
+            <td>|-- <a href="javascript:void(0)" onclick="struct_expand(this)">skin/</a></td>
+            <td>后台皮肤文件夹</td>
+        </tr>
+                <tr class='lvl3'>
+                    <td>|--- <a href="javascript:void(0)" onclick="struct_expand(this)">default/</a></td>
+                    <td>默认皮肤文件夹</td>
+                </tr>
+                        <tr class='lvl4'>
+                            <td>|---- images/</td>
+                            <td>后台样式图片文件夹</td>
+                        </tr>
+                        <tr class='lvl4 lvlf'>
+                            <td>|---- _system.css</td>
+                            <td>[自定义文件] 后台页面样式</td>
+                        </tr>
+                        <tr class='lvl4 lvlf'>
+                            <td>|---- login.css</td>
+                            <td>后台登陆页样式</td>
+                        </tr>
+                        <tr class='lvl4 lvlf'>
+                            <td>|---- style.css</td>
+                            <td>后台页面样式</td>
+                        </tr>
+
+
+        <tr class='lvl2'>
+            <td>|-- <a href="javascript:void(0)" onclick="struct_expand(this)">tpl/</a></td>
+            <td>后台模板文件夹</td>
+        </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- admin.html</td>
+                    <td>管理员模块模板</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- admin_log.html</td>
+                    <td>管理员日志模块模板</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- db_backup.html</td>
+                    <td>数据库备份模块模板</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- db_optimize.html</td>
+                    <td>数据库优化模块模板</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- header.html</td>
+                    <td>模块头部内容模板</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- home.html</td>
+                    <td>Home页模板</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- index.html</td>
+                    <td>首页模板</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- login.html</td>
+                    <td>登陆页模板</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- module.html</td>
+                    <td>模块管理模板</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- myaccount.html</td>
+                    <td>我的帐号模板</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- privilege.html</td>
+                    <td>权限模块模板</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- role.html</td>
+                    <td>角色模块模板</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- sysinfo.html</td>
+                    <td>系统信息模板</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- titleact.html</td>
+                    <td>标题层按钮模板</td>
+                </tr>
+
+        <tr class='lvl2 lvlf'>
+            <td>|-- index.php</td>
+            <td>后台首页</td>
+        </tr>
+
+
+<tr class='lvl1'>
+    <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">class/</a></td>
+    <td>整站公用类文件夹</td>
+</tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- dumpsql.class.php</td>
+            <td>数据库导出类</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- formc.class.php</td>
+            <td>表单控件类</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- mysql.class.php</td>
+            <td>Mysql数据库类</td>
+        </tr>
+
+
+<tr class='lvl1'>
+    <td>|- css/</td>
+    <td>前台布局样式文件夹</td>
+</tr>
+
+
+<tr class='lvl1'>
+    <td>|- images/</td>
+    <td>前台布局图片文件夹</td>
+</tr>
+
+
+<tr class='lvl1'>
+    <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">includes/</a></td>
+    <td>整站公用和前台公用的库文件夹</td>
+</tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- _init.php</td>
+            <td>[自定义文件] 前台入口</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- _systemconfig.php</td>
+            <td>[自定义文件] 整站公用配置库</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- _systemdbd.php</td>
+            <td>[自定义文件] 整站公用数据库数据(文件格式)</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- _systemfunc.php</td>
+            <td>[自定义文件] 前台公用函数库</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- config.php</td>
+            <td>整站公用配置</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- func.php</td>
+            <td>整站公用函数库</td>
+        </tr>
+
+
+<tr class='lvl1'>
+    <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">js/</a></td>
+    <td>整站公用和前台公用的脚本文件夹</td>
+</tr>
+        <tr class="lvl2">
+            <td>|-- calendar</td>
+            <td>日历控件</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- _system.js</td>
+            <td>[自定义文件] 前台公用函数库</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- _systemwindows.js</td>
+            <td>[自定义文件] 前台弹出窗口函数库</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- ajax.js</td>
+            <td>Ajax对象</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- common.js</td>
+            <td>整站公用函数库</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- formc.js</td>
+            <td>表单控件对象</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- img.js</td>
+            <td>图片动画效果对象</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- tableact.js</td>
+            <td>表格通用操作对象</td>
+        </tr>
+        <tr class="lvl2 lvlf">
+            <td>|-- window.js</td>
+            <td>窗口类</td>
+        </tr>
+
+
+<tr class='lvl1'>
+    <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">lang/</a></td>
+    <td>前台公用语言库文件夹</td>
+</tr>
+        <tr class='lvl2 lvlf'>
+            <td>|-- _systemzh.js</td>
+            <td>[自定义文件] 前台公用语言库</td>
+        </tr>
+
+
+<tr class='lvl1'>
+    <td>|- tpl/</td>
+    <td>前台模板文件夹</td>
+</tr>
+</table>
+<script>struct_show(1)</script>
+
+
+
+</body>
+</html>

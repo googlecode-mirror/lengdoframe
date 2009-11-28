@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>系统开发篇</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
+<body>
+
+
+<b>1. 基本文件配置</b><br />
+<div style="margin-left:1em;">
+    1.1 <a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-filecfg-systemconfig');o.style.display=o.style.display=='none'?'':'none';">
+        重命名 /includes/_systemconfig.php 文件为 systemconfig.php，自定义整站公用配置库
+        </a>
+    <div style="display:none;margin-left:1.8em;color:#666;" id="lfm-filecfg-systemconfig">
+        <div style="text-indent:2em;">该文件作为config.php的扩展配置文件，主要用于设置整站的配置信息和目录信息。</div>
+        <div style="text-indent:2em;">配置库变量：$_CFG</div>
+        <table cellspacing="0" cellpadding="0" style="font-size:12px;margin-left:2.2em;">
+        <tr>
+            <td width="65">Example1:</td>
+            <td width="130">$_CFG['dbhost']</td>
+            <td width="15">=</td>
+            <td width="130">'localhost';</td>
+            <td>//数据库服务器地址</td>
+        </tr>
+        <tr>
+            <td>Example2:</td>
+            <td>$_CFG['DIR_UPLOAD']</td>
+            <td>=</td>
+            <td>DIR_ROOT.'xx/xx/';</td>
+            <td>//文件上传目录</td>
+        </tr>
+        <tr>
+            <td>Example3:</td>
+            <td>$_CFG['URL_UPLOAD']</td>
+            <td>=</td>
+            <td>URL_ROOT.'xx/xx/';</td>
+            <td>//文件上传URL目录的访问地址</td>
+        </tr>
+        </table>
+    </div>
+
+    <br />
+
+    1.2 <a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-filecfg-systemdbd');o.style.display=o.style.display=='none'?'':'none';">
+        重命名 /includes/_systemdbd.php 文件为 systemdbd.php，自定义整站公用数据库数据 <span style="color:#600;">(如果不需要可跳过)</span>
+        </a>
+    <div style="display:none;margin-left:1.8em;color:#666;" id="lfm-filecfg-systemdbd">
+        <div style="text-indent:2em;">该文件主要用于设置整站的映射数据。</div>
+        <div style="text-indent:2em;">映射数据通常指那些不经常改动的，可以使用标识访问的数据。然而当这些数据需要经常改动时，我们一般就会将其存储在数据库中，所以这些映射数据又叫做数据库数据(文件格式)。</div>
+        <div style="text-indent:2em;">数据库数据变量：$_DBD</div>
+        <table cellspacing="0" cellpadding="0" style="font-size:12px;margin-left:2.2em;">
+        <tr>
+            <td width="65">Example1:</td>
+            <td width="115">$_DBD['sex']</td>
+            <td width="15">=</td>
+            <td width="240">array('1'=>'男', '2'=>'女');</td>
+            <td>//性别</td>
+        </tr>
+        <tr>
+            <td>Example2:</td>
+            <td>$_DBD['article_cat']</td>
+            <td>=</td>
+            <td>array('1'=>'公司新闻', '2'=>'公司公告');</td>
+            <td>//文章类别</td>
+        </tr>
+        </table>
+    </div>
+</div>
+
+<br /><br />
+
+<b>2. 系统文件配置</b><br />
+<div style="margin-left:1em;">
+   2.1 修改 /admin/tpl/home.html，自定义HOME模板页内容 <span style="color:#600;">(如果不需要可跳过)</span><br /><br />
+   
+   2.2 重命名 /admin/lang/_systemzh.php 文件为 systemzh.php，自定义后台公用语言库 <span style="color:#600;">(如果不需要可跳过)</span><br /><br />
+   
+   2.3 重命名 /admin/js/_system.js 文件为 system.js，后台公用函数库 <span style="color:#600;">(如果不需要可跳过)</span><br />
+   2.4 重命名 /admin/js/_systemwindows.js 文件为 systemwindows.js，自定义后台弹出窗口函数库<br /><br />
+   
+   2.5 重命名 /admin/skin/default/_system.css 文件为 system.css，自定义后台公用样式库 <span style="color:#600;">(如果不需要可跳过)</span>   
+</div>
+
+
+</body>
+</html>
