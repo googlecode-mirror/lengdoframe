@@ -55,6 +55,7 @@ $_CFG['F_SYSTEMCONFIG_SRC'] = '../includes/_systemconfig.php';
 $_DBD['support'] = array('0'=>'<span class="no"><i></i>不支持</span>', '1'=>'<span class="yes"><i></i>支持</span>');
 $_DBD['filewrite'] = array('0'=>'<span class="no"><i></i>不可写</span>', '1'=>'<span class="yes"><i></i>可写</span>');
 $_DBD['fileexist'] = array('0'=>'<span class="no"><i></i>不存在</span>', '1'=>'<span class="yes"><i></i>存在</span>');
+$_DBD['filevalid'] = array('0'=>'<span class="no"><i></i>无效</span>', '1'=>'<span class="yes"><i></i>有效</span>');
 $_DBD['filerename'] = array('0'=>'<span class="no"><i></i>不可重命名</span>', '1'=>'<span class="yes"><i></i>可重命名</span>');
 
 $_DBD['dberror_1007'] = '数据库 "%s" 已存在，请重新填写数据库名!';
@@ -111,7 +112,15 @@ if( $_REQUEST['act'] == 'envcheck' ){
             $tpl['files'][$i]['need'] = $_DBD['fileexist'][1];
             $tpl['files'][$i]['error'] = isset($_POST['submit']) ? 1 : 0;
             $tpl['files'][$i]['filepriv'] = $_DBD['fileexist'][0];
-        }else{
+        }
+        /* 配置文件检查 */
+        elseif( $r['file'] == $_CFG['DIR_SYSTEMCONFIG'] && file_systemconfig_valid() === false ){
+                $tpl['files'][$i]['need'] = $_DBD['filevalid'][1];
+                $tpl['files'][$i]['error'] = isset($_POST['submit']) ? 1 : 0;
+                $tpl['files'][$i]['filepriv'] = $_DBD['filevalid'][0];
+        }
+        /* 文件存在 */
+        else{
             /* 重构数据 */
             if( $r['type'] == 'dir' ){
                 $tpl['files'][$i]['need'] = $_DBD['filewrite'][1];
@@ -340,13 +349,13 @@ function file_systemconfig_valid()
 
     /* 获取文件字符 */
     $str = file_get_contents($_CFG['F_SYSTEMCONFIG_SRC']);
-    
+
     /* 检验文件是否有效 */
-    if( strpos('$_CFG[\'dbhost\'] = \'\'',$str) === false ) return false;
-    if( strpos('$_CFG[\'dbname\'] = \'\'',$str) === false ) return false;
-    if( strpos('$_CFG[\'dbuser\'] = \'\'',$str) === false ) return false;
-    if( strpos('$_CFG[\'dbpass\'] = \'\'',$str) === false ) return false;
-    if( strpos('$_CFG[\'tblpre\'] = \'\'',$str) === false ) return false;
+    if( strpos($str,'$_CFG[\'dbhost\'] = \'\';') === false ) return false;
+    if( strpos($str,'$_CFG[\'dbname\'] = \'\';') === false ) return false;
+    if( strpos($str,'$_CFG[\'dbuser\'] = \'\';') === false ) return false;
+    if( strpos($str,'$_CFG[\'dbpass\'] = \'\';') === false ) return false;
+    if( strpos($str,'$_CFG[\'tblpre\'] = \'\';') === false ) return false;
 
     return true;
 }
