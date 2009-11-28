@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>模块篇</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
+<body>
+
+
+<div>模块，作为权限系统中的重要组成部分，它不仅仅是权限操作的一个资源承载体，更是构建 用户资源接口--"模块菜单树" 的重要数据来源！</div>
+
+<br /><br />
+
+<b>1. 模块菜单树</b><br />
+<div style="text-align:center;"><img alt="图1" src="images/module_mtree.jpg" style="border:1px solid #ccc;"></div>
+<div style="margin-left:1.2em;">
+    <br />
+    <div style="text-indent:2em;">通过 "图1" 相信大家已经知道了什么是 "模块菜单树"！ </div>
+    <div style="text-indent:2em;">那么我们如何改变 "模块菜单树" 呢？上面已经说过，模块是构建"模块菜单树"的重要数据来源，这就意味着改变模块数据就可以改变 "模块菜单树"！</div>
+    <div style="text-indent:2em;">以下操作将改变模块数据：增加模块，编辑模块，删除模块，隐藏模块，排序模块。</div>
+
+    <br /><br />
+
+    <a href="javascript:void(0)" style="font-weight:bold;color:#000;" onclick="var o=document.getElementById('lfm-module-mtree-update');o.style.display=o.style.display=='none'?'':'none';">1.1 模块菜单树更新</a><br />
+    <div id="lfm-module-mtree-update" style="margin-left:1.8em;display:none;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        由于权限系统的缓存机制，当我们改变模块或者权限时"模块菜单树"是不会马上自动更新的！这时我们可以点击 "图1" 中的 "权限系统刷新" 按钮来更新 "模块菜单树";
+    </div>
+
+    <a href="javascript:void(0)" style="font-weight:bold;color:#111;" onclick="var o=document.getElementById('lfm-module-mtree-source');o.style.display=o.style.display=='none'?'':'none';">1.2 模块菜单树数据源</a><br />
+    <div id="lfm-module-mtree-source" style="margin-left:1.8em;display:none;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        以下模块数据将被 "模块菜单树" 构建函数过滤：<br />
+        1. 未添加模块操作的模块。(注：在"内核->权限管理"中无权限的模块)<br />
+        2. 被隐藏的模块。(注：在"内核->模块管理"中不显示的模块)
+    </div>
+</div>
+
+<br /><br />
+
+<b>2. 增加模块</b><br />
+<div style="margin-left:1.2em;">按 "图1" 打开 "内核->模块管理" ，然后点击右上边的 "增加" 按钮打开增加模块的窗口(参见"图2")！</div>
+<div style="text-align:center;"><img alt="图2" src="images/module_add.jpg" style="border:1px solid #ccc;"></div>
+
+<div style="margin-left:1.2em;">
+    说明：<br />
+    <div style="margin-left:1em;">
+    1. 模块的处理文件(夹)全部都在 /admin/modules/ 下。<br />
+    2. 如果增加的是一个模块组，那么 "处理文件" 框中文件名将代表一个文件夹的名称。<br />
+    3. 增加后的模块不能马上在 "模块菜单树" 中显示，原因参见 "<a href="javascript:void(0)" style="color:#008ECD;" onclick=" window.location.hash='lfm-module-mtree-source'">模块菜单树数据源</a>"。
+    </div>
+</div>
+
+<br />
+
+<div style="margin-left:1.2em;">
+    例子：<br />
+    <div style="margin-left:1em;">
+    <table width="100%">
+    <tr>
+        <td valign="top" width="20" style="background:#eee;color:#555;"><b>1</b></td>
+        <td valign="top" width="160" style="background:#eee;color:#333;">
+            &nbsp;模块名称：测试模块组<br />
+            &nbsp;处理文件：testgroup<br />
+            &nbsp;所属模块：顶级模块
+        </td>
+        <td valign="top" style="background:#f1f1f1;color:#666;padding:4px;">
+            <b>说明：</b>根据左侧的数据我们需要在 /admin/modules/ 文件夹下建立名为 testgroup 的文件夹。
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" width="20" style="background:#e1e1e1;color:#555;"><b>2</b></td>
+        <td valign="top" width="160" style="background:#e1e1e1;color:#333;">
+            &nbsp;模块名称：测试模块<br />
+            &nbsp;处理文件：test.php<br />
+            &nbsp;所属模块：测试模块组
+        </td>
+        <td valign="top" style="background:#e3e3e3;color:#666; padding:4px;">
+            <b>说明：</b>根据左侧的数据我们需要在 /admin/modules/testgroup/ 文件夹下建立名为 test.php 模块处理文件。
+        </td>
+    </tr>
+    </table>
+    </div>
+</div>
+
+<br /><br />
+
+<b>3. 编辑、删除、隐藏、排序模块</b><br />
+<div style="margin-left:1.2em;">按 "图1" 打开 "内核->模块管理" 操作即可！</div>
+
+<br />
+
+<div style="margin-left:1.2em;">
+    说明：操作完后执行 "<a href="javascript:void(0)" style="color:#008ECD;" onclick="window.location.hash='lfm-module-mtree-update'">模块菜单树更新</a>" 操作即可看到效果！<br />
+</div>
+
+</body>
+</html>
