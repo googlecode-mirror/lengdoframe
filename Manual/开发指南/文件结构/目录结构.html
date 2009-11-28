@@ -98,6 +98,7 @@ function struct_expand( caller )
     <td>网站根目录</td>
 </tr>
 
+
 <tr class='lvl1'>
     <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">admin/</a></td>
     <td>网站后台文件夹</td>
@@ -329,7 +330,7 @@ function struct_expand( caller )
                     <td>模块管理模板</td>
                 </tr>
                 <tr class='lvl3 lvlf'>
-                    <td>|--- my_account.html</td>
+                    <td>|--- myaccount.html</td>
                     <td>我的帐号模板</td>
                 </tr>
                 <tr class='lvl3 lvlf'>
@@ -341,19 +342,11 @@ function struct_expand( caller )
                     <td>角色模块模板</td>
                 </tr>
                 <tr class='lvl3 lvlf'>
-                    <td>|- sysconfig.html</td>
-                    <td>系统配置模板</td>
-                </tr>
-                <tr class='lvl3 lvlf'>
-                    <td>|--- sysdata.html</td>
-                    <td>系统数据模板</td>
-                </tr>
-                <tr class='lvl3 lvlf'>
                     <td>|--- sysinfo.html</td>
                     <td>系统信息模板</td>
                 </tr>
                 <tr class='lvl3 lvlf'>
-                    <td>|--- tbtn.html</td>
+                    <td>|--- titleact.html</td>
                     <td>标题层按钮模板</td>
                 </tr>
 
@@ -362,14 +355,11 @@ function struct_expand( caller )
             <td>后台首页</td>
         </tr>
 
+
 <tr class='lvl1'>
     <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">class/</a></td>
     <td>整站公用类文件夹</td>
 </tr>
-        <tr class="lvl2">
-            <td>|-- font/</td>
-            <td>字体库文件夹</td>
-        </tr>
         <tr class="lvl2 lvlf">
             <td>|-- dumpsql.class.php</td>
             <td>数据库导出类</td>
@@ -379,26 +369,23 @@ function struct_expand( caller )
             <td>表单控件类</td>
         </tr>
         <tr class="lvl2 lvlf">
-            <td>|-- image.class.php</td>
-            <td>图片处理类</td>
-        </tr>
-        <tr class="lvl2 lvlf">
             <td>|-- mysql.class.php</td>
             <td>Mysql数据库类</td>
         </tr>
-        <tr class="lvl2 lvlf">
-            <td>|-- vcode.class.php</td>
-            <td>图像验证码类</td>
-        </tr>
+
 
 <tr class='lvl1'>
     <td>|- css/</td>
     <td>前台布局样式文件夹</td>
 </tr>
+
+
 <tr class='lvl1'>
     <td>|- images/</td>
     <td>前台布局图片文件夹</td>
 </tr>
+
+
 <tr class='lvl1'>
     <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">includes/</a></td>
     <td>整站公用和前台公用的库文件夹</td>
@@ -424,13 +411,10 @@ function struct_expand( caller )
             <td>整站公用配置</td>
         </tr>
         <tr class="lvl2 lvlf">
-            <td>|-- fckeditor.php</td>
-            <td>FCKeidtor编辑器构造文件</td>
-        </tr>
-        <tr class="lvl2 lvlf">
             <td>|-- func.php</td>
             <td>整站公用函数库</td>
         </tr>
+
 
 <tr class='lvl1'>
     <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">js/</a></td>
@@ -439,10 +423,6 @@ function struct_expand( caller )
         <tr class="lvl2">
             <td>|-- calendar</td>
             <td>日历控件</td>
-        </tr>
-        <tr class="lvl2">
-            <td>|-- fckeditor</td>
-            <td>在线编辑器控件</td>
         </tr>
         <tr class="lvl2 lvlf">
             <td>|-- _system.js</td>
@@ -477,31 +457,21 @@ function struct_expand( caller )
             <td>窗口类</td>
         </tr>
 
+
 <tr class='lvl1'>
     <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">lang/</a></td>
     <td>前台公用语言库文件夹</td>
 </tr>
         <tr class='lvl2 lvlf'>
-            <td>|-- _zh.js</td>
+            <td>|-- _systemzh.js</td>
             <td>[自定义文件] 前台公用语言库</td>
         </tr>
+
 
 <tr class='lvl1'>
     <td>|- tpl/</td>
     <td>前台模板文件夹</td>
 </tr>
-<tr class='lvl1'>
-    <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">upload/</a></td>
-    <td>上传文件的文件夹</td>
-</tr>
-        <tr class='lvl2'>
-            <td>|-- images/</td>
-            <td>上传图片的文件夹</td>
-        </tr>
-        <tr class='lvl2'>
-            <td>|-- jseditor/</td>
-            <td>编辑器上传文件的文件夹</td>
-        </tr>
 </table>
 <script>struct_show(1)</script>
 
