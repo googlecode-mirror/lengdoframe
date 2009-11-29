@@ -676,7 +676,7 @@ function wnd_wait( msg, configs )
     
     configs.action  = 0;
     configs.zindex  = 50;
-    configs.control = 'empty';
+    configs.control = '';
 
     wnd_sysmsg(msg, configs, 'wait');
 }
@@ -704,7 +704,7 @@ function wnd_confirm( msg, configs, active )
 
     configs.action  = 1;
     configs.zindex  = 51;
-    configs.control = 'default';
+    configs.control = 'ok&cannel';
 
     wnd_sysmsg(msg, configs, 'confirm', active);
 }

@@ -68,13 +68,13 @@ var Wnds = {
  *          fun  callbacks.complete  当窗口加载完成后调用此函数
  * @params  obj  configs             配置集
  *          str  configs.title       窗口标题
- *          int  configs.width       窗口宽度。  默认：'200px' 注：客户区宽度=窗口宽度-2
+ *          int  configs.width       窗口宽度。  默认：'200px'                                           注：客户区宽度=窗口宽度-2
  *          int  configs.height      客户区高度。默认：'auto'
- *          int  configs.action      标题栏的操作按钮 000(最小化，最大化，关闭)，默认001.                注：前辍0省略
- *          str  configs.control     控制区类型(ok/cannel/empty/custom/default)，默认default.            注：通过&组合按钮
+ *          int  configs.action      标题栏的操作按钮 000(最小化，最大化，关闭)。默认001                 注：前辍0省略
+ *          str  configs.control     控制区类型(ok/cannel/custom)。默认ok&cannel                         注：通过&组合按钮
  *          obj  configs.buttons     控制区自定义按钮集。[{'index':str, 'text':str, 'click':fun}]
  *          int  configs.overlay     遮掩层透明度。false表示不显示，0-100表示透明度
- *          int  configs.overflow    窗口溢出时滚动条，默认0000(scroll-x，scroll-y，hidden-x，hidden-y). 注：前辍0省略
+ *          int  configs.overflow    窗口溢出时滚动条，默认0000(scroll-x，scroll-y，hidden-x，hidden-y)  注：前辍0省略
  */
 function Wnd( id, callbacks, configs ){
     /* 初始化参数 - 配置 */
@@ -85,7 +85,7 @@ function Wnd( id, callbacks, configs ){
     this.sWidth    = typeof(configs.width)    == 'number' ? configs.width + 'px' : '200px';
     this.sHeight   = typeof(configs.height)   == 'number' ? configs.height + 'px' : 'auto';
     this.iAction   = typeof(configs.action)   == 'number' ? configs.action : 1;
-    this.aControl  = typeof(configs.control)  == 'string' ? configs.control.split('&') : ['default'];
+    this.aControl  = typeof(configs.control)  == 'string' ? configs.control.split('&') : ['ok','cannel'];
     this.aButtons  = typeof(configs.buttons)  == 'object' ? configs.buttons : [];
     this.iOverlay  = typeof(configs.overlay)  == 'number' ? configs.overlay : (configs.overlay === false ? false : 40);
     this.iOverflow = typeof(configs.overflow) == 'number' ? configs.overflow : 0;
@@ -267,7 +267,7 @@ Wnd.prototype.title = function( str, ico ){
 }
 
 /**
- * 设置/返回控制区按钮
+ * 设置/返回控制区按钮对象
  *
  * @params  str  index   控制区按钮索引
  * @params  str  attrib  对象HTML内置属性，undefined表示返回控制区按钮对象
@@ -795,7 +795,7 @@ Wnd.prototype.createControl = function(){
     /* 控制区按钮 */
     for( i=0,j=this.aControl.length; i < j; i++ ){
         /* 确定按钮 */
-        if( this.aControl[i] == 'default' || this.aControl[i] == 'ok' ){
+        if( this.aControl[i] == 'ok' ){
             o = document.createElement('INPUT');
             o.type    = 'button';
             o.value   = '确定';
@@ -806,7 +806,7 @@ Wnd.prototype.createControl = function(){
         }
 
         /* 取消按钮 */
-        if( this.aControl[i] == 'default' || this.aControl[i] == 'cannel' ){
+        if( this.aControl[i] == 'cannel' ){
             o = document.createElement('INPUT');
             o.type    = 'button';
             o.value   = '取消';
