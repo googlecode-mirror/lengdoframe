@@ -674,9 +674,9 @@ function wnd_wait( msg, configs )
 { 
     configs = typeof(configs) == 'object' && configs ? configs : {};
     
-    configs.action  = 0;
-    configs.zindex  = 50;
-    configs.control = '';
+    configs.action = 0;
+    configs.zindex = 50;
+    configs.button = '';
 
     wnd_sysmsg(msg, configs, 'wait');
 }
@@ -691,9 +691,9 @@ function wnd_alert( msg, configs, active )
 { 
     configs = typeof(configs) == 'object' && configs ? configs : {};
 
-    configs.action  = 1;
-    configs.zindex  = 51;
-    configs.control = 'ok';
+    configs.action = 1;
+    configs.zindex = 51;
+    configs.button = 'ok';
 
     wnd_sysmsg(msg, configs, 'alert', active);
 }
@@ -702,9 +702,9 @@ function wnd_confirm( msg, configs, active )
 {
     configs = typeof(configs) == 'object' && configs ? configs : {};
 
-    configs.action  = 1;
-    configs.zindex  = 51;
-    configs.control = 'ok&cannel';
+    configs.action = 1;
+    configs.zindex = 51;
+    configs.button = 'ok&cannel';
 
     wnd_sysmsg(msg, configs, 'confirm', active);
 }
@@ -724,10 +724,11 @@ function wnd_sysmsg( msg, configs, type, active )
 
     /* 构建窗口 */
     if( !wnd ){
-        wnd = new Wnd('wnd-sysmsg-'+type, null, {'width':420, 'control':configs.control, 'action':configs.action}); 
+        wnd = new Wnd('wnd-sysmsg-'+type, null, {'width':420, 'action':configs.action}); 
 
         wnd.create(); 
         wnd.zindex(configs.zindex);
+        wnd.buttonAddDefault(configs.button);
     }
 
     /* 配置窗口 - 初始数据 */
