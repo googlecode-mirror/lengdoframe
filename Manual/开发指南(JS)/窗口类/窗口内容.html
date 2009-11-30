@@ -26,14 +26,16 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         &lt;script type="application/javascript"&gt;<br />
         <div style="margin-left:2em;">
             var wnd = new Wnd( 'wnd-unique-id1', null, {'width':400} ); <br />
-            wnd.create();<br /><br />
-
+            <br />
+            wnd.create();<br />
+            wnd.buttonAddDefault();<br />
+            <br />
             wnd.inner('&lt;b&gt;HTML内容XXX&lt;/b&gt;', 'html');<br />
             wnd.show();<br />
         </div>
         &lt;/script&gt;
         <span style="color:#008ECD">
-            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id1',null,{'width':400});wnd.create();wnd.inner('<b>HTML内容XXX</b>');wnd.show();">演示</a>]
+            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id1',null,{'width':400});wnd.create();wnd.buttonAddDefault();wnd.inner('<b>HTML内容XXX</b>');wnd.show();">演示</a>]
         </span>
     </div>
     <div>
@@ -50,14 +52,16 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         &lt;script type="application/javascript"&gt;<br />
         <div style="margin-left:2em;">
             var wnd = new Wnd( 'wnd-unique-id2', null, {'width':400} ); <br />
-            wnd.create();<br /><br />
-
+            <br />
+            wnd.create();<br />
+            wnd.buttonAddDefault();<br />
+            <br />
             wnd.inner('http://www.lengdo.com/about.php', 'url');<br />
             wnd.show();<br />
         </div>
         &lt;/script&gt;
         <span style="color:#008ECD">
-            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id2',null,{'width':400});wnd.create();wnd.inner('http://www.lengdo.com/about.php','url');wnd.show();">演示</a>]
+            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id2',null,{'width':400});wnd.create();wnd.buttonAddDefault();wnd.inner('http://www.lengdo.com/about.php','url');wnd.show();">演示</a>]
         </span>
     </div>
     <div>
@@ -82,8 +86,10 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         &lt;script type="application/javascript"&gt;<br />
         <div style="margin-left:2em;">
             var wnd = new Wnd( 'wnd-unique-id3', null, {'width':400} ); <br />
-            wnd.create();<br /><br />
-            
+            <br />
+            wnd.create();<br />
+            wnd.buttonAddDefault();<br />
+            <br />
             var html = '';<br />
             html += '&lt;input type="buttom" value="重载" onclick="';<br />
             html += "this.value='窗口内容重载中....';this.style.color='#f00'";<br />
@@ -102,7 +108,9 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
             function wnd_unique_id3()
             {
                 var wnd = new Wnd('wnd-unique-id3', null, {'width':400});
+
                 wnd.create();
+                wnd.buttonAddDefault();
 
                 wnd.inner('<br /><input type="button" value="重载" onclick="this.value=\'窗口内容重载中....\';this.style.color=\'#f00\';alert(\'点击确认后重载!\');Wnds.find(\'wnd-unique-id3\').reinner();"><br /><br />', 'html');
                 wnd.show();

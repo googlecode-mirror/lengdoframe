@@ -21,11 +21,13 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
             var wnd = new Wnd( 'wnd-unique-id' ); <br /><br />
 
             wnd.create();<br />
+            wnd.buttonAddDefault();<br />
+            <br />
             wnd.show();
         </div>
         &lt;/script&gt;
         <span style="color:#008ECD">
-            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id1');wnd.create();wnd.show();">演示</a>]
+            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id1');wnd.create();wnd.buttonAddDefault();wnd.show();">演示</a>]
         </span>
     </div>
     <div>
@@ -44,11 +46,13 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
             var wnd = new Wnd( 'wnd-unique-id', null, {'width':400} ); <br /><br />
 
             wnd.create();<br />
+            wnd.buttonAddDefault();<br />
+            <br />
             wnd.show();
         </div>
         &lt;/script&gt;
         <span style="color:#008ECD">
-            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id2', null, {'width':400});wnd.create();wnd.show();">演示</a>]
+            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id2', null, {'width':400});wnd.create();wnd.buttonAddDefault();wnd.show();">演示</a>]
         </span>
     </div>
     <div>
@@ -68,6 +72,8 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
             var wnd = new Wnd( 'wnd-unique-id', {'ok':deal-unique-id} ); <br /><br />
 
             wnd.create();<br />
+            wnd.buttonAddDefault();<br />
+            <br />
             wnd.show();<br /><br />
 
             function deal-unique-id(){<br />
@@ -76,7 +82,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         </div>
         &lt;/script&gt;
         <span style="color:#008ECD">
-            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id3',{'ok':deal_unique_id3});wnd.create();wnd.show();function deal_unique_id3(){alert('You Click OK Button !')}">演示</a>]
+            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id3',{'ok':deal_unique_id3});wnd.create();wnd.buttonAddDefault();wnd.show();function deal_unique_id3(){alert('You Click OK Button !')}">演示</a>]
         </span>
     </div>
     <div>
