@@ -26,7 +26,9 @@ function wnd_admin_fill( caller, act, admin_id )
     /* 构建窗口 */
     if( !wnd ){
         wnd = new Wnd('wnd-admin-fill', {'okb':deal_admin_fill}, {'width':660,'height':420,'overflow':100});
+
         wnd.create();
+        wnd.buttonAddDefault();
     }
 
     /* 初始化参数 */
@@ -85,7 +87,9 @@ function wnd_role_fill( caller, act, role_id )
     /* 构建窗口 */
     if( !wnd ){
         wnd = new Wnd('wnd-role-fill', {'okb':deal_role_fill}, {'width':660,'height':420,'overflow':100});
+
         wnd.create();
+        wnd.buttonAddDefault();
     }
 
     /* 初始化参数 */
@@ -176,7 +180,9 @@ function wnd_dbbackup_fill()
     /* 构建窗口 */
     if( !wnd ){
         wnd = new Wnd('wnd-dbbackup-fill', {'okb':deal_dbbackup_fill}, {'width':660,'height':420,'overflow':100});
+
         wnd.create();
+        wnd.buttonAddDefault();
 
         /* 初始化参数 */
         wnd.title('数据库备份');
@@ -296,7 +302,9 @@ function wnd_module_fill( caller, act, id )
     /* 构建窗口 */
     if( !wnd ){
         wnd = new Wnd('wnd-module-fill', {'okb':deal_module_fill}, {'width':300});
+
         wnd.create();
+        wnd.buttonAddDefault();
     }
 
     /* 初始化参数 */
@@ -355,7 +363,9 @@ function wnd_privilege_fill( caller, act, privilege_id )
     /* 构建窗口 */
     if( !wnd ){
         wnd = new Wnd('wnd-privilege-fill', {'okb':deal_privilege_fill}, {'width':300});
+
         wnd.create();
+        wnd.buttonAddDefault();
     }
 
     /* 初始化参数 */
@@ -414,7 +424,9 @@ function wnd_myaccount_fill()
     /* 构建窗口 */
     if( !wnd ){
         wnd = new Wnd('wnd-myaccount-fill', {'okb':deal_myaccount_fill}, {'width':500});
+
         wnd.create();
+        wnd.buttonAddDefault();
 
         /* 初始化参数 */
         wnd.title('我的帐号');
@@ -463,7 +475,9 @@ function wnd_sysinfo_view()
     /* 构建窗口 */
     if( !wnd ){
         wnd = new Wnd('wnd-sysinfo-view', null, {'width':420,'control':'ok'});
+
         wnd.create();
+        wnd.buttonAddDefault();
 
         /* 初始化参数 */
         wnd.title('系统信息');
