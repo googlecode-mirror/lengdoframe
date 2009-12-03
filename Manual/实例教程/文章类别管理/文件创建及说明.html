@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>文件创建及说明</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
+<body>
+
+
+<div style="text-indent:2em">尝试点击一下 "<a target="_blank" href="../../开发指南(PHP)/权限系统/模块篇.html#lfm-module-mtree" style="color:#000;">模块菜单树</a>" 中的 "文章类别" 菜单项，你会发现系统弹出了一个错误提示 "XmlHttpRequest error status: [404]" ！</div>
+<div style="text-indent:2em">错误404，说明浏览器没有找到文件！的确，到目前为止我们只向系统提交了关于"文章类别"模块和权限的一些信息，没有创建过任何文件更没有写过任何代码！既然如此，那我们就开始创建 "文章类别" 模块的相关处理文件....</div>
+
+<br />
+
+<b id="lfm-articlecat-file-module">1. 创建模块文件</b>
+<div style="margin-left:1.2em">
+    <div style="text-indent:2em">模块文件，即处理 "文章类别" 业务逻辑的文件，包括处理文章类别的列表，增加，编辑，删除功能！这是模块的核心文件！</div>
+    <div style="text-indent:2em">那么我们应该在哪里建立这个文件呢？"<a target="_blank" href="../../开发指南(PHP)/权限系统/模块篇.html#lfm-module-add" style="color:#000;">模块篇</a>" 曾介绍过模块的处理文件(夹)全部都在 /admin/modules/ 下！那么我们现在就打开框架根目录下的 admin/modules/ 文件夹，然后建立 article 文件夹并在其下面建立 article_cat.php文件！</div>
+    <div style="text-indent:2em">看到这里你可能会奇怪：我怎么知道要建立 article 文件夹和 article/article_cat.php 文件呢？还记得我们在 "<a target="_blank" href="添加模块和权限.html#lfm-articlecat-add-module" style="color:#000;">添加模块和权限</a>" 添加的 "文章" 模块组(处理文件为"article") 和 "文章类别" 模块(处理文件为"article_cat.php")吗，注意那时填写的处理文件是不是和刚才那个创建文件(夹)的很对应！没错，"<a target="_blank" href="../../开发指南(PHP)/权限系统/模块篇.html#lfm-module-mtree" style="color:#000;">模块菜单树</a>"中的"文章类别"菜单项就是根据其父菜单项的处理文件和其自身的处理文件构建路径并调用的！</div>
+    <br />
+    <div style="text-indent:2em">测试下新创建的文件 article/article_cat.php。</div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+    &lt;?php exit('Article Cat !'); ?&gt;
+    </div>
+    <div style="text-indent:2em">将以上代码写入到article_cat.php文件，然后再点击 "<a target="_blank" href="../../开发指南(PHP)/权限系统/模块篇.html#lfm-module-mtree" style="color:#000;">模块菜单树</a>" 中的 "文章类别" 菜单项即可以看到效果。</div>
+</div>
+
+<br />
+
+<b id="lfm-articlecat-file-view">2. 创建视图文件</b>
+<div style="margin-left:1.2em">
+    <div style="text-indent:2em">视图文件，即HTML文件！系统默认不使用任何模板(比如Smarty)，但是在开发的时候还是希望大家遵循数据和视图分离：即数据的处理在<a href="javascript:void(0)" onclick="window.location.hash='lfm-articlecat-file-module'" style="color:#000;">模块文件</a>中进行，视图文件则只用于显示数据！</div>
+    <div style="text-indent:2em">默认视图文件都保存在 /admin/tpl/ 文件夹下，当然你可以在 /includes/systemconfig.php 中配置视图文件夹的路径 $_CFG['DIR_ADMIN_TPL']：</div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+    $_CFG['DIR_ADMIN_TPL'] = DIR_ROOT . 'admin/tpl2';
+    </div>
+    <div style="text-indent:2em">或</div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+    $_CFG['DIR_ADMIN_TPL'] = $_CFG['DIR_ADMIN'] . 'tpl2';
+    </div>
+
+    <br />
+
+    <div style="text-indent:2em">当然你也可以直接把视图文件和模块文件放到一起。</div>
+    <div style="text-indent:2em">通常视图和模板采用同样的名称，所以这里我们就新建一个 article_cat.html 文件(/admin/tpl/article_cat.html)</div>
+</div>
+
+<br />
+
+<b id="lfm-articlecat-file-lib">3. 创建库文件</b>
+<div style="margin-left:1.2em">
+    <div style="text-indent:2em">为了更好的组织代码，LengdoFrame引入了库文件概念，该文件主要作用就是封装一些请求数据库数据的功能。比如文章类别模块一些功能点就可以进行封装：获取所有文章类别列表，获取文章类别列表，获取文章类别信息，删除文章类别等。</div>
+    <br />
+    <div style="text-indent:2em">库文件通常保存在 /admin/includes/ 文件夹下。</div>
+    <div style="text-indent:2em">通常一个库文件保存了一个模块组下所有模块的功能函数，所以这里我们就新建一个 lib_article.php 文件(/admin/includes/lib_article.php)</div>
+</div>
+
+
+</body>
+</html>
