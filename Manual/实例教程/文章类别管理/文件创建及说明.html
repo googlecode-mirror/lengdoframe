@@ -45,17 +45,17 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <br />
 
     <div style="text-indent:2em">当然你也可以直接把视图文件和模块文件放到一起。</div>
-    <div style="text-indent:2em">通常视图和模板采用同样的名称，所以这里我们就新建一个 article_cat.html 文件(/admin/tpl/article_cat.html)</div>
+    <div style="text-indent:2em">通常视图文件和模块文件采用同样的名称，所以这里我们就新建一个 "文章类别" 视图文件： article_cat.html (/admin/tpl/article_cat.html) 。</div>
 </div>
 
 <br />
 
 <b id="lfm-articlecat-file-lib">3. 创建库文件</b>
 <div style="margin-left:1.2em">
-    <div style="text-indent:2em">为了更好的组织代码，LengdoFrame引入了库文件概念，该文件主要作用就是封装一些请求数据库数据的功能。比如文章类别模块一些功能点就可以进行封装：获取所有文章类别列表，获取文章类别列表，获取文章类别信息，删除文章类别等。</div>
+    <div style="text-indent:2em">为了更好的组织代码，LengdoFrame框架引入了库文件概念，该文件主要作用就是封装一些需要请求数据库数据的功能点。比如文章类别模块一些功能点就可以进行封装：获取所有文章类别列表，获取文章类别列表，获取文章类别信息，删除文章类别等。</div>
     <br />
     <div style="text-indent:2em">库文件通常保存在 /admin/includes/ 文件夹下。</div>
-    <div style="text-indent:2em">通常一个库文件保存了一个模块组下所有模块的功能函数，所以这里我们就新建一个 lib_article.php 文件(/admin/includes/lib_article.php)</div>
+    <div style="text-indent:2em">一个库文件一般都保存一个模块组下所有子模块的功能函数，所以这里我们就新建一个 "文章"模块组 的库文件：lib_article.php (/admin/includes/lib_article.php) 。</div>
 </div>
 
 
