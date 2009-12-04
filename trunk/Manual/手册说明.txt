@@ -1,0 +1,2 @@
+    该文件夹中的手册为HTML格式。
+    部分手册的效果需要引用LengdoFrame里的脚本文件，需要Manual和LengdoFrame放在同一级的目录下。
