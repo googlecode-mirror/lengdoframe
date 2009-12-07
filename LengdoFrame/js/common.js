@@ -837,7 +837,8 @@ function deal_form_submit( form, url, func, type, msg )
 
         /* 读取响应内容并JSON化 */
         try{
-            var result = iframe.contentWindow.document.body.innerHTML;
+            var text = iframe.contentWindow.document.body.innerHTML;
+            var result = text;
 
             /* 解决FF下由于fileUpload导致返回的数据加上<pre>标签的BUG */
             if( result.indexOf('<pre>') != -1 && result.substr(0, 5) == '<pre>' ){
@@ -850,7 +851,7 @@ function deal_form_submit( form, url, func, type, msg )
             }
 
             if( typeof(func) == 'function' ){
-                func(form, result);
+                func(result, text, form);
             }
         }catch(e){
             wnd_alert('服务器端错误！<br />'+result);

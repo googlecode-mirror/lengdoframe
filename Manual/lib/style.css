@@ -1,0 +1,560 @@
+/* ------------------------------------------------------ */
+/* - 标签兼容
+/* ------------------------------------------------------ */
+html{ width:100%; height:100%; overflow:auto; }
+body{ width:100%; height:100%; margin:0; font:12px Garamonds,Tahoma; }
+
+img{ border:0; }
+pre{ margin:0; }
+
+form{ margin:0; display:inline; }
+
+label{ margin:0 0 0 3px; *margin:0; cursor:pointer; }
+select{ height:20px; font-size:12px; font-family:Garamonds,Tahoma; vertical-align:middle; }
+textarea{ _margin:0 0 0 1px; padding:1px; border:1px solid #7F9DB9; font-size:12px; }
+
+
+/* ------------------------------------------------------ */
+/* - 表单域
+/* ------------------------------------------------------ */
+
+/* 单选框和复选框 */
+input.radio{ *height:17px; margin:1px 0 0 1px; cursor:pointer; vertical-align:top; *vertical-align:middle; }
+input.checkbox{ *height:17px; margin:1px 0 0 6px; *margin:1px 0 0 1px; cursor:pointer; vertical-align:top; *vertical-align:middle; }
+
+/* 单行文本框 */
+input.pwdbox{ height:16px; padding:1px; border:1px solid #7F9DB9; vertical-align:middle; font-family:Tahoma; }
+input.textbox{ height:16px; padding:1px; border:1px solid #7F9DB9; vertical-align:middle; }
+input.fillbox{ height:16px; padding:1px; border:1px solid #7F9DB9; background:#FFFCE3; vertical-align:middle; }
+input.readbox{ height:16px; padding:1px; border:1px solid #999999; background:#F6F6F6; color:#666; cursor:default; vertical-align:middle; }
+
+/* 文件域 */
+input.filebox{ border:1px solid #7F9DB9; }
+
+/* 多行文本框 */
+textarea.fillbox{ background:#FFFCE3; }
+
+
+/* ------------------------------------------------------ */
+/* - 通用全局类
+/* ------------------------------------------------------ */
+
+/* Do */
+a.do{ width:14px; height:14px; background:url(images/docircle.gif); display:inline-block; }
+
+/* No, Yes, Up, Down, Plus, Minus */
+a.no, a.yes, a.up, a.down, a.plus, a.minus{ cursor:pointer; }
+
+a.no, span.no{ width:14px; height:14px; margin:0 1px; display:inline-block; background:url(images/style_fxy.gif) -333px -213px; }
+a.yes, span.yes{ width:14px; height:14px; margin:0 1px; display:inline-block; background:url(images/style_fxy.gif) -333px -173px; }
+
+a.up, span.up{ width:14px; height:14px; margin:0 1px; display:inline-block; background:url(images/style_fxy.gif) -54px -207px; }
+a.down, span.down{ width:14px; height:14px; margin:0 1px; display:inline-block; background:url(images/style_fxy.gif) -54px -221px; }
+
+a.plus, span.plus{ width:16px; height:15px; *height:17px; display:inline-block; background:url(images/style_fxy.gif) -373px -121px; }
+a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block; background:url(images/style_fxy.gif) -373px -138px; }
+
+
+/* ------------------------------------------------------ */
+/* - 异步加载提示框和文档加载遮掩层
+/* ------------------------------------------------------ */
+#aloading-div{ width:140px; height:9px; background:url(images/doglide.gif); filter:alpha(opacity=90); opacity:0.9; font-size:0; position:absolute; z-index:50; }
+#dloading-div{ width:100%; height:100%; position:absolute; background:#FFF; filter:alpha(opacity=80); opacity:0.8; z-index:99; }
+#dloading-div a{ padding:0 5px; display:inline-block; color:#FFF; background:#050; text-decoration:none; }
+
+
+/* ------------------------------------------------------ */
+/* - 组合框 - 文件组合框
+/* ------------------------------------------------------ */
+.filecbox{ display:inline; }
+
+/* 文本框 */
+.filecbox .textbox{ width:200px; float:left; border-right:0; background:#F0F0F0; color:#666; }
+
+/* 清除按钮 */
+.filecbox .clear{ width:22px; height:20px; float:left; border-left:0; border-right:0; background:url(images/style_fxy.gif) -9px -10px; }
+.filecbox .clearover{ background-position:-9px -50px; }
+.filecbox .cleardown{ background-position:-9px -90px; }
+
+/* 选择按钮 -  文件上传 */
+.filecbox .overlay{ width:37px; height:20px; float:left; border-right:1px solid #7F9DB9; overflow:hidden; background:url(images/style_fxy.gif) -42px -10px; }
+.filecbox .overlayover{ background-position:-42px -50px; }
+.filecbox .overlaydown{ background-position:-42px -90px; }
+
+.filecbox .overlay .filebox{ width:0; margin-left:-20px; opacity:0; filter:alpha(opacity=0); cursor:pointer; }
+
+/* 选择按钮 -  文件选择 */
+.filecbox .choice{ width:23px; height:20px; float:left; border-right:1px solid #7F9DB9; background:url(images/style_fxy.gif) -89px -10px; }
+.filecbox .choiceover{ background-position:-89px -50px; }
+.filecbox .choicedown{ background-position:-89px -90px; }
+
+/* 上传按钮 */
+.filecbox .upload{ width:24px; height:20px; float:left; border-right:1px solid #7F9DB9; background:url(images/style_fxy.gif) -128px -10px; }
+.filecbox .uploadover{ background-position:-128px -50px; }
+.filecbox .uploaddown{ background-position:-128px -90px; }
+
+/* 上传后的按钮 */
+.filecbox .uploaded{ padding:0 0 0 5px; float:left; display:inline; }
+.filecbox .uploaded a{ width:24px; height:20px; float:left; }
+
+/* 上传后的按钮 - 删除按钮 */
+.filecbox .uploaded a.del{ background:url(images/style_fxy.gif) -168px -10px; border-right:0 solid #7F9DB9; }
+.filecbox .uploaded a.delover{ background-position:-168px -50px; }
+.filecbox .uploaded a.deldown{ background-position:-168px -90px; }
+
+/* 上传后的按钮 - 查看按钮 */
+.filecbox .uploaded a.view{ background:url(images/style_fxy.gif) -208px -10px; }
+.filecbox .uploaded a.viewover{ background-position:-208px -50px; }
+.filecbox .uploaded a.viewdown{ background-position:-208px -90px; }
+
+
+/* ------------------------------------------------------ */
+/* - 组合框 - 选择组合框
+/* ------------------------------------------------------ */
+.choicecbox{ display:inline; }
+
+.choicecbox .textbox{ width:150px; background:#FEFEFE; color:#666; border-right:0; }
+.choicecbox .fillbox{ width:150px; color:#666; border-right:0; }
+
+.choicecbox .choice{ width:24px; height:20px; border:0px; background:url(images/style_fxy.gif) -248px -50px; cursor:pointer; vertical-align:middle; }
+.choicecbox .choiceover{ background-position:-248px -50px; }
+.choicecbox .choicedown{ background-position:-248px -90px; }
+
+
+/* ------------------------------------------------------ */
+/* - 组合框 - 时间组合框
+/* ------------------------------------------------------ */
+.datecbox{ display:inline; }
+
+.datecbox .textbox{ width:150px; border-right:0; background:#FEFEFE; color:#666; font-family:Garamonds,Tahoma; }
+.datecbox .fillbox{ width:150px; border-right:0; color:#666; font-family:Garamonds,Tahoma; }
+
+.datecbox .choice{ width:24px; height:20px; border:0px; background:url(images/style_fxy.gif) -328px -50px; cursor:pointer; vertical-align:middle; }
+.datecbox .choiceover{ background-position:-328px -50px; }
+.datecbox .choicedown{ background-position:-328px -90px; }
+
+
+/* ------------------------------------------------------ */
+/* - 组合框 - 数字步长组合框
+/* ------------------------------------------------------ */
+.numscbox{ border:0px; border-collapse:collapse; }
+
+.numscbox td{ padding:0; margin:0; }
+
+.numscbox td .textbox{ height:16px; padding:1px; margin:0; border:1px solid #7f9db9; vertical-align:top; }
+.numscbox td .fillbox{ height:16px; padding:1px; margin:0; border:1px solid #7f9db9; vertical-align:top; background:#fffce3; }
+
+.numscbox td .buttont{ width:23px; height:10px; display:block; overflow:hidden; background:url(images/style_fxy.gif) -409px -50px; cursor:pointer; }
+.numscbox td .buttontdown{ background:url(images/style_fxy.gif) -409px -90px; }
+.numscbox td .buttonb{ width:23px; height:10px; display:block; overflow:hidden; background:url(images/style_fxy.gif) -409px -60px; cursor:pointer; }
+.numscbox td .buttonbdown{ background:url(images/style_fxy.gif) -409px -100px; }
+
+
+/* ------------------------------------------------------ */
+/* - 索引页
+/* ------------------------------------------------------ */
+
+/* 索引页顶部 */
+.layout-top{ width:100%; height:42px; background:url(images/header.gif); position:absolute; }
+
+.layout-top .lft{ margin:5px 0 0 15px; float:left; display:inline; }
+.layout-top .lft h1{ margin:0; font-size:20px; color:#66C7DA; font-family:Georgia; }
+
+.layout-top .rht{ margin:5px 10px 0 0; float:right; display:inline; color:#008856; }
+.layout-top .rht a{ text-decoration:none; color:#3CA00A; }
+.layout-top .rht a:hover{ text-decoration:underline; }
+
+/* 索引页布局 */
+.layout{ width:100%; height:100%; table-layout:fixed; border-collapse:collapse; background:#FFF; }
+
+/* 索引页左侧 */
+.layout-lft{ width:200px; padding:42px 0 0 0; border-right:1px solid #A6B9CA; background-color:#F6F9FE; vertical-align:top; }
+
+/* 索引页左侧 - 快速菜单层 */
+.layout-lft .quick_menu{ height:37px; background:url(images/style_fy.gif) 0 -96px; text-align:right; }
+
+.layout-lft .quick_menu a{ width:32px; height:36px; float:right; }
+.layout-lft .quick_menu a:hover{ background:url(images/style_fxy.gif) -4px -202px; }
+.layout-lft .quick_menu a.logout:hover{ background:url(images/style_fxy.gif) -4px -162px; }
+
+.layout-lft .quick_menu a i{ width:20px; height:20px; margin:8px 6px; float:right; cursor:pointer; }
+.layout-lft .quick_menu a i.mdown{ margin-top:9px; }
+
+.layout-lft .quick_menu a.home i{ background:url(images/style_fxy.gif) -130px -130px; }
+.layout-lft .quick_menu a.flush i{ background:url(images/style_fxy.gif) -170px -130px; }
+.layout-lft .quick_menu a.logout i{ background:url(images/style_fxy.gif) -210px -130px; }
+
+/* 索引页左侧 - 模块菜单层 */
+.layout-lft .module_mtree{ width:200px; margin:10px 0 0 0; }
+.layout-lft .module_mtree a{ display:block; text-decoration:none; }
+.layout-lft .module_mtree i{ width:12px; height:12px; margin:0 4px 0 0; display:inline-block; font-size:0; }
+
+.layout-lft .module_mtree a.root{ height:20px; padding:7px 0 0 0; color:#023A55; background:url(images/style_fxy.gif) -133px -206px; }
+.layout-lft .module_mtree a.root i{ background:url(images/style_fxy.gif) -606px -222px; cursor:pointer; }
+.layout-lft .module_mtree a.rooton i{ background:url(images/style_fxy.gif) -566px -203px; cursor:pointer; }
+
+.layout-lft .module_mtree div a.parent{ height:20px; margin-right:30px; padding:7px 0 0 0; color:#005075; }
+.layout-lft .module_mtree div a.parent i{ background:url(images/style_fxy.gif) -606px -222px; filter:alpha(opacity=50); opacity:0.5; cursor:pointer; }
+.layout-lft .module_mtree div a.parenton i{ background:url(images/style_fxy.gif) -566px -203px; filter:alpha(opacity=40); opacity:0.4; cursor:pointer; }
+.layout-lft .module_mtree div a.leaf{ height:20px; margin-right:30px; padding:7px 0 0 0; color:#005075; }
+.layout-lft .module_mtree div a.leafon{ padding-right:1px; color:#005075; background:url(images/style_fxy.gif) -135px -166px; }
+
+/* 索引页右侧 */
+.layout-rht{ padding:42px 0 0 0; vertical-align:top; }
+
+
+/* ------------------------------------------------------ */
+/* - 索引页右侧 - HOME页
+/* ------------------------------------------------------ */
+
+/* 头部 */
+.home-header{ height:74px; background:url(images/style_fy.gif) 0 -146px; }
+
+.home-header a{ width:62px; height:69px; margin:2px 0 0 2px; float:left; text-align:center; text-decoration:none; color:#53627E; }
+.home-header a:hover{ background:url(images/style_fxy.gif) -450px -6px; }
+.home-header a.mdown i{ margin-top:6px; }
+
+.home-header a i{ width:40px; height:40px; margin:5px 0 5px 11px; float:left; cursor:pointer; }
+.home-header a i.account{ background:url(images/style_fxy.gif) -520px 0; }
+.home-header a i.journey{ background:url(images/style_fxy.gif) -520px -40px; }
+.home-header a i.adrbook{ background:url(images/style_fxy.gif) -560px 0; }
+.home-header a i.sysinfo{ background:url(images/style_fxy.gif) -560px -40px; }
+
+
+/* ------------------------------------------------------ */
+/* - 索引页右侧 - 标题层
+/* ------------------------------------------------------ */
+
+/* 标题层 */
+.title-div{ height:37px; background:url(images/style_fy.gif) 0 -234px; }
+.title-div table{ width:100%; height:100%; }
+
+/* 标题 */
+.title-div div.title{ margin:3px 0 0 15px; display:block; color:#203962; font-weight:bold; font-size:14px; }
+
+/* 按钮基本样式 */
+.title-div div.btn{ height:28px; margin:3px 0 0; float:right; cursor:pointer; }
+.title-div div.btn div.l{ width:4px; height:26px; float:left; }
+.title-div div.btn div.m{ height:26px; float:left; }
+.title-div div.btn div.r{ height:26px; float:left; }
+.title-div div.btn div.l span.side{ width:4px; height:26px; float:left; }
+.title-div div.btn div.r span.ddl{ width:12px; height:25px; float:left; background:url(images/style_fxy.gif) -368px -167px; }
+.title-div div.btn div.r span.side{ width:4px; height:26px; float:left; }
+
+/* 按钮内容区样式 */
+.title-div div.btn div.m span{ padding:5px 2px 0; float:left; }
+
+/* 按钮内容区样式[自定义图标] */
+.title-div div.btn div.m i{ float:left; height:25px; width:25px; }
+.title-div div.btn div.m i.add{ background:url(images/style_fxy.gif) -406px -128px; }
+.title-div div.btn div.m i.xls{ background:url(images/style_fxy.gif) -446px -128px; }
+.title-div div.btn div.m i.doc{ background:url(images/style_fxy.gif) -526px -168px; }
+.title-div div.btn div.m i.edit{ background:url(images/style_fxy.gif) -566px -128px; }
+.title-div div.btn div.m i.list{ background:url(images/style_fxy.gif) -566px -168px; }
+.title-div div.btn div.m i.print{ background:url(images/style_fxy.gif) -486px -168px; }
+.title-div div.btn div.m i.backup{ background:url(images/style_fxy.gif) -526px -128px; }
+.title-div div.btn div.m i.optimize{ background:url(images/style_fxy.gif) -486px -127px; }
+
+/* 按钮移动时样式 */
+.title-div div.btnover div.m{ background:url(images/style_fy.gif) 0 -284px; }
+.title-div div.btnover div.r{ background:url(images/style_fy.gif) 0 -284px; }
+.title-div div.btnover div.l span.side{ background:url(images/style_fxy.gif) -53px -167px; }
+.title-div div.btnover div.r span.side{ background:url(images/style_fxy.gif) -63px -167px; }
+
+/* 按钮点下时样式 */
+.title-div div.btndown div.m{ background:url(images/style_fy.gif) 0 -323px; }
+.title-div div.btndown div.r{ background:url(images/style_fy.gif) 0 -323px; }
+.title-div div.btndown div.l span.side{ background:url(images/style_fxy.gif) -93px -167px; }
+.title-div div.btndown div.r span.side{ background:url(images/style_fxy.gif) -103px -167px; }
+.title-div div.btndown div.m i{ margin-top:1px; }
+.title-div div.btndown div.m span{ margin-top:1px; }
+.title-div div.btndown div.r span.ddl{ margin-top:1px; }
+
+.title-div div.btnldown div.m{ background:url(images/style_fy.gif) 0 -323px; }
+.title-div div.btnldown div.m i{ margin-top:1px; }
+.title-div div.btnldown div.m span{ margin-top:1px; }
+.title-div div.btnldown div.l span.side{ background:url(images/style_fxy.gif) -93px -167px; }
+.title-div div.btnldown div.l span.ddl{ margin-top:1px; }
+
+.title-div div.btnrdown div.r{ background:url(images/style_fy.gif) 0 -323px; }
+.title-div div.btnrdown div.r span.side{ background:url(images/style_fxy.gif) -103px -167px; }
+.title-div div.btnrdown div.r span.ddl{ margin-top:1px; }
+
+/* 按钮右侧下拉分隔线 */
+.title-div div.btnddll div.r span.ddl{ background:url(images/style_fxy.gif) -382px -167px; }
+
+/* 按钮的下拉列表样式 */
+.title-div div.btn div.ddl{ display:none; position:absolute; border:1px solid #A5C7DE; background:#FFF; }
+.title-div div.btn div.ddl a{ margin:0; padding:0 5px 0 5px; display:block; line-height:200%; color:#5D8EAE; text-decoration:none; text-align:left; }
+.title-div div.btn div.ddl a:hover{ background:#E8F2F8; color:#2673A6; }
+.title-div div.btn div.ddlon{ display:block; }
+
+.title-div div.btn div.ddl i{ height:20px; width:20px; float:left; }
+.title-div div.btn div.ddl i.all{ background:url(images/style_fxy.gif) -450px -208px; }
+.title-div div.btn div.ddl i.page{ background:url(images/style_fxy.gif) -490px -208px; }
+.title-div div.btn div.ddl i.choice{ background:url(images/style_fxy.gif) -530px -208px; }
+
+
+/* ------------------------------------------------------ */
+/* - TABBAR
+/* ------------------------------------------------------ */
+
+/* 初始化 */
+.tabitem-box{ height:28px; padding:9px 0 9px; background:url(images/style_fy.gif) 0 -560px; }
+.tabitem-box i.icon{ width:45px; height:28px; float:left; background:url(images/style_fxy.gif) -399px -206px; }
+
+/* 默认TABITEM - 项 */
+.tabitem-box span{ height:26px; padding:0 15px 0 13px; float:left; border:1px solid #DEDEDE; line-height:25px; color:#969696; background:url(images/style_fy.gif) 0 -362px repeat-x; overflow:hidden; cursor:pointer; }
+.tabitem-box span.on{ border:1px solid #8D9EAC; background:url(images/style_fy.gif) 0 -402px repeat-x; color:#385975; }
+
+/* 默认TABITEM - 附加项 */
+.tabitem-box a{ height:26px; padding:0 15px 0 13px; float:left; border:1px solid #DEDEDE; line-height:25px; color:#969696; background:url(images/style_fy.gif) 0 -440px repeat-x; text-decoration:none; }
+.tabitem-box a:hover{ border:1px solid #6498CD; color:#5490CD; }
+
+/* 滑动TABITEM - LEFT，RIGHT */
+.tabitem-box a.slidel{ padding:0 2px 0 4px; }
+.tabitem-box a.slidel i{ width:15px; height:15px; margin:5px 0 0 0; display:inline-block; background:url(images/style_fxy.gif) -623px -222px; }
+.tabitem-box a.slidel:hover i{ background-position:-623px -204px; cursor:pointer; }
+.tabitem-box a.slider{ padding:0 2px 0 4px; }
+.tabitem-box a.slider i{ width:15px; height:15px; margin:5px 0 0 0; display:inline-block; background:url(images/style_fxy.gif) -604px -222px; }
+.tabitem-box a.slider:hover i{ background-position:-604px -204px; cursor:pointer; }
+
+/* 滑动TABITEM - 滑动层 */
+.tabitem-box .tabitem-slide{ height:28px; float:left; overflow:hidden; }
+
+/* 滑动TABITEM - TABITEM层和项 */
+.tabitem-box .tabitem-slide .tabitem-div{ width:1024px; }
+
+
+/* ------------------------------------------------------ */
+/* - 搜索层
+/* ------------------------------------------------------ */
+
+/* 搜索层 */
+.search-form{ display:block; background:url(images/style_fy.gif) 0 -560px; }
+
+.search-form table td i.icon{ width:35px; height:28px; display:block; background:url(images/style_fxy.gif) -397px -165px; }
+
+.search-form table td h1{ margin:5px 0 5px 9px; display:block; color:#00183B; font-size:12px; font-weight:normal; vertical-align:middle; }
+.search-form table td span{ margin:5px 0 3px 9px; display:block; }
+
+/* 搜索按钮 */
+.search-form table td .submit{ width:57px; height:20px; border:0px; background:url(images/style_fxy.gif) -331px -10px; cursor:pointer; vertical-align:middle; color:#195389; font-size:12px; *padding-top:2px; }
+.search-form table td .flush{ width:25px; height:20px; border:0px; background:url(images/style_fxy.gif) -289px -50px; cursor:pointer; vertical-align:middle; }
+.search-form table td .flushdown{ background-position:-289px -90px; }
+
+
+/* ------------------------------------------------------ */
+/* - 表单层
+/* ------------------------------------------------------ */
+.form-div{ border:1px solid #D4D4D4; border-left:0; border-right:0; }
+.form-div table{ width:100%; *width:auto; table-layout:fixed; border-collapse:collapse; }
+
+.form-div table th{ height:27px; padding:0 0 0 10px; background:url(images/style_fy.gif) 0 -440px; text-align:left; }
+
+.form-div table td{ padding:2px; border:1px solid #F1F2F4; border-top:0; border-left:0; }
+.form-div table td h1{ margin:4px 0 4px 9px; display:block; font-size:12px; font-weight:normal; vertical-align:middle; color:#00183B; white-space:nowrap; }
+.form-div table td h2{ margin:4px 0 4px 7px; display:block; font-size:12px; font-weight:normal; vertical-align:middle; }
+
+/* 隐藏行 */
+.form-div table tr.hidden td{ height:0; padding-left:0; padding-right:0; border:0; overflow:hidden; }
+
+
+/* ------------------------------------------------------ */
+/* - 列表层
+/* ------------------------------------------------------ */
+
+/* 列表BOX层 */
+.list-box{}
+
+/* 列表BOX加载层 */
+.list-box-loading{ position:absolute; }
+.list-box-loading .overlay{ top:0; left:0; background:#000; filter:alpha(opacity=10); opacity:0.1; z-index:98; position:absolute; }
+.list-box-loading .loading{ width:140px; height:9px; margin:0 auto; overflow:hidden; background:url(images/doglide.gif); z-index:99; position:relative; }
+
+/* 列表层 */
+.list-div{ border:1px solid #D4D4D4; border-left:0; border-right:0; }
+.list-div table{ width:100%; *width:auto; border-bottom:1px solid #F0F0F0; table-layout:fixed; border-collapse:collapse; }
+
+/* 单层TH */
+.list-div table tr th{ height:27px; padding:0; border-bottom:1px solid #E4E4E4; background:url(images/style_fy.gif) 0 -440px; color:#00183C; }
+.list-div table tr th a{ padding-left:1px; color:#00183C; text-decoration:none; }
+.list-div table tr th a:hover{ color:#C00; }
+.list-div table tr th span.asc{ width:12px; height:12px; *height:14px; display:inline-block; background:url(images/style_fxy.gif) -94px -205px; }
+.list-div table tr th span.desc{ width:12px; height:12px; *height:14px; display:inline-block; background:url(images/style_fxy.gif) -94px -220px; }
+
+/* 多层TH */
+.list-div table tr.ths th{ height:19px; border-bottom:1px solid #E8E8E8; border-right:1px solid #E2E2E2; }
+
+/* 默认链接 */
+.list-div table tr td{ height:25px; *height:24px; padding:0; border-bottom:1px solid #F0F0F0; border-top:1px solid #F0F0F0; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
+.list-div table tr td a{ text-decoration:none; color:#000; }
+.list-div table tr td a:hover{ text-decoration:underline; color:#C00; }
+
+/* 文本换行 */
+.list-div table tr.wrap td{ white-space:normal; }
+.list-div table tr td.wrap{ white-space:normal; }
+
+/* 竖分割线 */
+.list-div table tr.border th{ border-right:1px solid #E4E4E4;}
+.list-div table tr.border td{ border-right:1px solid #F0F0F0;}
+
+/* 编辑样式 */
+.list-div table tr td.edit a{ padding:0 5px; cursor:text; }
+.list-div table tr td.edit a:hover{ text-decoration:none; color:#000; }
+.list-div table tr td.edit input{ height:16px; border:1px solid #000; border-color:#888 #EEE #DDD #999; color:#666; line-height:16px; font-size:12px; cursor:text; }
+
+/* 操作样式 */
+.list-div table tr td.action a{ margin:1px; color:#114300; }
+.list-div table tr td.action a:hover { color:#31AC00; }
+
+/* 操作层 */
+.list-div table tr td div.action{ *width:200px; margin-top:-1px; float:left; *position:absolute; color:#888; }
+.list-div table tr td div.action a{ margin-right:5px; float:left; line-height:200%; color:#555; text-decoration:none; }
+.list-div table tr td div.action a:hover{ color:#000; }
+
+/* 水平操作层 */
+.list-div table tr td div.action .hddl{ float:left; }
+.list-div table tr td div.action .hddl a{ color:#555; }
+.list-div table tr td div.action .hddl a span{ margin-left:1px; padding:8px 3px 6px; *padding:6px 2px; background:url(images/style_fxy.gif) -331px -137px; font-size:0; line-height:100%; }
+.list-div table tr td div.action .hddl div{ display:none; position:absolute; background:#FFF; border:1px solid #CCC; }
+.list-div table tr td div.action .hddl div a{ padding:4px; margin:0; float:left; line-height:125%; }
+.list-div table tr td div.action .hddl div a:hover{ background:#F3F3F3; }
+.list-div table tr td div.action .hddlon a{ color:#000; text-decoration:none; }
+.list-div table tr td div.action .hddlon a span{ background:url(images/style_fxy.gif) -343px -137px; }
+.list-div table tr td div.action .hddlon div{ display:inline; }
+
+
+/* ------------------------------------------------------ */
+/* - 表格头部层
+/* ------------------------------------------------------ */
+.table-header{ height:27px; background:url(images/style_fy.gif) 0 -560px; }
+.table-header i{ width:25px; height:25px; float:left; background:url(images/style_fxy.gif) -447px -167px; }
+.table-header span{ padding:6px 0 0 0; float:left; color:#062D75; filter:dropshadow(color=#FFFFFF,offx=1,offy=1); background:url(images/style_fy.gif) 0 -560px; }
+
+
+/* ------------------------------------------------------ */
+/* - 表格尾部层
+/* ------------------------------------------------------ */
+.table-footer{ height:30px; background:#FBFDFD; }
+
+/* 操作层 */
+.table-footer div.action{ margin:3px 0 5px 10px; float:left; display:inline; color:#888; }
+.table-footer div.action a{ margin-right:10px; float:left; line-height:200%; color:#555; text-decoration:none; }
+.table-footer div.action a:hover{ color:#000; }
+
+/* 下拉操作层 */
+.table-footer div.action .hddl{ float:left; }
+.table-footer div.action .hddl a{ display:block; float:none; color:#555; }
+.table-footer div.action .hddl a span{ margin-left:2px; padding:6px 4px; *padding:4px; background:url(images/style_fxy.gif) -290px -139px; font-size:0; line-height:100%; }
+.table-footer div.action .hddl div{ display:none; position:absolute; border:1px solid #CCC; background:#FFF; }
+.table-footer div.action .hddl div a{ margin:0; padding:4px; float:left; line-height:125%; }
+.table-footer div.action .hddl div a:hover{ background:#F0F0F0; }
+.table-footer div.action .hddlon a{ color:#000; }
+.table-footer div.action .hddlon a span{ background:url(images/style_fxy.gif) -303px -139px; }
+.table-footer div.action .hddlon div{ display:inline; }
+
+/* 分页 */
+.table-footer .pager{ margin:4px 3px 0 0; float:right; }
+.table-footer .pager a{ padding:2px 4px; text-decoration:none; color:#005363; }
+.table-footer .pager a.first{ padding:2px; color:#93B6BD; }
+.table-footer .pager a.on{ font-size:16px; font-weight:bold; color:#FF0000!important; }
+.table-footer .pager a.last{ padding:2px; color:#93B6BD; }
+.table-footer .pager a.info{ color:#70AAB5; }
+
+
+/* ------------------------------------------------------ */
+/* - 警告层
+/* ------------------------------------------------------ */
+.warn-div{ background:#FFF; text-align:center; border:1px solid #FFF; }
+.warn-div b{ padding:20px; margin:2px; display:block; color:#777; border:1px solid #CCC; background:#FFFFE1; }
+.warn-div span{ padding:20px; margin:2px; display:block; color:#777; border:1px solid #CCC; background:#FFFFE1; }
+
+
+/* ------------------------------------------------------ */
+/* - 窗口层
+/* ------------------------------------------------------ */
+
+/* 窗口层和遮掩层 */
+.wnd-div{ height:auto; width:auto; position:absolute; }
+.wnd-overlay{ top:0; left:0; background:#FFF; position:absolute; }
+
+/* 标题层 */
+.wnd-title{ height:27px; background:url(images/style_fy.gif) 0 0; cursor:move; }
+.wnd-title div.sidelft{ width:5px; height:27px; float:left; background:url(images/style_fxy.gif) -413px -5px; }
+.wnd-title div.siderht{ width:5px; height:27px; float:right; background:url(images/style_fxy.gif) -422px -5px; }
+
+.wnd-title div.title{ margin:5px 0 0 2px; float:left; color:#FFF; }
+.wnd-title div.title i{ width:14px; height:14px; float:left; margin:1px 4px 0 0; _margin:1px 0 0 0; }
+.wnd-title div.title i.plaint{ background:url(images/style_fxy.gif) -373px -213px; }
+
+.wnd-title a{ width:16px; height:16px; margin:5px 3px 0 0; float:right; font-size:0; }
+.wnd-title a.close{ background:url(images/style_fxy.gif) -265px -126px; }
+.wnd-title a.close:hover{ background:url(images/style_fxy.gif) -265px -138px; }
+
+/* 客户区 */
+.wnd-client{ border-left:1px solid #7799B5; border-right:1px solid #7799B5; background-color:#FFF; overflow:hidden; }
+
+/* 客户区 - 加载层 */
+.wnd-client-loading{ position:absolute; }
+.wnd-client-loading .overlay{ top:0; left:0; background:#000; filter:alpha(opacity=10); opacity:0.1; z-index:98; position:absolute; }
+.wnd-client-loading .loading{ width:140px; height:9px; margin:0 auto; overflow:hidden; background:url(images/doglide.gif); z-index:99; position:relative; }
+
+.wnd-client-loading-relative{ position:relative; }
+.wnd-client-loading-relative .overlay{ background:#FFF; }
+
+/* 客户区 - 消息层 */
+.wnd-client-sysmsg{ background:#FFF; }
+.wnd-client-sysmsg table{ width:100%; height:90px; }
+.wnd-client-sysmsg table td.i{ width:80px; }
+.wnd-client-sysmsg table td.i i.plaint{ width:37px; height:37px; margin:0 10px 0 33px; float:right; background:url(images/style_fxy.gif) -602px -2px; }
+.wnd-client-sysmsg table td.t{ font-size:14px; color:#293E42; line-height:150%; }
+
+/* 控制区 */
+.wnd-control{ height:23px; padding:10px; border:1px solid #7799B5; border-top:0; text-align:right; background:url(images/style_fy.gif) 0 -40px; }
+.wnd-control input{ width:67px; height:22px; margin-left:5px; border:0px; color:#5981A9; font-size:12px; *padding-top:2px; background:url(images/style_fxy.gif) -246px -9px; cursor:pointer; }
+
+
+/* ------------------------------------------------------ */
+/* - 圆角框
+/* ------------------------------------------------------ */
+
+/* 圆角框 */
+.roundbox{ margin:6px 0 0 6px; float:left; font-size:12px; display:inline; }
+
+.roundbox .linea,
+.roundbox .lined{ height:1px; margin:0 2px; background:#B4BDD4; overflow:hidden; }
+.roundbox .lineb,
+.roundbox .linec{ height:1px; margin:0 1px; border:1px solid #B4BDD4; border-top:0; border-bottom:0; overflow:hidden; }
+
+.roundbox .header{ height:30px; border:1px solid #B4BDD4; border-top:0; border-bottom:0; background:#EEF4FB; overflow:hidden; }
+.roundbox .header span.title{ padding:8px 0 0 10px; float:left; font-weight:bold; vertical-align:middle; }
+.roundbox .header a.more{ padding:9px 10px 0 0; float:right; color:#545D74; text-decoration:none; }
+
+.roundbox .body{ padding:0 7px 7px; border:1px solid #B4BDD4; border-top:0; border-bottom:0; background:#EEF4FB; overflow:hidden; }
+.roundbox .body .content{ padding:3px 3px 3px 5px; border:1px solid #B4BDD4; border-top:0; border-bottom:0; background:#FFF; overflow:hidden; }
+.roundbox .body .content p{ padding:0; margin:0; *display:inline-block; text-indent:2em; }
+.roundbox .body .content table.list{ width:100%; table-layout:fixed; border-collapse:collapse; }
+.roundbox .body .content table.list td{ text-overflow:ellipsis; white-space:nowrap; overflow:hidden; }
+.roundbox .body .content table.list td a{ color:#444; text-decoration:none; }
+.roundbox .body .content table.list td a:hover{ color:#000; }
+
+/* 配色方案(灰色) */
+.roundboxgray .linea,  .roundboxgray .lined{ background:#999; }
+.roundboxgray .lineb,  .roundboxgray .linec{ border-color:#AAA; }
+.roundboxgray .header, .roundboxgray .body{ border-color:#AAA; background:#EFEFEF; }
+.roundboxgray .body .content{ border-color:#AAA; }
+
+
+/* ------------------------------------------------------ */
+/* - TAG TITLE
+/* ------------------------------------------------------ */
+.tagtitle-div{ padding:1px 3px 1px; border:1px solid #000; line-height:130%; background:#FFFFE1; position:absolute; }
+
+
+/* ------------------------------------------------------ */
+/* - 其他
+/* ------------------------------------------------------ */
+
+/* 数据库表 */
+#wfm-dbbackup-customtable table td{ border:0; }
