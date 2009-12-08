@@ -237,7 +237,7 @@ else{
         $attribs['del']['onclick'] .= f(sprintf($_LANG['spr_confirm_del'],$r['name']),'hstr') ."')";
 
         /* 绑定操作 */
-        $tpl['list']['data'][$i]['_acts'] = format_module_acts($m_ac, $attribs, 'a');
+        $tpl['list']['data'][$i]['acts'] = format_module_acts($m_ac, $attribs, 'a');
     }
 
     /* 初始化页面信息 */

@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>文章类别增编</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
+<body>
+
+
+
+<div style="text-indent:2em">
+    文章类别模块的默认首页处理完了，列表数据也可以正常显示出来了。尝试着去点击一下 模块标题层中的"增加"按钮和列表层表格树中的"编辑"超链接，没有任何反映。OK，那接下就编写这两块的功能...
+</div>
+<div style="text-align:center;padding:5px;"><img alt="图1" src="images/articlecat_list.gif" style="border:1px solid #ccc;"></div>
+
+<br />
+
+<b>1. 文章类别增编的弹出框</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-wadd-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到后台弹出窗口函数库 /admin/js/systemwindows.js
+    </div>
+
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
+        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" id="lfm-articlecat-add-wcode-view" onclick="var o=document.getElementById('lfm-articlecat-wadd-code');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a>
+    </div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-wadd-code">
+    /**<br />
+     * 增/编文章类别<br />
+     *<br />
+     * @params obj  caller  调用者对象<br />
+     * @params str  act     当前操作<br />
+     * @params int  id      数据：文章类别ID[编辑时]，文章类别父ID[增加时]<br />
+     */<br />
+    function wnd_articlecat_fill( caller, act, id )<br />
+    {<br />
+        <div style="margin-left:2em;">
+            /* 初始化 */<br />
+            var url = 'modules/article/article_cat.php';<br />
+            var wnd = Wnds.find('wnd-articlecat-fill');<br />
+            <br />
+            /* 构建窗口 */<br />
+            if( !wnd ){<br />
+                <div style="margin-left:2em;">
+                wnd = new Wnd('wnd-articlecat-fill', {'okb':deal_articlecat_fill}, {'width':300});<br />
+                <br />
+                wnd.create();<br />
+                wnd.buttonAddDefault();<br />
+                </div>
+            }<br />
+            <br />
+            /* 初始化参数 */<br />
+            url += act == 'add' ? '?act=add&parent_id='+id : '?act=edit&article_cat_id='+id;<br />
+            var title = act == 'add' ? '增加文章类别' : '编辑文章类别';<br />
+            <br />
+            /* 设置数据 - 当前操作 */<br />
+            wnd.setData('act', act);<br />
+            <br />
+            wnd.title(title);<br />
+            wnd.inner(url, 'url');<br />
+            <br />
+            wnd.show();<br />
+            wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});<br />
+        </div>
+    }<br />
+    <br />
+    function deal_articlecat_fill()<br />
+    {<br />
+        <div style="margin-left:2em;">
+            /* 初始化 */<br />
+            var url = 'modules/article/article_cat.php';<br />
+            var wnd = Wnds.find('wnd-articlecat-fill');<br />
+            var act = wnd.getData('act') == 'add' ? '?act=insert' : '?act=update';<br />
+            <br />
+            /* 异步提交(异步等待) */<br />
+            Ajax.call(url+act, deal_form_params('wfm-articlecat-fill'), callback, 'POST', 'JSON');<br />
+            <br />
+            /* 回调函数 */<br />
+            function callback( result, text ){<br />
+                <div style="margin-left:2em;">
+                    if( result.error == 0 ){<br />
+                        <div style="margin-left:2em;">
+                            /* 初始化并重载列表 */<br />
+                            ListTable.init('list-articlecat', url, '?act=list');<br />
+                            ListTable.loadList();<br />
+                            <br />
+                            wnd.hidden();<br />
+                        </div>
+                    }else{<br />
+                        <div style="margin-left:2em;">
+                            wnd_alert(result.message, {'overlay':0,'hidden':function(){try{wnd.getData('blur').focus();}catch(e){}}});<br />
+                        </div>
+                    }<br />
+                </div>
+            }<br />
+            <br />
+            return false;<br />
+        </div>
+    }<br />
+    </div>
+</div>
+
+<b>2. 文章类别增编的视图文件</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-fill-code-view');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="文件创建及说明.html#lfm-articlecat-file-view" style="color:#000;">视图文件</a> /admin/tpl/article_cat.html
+    </div>
+
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
+        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" id="lfm-articlecat-fill-vcode-view" onclick="var o=document.getElementById('lfm-articlecat-fill-code-view');o.style.display=o.style.display=='none'?'':'none'">View Code 3</a>
+    </div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-fill-code-view">
+        &lt;?php if( $tpl['_body'] == 'list' ){ ?&gt;<br />
+            <div style="margin-left:2em;">
+                &lt;!-- 列表的视图文件代码 --&gt;
+            </div>
+        <br />
+        <br />
+        &lt;?php }elseif( $tpl['_body'] == 'add' || $tpl['_body'] == 'edit' ){ ?&gt;<br />
+            <div style="margin-left:2em;">
+            &lt;form id="wfm-articlecat-fill" onkeydown="deal_wfm_keyboard(event,this);"&gt;<br />
+                <div style="margin-left:2em;">
+                &lt;div class="form-div" style="border-bottom:0;"&gt;<br />
+                    <div style="margin-left:2em;">
+                    &lt;table&gt;<br />
+                    &lt;tr&gt;<br />
+                        <div style="margin-left:2em;">
+                        &lt;td width="75"&gt;&lt;h1&gt;类别名称：&lt;/h1&gt;&lt;/td&gt;<br />
+                        &lt;td&gt;&lt;input type="text" name="name" class="fillbox" style="width:150px" value="&lt;?php e($tpl['article_cat']['name'],'formc'); ?&gt;"/&gt;&lt;/td&gt;<br />
+                        </div>
+                    &lt;/tr&gt;<br />
+                    &lt;?php if( $tpl['_body'] == 'add' ){?&gt;<br />
+                    &lt;tr&gt;<br />
+                        <div style="margin-left:2em;">
+                        &lt;td&gt;&lt;h1&gt;所属类别：&lt;/h1&gt;&lt;/td&gt;<br />
+                        &lt;td&gt;&lt;?php echo $tpl['formc_article_cat']; ?&gt;&lt;/td&gt;<br />
+                        </div>
+                    &lt;/tr&gt;<br />
+                    &lt;?php }?&gt;<br />
+                    &lt;/table&gt;<br />
+                    </div>
+                &lt;/div&gt;<br />
+
+                &lt;input type="hidden" name="article_cat_id" value="&lt;?php echo $tpl['article_cat']['article_cat_id'] ?&gt;"/&gt;<br />
+                </div>
+            &lt;/form&gt;
+            </div>
+        <br />
+        <br />
+        &lt;?php } ?&gt;<br />
+    </div>
+</div>
+
+</body>
+</html>

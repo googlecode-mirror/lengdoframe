@@ -475,7 +475,7 @@ function list_sqlfile_format( $files )
                                        'type'      => 'volumesindex',  //文件类型 - volume表示单卷文件, volumes表示多卷文件, volumes表示多卷索引文件
                                        'level'     => 1,               //文件层级
                                        'file_size' => 0,               //文件大小
-                                       '_acts'     => $acts            //记录操作
+                                       'acts'      => $acts            //记录操作
                                      );
 
             /* 重置 */
@@ -496,7 +496,7 @@ function list_sqlfile_format( $files )
                                   'type'      => $type,
                                   'level'     => $level,
                                   'file_size' => $info['file_size'], 
-                                  '_acts'     => $acts
+                                  'acts'      => $acts
                                 );
 
         /* 重构引导文件信息 */

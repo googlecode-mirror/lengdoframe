@@ -1,0 +1,289 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>文章类别列表</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
+<body>
+
+
+
+<div style="text-indent:2em">
+    <a target="_blank" href="文件创建及说明.html" style="color:#000;">文件创建</a>好了，那接下来就应该编写代码来实现"文章类别"模块的业务流程了。
+</div>
+<div style="text-indent:2em">
+    "文章类别"模块的业务流程有四个：文章类别列表，增加文章类别，编辑文章类别，删除文章类别。其实这四个流程一开始我们就已经打好框架了，还记得 "<a target="_blank" href="添加模块和权限.html#lfm-articlecat-add-privilege" style="color:#000">添加模块和权限</a>" 时我们曾添加过四个权限：列表，增加，编辑，删除！这四个权限就是根据"文章类别"的业务流程的提炼出来的功能点。
+</div>
+<br />
+
+
+<b>模块默认首页</b>
+<div style="text-indent:2em">每一个模块都有一个默认首页，即点击左侧"模块菜单树"菜单项后显示在右侧"主显示区"的内容。(参见图1)</div>
+<div style="text-align:center;padding:5px;"><img alt="图1" src="images/articlecat_list.gif" style="border:1px solid #ccc;"></div>
+<div style="text-indent:2em">模块默认首页通常是列表数据的主要承载着，其次它还用于显示其他操作等。</div>
+<br />
+<div style="text-indent:2em">在 "图1" 我们可以发现 "文章类别" 列表不是一个真正的列表，因为它没有列表特有的搜索，翻页功能。没错，因为在这里我们使用了特殊的表现形式来展现"文章类别"数据 - "表格树"。</div>
+<div style="text-indent:2em">"表格树" 是基于列表的基础样式而衍生出来的一种表现显示。</div>
+<br />
+
+
+<b>1. 数据导入</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">开发中总是会遇到各种问题，没有数据对于调试来说是很困难的，所以在文章类别列表开发时为大家准备了以下数据，导入到数据库即可！</div>
+
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        TRUNCATE TABLE article_cat;<br />
+        INSERT INTO article_cat(article_cat_id,name,lft,rht,lvl) VALUES('1','虚根分类','1','8','0');<br />
+        INSERT INTO article_cat(article_cat_id,name,lft,rht,lvl) VALUES('2','新闻','2','7','1');<br />
+        INSERT INTO article_cat(article_cat_id,name,lft,rht,lvl) VALUES('3','娱乐新闻','3','4','2');<br />
+        INSERT INTO article_cat(article_cat_id,name,lft,rht,lvl) VALUES('4','财经新闻','5','6','2');<br />
+    </div>
+</div>
+
+<br />
+
+<b>2. 模块默认首页的数据处理</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        模块默认首页要处理的数据主要有两项：模块标题层的数据和列表层表格树的数据。<br />
+    </div>
+    <div style="text-indent:2em;">
+        模块标题层的数据处理主要就是读取构建那些<a target="_blank" href="../../开发指南(PHP)/权限系统/权限篇.html#lfm-privilege-dev-titleact" style="color:#000">独立权限</a>。<br />
+    </div>
+    <div style="text-indent:2em;">
+        而列表层表格树的数据处理主要就是为每条记录添加<a target="_blank" href="../../开发指南(PHP)/权限系统/权限篇.html#lfm-privilege-dev-titleact" style="color:#000">绑定权限</a>并格式化缩进样式的数据。<br />
+    </div>
+
+    <br />
+
+    <div style="text-indent:2em;">
+        <a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-list-code-module');o.style.display=o.style.display=='none'?'':'none'">点击查看模块默认首页的完整代码</a>
+    </div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;"><a href="javascript:void(0)" style="color:#666;text-decoration:none;" id="lfm-articlecat-list-vcode-module" onclick="var o=document.getElementById('lfm-articlecat-list-code-module');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a></div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-list-code-module">
+        <table>
+        <tr>
+            <td width="30">
+                1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />
+                11<br />12<br />13<br />14<br />15<br />16<br />17<br />18<br />19<br />20<br />
+                21<br />22<br />23<br />24<br />25<br />26<br />27<br />28<br />29<br />30<br />
+                31<br />32<br />33<br />34<br />35<br />36<br />37<br />38<br />39<br />40<br />
+                41<br />42<br />43<br />44<br />45<br />46<br />47<br />48<br />49<br />50<br />
+                51<br />52<br />53<br />54<br />55<br />56<br />57<br />58<br />59<br />60<br />
+                61<br />62<br />63<br />64<br />65<br />66<br />67<br />68<br />69<br />70<br />
+                71<br />72<br />73<br />74<br />75<br />76<br />77<br />78<br />79<br />80<br />
+                81<br />
+            </td>
+            <td>
+                &lt;?php<br />
+                /* 文件加载 */<br />
+                require('../../includes/init.php');<br />
+                require('../../includes/lib_lrtree.php');<br />
+                require('../../includes/lib_article.php');<br />
+                <br />
+                /* 异步 - 其他模块 */<br />
+                if( false ){<br />
+
+                }<br />
+                <br />
+                /* 异步 - 默认首页，列表页 */<br />
+                else{<br />
+                <div style="margin-left:2em;">
+                    /* 权限检查 */<br />
+                    admin_privilege_valid('article_cat.php', 'list');<br />
+                    <br />
+                    /* 取得管理员的增加操作和非增加、列表操作 */<br />
+                    $m_aa = admin_module_acts('article_cat.php');<br />
+                    $m_ab = filter_module_acts($m_aa, array('add'), true);<br />
+                    $m_ac = filter_module_acts($m_aa, array('add','list'), false);<br />
+                    <br />
+                    /* 文章类别列表 */<br />
+                    $tpl['all'] = all_article_cat();<br />
+                    <br />
+                    /* 文章类别列表 - 数据重构 */<br />
+                    foreach( $tpl['all'] AS $i =&gt; $r ){
+                        <div style="margin-left:2em;">
+                            $tpl['all'][$i]['pre']  = '&lt;span class="';<br />
+                            $tpl['all'][$i]['pre'] .= ($r['rht']-$r['lft']  &lt; 1 ? 'plus' : 'minus') .'" style="';<br />
+                            $tpl['all'][$i]['pre'] .= ($r['rht']-$r['lft']) &gt; 1 ? 'cursor:pointer;' : '';<br />
+                            $tpl['all'][$i]['pre'] .= 'margin-left:'. intval($r['lvl']-$tpl['all'][0]['lvl'])*2 .'em;" ';<br />
+                            $tpl['all'][$i]['pre'] .= 'onclick="tabletree_click(this)"&gt;&lt;/span&gt;';<br />
+                            <br />
+                            /* 编辑操作 */<br />
+                            $attribs = array();<br />
+                            $attribs['edit']['onclick'] = "wnd_articlecat_fill(this,'edit',{$r[article_cat_id]})";<br />
+                            <br />
+                            /* 删除操作 */<br />
+                            $del = "ListTable.del(this,{$r[article_cat_id]},'";<br />
+                            $del.= f(sprintf($_LANG['spr_confirm_del'],$r['name']),'hstr') ."')";<br />
+                            if( ($r['rht'] - $r['lft']) &lt; 1 ){
+                                <div style="margin-left:2em;">
+                                    $del = "wnd_confirm('{$_LANG[warn_cats_del]}',{'ok':function(){". $del ."}})";
+                                </div>
+                            }<br />
+                            $attribs['del']['onclick'] = $del;<br />
+                            <br />
+                            /* 绑定操作 */<br />
+                            $tpl['all'][$i]['acts'] .= format_module_acts($m_ac, $attribs, 'a');
+                        </div>
+                    }<br />
+                    <br />
+                    /* 初始化页面信息 */<br />
+                    $tpl['_body'] = 'list';<br />
+                    <br />
+                    <br />
+                    /* 异步 - 列表页，列表查询 */<br />
+                    if( $_REQUEST['act'] == 'list' ){<br />
+                        <div style="margin-left:2em;">
+                            /* 初始化页面信息 */<br />
+                            $tpl['_block'] = true;<br />
+                            <br />
+                            /* 列表查询 */<br />
+                            if( $_REQUEST['actsub'] == 'query' ){
+                                <div style="margin-left:2em;">
+                                    /* 初始化页面信息 */<br />
+                                    $tpl['_bodysub'] = 'query';
+                                </div>
+                            }<br />
+                            <br />
+                            /* 返回JSON */<br />
+                            make_json_ok( '', tpl_fetch('article_cat.html',$tpl) );
+                        </div>
+                    }
+                    <br />
+                    <br />
+                    /* 异步 - 默认首页 */<br />
+                    else{<br />
+                        <div style="margin-left:2em;">
+                            /* 操作属性 */<br />
+                            $attribs = array();<br />
+                            $attribs['add']['onclick'] = "wnd_articlecat_fill(this,'add')";<br />
+                            <br />
+                            /* 初始化页面信息 */<br />
+                            $tpl['acts']  = format_module_acts($m_ab, $attribs, 'btn'); //格式化模块的操作(非内嵌)<br />
+                            $tpl['title'] = admin_privilege_name_fk('article_cat.php', 'list'); //权限名称
+                        </div>
+                    }
+                    </div>
+                </div>
+                }<br />
+                <br />
+                /* 加载视图 */<br />
+                include($_CFG['DIR_ADMIN_TPL'].'article_cat.html');<br />
+                ?&gt;<br />
+            </td>
+        </tr>
+        </table>
+    </div>
+
+    <br />
+
+    <div style="text-indent:2em;">
+        拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-list-code-module');o.style.display=o.style.display=='none'?'':'none'">以上代码</a>到 
+        "文章列表"的<a target="_blank" href="文件创建及说明.html#lfm-articlecat-file-module" style="color:#000;">模块处理文件</a> /admin/modules/article/article_cat.php
+    </div>
+</div>
+
+<br />
+
+<b>3. 库文件的数据处理</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-list-code-lib');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="文件创建及说明.html#lfm-articlecat-file-lib" style="color:#000;">库文件</a> /admin/includes/lib_article.php
+    </div>
+
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;"><a href="javascript:void(0)" style="color:#666;text-decoration:none;" id="lfm-articlecat-list-vcode-lib" onclick="var o=document.getElementById('lfm-articlecat-list-code-lib');o.style.display=o.style.display=='none'?'':'none'">View Code 2</a></div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-list-code-lib">
+    &lt;?php<br />
+    /* 取得所有文章类别 */<br />
+    function all_article_cat( $filter = array() )<br />
+    {<br />
+        <div style="margin-left:2em;">
+            /* 所有文章类别 */<br />
+            if( empty($filter) ){<br />
+                <div style="margin-left:2em;">
+                    $sql = 'SELECT * FROM '. tname('article_cat'). ' WHERE article_cat_id <> 1 ORDER BY lft ASC';<br />
+                    return $GLOBALS['db']->getAll($sql);<br />
+                </div>
+            }<br />
+            <br />
+            /* 根据文章类别IDS取得文章类别信息 */<br />
+            if( is_array($filter['article_cat_ids']) && !empty($filter['article_cat_ids']) ){<br />
+                <div style="margin-left:2em;">
+                    $sql = ' SELECT * FROM '. tname('article_cat');<br />
+                    $sql.= ' WHERE article_cat_id <> 1 AND article_cat_id IN("'. implode('","',$filter['article_cat_ids']) .'") ORDER BY lft ASC';<br />
+                    return $GLOBALS['db']->getAll($sql);<br />
+                </div>
+            }<br />
+
+            return array();<br />
+        </div>
+    }<br />
+    ?&gt;<br />
+    </div>
+</div>
+
+<br />
+
+<b>4. 视图文件的数据处理</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-list-code-view');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="文件创建及说明.html#lfm-articlecat-file-view" style="color:#000;">视图文件</a> /admin/tpl/article_cat.html
+    </div>
+
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
+        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" id="lfm-articlecat-list-vcode-view" onclick="var o=document.getElementById('lfm-articlecat-list-code-view');o.style.display=o.style.display=='none'?'':'none'">View Code 3</a>
+    </div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-list-code-view">
+        &lt;?php if( $tpl['_block'] !== true ){ include($_CFG['DIR_ADMIN_TPL'].'header.html'); }?&gt;<br />
+        <br />
+        <br />
+        &lt;?php if( $tpl['_body'] == 'list' ){ ?&gt;<br />
+            <br />
+            <div style="margin-left:2em;">
+            &lt;?php if( $tpl['_bodysub'] != 'query' ){?&gt;<br />
+            &lt;div class="list-box" onmouseover="ListTable.init('list-articlecat','modules/article/article_cat.php','?act=list');"&gt;<br />
+            <div style="margin-left:2em;">
+                &lt;div id="list-module" class="list-div" style="border-top:0;border-bottom:0;"&gt;<br />
+            </div>
+            &lt;?php }?&gt;<br />
+            <div style="margin-left:4em;">
+            <br />
+                    &lt;table cellpadding="0" cellspacing="0" onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);"&gt;<br />
+                    &lt;tr&gt;<br />
+                    <div style="margin-left:2em;">
+                        &lt;th width="10%"&gt;标识&lt;/th&gt;<br />
+                        &lt;th width="70%"&gt;文章类别名&lt;/th&gt;<br />
+                        &lt;th width="20%"&gt;操作&lt;/th&gt;<br />
+                    </div>
+                    &lt;/tr&gt;<br />
+                    &lt;?php foreach( $tpl['all'] AS $r ){?&gt;<br />
+                    &lt;tr class="&lt;?php echo $r['lvl']; ?&gt;" align="center"&gt;<br />
+                    <div style="margin-left:2em;">
+                        &lt;td&gt;&lt;?php echo $r['article_cat_id']; ?&gt;&lt;/td&gt;<br />
+                        &lt;td align="left" title="&lt;?php e($r['name'],'html'); ?&gt;"&gt;&lt;?php echo $r['pre'].f($r['name'],'html'); ?&gt;&lt;/td&gt;<br />
+                        &lt;td class="action"&gt;&lt;?php echo $r['acts']; ?&gt;&lt;/td&gt;<br />
+                    </div>
+                    &lt;/tr&gt;<br />
+                    &lt;?php }?&gt;<br />
+                    &lt;/table&gt;<br />
+            <br />
+            </div>
+            &lt;?php if( $tpl['_bodysub'] != 'query' ){?&gt;<br />
+            <div style="margin-left:2em;">
+                &lt;/div&gt;<br />
+            </div>
+            &lt;/div&gt;<br />
+            &lt;?php }?&gt;<br />
+            </div>
+        <br />
+        <br />
+        &lt;?php } ?&gt;<br />
+    </div>
+</div>
+
+</body>
+</html>
