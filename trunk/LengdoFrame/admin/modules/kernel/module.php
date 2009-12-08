@@ -197,13 +197,13 @@ else{
         /* 增加操作 */
         if( $r['lft'] != $r['rht']-1 ){
             $attribs['add']['onclick'] = "wnd_module_fill(this,'add',{$r[module_id]})";
-            $tpl['all'][$i]['_acts']   = format_module_acts($m_ab, $attribs, 'a');
+            $tpl['all'][$i]['acts']    = format_module_acts($m_ab, $attribs, 'a');
         }
 
         /* 权限搜索操作 */
         if( $r['lft'] == $r['rht']-1 && admin_privilege_valid('privilege.php','list',false) ){
-            $tpl['all'][$i]['_acts'] .= "<a href=\"javascript:void(0)\" onclick=\"module_mtree_request('modules/kernel/privilege.php?act=index&module_id={$r[module_id]}";
-            $tpl['all'][$i]['_acts'] .= "',true)\">". $_LANG['act_priv'] .'</a> ';
+            $tpl['all'][$i]['acts'] .= "<a href=\"javascript:void(0)\" onclick=\"module_mtree_request('modules/kernel/privilege.php?act=index&module_id={$r[module_id]}";
+            $tpl['all'][$i]['acts'] .= "',true)\">". $_LANG['act_priv'] .'</a> ';
         }
 
         /* 删除操作 */
@@ -212,7 +212,7 @@ else{
                                      "wnd_alert('{$_LANG[warn_module_dels]}'); return false;";
 
         /* 绑定操作 */
-        $tpl['all'][$i]['_acts'] .= format_module_acts($m_ac, $attribs, 'a');
+        $tpl['all'][$i]['acts'] .= format_module_acts($m_ac, $attribs, 'a');
     }
 
     /* 初始化页面信息 */

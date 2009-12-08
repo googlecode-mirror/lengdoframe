@@ -306,7 +306,7 @@ else{
         $attribs['del']['onclick'] = $del;
 
         /* 绑定操作 */
-        $tpl['all'][$i]['_acts'] = format_module_acts($m_ac, $attribs, 'a');
+        $tpl['all'][$i]['acts'] = format_module_acts($m_ac, $attribs, 'a');
     }
 
     /* 初始化页面信息 */
