@@ -45,7 +45,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 
 <br />
 
-<b>2. 模块默认首页的数据处理</b>
+<b id="lfm-articlecat-list-vcode-module">2. 模块默认首页的数据处理</b>
 <div style="margin-left:1.2em;">
     <div style="text-indent:2em;">
         模块默认首页要处理的数据主要有两项：模块标题层的数据和列表层表格树的数据。<br />
@@ -60,10 +60,10 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <br />
 
     <div style="text-indent:2em;">
-        <a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-list-code-module');o.style.display=o.style.display=='none'?'':'none'">点击查看模块默认首页的完整代码</a>
+        <a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-list-code-module');o.style.display=o.style.display=='none'?'':'none'">点击隐藏模块默认首页的完整代码</a>
     </div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;"><a href="javascript:void(0)" style="color:#666;text-decoration:none;" id="lfm-articlecat-list-vcode-module" onclick="var o=document.getElementById('lfm-articlecat-list-code-module');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a></div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-list-code-module">
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;"><a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-list-code-module');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a></div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;" id="lfm-articlecat-list-code-module">
         <table>
         <tr>
             <td width="30">
@@ -189,14 +189,14 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 
 <br />
 
-<b>3. 库文件的数据处理</b>
+<b id="lfm-articlecat-list-vcode-lib">3. 库文件的数据处理</b>
 <div style="margin-left:1.2em;">
     <div style="text-indent:2em;">
         拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-list-code-lib');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="文件创建及说明.html#lfm-articlecat-file-lib" style="color:#000;">库文件</a> /admin/includes/lib_article.php
     </div>
 
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;"><a href="javascript:void(0)" style="color:#666;text-decoration:none;" id="lfm-articlecat-list-vcode-lib" onclick="var o=document.getElementById('lfm-articlecat-list-code-lib');o.style.display=o.style.display=='none'?'':'none'">View Code 2</a></div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-list-code-lib">
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;"><a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-list-code-lib');o.style.display=o.style.display=='none'?'':'none'">View Code 2</a></div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;" id="lfm-articlecat-list-code-lib">
     &lt;?php<br />
     /* 取得所有文章类别 */<br />
     function all_article_cat( $filter = array() )<br />
@@ -228,16 +228,16 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 
 <br />
 
-<b>4. 视图文件的数据处理</b>
+<b id="lfm-articlecat-list-vcode-view">4. 视图文件的数据处理</b>
 <div style="margin-left:1.2em;">
     <div style="text-indent:2em;">
         拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-list-code-view');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="文件创建及说明.html#lfm-articlecat-file-view" style="color:#000;">视图文件</a> /admin/tpl/article_cat.html
     </div>
 
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
-        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" id="lfm-articlecat-list-vcode-view" onclick="var o=document.getElementById('lfm-articlecat-list-code-view');o.style.display=o.style.display=='none'?'':'none'">View Code 3</a>
+        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-list-code-view');o.style.display=o.style.display=='none'?'':'none'">View Code 3</a>
     </div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-list-code-view">
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;" id="lfm-articlecat-list-code-view">
         &lt;?php if( $tpl['_block'] !== true ){ include($_CFG['DIR_ADMIN_TPL'].'header.html'); }?&gt;<br />
         <br />
         <br />
@@ -247,7 +247,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
             &lt;?php if( $tpl['_bodysub'] != 'query' ){?&gt;<br />
             &lt;div class="list-box" onmouseover="ListTable.init('list-articlecat','modules/article/article_cat.php','?act=list');"&gt;<br />
             <div style="margin-left:2em;">
-                &lt;div id="list-module" class="list-div" style="border-top:0;border-bottom:0;"&gt;<br />
+                &lt;div id="list-articlecat" class="list-div" style="border-top:0;border-bottom:0;"&gt;<br />
             </div>
             &lt;?php }?&gt;<br />
             <div style="margin-left:4em;">
