@@ -48,22 +48,23 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <b id="lfm-articlecat-mlist-code-title">2. 模块默认首页的数据处理</b>
 <div style="margin-left:1.2em;">
     <div style="text-indent:2em;">
-        模块默认首页要处理的数据主要有两项：模块标题层的数据和列表层表格树的数据。<br />
+        模块默认首页要处理的数据主要有两项：模块标题层的数据和列表层表格树的数据。(参见图1)<br />
     </div>
     <div style="text-indent:2em;">
-        模块标题层的数据处理主要就是读取构建那些<a target="_blank" href="../../开发指南(PHP)/权限系统/权限篇.html#lfm-privilege-dev-titleact" style="color:#000">独立权限</a>。<br />
+        模块标题层的数据处理主要就是读取构建那些<a target="_blank" href="../../开发指南(PHP)/权限系统/权限篇.html#lfm-privilege-dev-titleact-title" style="color:#000">独立权限</a>。<br />
     </div>
     <div style="text-indent:2em;">
-        而列表层表格树的数据处理主要就是为每条记录添加<a target="_blank" href="../../开发指南(PHP)/权限系统/权限篇.html#lfm-privilege-dev-titleact" style="color:#000">绑定权限</a>并格式化缩进样式的数据。<br />
+        而列表层表格树的数据处理主要就是为每条记录添加<a target="_blank" href="../../开发指南(PHP)/权限系统/权限篇.html#lfm-privilege-dev-bind-title" style="color:#000">绑定权限</a>并格式化缩进样式的数据。<br />
     </div>
 
     <br />
 
     <div style="text-indent:2em;">
-        <a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-mlist-code');o.style.display=o.style.display=='none'?'':'none'">点击隐藏模块默认首页的完整代码</a>
+        拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-mlist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到 
+        "文章列表"的<a target="_blank" href="文件创建及说明.html#lfm-articlecat-file-module" style="color:#000;">模块处理文件</a> /admin/modules/article/article_cat.php
     </div>
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;"><a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-mlist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a></div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;" id="lfm-articlecat-mlist-code">
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-mlist-code">
         <table>
         <tr>
             <td width="30">
@@ -85,7 +86,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 require('../../includes/lib_article.php');<br />
                 <br />
                 /* 异步 - 其他模块 */<br />
-                if( false ){<br />
+                if( $_REQUEST['act'] == '...' ){<br />
 
                 }<br />
                 <br />
@@ -179,11 +180,11 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         </table>
     </div>
 
-    <br />
-
     <div style="text-indent:2em;">
-        拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-mlist-code');o.style.display=o.style.display=='none'?'':'none'">以上代码</a>到 
-        "文章列表"的<a target="_blank" href="文件创建及说明.html#lfm-articlecat-file-module" style="color:#000;">模块处理文件</a> /admin/modules/article/article_cat.php
+        模块文件包含了所有功能点的处理代码，每段代码通过 $_REQUEST['act'] 区分，比如增加('add')，增加提交('query')，编辑('edit')，编辑提交('update')，删除('del')，列表('list')，列表查询('query')，模块默认首页('index')。
+    </div>
+    <div style="text-indent:2em;">
+        第12 - 77行的代码包含了3个功能点，分别是模块默认首页('index')，列表('list')，列表查询('query')。之所以将这三个功能放在一个代码块是因为列表功能点会调用构建数据，而列表查询需要使用这个数据，同样模块默认首页功能点也需要使用这个数据。
     </div>
 </div>
 
@@ -196,33 +197,33 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     </div>
 
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;"><a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-llist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 2</a></div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;" id="lfm-articlecat-llist-code">
-    &lt;?php<br />
-    /* 取得所有文章类别 */<br />
-    function all_article_cat( $filter = array() )<br />
-    {<br />
-        <div style="margin-left:2em;">
-            /* 所有文章类别 */<br />
-            if( empty($filter) ){<br />
-                <div style="margin-left:2em;">
-                    $sql = 'SELECT * FROM '. tname('article_cat'). ' WHERE article_cat_id <> 1 ORDER BY lft ASC';<br />
-                    return $GLOBALS['db']->getAll($sql);<br />
-                </div>
-            }<br />
-            <br />
-            /* 根据文章类别IDS取得文章类别信息 */<br />
-            if( is_array($filter['article_cat_ids']) && !empty($filter['article_cat_ids']) ){<br />
-                <div style="margin-left:2em;">
-                    $sql = ' SELECT * FROM '. tname('article_cat');<br />
-                    $sql.= ' WHERE article_cat_id <> 1 AND article_cat_id IN("'. implode('","',$filter['article_cat_ids']) .'") ORDER BY lft ASC';<br />
-                    return $GLOBALS['db']->getAll($sql);<br />
-                </div>
-            }<br />
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-llist-code">
+        &lt;?php<br />
+        /* 取得所有文章类别 */<br />
+        function all_article_cat( $filter = array() )<br />
+        {<br />
+            <div style="margin-left:2em;">
+                /* 所有文章类别 */<br />
+                if( empty($filter) ){<br />
+                    <div style="margin-left:2em;">
+                        $sql = 'SELECT * FROM '. tname('article_cat'). ' WHERE article_cat_id <> 1 ORDER BY lft ASC';<br />
+                        return $GLOBALS['db']->getAll($sql);<br />
+                    </div>
+                }<br />
+                <br />
+                /* 根据文章类别IDS取得文章类别信息 */<br />
+                if( is_array($filter['article_cat_ids']) && !empty($filter['article_cat_ids']) ){<br />
+                    <div style="margin-left:2em;">
+                        $sql = ' SELECT * FROM '. tname('article_cat');<br />
+                        $sql.= ' WHERE article_cat_id <> 1 AND article_cat_id IN("'. implode('","',$filter['article_cat_ids']) .'") ORDER BY lft ASC';<br />
+                        return $GLOBALS['db']->getAll($sql);<br />
+                    </div>
+                }<br />
 
-            return array();<br />
-        </div>
-    }<br />
-    ?&gt;<br />
+                return array();<br />
+            </div>
+        }<br />
+        ?&gt;<br />
     </div>
 </div>
 
@@ -237,7 +238,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
         <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-vlist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 3</a>
     </div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;" id="lfm-articlecat-vlist-code">
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-vlist-code">
         &lt;?php if( $tpl['_block'] !== true ){ include($_CFG['DIR_ADMIN_TPL'].'header.html'); }?&gt;<br />
         <br />
         <br />
@@ -284,6 +285,18 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         &lt;?php } ?&gt;<br />
     </div>
 </div>
+
+<script>
+function hash2title( hash )
+{
+    obj = hash.replace('#','').replace(/-title$/,'');
+    obj = document.getElementById(obj);
+    obj ? obj.style.display = '' : '';
+}
+
+hash2title(window.location.hash);
+</script>
+
 
 </body>
 </html>
