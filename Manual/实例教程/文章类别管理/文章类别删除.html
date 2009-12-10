@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>文章类别删除</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
+<body>
+
+
+
+<div style="text-indent:2em">
+    文章类别删除，相对于文章类别列表和增编的编码来说算是简单的一个业务流程。
+</div>
+<br />
+
+<b id="lfm-articlecat-mdel-code-title">1. 文章类别删除的模块文件</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-mdel-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>模块文件 /admin/modules/article/article_cat.php
+    </div>
+
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
+        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-mdel-code');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a>
+    </div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-mdel-code">
+        &lt;?php<br />
+        /* 文件加载 */<br />
+        require('../../includes/init.php');<br />
+        require('../../includes/lib_lrtree.php');<br />
+        require('../../includes/lib_article.php');<br />
+        <br />
+        <br />
+        /*  异步 - 增加 */<br />
+        if( $_REQUEST['act'] == 'add' ){
+            <div style="margin-left:2em;">
+                // <a target="_blank" href="文章类别增编.html#lfm-articlecat-mfill-code-title" style="color:#666;font-family:'宋体'">增加的模块文件代码</a>
+            </div>
+        }<br />
+        /* 异步 - 写入数据库 */<br />
+        elseif( $_REQUEST['act'] == 'insert' ){
+            <div style="margin-left:2em;">
+                // <a target="_blank" href="文章类别增编.html#lfm-articlecat-mfill-code-title" style="color:#666;font-family:'宋体'">写入的模块文件代码</a>
+            </div>
+        }<br />
+        <br />
+        <br />
+        /*  异步 - 编辑 */<br />
+        elseif( $_REQUEST['act'] == 'edit' ){
+            <div style="margin-left:2em;">
+                // <a target="_blank" href="文章类别增编.html#lfm-articlecat-mfill-code-title" style="color:#666;font-family:'宋体'">编辑的模块文件代码</a>
+            </div>
+        }<br />
+        /*  异步 - 更新数据库 */<br />
+        elseif( $_REQUEST['act'] == 'update' ){
+            <div style="margin-left:2em;">
+                // <a target="_blank" href="文章类别增编.html#lfm-articlecat-mfill-code-title" style="color:#666;font-family:'宋体'">更新的模块文件代码</a>
+            </div>
+        }<br />
+        <br />
+        <br />
+        <div style="background:#efefef;">
+        /*  异步 - 删除 */<br />
+        elseif( $_REQUEST['act'] == 'del' ){<br />
+            <div style="margin-left:2em;">
+                /* 权限检查 */<br />
+                admin_privilege_valid('article_cat.php', 'del');<br />
+                <br />
+                /* 文章类别信息 */<br />
+                $info = info_article_cat( array('article_cat_id'=>$_POST['id']) );<br />
+                <br />
+                /* 删除文章类别 */<br />
+                del_article_cat( array('info'=>$info) );<br />
+                <br />
+                /* 系统提示 */<br />
+                make_json_ok();<br />
+            </div>
+        }<br />
+        </div>
+        <br />
+        <br />
+        /*  异步 - 列表(默认页) */<br />
+        else{
+            <div style="margin-left:2em;">
+                // <a target="_blank" href="文章类别列表.html#lfm-articlecat-mlist-code-title" style="color:#666;font-family:'宋体'">列表的模块文件代码</a>
+            </div>
+        }<br />
+        ?&gt;<br />
+        <br />
+        &lt;?php<br />
+            <div style="margin-left:2em;">
+                // <a target="_blank" href="文章类别增编.html#lfm-articlecat-mfillfunc-code-title" style="color:#666;font-family:'宋体'">增编的相关辅助函数</a>
+            </div>
+        ?&gt;<br />
+    </div>
+</div>
+
+<br />
+
+<b id="lfm-articlecat-mdel-code-title">2. 文章类别删除的库文件</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        追加<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-ldel-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到库文件 /admin/includes/lib_article.php
+    </div>
+
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
+        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-ldel-code');o.style.display=o.style.display=='none'?'':'none'">View Code 2</a>
+    </div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:nodne;" id="lfm-articlecat-ldel-code">
+        &lt;?php<br />
+        /* 删除文章类别 */<br />
+        function del_article_cat( $filter )<br />
+        {
+            <div style="margin-left:2em;">
+                global $_LANG;<br />
+                <br />
+                /* 根据文章类别信息(信任)删除 */<br />
+                if( is_array($filter['info']) && !empty($filter['info']) ){
+                    <div style="margin-left:2em;">
+                        /* 初始化 */<br />
+                        $info = $filter['info'];<br />
+                        <br />
+                        /* 虚根分类，保留 */<br />
+                        if( $info['article_cat_id'] == 1 ){
+                            <div style="margin-left:2em;">
+                                return array('error'=>1, 'message'=>$_LANG['lawless_submit']);
+                            </div>
+                        }<br />
+                        <br />
+                        /* 删除文章类别 */<br />
+                        lrtree_del( array('table'=>tname('article_cat'), 'info'=>$info) );<br />
+                        <br />
+                        return array('error'=>0, 'message'=>$_LANG['del_ok']);
+                    </div>
+                }<br />
+                <br />
+                return array('error'=>1, 'message'=>$_LANG['fail_del']);
+            </div>
+        }<br />
+        <br />
+        /* 取得子文章类别的IDS */<br />
+        function sub_article_cat_id( $filter, $self = true )<br />
+        {
+            <div style="margin-left:2em;">
+                /* 根据文章类别ID取得文章类别IDS */<br />
+                if( is_numeric($filter['article_cat_id']) && intval($filter['article_cat_id']) > 0 ){
+                    <div style="margin-left:2em;">
+                        /* 取得文章类别信息 */<br />
+                        $filter['info'] = info_article_cat( array('article_cat_id'=>$filter['article_cat_id']) );
+                    </div>
+                }<br />
+                <br />
+                /* 根据文章类别信息(信任)取得文章类别IDS */<br />
+                if( is_array($filter['info']) && !empty($filter['info']) ){
+                    <div style="margin-left:2em;">
+                        $sql = 'SELECT article_cat_id FROM '. tname('article_cat'). ' WHERE lft'. ($self?'&gt;=':'&gt;') . intval($filter['info']['lft']);<br />
+                        $sql.= ' AND rht'. ($self?'&lt;=':'&lt;') . intval($filter['info']['rht']) .' ORDER BY lft ASC';<br />
+                        <br />
+                        return $GLOBALS['db']->getCol($sql);
+                    </div>
+                }<br />
+                <br />
+                return array();
+            </div>
+        }<br />
+        ?&gt;<br />
+    </div>
+</div>
+
+<script>
+function hash2title( hash )
+{
+    obj = hash.replace('#','').replace(/-title$/,'');
+    obj = document.getElementById(obj);
+    obj ? obj.style.display = '' : '';
+}
+
+hash2title(window.location.hash);
+</script>
+
+
+</body>
+</html>

@@ -27,196 +27,372 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
         <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-wfill-code');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a>
     </div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;" id="lfm-articlecat-wfill-code">
-    /**<br />
-     * 增/编文章类别<br />
-     *<br />
-     * @params obj  caller  调用者对象<br />
-     * @params str  act     当前操作<br />
-     * @params int  id      数据：文章类别ID[编辑时]，文章类别父ID[增加时]<br />
-     */<br />
-    function wnd_articlecat_fill( caller, act, id )<br />
-    {<br />
-        <div style="margin-left:2em;">
-            /* 初始化 */<br />
-            var url = 'modules/article/article_cat.php';<br />
-            var wnd = Wnds.find('wnd-articlecat-fill');<br />
-            <br />
-            /* 构建窗口 */<br />
-            if( !wnd ){<br />
-                <div style="margin-left:2em;">
-                wnd = new Wnd('wnd-articlecat-fill', {'okb':deal_articlecat_fill}, {'width':300});<br />
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-wfill-code">
+        /**<br />
+         * 增/编文章类别<br />
+         *<br />
+         * @params obj  caller  调用者对象<br />
+         * @params str  act     当前操作<br />
+         * @params int  id      数据：文章类别ID[编辑时]，文章类别父ID[增加时]<br />
+         */<br />
+        function wnd_articlecat_fill( caller, act, id )<br />
+        {<br />
+            <div style="margin-left:2em;">
+                /* 初始化 */<br />
+                var url = 'modules/article/article_cat.php';<br />
+                var wnd = Wnds.find('wnd-articlecat-fill');<br />
                 <br />
-                wnd.create();<br />
-                wnd.buttonAddDefault();<br />
-                </div>
-            }<br />
-            <br />
-            /* 初始化参数 */<br />
-            url += act == 'add' ? '?act=add&parent_id='+id : '?act=edit&article_cat_id='+id;<br />
-            var title = act == 'add' ? '增加文章类别' : '编辑文章类别';<br />
-            <br />
-            /* 设置数据 - 当前操作 */<br />
-            wnd.setData('act', act);<br />
-            <br />
-            wnd.title(title);<br />
-            wnd.inner(url, 'url');<br />
-            <br />
-            wnd.show();<br />
-            wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});<br />
-        </div>
-    }<br />
-    <br />
-    function deal_articlecat_fill()<br />
-    {<br />
-        <div style="margin-left:2em;">
-            /* 初始化 */<br />
-            var url = 'modules/article/article_cat.php';<br />
-            var wnd = Wnds.find('wnd-articlecat-fill');<br />
-            var act = wnd.getData('act') == 'add' ? '?act=insert' : '?act=update';<br />
-            <br />
-            /* 异步提交(异步等待) */<br />
-            Ajax.call(url+act, deal_form_params('wfm-articlecat-fill'), callback, 'POST', 'JSON');<br />
-            <br />
-            /* 回调函数 */<br />
-            function callback( result, text ){<br />
-                <div style="margin-left:2em;">
-                    if( result.error == 0 ){<br />
-                        <div style="margin-left:2em;">
-                            /* 初始化并重载列表 */<br />
-                            ListTable.init('list-articlecat', url, '?act=list');<br />
-                            ListTable.loadList();<br />
-                            <br />
-                            wnd.hidden();<br />
-                        </div>
-                    }else{<br />
-                        <div style="margin-left:2em;">
-                            wnd_alert(result.message, {'overlay':0,'hidden':function(){try{wnd.getData('blur').focus();}catch(e){}}});<br />
-                        </div>
-                    }<br />
-                </div>
-            }<br />
-            <br />
-            return false;<br />
-        </div>
-    }<br />
+                /* 构建窗口 */<br />
+                if( !wnd ){<br />
+                    <div style="margin-left:2em;">
+                        wnd = new Wnd('wnd-articlecat-fill', {'okb':deal_articlecat_fill}, {'width':300});<br />
+                        <br />
+                        wnd.create();<br />
+                        wnd.buttonAddDefault();<br />
+                    </div>
+                }<br />
+                <br />
+                /* 初始化参数 */<br />
+                url += act == 'add' ? '?act=add&parent_id='+id : '?act=edit&article_cat_id='+id;<br />
+                var title = act == 'add' ? '增加文章类别' : '编辑文章类别';<br />
+                <br />
+                /* 设置数据 - 当前操作 */<br />
+                wnd.setData('act', act);<br />
+                <br />
+                wnd.title(title);<br />
+                wnd.inner(url, 'url');<br />
+                <br />
+                wnd.show();<br />
+                wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});<br />
+            </div>
+        }<br />
+        <br />
+        function deal_articlecat_fill()<br />
+        {<br />
+            <div style="margin-left:2em;">
+                /* 初始化 */<br />
+                var url = 'modules/article/article_cat.php';<br />
+                var wnd = Wnds.find('wnd-articlecat-fill');<br />
+                var act = wnd.getData('act') == 'add' ? '?act=insert' : '?act=update';<br />
+                <br />
+                /* 异步提交(异步等待) */<br />
+                Ajax.call(url+act, deal_form_params('wfm-articlecat-fill'), callback, 'POST', 'JSON');<br />
+                <br />
+                /* 回调函数 */<br />
+                function callback( result, text ){<br />
+                    <div style="margin-left:2em;">
+                        if( result.error == 0 ){<br />
+                            <div style="margin-left:2em;">
+                                /* 初始化并重载列表 */<br />
+                                ListTable.init('list-articlecat', url, '?act=list');<br />
+                                ListTable.loadList();<br />
+                                <br />
+                                wnd.hidden();<br />
+                            </div>
+                        }else{<br />
+                            <div style="margin-left:2em;">
+                                wnd_alert(result.message, {'overlay':0,'hidden':function(){try{wnd.getData('blur').focus();}catch(e){}}});<br />
+                            </div>
+                        }<br />
+                    </div>
+                }<br />
+                <br />
+                return false;<br />
+            </div>
+        }<br />
     </div>
 </div>
 
 <br />
 
-<b>2. 文章类别增编的模块文件</b>
+<b id="lfm-articlecat-mfill-code-title">2. 文章类别增编的模块文件</b>
 <div style="margin-left:1.2em;">
     <div style="text-indent:2em;">
         拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-mfill-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到模块文件 /admin/modules/article/article_cat.php
     </div>
 
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
-        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-mfill-code');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a>
+        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-mfill-code');o.style.display=o.style.display=='none'?'':'none'">View Code 2</a>
     </div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;" id="lfm-articlecat-mfill-code">
-    /* 文件加载 */<br />
-    require('../../includes/init.php');<br />
-    require('../../includes/lib_lrtree.php');<br />
-    require('../../includes/lib_article.php');<br />
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-mfill-code">
+        <table>
+        <tr>
+            <td width="30">
+                1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />
+                11<br />12<br />13<br />14<br />15<br />16<br />17<br />18<br />19<br />20<br />
+                21<br />22<br />23<br />24<br />25<br />26<br />27<br />28<br />29<br />30<br />
+                31<br />32<br />33<br />34<br />35<br />36<br />37<br />38<br />39<br />40<br />
+                41<br />42<br />43<br />44<br />45<br />46<br />47<br />48<br />49<br />50<br />
+                51<br />52<br />53<br />54<br />55<br />56<br />57<br />58<br />59<br />60<br />
+                61<br />62<br />63<br />64<br />65<br />66<br />67<br />68<br />69<br />70<br />
+                71<br />72<br />73<br />74<br />75<br />76<br />77
+            </td>
+            <td>
+                &lt;?php<br />
+                /* 文件加载 */<br />
+                require('../../includes/init.php');<br />
+                require('../../includes/lib_lrtree.php');<br />
+                require('../../includes/lib_article.php');<br />
+                <br />
+                <br />
+                /* 异步 - 增加 */<br />
+                if( $_REQUEST['act'] == 'add' ){<br />
+                    <div style="margin-left:2em;">
+                        /* 权限检查 */<br />
+                        admin_privilege_valid('article_cat.php', 'add');<br />
+                        <br />
+                        /* HTML控件 */<br />
+                        ctl_fill('add');<br />
+                        <br />
+                        /* 初始化页面信息 */<br />
+                        $tpl['_body']  = 'add';<br />
+                        $tpl['_block'] = true;<br />
+                    </div>
+                }<br />
+                /* 异步 - 写入数据库 */<br />
+                elseif( $_REQUEST['act'] == 'insert' ){<br />
+                    <div style="margin-left:2em;">
+                        /* 权限检查 */<br />
+                        admin_privilege_valid('article_cat.php', 'add');<br />
+                        <br />
+                        /* 数据提取 */<br />
+                        $fields = post_articlecat('add');<br />
+                        <br />
+                        /* 参照信息 */<br />
+                        $filter = array();<br />
+                        $filter['table']     = tname('article_cat');<br />
+                        $filter['primary']   = 'article_cat_id';<br />
+                        $filter['parent_id'] = $_POST['parent_id'];<br />
+                        <br />
+                        /* 数据写入 */<br />
+                        if( lrtree_insert($fields, $filter) ){<br />
+                            <div style="margin-left:2em;">
+                                /* 系统提示 */<br />
+                                make_json_ok();<br />
+                            </div>
+                        }
+                    </div>
+                }<br />
+                <br />
+                <br />
+                /* 异步 - 编辑 */<br />
+                elseif( $_REQUEST['act'] == 'edit' ){
+                    <div style="margin-left:2em;">
+                        /* 权限检查 */<br />
+                        admin_privilege_valid('article_cat.php', 'edit');<br />
+                        <br />
+                        /* 文章类别信息 */<br />
+                        $tpl['article_cat'] = info_article_cat( array('article_cat_id'=>$_GET['article_cat_id']) );<br />
+                        <br />
+                        /* 初始化页面信息 */<br />
+                        $tpl['_body']  = 'edit';<br />
+                        $tpl['_block'] = true;
+                    </div>
+                }<br />
+                /* 异步 - 更新数据库 */<br />
+                elseif( $_REQUEST['act'] == 'update' ){
+                    <div style="margin-left:2em;">
+                        /* 权限检查 */<br />
+                        admin_privilege_valid('article_cat.php', 'edit');<br />
+                        <br />
+                        /* 文章类别ID */<br />
+                        $id = intval($_POST['article_cat_id']);<br />
+                        <br />
+                        /* 数据提取 */<br />
+                        $fields = post_articlecat('edit');<br />
+                        <br />
+                        /* 数据更新 */<br />
+                        if( $db->update(tname('article_cat'), $fields, 'article_cat_id='.$id) ){<br />
+                            <div style="margin-left:2em;">
+                                /* 系统提示 */<br />
+                                make_json_ok();
+                            </div>
+                        }<br />
+                    </div>
+                }<br />
+                <br />
+                <br />
+                /* 异步 - 默认首页，列表页 */<br />
+                else{<br />
+                    <div style="margin-left:2em;">
+                        // <a target="_blank" href="文章类别列表.html#lfm-articlecat-mlist-code-title" style="color:#666;font-family:'宋体'">列表的模块文件代码</a>
+                    </div>
+                }<br />
+                ?&gt;<br />
+            </td>
+        </tr>
+        </table>
+    </div>
+
     <br />
-    <br />
-    /* 异步 - 增加 */<br />
-    if( $_REQUEST['act'] == 'add' ){<br />
-        <div style="margin-left:2em;">
-            /* 权限检查 */<br />
-            admin_privilege_valid('article_cat.php', 'add');<br />
-            <br />
-            /* HTML控件 */<br />
-            ctl_fill('add');<br />
-            <br />
-            /* 初始化页面信息 */<br />
-            $tpl['_body']  = 'add';<br />
-            $tpl['_block'] = true;<br />
-        </div>
-    }<br />
-    /* 异步 - 写入数据库 */<br />
-    elseif( $_REQUEST['act'] == 'insert' ){<br />
-        <div style="margin-left:2em;">
-            /* 权限检查 */<br />
-            admin_privilege_valid('article_cat.php', 'add');<br />
-            <br />
-            /* 数据提取 */<br />
-            $fields = post_articlecat('add');<br />
-            <br />
-            /* 参照信息 */<br />
-            $filter = array();<br />
-            $filter['table']     = tname('article_cat');<br />
-            $filter['primary']   = 'article_cat_id';<br />
-            $filter['parent_id'] = $_POST['parent_id'];<br />
-            <br />
-            /* 数据写入 */<br />
-            if( lrtree_insert($fields, $filter) ){<br />
-                <div style="margin-left:2em;">
-                    /* 写入日志和系统提示 */<br />
-                    admin_log($_LANG['add:'].$fields['name']); make_json_ok();<br />
-                </div>
-            }
-        </div>
-    }<br />
-    <br />
-    <br />
-    /* 异步 - 编辑 */<br />
-    elseif( $_REQUEST['act'] == 'edit' ){
-        <div style="margin-left:2em;">
-            /* 权限检查 */<br />
-            admin_privilege_valid('article_cat.php', 'edit');<br />
-            <br />
-            /* 文章类别信息 */<br />
-            $tpl['article_cat'] = info_article_cat( array('article_cat_id'=>$_GET['article_cat_id']) );<br />
-            <br />
-            /* 初始化页面信息 */<br />
-            $tpl['_body']  = 'edit';<br />
-            $tpl['_block'] = true;
-        </div>
-    }<br />
-    /* 异步 - 更新数据库 */<br />
-    elseif( $_REQUEST['act'] == 'update' ){
-        <div style="margin-left:2em;">
-            /* 权限检查 */<br />
-            admin_privilege_valid('article_cat.php', 'edit');<br />
-            <br />
-            /* 文章类别ID */<br />
-            $id = intval($_POST['article_cat_id']);<br />
-            <br />
-            /* 数据提取 */<br />
-            $fields = post_articlecat('edit');<br />
-            <br />
-            /* 数据更新 */<br />
-            if( $db->update(tname('article_cat'), $fields, 'article_cat_id='.$id) ){<br />
-                <div style="margin-left:2em;">
-                    /* 更新文章中的类别名称 */<br />
-                    $db->update( tname('article'), array('article_cat_name'=>$fields['name']), 'article_cat_id='.$id );<br />
-                    <br />
-                    /* 写入日志和系统提示 */<br />
-                    admin_log($_LANG['edit:'].$fields['name']); make_json_ok();
-                </div>
-            }<br />
-        </div>
-    }<br />
+
+    <div style="text-indent:2em;">
+        追加<a id="lfm-articlecat-mfillfunc-code-title" href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-mfillfunc-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到模块文件 /admin/modules/article/article_cat.php
+    </div>
+
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
+        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-mfillfunc-code');o.style.display=o.style.display=='none'?'':'none'">View Code 3</a>
+    </div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-mfillfunc-code">
+        &lt;?php<br />
+        /* 填写时所需的HTML控件 */<br />
+        function ctl_fill( $act )<br />
+        {
+            <div style="margin-left:2em;">
+                global $_LANG, $tpl;<br />
+                <br />
+                /* 所属类别 */<br />
+                $append = array('value'=>'1', 'text'=>'顶级类别');<br />
+                $tpl['formc_article_cat'] = ddl_article_cat( 'parent_id', $_GET['parent_id'], $append, array('style'=>'width:154px') );
+            </div>
+        }<br />
+        <br />
+        /* 取得POST过来的文章类别字段 */<br />
+        function post_articlecat( $act )<br />
+        {
+            <div style="margin-left:2em;">
+                /* 基本字段提取 */<br />
+                $fields = array();<br />
+                $fields['name'] = trim($_POST['name']);<br />
+                <br />
+                /* 字段值检查 */<br />
+                post_articlecat_check($fields, $act);<br />
+                <br />
+                return $fields;
+            </div>
+        }<br />
+        function post_articlecat_check( $fields = array(), $act = '' )<br />
+        {
+            <div style="margin-left:2em;">
+                global $_LANG;<br />
+                <br />
+                if( isset($fields['name']) && $fields['name'] == '' ){<br />
+                    <div style="margin-left:2em;">
+                        make_json_fail($_LANG['fill_articlecat_name']);
+                    </div>
+                }
+            </div>
+        }<br />
+        ?&gt;<br />
     </div>
 </div>
 
 <br />
 
-<b>3. 文章类别增编的视图文件</b>
+<b>3. 文章类别增编的库文件</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        追加<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-lfill-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到库文件 /admin/includes/lib_article.php
+    </div>
+
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
+        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-lfill-code');o.style.display=o.style.display=='none'?'':'none'">View Code 4</a>
+    </div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-lfill-code">
+        &lt;?php<br />
+        /* 取得文章类别信息 */<br />
+        function info_article_cat( $filter )<br />
+        {
+            <div style="margin-left:2em;">
+                /* 根据文章类别ID取得信息 */<br />
+                if( is_numeric($filter['article_cat_id']) && intval($filter['article_cat_id']) > 0 ){
+                    <div style="margin-left:2em;">
+                        $sql = 'SELECT * FROM '. tname('article_cat'). ' WHERE article_cat_id='. intval($filter['article_cat_id']);<br />
+                        return $GLOBALS['db']->getRow($sql);
+                    </div>
+                }<br />
+                <br />
+                /* 根据文章类别左值和层级取得信息 */<br />
+                if( is_numeric($filter['lft']) && intval($filter['lft']) > 0 && is_numeric($filter['lvl']) && intval($filter['lvl']) > 0 ){
+                    <div style="margin-left:2em;">
+                        $sql = 'SELECT * FROM '. tname('article_cat'). ' WHERE lft='. intval($filter['lft']) .' AND lvl='. intval($filter['lvl']);<br />
+                        return $GLOBALS['db']->getRow($sql);
+                    </div>
+
+                }<br />
+                <br />
+                /* 根据文章类别右值和层级取得信息 */<br />
+                if( is_numeric($filter['rht']) && intval($filter['rht']) > 0 && is_numeric($filter['lvl']) && intval($filter['lvl']) > 0 ){<br />
+                    <div style="margin-left:2em;">
+                        $sql = 'SELECT * FROM '. tname('article_cat'). ' WHERE rht='. intval($filter['rht']) .' AND lvl='. intval($filter['lvl']);<br />
+                        return $GLOBALS['db']->getRow($sql);<br />
+                    </div>
+                }<br />
+                <br />
+                return array();
+            </div>
+        }<br />
+        <br />
+        <br />
+        /**<br />
+         * 下拉列表 - 文章类别<br />
+         * <br />
+         * @params str  $name      列表名称<br />
+         * @params mix  $selected  选中的值<br />
+         * @params arr  $appends   追加到顶部的下拉项<br />
+         * @params arr  $attribs   下拉列表的其他属性<br />
+         */<br />
+        function ddl_article_cat( $name, $selected = '', $appends = array(), $attribs = array() )<br />
+        {
+            <div style="margin-left:2em;">
+                /* 初始化 */<br />
+                $items = array();<br />
+                <br />
+                /* 所有文章类别 */<br />
+                $article_cats = all_article_cat();<br />
+                <br />
+                /* 下拉列表顶部项 */<br />
+                if( is_array($appends) ){
+                    <div style="margin-left:2em;">
+                        if( isset($appends['value']) && isset($appends['text']) ){<br />
+                            <div style="margin-left:2em;">
+                                $appends = array( array('value'=>$appends['value'],'text'=>$appends['text']) );
+                            </div>
+                        }<br />
+                        <br />
+                        foreach( $appends AS $i=>$item ){<br />
+                            <div style="margin-left:2em;">
+                                if( isset($item['value']) && isset($item['text']) ){<br />
+                                    <div style="margin-left:2em;">
+                                        $items[] = $item;
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }<br />
+                <br />
+                /* 下拉列表项 */<br />
+                foreach( $article_cats AS $r ){
+                    <div style="margin-left:2em;">
+                        $text = f( str_repeat(' ',($r['lvl']-1)*4).$r['name'], 'html');<br />
+                        $items[] = array('value'=>$r['article_cat_id'], 'text'=>$text);
+                    </div>
+                }<br />
+                <br />
+                $fc = new Formc();<br />
+                return $fc->ddl( $name, $items, array_merge(array('selected'=>$selected), $attribs) );
+            </div>
+        }<br />
+    ?&gt;
+    </div>
+</div>
+
+<br />
+
+<b id="lfm-articlecat-vfill-code-title">4. 文章类别增编的视图文件</b>
 <div style="margin-left:1.2em;">
     <div style="text-indent:2em;">
         拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-vfill-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="文件创建及说明.html#lfm-articlecat-file-view" style="color:#000;">视图文件</a> /admin/tpl/article_cat.html
     </div>
 
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
-        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-vfill-code');o.style.display=o.style.display=='none'?'':'none'">View Code 3</a>
+        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-vfill-code');o.style.display=o.style.display=='none'?'':'none'">View Code 5</a>
     </div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;" id="lfm-articlecat-vfill-code">
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-vfill-code">
         &lt;?php if( $tpl['_body'] == 'list' ){ ?&gt;<br />
             <div style="margin-left:2em;">
-                &lt;!-- <a href="文章类别列表.html#lfm-articlecat-vlist-code-title" style="color:#666">列表的视图文件代码</a> --&gt;
+                &lt;!-- <a target="_blank" href="文章类别列表.html#lfm-articlecat-vlist-code-title" style="color:#666;font-family:'宋体'">列表的视图文件代码</a> --&gt;
             </div>
         <br />
         <br />
@@ -254,6 +430,17 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         &lt;?php } ?&gt;<br />
     </div>
 </div>
+
+<script>
+function hash2title( hash )
+{
+    obj = hash.replace('#','').replace(/-title$/,'');
+    obj = document.getElementById(obj);
+    obj ? obj.style.display = '' : '';
+}
+
+hash2title(window.location.hash);
+</script>
 
 </body>
 </html>
