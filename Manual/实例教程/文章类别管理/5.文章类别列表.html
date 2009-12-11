@@ -2,6 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../../lib/style.css">
+<script type="text/javascript" src="../../lib/window.js"></script>
 <title>文章类别列表</title>
 </head>
 <style>
@@ -63,7 +65,11 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-mlist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到 
         "文章列表"的<a target="_blank" href="文件创建及说明.html#lfm-articlecat-file-module" style="color:#000;">模块处理文件</a> /admin/modules/article/article_cat.php
     </div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;"><a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-mlist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a></div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
+        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-mlist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a>
+        <font style="color:#666"> - </font> 
+        <a href="javascript:void(0)" style="color:#090;text-decoration:none;" onclick="explain_code('lfm-articlecat-mlist-code-explain')">代码解释</a> 
+    </div>
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-mlist-code">
         <table>
         <tr>
@@ -120,9 +126,9 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                             /* 删除操作 */<br />
                             $del = "ListTable.del(this,{$r[article_cat_id]},'";<br />
                             $del.= f(sprintf($_LANG['spr_confirm_del'],$r['name']),'hstr') ."')";<br />
-                            if( ($r['rht'] - $r['lft']) &lt; 1 ){
+                            if( ($r['rht'] - $r['lft']) &gt; 1 ){
                                 <div style="margin-left:2em;">
-                                    $del = "wnd_confirm('{$_LANG[warn_cats_del]}',{'ok':function(){". $del ."}})";
+                                    $del = "wnd_confirm('警告！删除该分类将导致下级分类的删除！',{'ok':function(){". $del ."}})";
                                 </div>
                             }<br />
                             $attribs['del']['onclick'] = $del;<br />
@@ -179,12 +185,75 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         </tr>
         </table>
     </div>
-
+    <br />
     <div style="text-indent:2em;">
         模块文件包含了所有功能点的处理代码，每段代码通过 $_REQUEST['act'] 区分，比如增加('add')，增加提交('query')，编辑('edit')，编辑提交('update')，删除('del')，列表('list')，列表查询('query')，模块默认首页('index')。
     </div>
     <div style="text-indent:2em;">
-        第12 - 77行的代码包含了3个功能点，分别是模块默认首页('index')，列表('list')，列表查询('query')。之所以将这三个功能放在一个代码块是因为列表功能点会调用构建数据，而列表查询需要使用这个数据，同样模块默认首页功能点也需要使用这个数据。
+        第12 - 77行的代码包含了3个功能点，分别是模块默认首页('index')，列表('list')，列表查询('query')。之所以将这三个功能放在一个代码块是因为列表功能会调用构建数据，而列表查询和模块默认首页都需要使用这个数据。
+    </div>
+
+    <div style="display:none" id="lfm-articlecat-mlist-code-explain">
+        <table style="font-size:12px;">
+        <tr>
+            <td style="text-align:right;width:50px;">
+                14行<br />
+                <br />
+                17行<br />
+                18行<br />
+                19行<br />
+                <br />
+                22行<br />
+                25行<br />
+                26-30行<br />
+                34行<br />
+                37-42行<br />
+                45行<br />
+                <br />
+                49行<br />
+                53行<br />
+                55行<br />
+                58行<br />
+                60行<br />
+                <br />
+                64行<br />
+                68行<br />
+                71行<br />
+                <br />
+                74行<br />
+                75行<br />
+                80行<br />
+            </td>
+            <td>
+                检查当前管理员是否拥有文章类别列表权限<br />
+                <br />
+                获取当前管理员拥有文章类别的所有权限<br />
+                在当前管理员拥有文章类别的所有权限中查找增加权限，用于独立权限<br />
+                在当前管理员拥有文章类别的所有权限中查找非增加、列表权限，用于绑定权限<br />
+                <br />
+                获取所有文章类别数据，用于表格树的建立<br />
+                循环遍历文章类别数据，重构数据<br />
+                格式化表格树的缩进前辍，即构造树的展开和缩进图标<br />
+                设置编辑操作的onclick属性，'edit'代表权限操作码,'onclick'表示HTML的标签属性<br />
+                设置删除操作的onclick属性，'del'代表权限操作码,'onclick'表示HTML的标签属性<br />
+                构造绑定权限到每条记录，'a'代表操作类型为超链接'A';<br />
+                <br />
+                设置读取视图文件的列表代码块<br />
+                列表和列表查询功能点的处理代码<br />
+                设置读取视图文件的类型为代码块，即不加载公共视图文件 header.html<br />
+                列表查询功能点的处理代码<br />
+                设置读取视图文件的列表子代码块<br />
+                <br />
+                返回HTML代码<br />
+                设置读取视图文件的模块首页代码块<br />
+                设置增加操作的onclick属性，'add'代表权限操作码,'onclick'表示HTML的标签属性<br />
+                <br />
+                构建 "模块标题层" 的操作按钮(独立权限)，'btn'代表操作类型为按钮<br />
+                构建 "模块标题层" 的标题，这里使用文章类别列表的权限名称作为标题<br />
+                加载视图<br />
+            </td>
+        </tr>
+        </table>
     </div>
 </div>
 
@@ -237,52 +306,92 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
         <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-vlist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 3</a>
+        <font style="color:#666"> - </font> 
+        <a href="javascript:void(0)" style="color:#090;text-decoration:none;" onclick="explain_code('lfm-articlecat-vlist-code-explain')">代码解释</a> 
     </div>
+
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-vlist-code">
-        &lt;?php if( $tpl['_block'] !== true ){ include($_CFG['DIR_ADMIN_TPL'].'header.html'); }?&gt;<br />
-        <br />
-        <br />
-        &lt;?php if( $tpl['_body'] == 'list' ){ ?&gt;<br />
-            <br />
-            <div style="margin-left:2em;">
-            &lt;?php if( $tpl['_bodysub'] != 'query' ){?&gt;<br />
-            &lt;div class="list-box" onmouseover="ListTable.init('list-articlecat','modules/article/article_cat.php','?act=list');"&gt;<br />
-            <div style="margin-left:2em;">
-                &lt;div id="list-articlecat" class="list-div" style="border-top:0;border-bottom:0;"&gt;<br />
-            </div>
-            &lt;?php }?&gt;<br />
-            <div style="margin-left:4em;">
-            <br />
-                    &lt;table cellpadding="0" cellspacing="0" onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);"&gt;<br />
-                    &lt;tr&gt;<br />
+        <table>
+        <tr>
+            <td width="30">
+                1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />
+                11<br />12<br />13<br />14<br />15<br />16<br />17<br />18<br />19<br />20<br />
+                21<br />22<br />23<br />24<br />25<br />26<br />27<br />28<br />29<br />30<br />
+                31<br />32
+            </td>
+            <td>
+                &lt;?php if( $tpl['_block'] !== true ){ include($_CFG['DIR_ADMIN_TPL'].'header.html'); }?&gt;<br />
+                <br />
+                <br />
+                &lt;?php if( $tpl['_body'] == 'list' ){ ?&gt;<br />
+                    <br />
                     <div style="margin-left:2em;">
-                        &lt;th width="10%"&gt;标识&lt;/th&gt;<br />
-                        &lt;th width="70%"&gt;文章类别名&lt;/th&gt;<br />
-                        &lt;th width="20%"&gt;操作&lt;/th&gt;<br />
-                    </div>
-                    &lt;/tr&gt;<br />
-                    &lt;?php foreach( $tpl['all'] AS $r ){?&gt;<br />
-                    &lt;tr class="&lt;?php echo $r['lvl']; ?&gt;" align="center"&gt;<br />
+                    &lt;?php if( $tpl['_bodysub'] != 'query' ){?&gt;<br />
+                    &lt;div class="list-box" onmouseover="ListTable.init('list-articlecat','modules/article/article_cat.php','?act=list');"&gt;<br />
                     <div style="margin-left:2em;">
-                        &lt;td&gt;&lt;?php echo $r['article_cat_id']; ?&gt;&lt;/td&gt;<br />
-                        &lt;td align="left" title="&lt;?php e($r['name'],'html'); ?&gt;"&gt;&lt;?php echo $r['pre'].f($r['name'],'html'); ?&gt;&lt;/td&gt;<br />
-                        &lt;td class="action"&gt;&lt;?php echo $r['acts']; ?&gt;&lt;/td&gt;<br />
+                        &lt;div id="list-articlecat" class="list-div" style="border-top:0;border-bottom:0;"&gt;<br />
                     </div>
-                    &lt;/tr&gt;<br />
                     &lt;?php }?&gt;<br />
-                    &lt;/table&gt;<br />
-            <br />
-            </div>
-            &lt;?php if( $tpl['_bodysub'] != 'query' ){?&gt;<br />
-            <div style="margin-left:2em;">
-                &lt;/div&gt;<br />
-            </div>
-            &lt;/div&gt;<br />
-            &lt;?php }?&gt;<br />
-            </div>
-        <br />
-        <br />
-        &lt;?php } ?&gt;<br />
+                    <div style="margin-left:4em;">
+                    <br />
+                            &lt;table cellpadding="0" cellspacing="0" onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);"&gt;<br />
+                            &lt;tr&gt;<br />
+                            <div style="margin-left:2em;">
+                                &lt;th width="10%"&gt;标识&lt;/th&gt;<br />
+                                &lt;th width="70%"&gt;文章类别名&lt;/th&gt;<br />
+                                &lt;th width="20%"&gt;操作&lt;/th&gt;<br />
+                            </div>
+                            &lt;/tr&gt;<br />
+                            &lt;?php foreach( $tpl['all'] AS $r ){?&gt;<br />
+                            &lt;tr class="&lt;?php echo $r['lvl']; ?&gt;" align="center"&gt;<br />
+                            <div style="margin-left:2em;">
+                                &lt;td&gt;&lt;?php echo $r['article_cat_id']; ?&gt;&lt;/td&gt;<br />
+                                &lt;td align="left" title="&lt;?php e($r['name'],'html'); ?&gt;"&gt;&lt;?php echo $r['pre'].f($r['name'],'html'); ?&gt;&lt;/td&gt;<br />
+                                &lt;td class="action"&gt;&lt;?php echo $r['acts']; ?&gt;&lt;/td&gt;<br />
+                            </div>
+                            &lt;/tr&gt;<br />
+                            &lt;?php }?&gt;<br />
+                            &lt;/table&gt;<br />
+                    <br />
+                    </div>
+                    &lt;?php if( $tpl['_bodysub'] != 'query' ){?&gt;<br />
+                    <div style="margin-left:2em;">
+                        &lt;/div&gt;<br />
+                    </div>
+                    &lt;/div&gt;<br />
+                    &lt;?php }?&gt;<br />
+                    </div>
+                <br />
+                <br />
+                &lt;?php } ?&gt;<br />
+            </td>
+        </tr>
+        </table>
+    </div>
+
+    <div style="display:none" id="lfm-articlecat-vlist-code-explain">
+        <table style="font-size:12px;">
+        <tr>
+            <td style="text-align:right;width:50px;">
+                1行<br />
+                <br />
+                4行<br />
+                <br />
+                7行<br />
+                8行<br />
+                11-24行<br />
+            </td>
+            <td>
+                视图头部公用文件，包含模块标题层代码块<br />
+                <br />
+                视图文件的列表代码块<br />
+                <br />
+                视图文件的列表BOX层<br/>
+                视图文件的列表数据层<br/>
+                视图文件的列表查询代码块(列表数据层的数据表)<br />
+            </td>
+        </tr>
+        </table>
     </div>
 </div>
 
@@ -295,6 +404,25 @@ function hash2title( hash )
 }
 
 hash2title(window.location.hash);
+
+function explain_code( id )
+{
+    var wnd = Wnds.find(id);
+
+    if( !wnd ){
+        wnd = new Wnd(id, null, {'width':660,'height':420,'overflow':100,'overlay':false});
+
+        wnd.create();
+        wnd.buttonAddDefault('ok');
+
+        wnd.title('代码解释');
+        wnd.inner(document.getElementById(id).innerHTML, 'html');
+    }
+
+    wnd.show();
+    wnd.moved();
+    wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});
+}
 </script>
 
 

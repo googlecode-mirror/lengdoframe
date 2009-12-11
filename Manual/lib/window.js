@@ -476,7 +476,10 @@ Wnd.prototype.reinner = function(){
  * 自适应浏览器窗口大小调整
  */
 Wnd.prototype.browserResize = function(){
-    this.oOverlay.style.width = document.documentElement.clientWidth +'px';
+    /* 调整遮掩层宽度 */
+    if( this.oOverlay ){
+        this.oOverlay.style.width = document.documentElement.clientWidth +'px';
+    }
 }
 
 
@@ -527,9 +530,9 @@ Wnd.prototype.show = function(){
 
     /* 自适应浏览器窗口大小调整 */
     if( window.ActiveXObject ){
-        try{ window.attachEvent( 'onresize', function(){self.browserResize()} ); }catch(e){}
+        window.attachEvent( 'onresize', function(){self.browserResize()} );
     }else{
-        try{ window.addEventListener('resize', function(){self.browserResize()}, false); }catch(e){}
+        window.addEventListener('resize', function(){self.browserResize()}, false);
     }
 }
 
