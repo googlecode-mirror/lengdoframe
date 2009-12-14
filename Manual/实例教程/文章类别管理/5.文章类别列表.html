@@ -14,7 +14,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 
 
 <div style="text-indent:2em">
-    <a target="_blank" href="4.文件创建及说明.html" style="color:#000;">文件创建</a>好了，那接下来就应该编写代码来实现"文章类别"模块的业务流程了。
+    "文章类别"的相关<a target="_blank" href="4.文件创建及说明.html" style="color:#000;">文件创建</a>好了，那接下来就可以开始编写代码来实现"文章类别"模块的业务流程了。
 </div>
 <div style="text-indent:2em">
     "文章类别"模块的业务流程有四个：文章类别列表，增加文章类别，编辑文章类别，删除文章类别。其实这四个流程一开始我们就已经打好框架了，还记得 "<a target="_blank" href="3.添加模块和权限.html#lfm-articlecat-add-privilege" style="color:#000">添加模块和权限</a>" 时我们曾添加过四个权限：列表，增加，编辑，删除！这四个权限就是根据"文章类别"的业务流程的提炼出来的功能点。
@@ -27,14 +27,11 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <div style="text-align:center;padding:5px;"><img alt="图1" src="images/articlecat_list.gif" style="border:1px solid #ccc;"></div>
 <div style="text-indent:2em">模块默认首页通常是列表数据的主要承载着，其次它还用于显示其他操作等。</div>
 <br />
-<div style="text-indent:2em">在 "图1" 我们可以发现 "文章类别" 列表不是一个真正的列表，因为它没有列表特有的搜索，翻页功能。没错，因为在这里我们使用了特殊的表现形式来展现"文章类别"数据 - "表格树"。</div>
-<div style="text-indent:2em">"表格树" 是基于列表的基础样式而衍生出来的一种表现显示。</div>
-<br />
 
 
 <b>1. 数据导入</b>
 <div style="margin-left:1.2em;">
-    <div style="text-indent:2em;">开发中总是会遇到各种问题，没有数据对于调试来说是很困难的，所以在文章类别列表开发时为大家准备了以下数据，导入到数据库即可！</div>
+    <div style="text-indent:2em;">开发中总是会遇到各种问题，没有数据对于调试来说是很困难的，所以在文章类别列表开发之前导入以下SQL到数据库！</div>
 
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
         TRUNCATE TABLE article_cat;<br />
@@ -47,18 +44,20 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 
 <br />
 
-<b id="lfm-articlecat-mlist-code-title">2. 模块默认首页的数据处理</b>
+<b id="lfm-articlecat-mlist-code-title">2. 模块文件的数据处理</b>
 <div style="margin-left:1.2em;">
     <div style="text-indent:2em;">
-        模块默认首页要处理的数据主要有两项：模块标题层的数据和列表层表格树的数据。(参见图1)<br />
+        "文章类别"的模块文件包含以下功能点代码：增加('add')，增加提交('query')，编辑('edit')，编辑提交('update')，删除('del')，列表('list')，模块默认首页('index')。每个功能点代码段通过 $_REQUEST['act'] 请求区分。
     </div>
     <div style="text-indent:2em;">
-        模块标题层的数据处理主要就是读取构建那些<a target="_blank" href="../../开发指南(PHP)/权限系统/权限篇.html#lfm-privilege-dev-titleact-title" style="color:#000">独立权限</a>。<br />
+        列表('list')功能点包含了列表查询('query')子功能点，通过 $_REQUEST['actsub'] 标识。相比列表('list')功能点，列表查询('query')只负责返回列表的数据层HTML和分页HTML，而列表('list')则还要返回搜索层的HTML。
     </div>
     <div style="text-indent:2em;">
-        而列表层表格树的数据处理主要就是为每条记录添加<a target="_blank" href="../../开发指南(PHP)/权限系统/权限篇.html#lfm-privilege-dev-bind-title" style="color:#000">绑定权限</a>并格式化缩进样式的数据。<br />
+        列表('list')功能点和模块默认首页('index')功能点使用同一代码段，因为它们使用了同一数据：文章列表数据。模块默认首页('index')功能点还包括构建"模块标题层"的数据。
     </div>
 
+    <br />
+    <div style="text-indent:2em">在 "图1" 我们虽然没有发现 "文章类别" 列表的搜索和分页功能，但是它确实是一个列表，一个显示出了所有数据并进行缩进的列表。</div>
     <br />
 
     <div style="text-indent:2em;">
@@ -110,7 +109,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                     /* 文章类别列表 */<br />
                     $tpl['all'] = all_article_cat();<br />
                     <br />
-                    /* 文章类别列表 - 数据重构 */<br />
+                    /* 文章类别列表 - 数据重构，绑定权限 */<br />
                     foreach( $tpl['all'] AS $i =&gt; $r ){
                         <div style="margin-left:2em;">
                             $tpl['all'][$i]['pre']  = '&lt;span class="';<br />
@@ -185,13 +184,6 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         </tr>
         </table>
     </div>
-    <br />
-    <div style="text-indent:2em;">
-        模块文件包含了所有功能点的处理代码，每段代码通过 $_REQUEST['act'] 区分，比如增加('add')，增加提交('query')，编辑('edit')，编辑提交('update')，删除('del')，列表('list')，列表查询('query')，模块默认首页('index')。
-    </div>
-    <div style="text-indent:2em;">
-        第12 - 77行的代码包含了3个功能点，分别是模块默认首页('index')，列表('list')，列表查询('query')。之所以将这三个功能放在一个代码块是因为列表功能会调用构建数据，而列表查询和模块默认首页都需要使用这个数据。
-    </div>
 
     <div style="display:none" id="lfm-articlecat-mlist-code-explain">
         <table style="font-size:12px;">
@@ -228,11 +220,11 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 检查当前管理员是否拥有文章类别列表权限<br />
                 <br />
                 获取当前管理员拥有文章类别的所有权限<br />
-                在当前管理员拥有文章类别的所有权限中查找增加权限，用于独立权限<br />
-                在当前管理员拥有文章类别的所有权限中查找非增加、列表权限，用于绑定权限<br />
+                在当前管理员拥有文章类别的所有权限中查找增加权限，用于<a target="_blank" href="../../开发指南(PHP)/权限系统/权限篇.html#lfm-privilege-dev-titleact-title" style="color:#000">独立权限</a><br />
+                在当前管理员拥有文章类别的所有权限中查找非增加、列表权限，用于<a target="_blank" href="../../开发指南(PHP)/权限系统/权限篇.html#lfm-privilege-dev-bind-title" style="color:#000">绑定权限</a><br />
                 <br />
                 获取所有文章类别数据，用于表格树的建立<br />
-                循环遍历文章类别数据，重构数据<br />
+                循环遍历文章类别数据，重构数据，绑定权限<br />
                 格式化表格树的缩进前辍，即构造树的展开和缩进图标<br />
                 设置编辑操作的onclick属性，'edit'代表权限操作码,'onclick'表示HTML的标签属性<br />
                 设置删除操作的onclick属性，'del'代表权限操作码,'onclick'表示HTML的标签属性<br />
@@ -261,6 +253,11 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 
 <b id="lfm-articlecat-llist-code-title">3. 库文件的数据处理</b>
 <div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        在 "View Code 1" 中我们使用了一个封装的函数 all_article_cat() - 22行。该函数主要功能就是获取所有文章类别数据。
+    </div>
+    <br />
+
     <div style="text-indent:2em;">
         拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-llist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="4.文件创建及说明.html#lfm-articlecat-file-lib" style="color:#000;">库文件</a> /admin/includes/lib_article.php
     </div>
@@ -300,6 +297,10 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 
 <b id="lfm-articlecat-vlist-code-title">4. 视图文件的数据处理</b>
 <div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        同模块文件结构一样，每个功能点基本上都有一个对应的视图文件代码段，通过 $tpl['_body'] 区分。
+    </div>
+    <br />
     <div style="text-indent:2em;">
         拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-vlist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="4.文件创建及说明.html#lfm-articlecat-file-view" style="color:#000;">视图文件</a> /admin/tpl/article_cat.html
     </div>
@@ -386,7 +387,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 <br />
                 视图文件的列表代码块<br />
                 <br />
-                视图文件的列表BOX层<br/>
+                视图文件的列表BOX层，onmouseover表示绑定并激活列表的功能<br/>
                 视图文件的列表数据层<br/>
                 视图文件的列表查询代码块(列表数据层的数据表)<br />
             </td>
