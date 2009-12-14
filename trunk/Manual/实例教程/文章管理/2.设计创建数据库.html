@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>数据库设计创建</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
+<body>
+
+<b>1. 文章数据表SQL</b>
+<div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+    CREATE TABLE `article` (
+        <div style="margin-left:1.8em;">
+            `article_id` mediumint(9) unsigned NOT NULL auto_increment,<br />
+            `article_cat_id` smallint(5) unsigned NOT NULL default '0',<br />
+            `article_cat_name` varchar(50) NOT NULL,<br />
+            `title` varchar(255) NOT NULL,<br />
+            `content` text NOT NULL,<br />
+            `in_time` int(10) unsigned NOT NULL,<br />
+            PRIMARY KEY  (`article_id`)<br />
+        </div>
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文章表';<br />
+</div>
+
+
+</body>
+</html>

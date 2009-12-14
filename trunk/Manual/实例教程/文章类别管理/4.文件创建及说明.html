@@ -21,7 +21,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <div style="text-indent:2em">那么我们应该在哪里建立这个文件呢？"<a target="_blank" href="../../开发指南(PHP)/权限系统/模块篇.html#lfm-module-add" style="color:#000;">模块篇</a>" 曾介绍过模块的处理文件(夹)全部都在 /admin/modules/ 下！那么我们现在就打开框架根目录下的 admin/modules/ 文件夹，然后建立 article 文件夹并在其下面建立 article_cat.php文件！</div>
     <div style="text-indent:2em">看到这里你可能会奇怪：我怎么知道要建立 article 文件夹和 article/article_cat.php 文件呢？还记得我们在 "<a target="_blank" href="3.添加模块和权限.html#lfm-articlecat-add-module" style="color:#000;">添加模块和权限</a>" 添加的 "文章" 模块组(处理文件为"article") 和 "文章类别" 模块(处理文件为"article_cat.php")吗，注意那时填写的处理文件是不是和刚才那个创建文件(夹)的很对应！没错，"<a target="_blank" href="../../开发指南(PHP)/权限系统/模块篇.html#lfm-module-mtree" style="color:#000;">模块菜单树</a>"中的"文章类别"菜单项就是根据其父菜单项的处理文件和其自身的处理文件构建路径并调用的！</div>
     <br />
-    <div style="text-indent:2em">测试下新创建的文件 article/article_cat.php。</div>
+    <div style="text-indent:2em">测试下新创建的文件 /admin/modules/article/article_cat.php。</div>
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
     &lt;?php exit('Article Cat !'); ?&gt;
     </div>
