@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>模块文件</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
+<body>
+
+<div style="text-indent:2em;">
+    模块文件，主要功能就是处理业务逻辑层的数据。比如构建视图文件所需要的数据、执行SQL写入数据到数据库。
+</div>
+
+<br />
+
+<b id="lfm-modulefile-create-title">1. 模块文件创建</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        模块文件(夹)全部存放在 /admin/modules/ 文件夹下。LengdoFrame框架默认使用模块组和模块两级结构，对于模块组我们需要在 /admin/modules/ 下面建立一个对应的文件夹，并在该文件夹下建立该模块组的子模块处理文件。
+    </div>
+    <div style="text-indent:2em;">
+        以下图中的 "文章模块组以其子模块"为例，我们需要建立三个模块文件(夹)：<br />
+    </div>
+    <div style="margin-left:4em;">
+        1. 文章模块组文件夹：/admin/modules/article<br />
+        2. 文章管理模块文件：/admin/modules/article/article.php<br />
+        3. 文章类别模块文件：/admin/modules/article/article_cat.php
+    </div>
+    <div style="text-align:center;padding:5px;"><img alt="图1" src="images/modulefile-modules.gif" style="border:1px solid #ccc;"></div>
+    <div style="text-indent:2em;">
+        <a target="_blank" href="../权限系统/模块篇.html" style="color:#008ECD;">增加模块详见：模块篇</a>
+    </div>
+</div>
+
+<br />
+<br />
+
+<b id="lfm-modulefile-struct-title">2. 模块文件结构</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        在模块文件中，我们以功能点来划分每块代码段，通常以变量 $_REQUEST['act'] 来区分。常见的模块功能点有增加('add')，增加提交('insert')，编辑('edit')，编辑提交('update')，删除('del')，列表('list')，默认首页('index')。
+    </div>
+    <div style="text-indent:2em;">
+        以下就是一个典型的模块文件代码结构：
+    </div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        &lt;?php<br />
+        /* 文件加载 */<br />
+        require('../../includes/init.php');<br />
+        require('../../includes/lib_xxx.php');<br />
+        <br />
+        <br />
+        /* 异步 - 增加 */<br />
+        if( $_REQUEST['act'] == 'add' ){
+            <div style="margin-left:2em">
+                // 业务逻辑：构建增加时的视图需要数据
+            </div>
+        }<br />
+        /* 异步 - 写入数据库 */<br />
+        elseif( $_REQUEST['act'] == 'insert' ){
+            <div style="margin-left:2em">
+                // 业务逻辑：写入数据库
+            </div>
+        }<br />
+        <br />
+        <br />
+        /* 异步 - 编辑 */<br />
+        elseif( $_REQUEST['act'] == 'edit' ){
+            <div style="margin-left:2em">
+                // 业务逻辑：构建编辑时的视图需要数据
+            </div>
+        }<br />
+        /* 异步 - 更新数据库 */<br />
+        elseif( $_REQUEST['act'] == 'update' ){
+            <div style="margin-left:2em">
+                // 业务逻辑：更新数据库
+            </div>
+        }<br />
+        <br />
+        <br />
+        /* 异步 - 删除 */<br />
+        elseif( $_REQUEST['act'] == 'del' ){
+            <div style="margin-left:2em">
+                // 业务逻辑：删除数据
+            </div>
+        }<br />
+        <br />
+        <br />
+        /* 异步 - 默认首页，列表页 */<br />
+        else{
+            <div style="margin-left:2em">
+                // 业务逻辑：构建视图需要的数据
+            </div>
+        }<br />
+        <br />
+        <br />
+        /* 加载视图 */<br />
+        include($_CFG['DIR_ADMIN_TPL'] . 'xxx.html');<br />
+        ?&gt;
+    </div>
+</div>
+
+
+</body>
+</html>
