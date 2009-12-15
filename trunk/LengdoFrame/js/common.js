@@ -760,7 +760,7 @@ function wnd_sysmsg( msg, configs, type, active )
         keypress = active == 'ok' ? function(e){if(e.keyCode==27)this.cannel()} : null;
         
         /* 激活 */
-        wnd.activeControl(active, keypress);
+        wnd.buttonActive(active, keypress);
     }
 }
 

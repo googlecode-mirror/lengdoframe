@@ -14,7 +14,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 
 
 <div style="text-indent:2em">
-    文章类别模块的默认首页处理完了，列表数据也可以正常显示出来了。尝试着去点击一下 模块标题层中的"增加"按钮和列表层表格树中的"编辑"超链接，没有任何反映。OK，那接下就编写这两块的功能...
+    文章类别模块的默认首页开发完成(参加下图)。现在再尝试着去点击一下 "模块标题层"中的"增加"按钮和列表层表格树中的"编辑"超链接，没有任何反映！OK，那接下就编写这两块的功能点...
 </div>
 <div style="text-align:center;padding:5px;"><img alt="图1" src="images/articlecat_list.gif" style="border:1px solid #ccc;"></div>
 
@@ -74,7 +74,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 wnd.inner(url, 'url');<br />
                 <br />
                 wnd.show();<br />
-                wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});<br />
+                wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});<br />
             </div>
         }<br />
         <br />
@@ -283,8 +283,6 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         function ctl_fill( $act )<br />
         {
             <div style="margin-left:2em;">
-                global $_LANG, $tpl;<br />
-                <br />
                 /* 所属类别 */<br />
                 $append = array('value'=>'1', 'text'=>'顶级类别');<br />
                 $tpl['formc_article_cat'] = ddl_article_cat( 'parent_id', $_GET['parent_id'], $append, array('style'=>'width:154px') );
@@ -308,11 +306,9 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         function post_articlecat_check( $fields = array(), $act = '' )<br />
         {
             <div style="margin-left:2em;">
-                global $_LANG;<br />
-                <br />
                 if( isset($fields['name']) && $fields['name'] == '' ){<br />
                     <div style="margin-left:2em;">
-                        make_json_fail($_LANG['fill_articlecat_name']);
+                        make_json_fail('请填写文章类别名称！');
                     </div>
                 }
             </div>
@@ -498,7 +494,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
             <td>
                 视图文件的增加或者编辑代码块<br />
                 <br />
-                表单。id="wfm-articlecat-fill"用于提交时收集表单域数据<br/>
+                增加或者编辑时表单HTML。id="wfm-articlecat-fill"用于提交时收集表单域数据<br/>
             </td>
         </tr>
         </table>
@@ -531,7 +527,7 @@ function explain_code( id )
 
     wnd.show();
     wnd.moved();
-    wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});
+    wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
 }
 </script>
 

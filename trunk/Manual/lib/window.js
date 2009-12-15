@@ -75,8 +75,8 @@ var Wnds = {
  *          str  configs.title       窗口标题
  *          int  configs.width       窗口宽度。  默认：'200px'                                           注：客户区宽度=窗口宽度-2
  *          int  configs.height      客户区高度。默认：'auto'
- *          int  configs.action      标题栏的操作按钮 000(最小化，最大化，关闭)。默认001                 注：前辍0省略
  *          int  configs.overlay     遮掩层透明度。false表示不显示，0-100表示透明度
+ *          int  configs.titleact    标题栏的操作按钮 000(最小化，最大化，关闭)。默认001                 注：前辍0省略
  *          int  configs.overflow    窗口溢出时滚动条，默认0000(scroll-x，scroll-y，hidden-x，hidden-y)  注：前辍0省略
  */
 function Wnd( id, callbacks, configs ){
@@ -84,11 +84,11 @@ function Wnd( id, callbacks, configs ){
     if( typeof(configs) != 'object' || !configs ) configs = {};
 
     this.sId       = id;
-    this.sTitle    = typeof(configs.title)    == 'string' ? configs.title : '';
-    this.sWidth    = typeof(configs.width)    == 'number' ? configs.width + 'px' : '200px';
+    this.sTitle    = typeof(configs.title)    == 'string' ? configs.title  : '';
+    this.sWidth    = typeof(configs.width)    == 'number' ? configs.width  + 'px' : '200px';
     this.sHeight   = typeof(configs.height)   == 'number' ? configs.height + 'px' : 'auto';
-    this.iAction   = typeof(configs.action)   == 'number' ? configs.action : 1;
-    this.iOverlay  = typeof(configs.overlay)  == 'number' ? configs.overlay : (configs.overlay === false ? false : 40);
+    this.iOverlay  = typeof(configs.overlay)  == 'number' ? configs.overlay  : (configs.overlay === false ? false : 40);
+    this.iTitleAct = typeof(configs.titleact) == 'number' ? configs.titleact : 1;
     this.iOverflow = typeof(configs.overflow) == 'number' ? configs.overflow : 0;
 
 
@@ -375,6 +375,28 @@ Wnd.prototype.buttonAddDefault = function( indexs ){
     }
 }
 
+/**
+ * 激活控制区按钮
+ *
+ * @params str  index     控制区按钮索引
+ * @params fun  keypress  键盘按下时处理函数，该函数将被特殊处理：
+ *                            1. 自动提交兼容的事件对象
+ *                            2. 该函数当作Wnd对象的成员函数来运行(意味着直接可以使用this来引用当前窗口对象)
+ */
+Wnd.prototype.buttonActive = function( index, keypress ){
+    /* 引用this指针 */
+    var self = this;
+
+    /* 无效索引 */
+    if( !this.oControlBtns[index] ) return;
+
+    /* 键盘按下时处理函数 */
+    if( typeof(keypress) == 'function' ) this.oControlBtns[index].onkeypress = function(e){return keypress.apply(self,[(e||window.event)]);};
+
+    /* 按钮聚焦 */
+    this.oControlBtns[index].focus();
+}
+
 
 /* ------------------------------------------------------ */
 // - 窗口载入
@@ -625,28 +647,6 @@ Wnd.prototype.remax = function(){
     this.oClient.style.height = this.sHeight;
 }
 
-/**
- * 激活控制区按钮
- *
- * @params str  index     控制区按钮索引
- * @params fun  keypress  键盘按下时处理函数，该函数将被特殊处理：
- *                            1. 自动提交兼容的事件对象
- *                            2. 该函数当作Wnd对象的成员函数来运行(意味着直接可以使用this来引用当前窗口对象)
- */
-Wnd.prototype.activeControl = function( index, keypress ){
-    /* 引用this指针 */
-    var self = this;
-
-    /* 无效索引 */
-    if( !this.oControlBtns[index] ) return;
-
-    /* 键盘按下时处理函数 */
-    if( typeof(keypress) == 'function' ) this.oControlBtns[index].onkeypress = function(e){return keypress.apply(self,[(e||window.event)]);};
-
-    /* 按钮聚焦 */
-    this.oControlBtns[index].focus();
-}
-
 
 /* ------------------------------------------------------ */
 // - 窗口创建
@@ -744,7 +744,7 @@ Wnd.prototype.createTitle = function(){
     this.oTitle.appendChild(this.oTitleDivs['siderht']);
 
     /* 标题区 - 标题操作层 - 关闭按钮 */
-    if( this.iAction % 10 ) this.createTitleButton( {'type':'close','click':this.cannel} );
+    if( this.iTitleAct % 10 ) this.createTitleButton( {'type':'close','click':this.cannel} );
 
     /* 将标题区层增加到窗口总层 */
     this.oWnd.appendChild(this.oTitle);

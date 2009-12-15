@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>库文件</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
+<body>
+
+<div style="text-indent:2em;">
+    库文件，主要作为<a href="模块文件.html" target="_blank" style="color:#000">模块文件</a>的一个辅助文件，封装一些常用功能函数。
+</div>
+
+<br />
+
+<b id="lfm-libfile-create-title">1. 库文件创建</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        库文件默认全部存放在 /admin/includes/ 文件夹下。通常一个模块组下的所有模块共用一个库文件，其命名方式为："lib_" + "模块组名称" 。<br />
+    </div>
+    <div style="text-indent:2em;">
+        以下图中的 "文章模块组以其子模块"为例，我们需要建立一个库文件：<br />
+    </div>
+    <div style="margin-left:4em;">
+        1. 文章模块组的库文件：/admin/includes/lib_article.php<br />
+    </div>
+    <div style="text-align:center;padding:5px;"><img alt="图1" src="images/modulefile-lib.gif" style="border:1px solid #ccc;"></div>
+</div>
+
+<br />
+<br />
+
+<b id="lfm-libfile-struct-title">2. 库文件结构</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        通常情况下一个模块基本封装的函数有三个：获取列表数据，获取记录数据，删除记录数据。
+    </div>
+    <div style="text-indent:2em;">
+        以下就是一个参考的库文件代码结构：
+    </div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        &lt;?php<br />
+        /* 获取列表数据 */<br />
+        function list_xxxx( $filter ){<br />
+        }<br />
+        <br />
+        /* 获取记录数据 */<br />
+        function info_xxxx( $filter ){<br />
+        }<br />
+        <br />
+        /* 删除记录数据 */<br />
+        function del_xxxx( $filter ){<br />
+        }<br />
+        ?&gt;
+    </div>
+</div>
+
+
+</body>
+</html>

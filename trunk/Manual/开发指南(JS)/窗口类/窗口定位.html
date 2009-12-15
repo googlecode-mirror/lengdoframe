@@ -11,25 +11,32 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 </style>
 <body>
 
-在一个<a target="_blank" href="窗口创建.html" style="color:#000">窗口被创建</a>时，系统会自动设置窗口的位置为当前可见区域的左上角！
-但很多时候这个位置并不是我们所希望的！不同通过使用下面的方法来改变一个窗口的位置......<br /><br />
+<div style="text-indent:2em">
+    在一个<a target="_blank" href="窗口创建.html" style="color:#000">窗口被创建</a>时，系统会自动设置窗口的位置为当前可见区域的左上角！
+    但很多时候这个位置并不是我们所希望的！不同通过使用下面的方法来改变一个窗口的位置......
+</div>
 
-窗口类 - 成员函数：<a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-moved'" style="color:#008ECD;font-weight:bold;">moved(...)</a>
+<br /><br />
+
+<div style="text-indent:2em">
+    窗口类 - 成员函数：<a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-moved'" style="color:#008ECD;font-weight:bold;">moved(...)</a>
+</div>
+
 <br /><br />
 
 <b>1. 窗口定位 - 全居中</b><br />
 <div style="margin-left:1.2em;">
     <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
         &lt;script type="application/javascript"&gt;<br />
-        <div style="margin-left:2em;">
-            var wnd = new Wnd( 'wnd-unique-id', null, {'width':400} ); <br /><br />
+            <div style="margin-left:2em;">
+                var wnd = new Wnd( 'wnd-unique-id', null, {'width':400} ); <br /><br />
 
-            wnd.create();<br />
-            wnd.buttonAddDefault();<br />
-            <br />
-            wnd.show();<br />
-            wnd.moved();
-        </div>
+                wnd.create();<br />
+                wnd.buttonAddDefault();<br />
+                <br />
+                wnd.show();<br />
+                wnd.moved();
+            </div>
         &lt;/script&gt;
         <span style="color:#008ECD">
             [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id1',null,{'width':400});wnd.create();wnd.buttonAddDefault();wnd.show();wnd.moved();">演示</a>]
@@ -47,15 +54,15 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <div style="margin-left:1.2em;">
     <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
         &lt;script type="application/javascript"&gt;<br />
-        <div style="margin-left:2em;">
-            var wnd = new Wnd( 'wnd-unique-id', null, {'width':400} ); <br /><br />
+            <div style="margin-left:2em;">
+                var wnd = new Wnd( 'wnd-unique-id', null, {'width':400} ); <br /><br />
 
-            wnd.create();<br />
-            wnd.buttonAddDefault();<br />
-            <br />
-            wnd.show();<br />
-            wnd.moved(null,100);
-        </div>
+                wnd.create();<br />
+                wnd.buttonAddDefault();<br />
+                <br />
+                wnd.show();<br />
+                wnd.moved(null,100);
+            </div>
         &lt;/script&gt;
         <span style="color:#008ECD">
             [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id2',null,{'width':400});wnd.create();wnd.buttonAddDefault();wnd.show();wnd.moved(null,100);">演示</a>]
@@ -73,15 +80,15 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <div style="margin-left:1.2em;">
     <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
         &lt;script type="application/javascript"&gt;<br />
-        <div style="margin-left:2em;">
-            var wnd = new Wnd( 'wnd-unique-id', null, {'width':400} ); <br /><br />
+            <div style="margin-left:2em;">
+                var wnd = new Wnd( 'wnd-unique-id', null, {'width':400} ); <br /><br />
 
-            wnd.create();<br />
-            wnd.buttonAddDefault();<br />
-            <br />
-            wnd.show();<br />
-            wnd.moved(100);
-        </div>
+                wnd.create();<br />
+                wnd.buttonAddDefault();<br />
+                <br />
+                wnd.show();<br />
+                wnd.moved(100);
+            </div>
         &lt;/script&gt;
         <span style="color:#008ECD">
             [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id3',null,{'width':400});wnd.create();wnd.buttonAddDefault();wnd.show();wnd.moved(100);">演示</a>]
