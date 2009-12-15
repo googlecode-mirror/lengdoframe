@@ -42,7 +42,7 @@ function wnd_admin_fill( caller, act, admin_id )
     wnd.inner(url, 'url');
 
     wnd.show();
-    wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});
+    wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
 }
 function deal_admin_fill()
 {
@@ -103,7 +103,7 @@ function wnd_role_fill( caller, act, role_id )
     wnd.inner(url, 'url');
 
     wnd.show();
-    wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});
+    wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
 }
 function deal_role_fill()
 {
@@ -191,7 +191,7 @@ function wnd_dbbackup_fill()
     wnd.inner(url, 'url');
 
     wnd.show();
-    wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});
+    wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
 }
 function deal_dbbackup_fill( params )
 {
@@ -318,7 +318,7 @@ function wnd_module_fill( caller, act, id )
     wnd.inner(url, 'url');
 
     wnd.show();
-    wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});
+    wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
 }
 function deal_module_fill()
 {
@@ -379,7 +379,7 @@ function wnd_privilege_fill( caller, act, privilege_id )
     wnd.inner(url, 'url');
 
     wnd.show();
-    wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});
+    wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
 }
 function deal_privilege_fill()
 {
@@ -435,7 +435,7 @@ function wnd_myaccount_fill()
     wnd.inner(url, 'url');
 
     wnd.show();
-    wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});
+    wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
 }
 function deal_myaccount_fill()
 {
@@ -485,7 +485,7 @@ function wnd_sysinfo_view()
     }
 
     wnd.show();
-    wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});
+    wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
 }
 
 /**

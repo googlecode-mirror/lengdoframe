@@ -290,8 +290,8 @@ else{
         $items['export'][] = array('icon'=>'choice' ,'text'=>$_LANG['act_export_choice'] ,'onclick'=>"deal_list_export('list-admin',null,'modules/admin/admin.php?act=exportdo','choice')");
 
         /* 初始化页面信息 */
-        $tpl['acts']  = format_module_acts($m_ab, $attribs, 'btn', $items); //格式化模块的操作(非内嵌)
         $tpl['title'] = admin_privilege_name_fk('admin.php', 'list'); //权限名称
+        $tpl['titleacts'] = format_module_acts($m_ab, $attribs, 'btn', $items); //格式化模块的操作(非内嵌)
     }
 }
 

@@ -12,27 +12,32 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 </style>
 <body>
 
-窗口内容，继<a target="_blank" href="窗口创建.html" style="color:#000">窗口创建</a>之后的又一个重要部分！<br /><br />
+<div style="text-indent:2em">
+    窗口内容，继<a target="_blank" href="窗口创建.html" style="color:#000">窗口创建</a>之后的又一个重要部分！<br /><br />
+</div>
 
-每一个窗口都应该有一个和用户交互的界面：也许是一个输入表单，也许是一份数据报表等等！而这些界面的构造代码恰恰就是窗口内容的核心数据！<br />
-但不要误会，这章我们讲的不是这些界面的代码如何构造，而是讲如何获取这些界面的构造代码的方法......<br /><br />
+<div style="text-indent:2em">
+    每一个窗口都应该有一个和用户交互的界面：也许是一个输入表单，也许是一份数据报表等等！而这些界面的构造代码恰恰就是窗口内容的核心数据！但这章我们讲的不是这些界面的代码如何构造，而是讲如何获取这些界面的构造代码的方法......<br /><br />
+</div>
 
-窗口类 - 成员函数：<a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-inner'" style="color:#008ECD;font-weight:bold;">inner(...)</a>
+<div style="text-indent:2em">
+    窗口类 - 成员函数：<a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-inner'" style="color:#008ECD;font-weight:bold;">inner(...)</a>
+</div>
 <br /><br />
 
 <b>1. 窗口内容 - HTML载入</b><br />
 <div style="margin-left:1.2em;">
     <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
         &lt;script type="application/javascript"&gt;<br />
-        <div style="margin-left:2em;">
-            var wnd = new Wnd( 'wnd-unique-id1', null, {'width':400} ); <br />
-            <br />
-            wnd.create();<br />
-            wnd.buttonAddDefault();<br />
-            <br />
-            wnd.inner('&lt;b&gt;HTML内容XXX&lt;/b&gt;', 'html');<br />
-            wnd.show();<br />
-        </div>
+            <div style="margin-left:2em;">
+                var wnd = new Wnd( 'wnd-unique-id1', null, {'width':400} ); <br />
+                <br />
+                wnd.create();<br />
+                wnd.buttonAddDefault();<br />
+                <br />
+                wnd.inner('&lt;b&gt;HTML内容XXX&lt;/b&gt;', 'html');<br />
+                wnd.show();<br />
+            </div>
         &lt;/script&gt;
         <span style="color:#008ECD">
             [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id1',null,{'width':400});wnd.create();wnd.buttonAddDefault();wnd.inner('<b>HTML内容XXX</b>');wnd.show();">演示</a>]
@@ -50,15 +55,15 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <div style="margin-left:1.2em;">
     <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
         &lt;script type="application/javascript"&gt;<br />
-        <div style="margin-left:2em;">
-            var wnd = new Wnd( 'wnd-unique-id2', null, {'width':400} ); <br />
-            <br />
-            wnd.create();<br />
-            wnd.buttonAddDefault();<br />
-            <br />
-            wnd.inner('http://www.lengdo.com/about.php', 'url');<br />
-            wnd.show();<br />
-        </div>
+            <div style="margin-left:2em;">
+                var wnd = new Wnd( 'wnd-unique-id2', null, {'width':400} ); <br />
+                <br />
+                wnd.create();<br />
+                wnd.buttonAddDefault();<br />
+                <br />
+                wnd.inner('http://www.lengdo.com/about.php', 'url');<br />
+                wnd.show();<br />
+            </div>
         &lt;/script&gt;
         <span style="color:#008ECD">
             [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id2',null,{'width':400});wnd.create();wnd.buttonAddDefault();wnd.inner('http://www.lengdo.com/about.php','url');wnd.show();">演示</a>]
@@ -84,22 +89,22 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     就像表单的重置功能，客户区内容重载功能根据上次窗口的参数(载入数据)进行客户区内容的重新载入！<br />
     <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
         &lt;script type="application/javascript"&gt;<br />
-        <div style="margin-left:2em;">
-            var wnd = new Wnd( 'wnd-unique-id3', null, {'width':400} ); <br />
-            <br />
-            wnd.create();<br />
-            wnd.buttonAddDefault();<br />
-            <br />
-            var html = '';<br />
-            html += '&lt;input type="buttom" value="重载" onclick="';<br />
-            html += "this.value='窗口内容重载中....';this.style.color='#f00'";<br />
-            html += "alert('点击确认后开始重载!');";<br />
-            html += "Wnds.find('wnd-unique-id3').reinner();";<br />
-            html += '"&gt;';<br /><br />
+            <div style="margin-left:2em;">
+                var wnd = new Wnd( 'wnd-unique-id3', null, {'width':400} ); <br />
+                <br />
+                wnd.create();<br />
+                wnd.buttonAddDefault();<br />
+                <br />
+                var html = '';<br />
+                html += '&lt;input type="buttom" value="重载" onclick="';<br />
+                html += "this.value='窗口内容重载中....';this.style.color='#f00'";<br />
+                html += "alert('点击确认后开始重载!');";<br />
+                html += "Wnds.find('wnd-unique-id3').reinner();";<br />
+                html += '"&gt;';<br /><br />
 
-            wnd.inner(html, 'html');<br />
-            wnd.show();<br />
-        </div>
+                wnd.inner(html, 'html');<br />
+                wnd.show();<br />
+            </div>
         &lt;/script&gt;
         <span style="color:#008ECD">
             [<a href="javascript:void(0)" style="color:#008ECD" onclick="wnd_unique_id3()">演示</a>]

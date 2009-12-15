@@ -169,8 +169,8 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                             $attribs['add']['onclick'] = "wnd_articlecat_fill(this,'add')";<br />
                             <br />
                             /* 初始化页面信息 */<br />
-                            $tpl['acts']  = format_module_acts($m_ab, $attribs, 'btn'); //格式化模块的操作(非内嵌)<br />
-                            $tpl['title'] = admin_privilege_name_fk('article_cat.php', 'list'); //权限名称
+                            $tpl['title'] = admin_privilege_name_fk('article_cat.php', 'list'); //权限名称<br />
+                            $tpl['titleacts'] = format_module_acts($m_ab, $attribs, 'btn'); //格式化模块的操作(非内嵌)
                         </div>
                     }
                     </div>
@@ -422,7 +422,7 @@ function explain_code( id )
 
     wnd.show();
     wnd.moved();
-    wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});
+    wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
 }
 </script>
 

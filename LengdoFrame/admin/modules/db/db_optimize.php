@@ -122,8 +122,8 @@ else{
         $attribs['optimize']['onclick'] = 'deal_dboptimize()';
 
         /* 初始化页面信息 */
-        $tpl['acts']  = format_module_acts($m_ab, $attribs, 'btn'); //格式化模块的操作(非内嵌)
         $tpl['title'] = admin_privilege_name_fk('db_optimize.php', 'optimize'); //权限名称
+        $tpl['titleacts'] = format_module_acts($m_ab, $attribs, 'btn'); //格式化模块的操作(非内嵌)
     }
 }
 

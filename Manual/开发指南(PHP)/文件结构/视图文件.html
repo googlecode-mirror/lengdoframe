@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>视图文件</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
+<body>
+
+<div style="text-indent:2em;">
+    视图文件，即HTML文件，主要用于格式化数据显示。
+</div>
+
+<br />
+
+<b id="lfm-viewfile-create-title">1. 视图文件创建</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        视图文件默认全部存放在 /admin/tpl/ 文件夹下，当然也可以在 /includes/systemconfig.php 中配置视图文件夹的路径 $_CFG['DIR_ADMIN_TPL'] 来更改默认的视图文件存放地址。
+    </div>
+    <div style="text-indent:2em;">
+        通常视图文件的名称和模块文件名称相同，以下图中的 "文章模块组以其子模块"为例，我们需要建立两个视图文件：<br />
+    </div>
+    <div style="margin-left:4em;">
+        1. 文章管理视图文件：/admin/tpl/article.html<br />
+        2. 文章类别视图文件：/admin/tpl/article_cat.html
+    </div>
+    <div style="text-align:center;padding:5px;"><img alt="图1" src="images/modulefile-view.gif" style="border:1px solid #ccc;"></div>
+</div>
+
+<br />
+<br />
+
+<b id="lfm-viewfile-struct-title">2. 视图文件结构</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        在视图文件中，我们同样以功能点来划分每块代码段，通常以变量 $tpl['_body'] 来区分。视图功能点一般对应与<a href="模块文件.html" target="_blank" style="color:#000">模块文件</a>中的功能点，常见的有增加('add')，编辑('edit')，列表('list')。除此之外，视图文件还有一个特殊的功能点，通过变量 $tpl['_block'] 区分。该功能点主要控制是否加载其它功能的HTML代码段。
+    </div>
+    <div style="text-indent:2em;">
+        以下就是一个典型的视图文件代码结构：
+    </div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        &lt;?php if( $tpl['_block'] !== true ){ include($_CFG['DIR_ADMIN_TPL'].'header.html'); }?&gt;<br />
+        <br />
+        <br />
+        &lt;?php if( $tpl['_body'] == 'list' ){ ?&gt;
+            <div style="margin-left:2em;">
+                &lt;!-- 列表的HTML代码 --&gt;
+            </div>
+        <br />
+        <br />
+        &lt;?php }elseif( $tpl['_body'] == 'add' || $tpl['_body'] == 'edit' ){ ?&gt;
+            <div style="margin-left:2em;">
+                &lt;!-- 增编的HTML代码 --&gt;
+            </div>
+        <br />
+        <br />
+        &lt;?php } ?&gt;
+    </div>
+</div>
+
+
+</body>
+</html>

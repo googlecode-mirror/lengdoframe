@@ -147,8 +147,8 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                                 $attribs['add']['onclick'] = "wnd_article_fill(this,'add')";<br />
                                 <br />
                                 /* 初始化页面信息 */<br />
-                                $tpl['acts']  = format_module_acts($m_ab, $attribs, 'btn'); //格式化模块的操作(非内嵌)<br />
-                                $tpl['title'] = admin_privilege_name_fk('article.php', 'list'); //权限名称
+                                $tpl['title'] = admin_privilege_name_fk('article.php', 'list'); //权限名称<br />
+                                $tpl['titleacts'] = format_module_acts($m_ab, $attribs, 'btn'); //格式化模块的操作(非内嵌)
                             </div>
                         }
                         </div>
@@ -323,7 +323,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 21<br />22<br />23<br />24<br />25<br />26<br />27<br />28<br />29<br />30<br />
                 31<br />32<br />33<br />34<br />35<br />36<br />37<br />38<br />39<br />40<br />
                 41<br />42<br />43<br />44<br />45<br />46<br />47<br />48<br />49<br />50<br />
-                51<br />52<br />53<br />54<br />55<br />56
+                51<br />52<br />53<br />54<br />55<br />56<br />57<br />58
             </td>
             <td>
                 &lt;?php if( $tpl['_block'] !== true ){ include($_CFG['DIR_ADMIN_TPL'].'header.html'); }?&gt;<br />
@@ -458,7 +458,7 @@ function explain_code( id )
 
     wnd.show();
     wnd.moved();
-    wnd.activeControl('ok', function(e){if(e.keyCode==27)this.cannel()});
+    wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
 }
 </script>
 
