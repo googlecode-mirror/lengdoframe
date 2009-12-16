@@ -4,8 +4,8 @@
 <?php if( $tpl['_body'] == 'list' ){ ?>
 
     <?php if( $tpl['_bodysub'] != 'query' ){?>
-    <div class="list-box" onmouseover="ListTable.init('list-dboptimize','modules/db/db_optimize.php','?act=list');">
-        <div id="list-dboptimize" class="list-div" style="border-top:0;">
+    <div class="listtable-div" id="listtable-dboptimize" onmouseover="ListTable.init(this.id,'modules/db/db_optimize.php','?act=list');">
+        <div class="listtable-data" style="border-top:0;">
     <?php }?>
 
             <table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);" style="border-bottom:0;">

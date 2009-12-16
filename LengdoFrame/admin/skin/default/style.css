@@ -327,24 +327,6 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 
 
 /* ------------------------------------------------------ */
-/* - 搜索层
-/* ------------------------------------------------------ */
-
-/* 搜索层 */
-.search-form{ display:block; background:url(images/style_fy.gif) 0 -560px; }
-
-.search-form table td i.icon{ width:35px; height:28px; display:block; background:url(images/style_fxy.gif) -397px -165px; }
-
-.search-form table td h1{ margin:5px 0 5px 9px; display:block; color:#00183B; font-size:12px; font-weight:normal; vertical-align:middle; }
-.search-form table td span{ margin:5px 0 3px 9px; display:block; }
-
-/* 搜索按钮 */
-.search-form table td .submit{ width:57px; height:20px; border:0px; background:url(images/style_fxy.gif) -331px -10px; cursor:pointer; vertical-align:middle; color:#195389; font-size:12px; *padding-top:2px; }
-.search-form table td .flush{ width:25px; height:20px; border:0px; background:url(images/style_fxy.gif) -289px -50px; cursor:pointer; vertical-align:middle; }
-.search-form table td .flushdown{ background-position:-289px -90px; }
-
-
-/* ------------------------------------------------------ */
 /* - 表单层
 /* ------------------------------------------------------ */
 .form-div{ border:1px solid #D4D4D4; border-left:0; border-right:0; }
@@ -364,65 +346,105 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 /* - 列表层
 /* ------------------------------------------------------ */
 
-/* 列表BOX层 */
-.list-box{}
-
-/* 列表BOX加载层 */
-.list-box-loading{ position:absolute; }
-.list-box-loading .overlay{ top:0; left:0; background:#000; filter:alpha(opacity=10); opacity:0.1; z-index:98; position:absolute; }
-.list-box-loading .loading{ width:140px; height:9px; margin:0 auto; overflow:hidden; background:url(images/doglide.gif); z-index:99; position:relative; }
-
 /* 列表层 */
-.list-div{ border:1px solid #D4D4D4; border-left:0; border-right:0; }
-.list-div table{ width:100%; *width:auto; border-bottom:1px solid #F0F0F0; table-layout:fixed; border-collapse:collapse; }
+.listtable-div{}
 
-/* 单层TH */
-.list-div table tr th{ height:27px; padding:0; border-bottom:1px solid #E4E4E4; background:url(images/style_fy.gif) 0 -440px; color:#00183C; }
-.list-div table tr th a{ padding-left:1px; color:#00183C; text-decoration:none; }
-.list-div table tr th a:hover{ color:#C00; }
-.list-div table tr th span.asc{ width:12px; height:12px; *height:14px; display:inline-block; background:url(images/style_fxy.gif) -94px -205px; }
-.list-div table tr th span.desc{ width:12px; height:12px; *height:14px; display:inline-block; background:url(images/style_fxy.gif) -94px -220px; }
+/* 列表层 - 加载层 */
+.listtable-div-loading{ position:absolute; }
+.listtable-div-loading .overlay{ top:0; left:0; background:#000; filter:alpha(opacity=10); opacity:0.1; z-index:98; position:absolute; }
+.listtable-div-loading .loading{ width:140px; height:9px; margin:0 auto; overflow:hidden; background:url(images/doglide.gif); z-index:99; position:relative; }
 
-/* 多层TH */
-.list-div table tr.ths th{ height:19px; border-bottom:1px solid #E8E8E8; border-right:1px solid #E2E2E2; }
+/* 列表搜索层 */
+.listtable-search{ display:block; background:url(images/style_fy.gif) 0 -560px; }
 
-/* 默认链接 */
-.list-div table tr td{ height:25px; *height:24px; padding:0; border-bottom:1px solid #F0F0F0; border-top:1px solid #F0F0F0; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
-.list-div table tr td a{ text-decoration:none; color:#000; }
-.list-div table tr td a:hover{ text-decoration:underline; color:#C00; }
+.listtable-search table td i.icon{ width:35px; height:28px; display:block; background:url(images/style_fxy.gif) -397px -165px; }
 
-/* 文本换行 */
-.list-div table tr.wrap td{ white-space:normal; }
-.list-div table tr td.wrap{ white-space:normal; }
+.listtable-search table td h1{ margin:5px 0 5px 9px; display:block; color:#00183B; font-size:12px; font-weight:normal; vertical-align:middle; }
+.listtable-search table td span{ margin:5px 0 3px 9px; display:block; }
 
-/* 竖分割线 */
-.list-div table tr.border th{ border-right:1px solid #E4E4E4;}
-.list-div table tr.border td{ border-right:1px solid #F0F0F0;}
+/* 列表搜索层 - 搜索按钮 */
+.listtable-search table td .submit{ width:57px; height:20px; border:0px; background:url(images/style_fxy.gif) -331px -10px; cursor:pointer; vertical-align:middle; color:#195389; font-size:12px; *padding-top:2px; }
+.listtable-search table td .flush{ width:25px; height:20px; border:0px; background:url(images/style_fxy.gif) -289px -50px; cursor:pointer; vertical-align:middle; }
+.listtable-search table td .flushdown{ background-position:-289px -90px; }
 
-/* 编辑样式 */
-.list-div table tr td.edit a{ padding:0 5px; cursor:text; }
-.list-div table tr td.edit a:hover{ text-decoration:none; color:#000; }
-.list-div table tr td.edit input{ height:16px; border:1px solid #000; border-color:#888 #EEE #DDD #999; color:#666; line-height:16px; font-size:12px; cursor:text; }
+/* 列表数据层 */
+.listtable-data{ border:1px solid #D4D4D4; border-left:0; border-right:0; }
+.listtable-data table{ width:100%; *width:auto; border-bottom:1px solid #F0F0F0; table-layout:fixed; border-collapse:collapse; }
 
-/* 操作样式 */
-.list-div table tr td.action a{ margin:1px; color:#114300; }
-.list-div table tr td.action a:hover { color:#31AC00; }
+/* 列表数据层 - 单层TH */
+.listtable-data table tr th{ height:27px; padding:0; border-bottom:1px solid #E4E4E4; background:url(images/style_fy.gif) 0 -440px; color:#00183C; }
+.listtable-data table tr th a{ padding-left:1px; color:#00183C; text-decoration:none; }
+.listtable-data table tr th a:hover{ color:#C00; }
+.listtable-data table tr th span.asc{ width:12px; height:12px; *height:14px; display:inline-block; background:url(images/style_fxy.gif) -94px -205px; }
+.listtable-data table tr th span.desc{ width:12px; height:12px; *height:14px; display:inline-block; background:url(images/style_fxy.gif) -94px -220px; }
 
-/* 操作层 */
-.list-div table tr td div.action{ *width:200px; margin-top:-1px; float:left; *position:absolute; color:#888; }
-.list-div table tr td div.action a{ margin-right:5px; float:left; line-height:200%; color:#555; text-decoration:none; }
-.list-div table tr td div.action a:hover{ color:#000; }
+/* 列表数据层 - 多层TH */
+.listtable-data table tr.ths th{ height:19px; border-bottom:1px solid #E8E8E8; border-right:1px solid #E2E2E2; }
 
-/* 水平操作层 */
-.list-div table tr td div.action .hddl{ float:left; }
-.list-div table tr td div.action .hddl a{ color:#555; }
-.list-div table tr td div.action .hddl a span{ margin-left:1px; padding:8px 3px 6px; *padding:6px 2px; background:url(images/style_fxy.gif) -331px -137px; font-size:0; line-height:100%; }
-.list-div table tr td div.action .hddl div{ display:none; position:absolute; background:#FFF; border:1px solid #CCC; }
-.list-div table tr td div.action .hddl div a{ padding:4px; margin:0; float:left; line-height:125%; }
-.list-div table tr td div.action .hddl div a:hover{ background:#F3F3F3; }
-.list-div table tr td div.action .hddlon a{ color:#000; text-decoration:none; }
-.list-div table tr td div.action .hddlon a span{ background:url(images/style_fxy.gif) -343px -137px; }
-.list-div table tr td div.action .hddlon div{ display:inline; }
+/* 列表数据层 - 默认链接 */
+.listtable-data table tr td{ height:25px; *height:24px; padding:0; border-bottom:1px solid #F0F0F0; border-top:1px solid #F0F0F0; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
+.listtable-data table tr td a{ text-decoration:none; color:#000; }
+.listtable-data table tr td a:hover{ text-decoration:underline; color:#C00; }
+
+/* 列表数据层 - 文本换行 */
+.listtable-data table tr.wrap td{ white-space:normal; }
+.listtable-data table tr td.wrap{ white-space:normal; }
+
+/* 列表数据层 - 竖分割线 */
+.listtable-data table tr.border th{ border-right:1px solid #E4E4E4;}
+.listtable-data table tr.border td{ border-right:1px solid #F0F0F0;}
+
+/* 列表数据层 - 编辑样式 */
+.listtable-data table tr td.edit a{ padding:0 5px; cursor:text; }
+.listtable-data table tr td.edit a:hover{ text-decoration:none; color:#000; }
+.listtable-data table tr td.edit input{ height:16px; border:1px solid #000; border-color:#888 #EEE #DDD #999; color:#666; line-height:16px; font-size:12px; cursor:text; }
+
+/* 列表数据层 - 操作样式 */
+.listtable-data table tr td.action a{ margin:1px; color:#114300; }
+.listtable-data table tr td.action a:hover { color:#31AC00; }
+
+/* 列表数据层 - 操作层 */
+.listtable-data table tr td div.action{ *width:200px; margin-top:-1px; float:left; *position:absolute; color:#888; }
+.listtable-data table tr td div.action a{ margin-right:5px; float:left; line-height:200%; color:#555; text-decoration:none; }
+.listtable-data table tr td div.action a:hover{ color:#000; }
+
+/* 列表数据层 - 水平操作层 */
+.listtable-data table tr td div.action .hddl{ float:left; }
+.listtable-data table tr td div.action .hddl a{ color:#555; }
+.listtable-data table tr td div.action .hddl a span{ margin-left:1px; padding:8px 3px 6px; *padding:6px 2px; background:url(images/style_fxy.gif) -331px -137px; font-size:0; line-height:100%; }
+.listtable-data table tr td div.action .hddl div{ display:none; position:absolute; background:#FFF; border:1px solid #CCC; }
+.listtable-data table tr td div.action .hddl div a{ padding:4px; margin:0; float:left; line-height:125%; }
+.listtable-data table tr td div.action .hddl div a:hover{ background:#F3F3F3; }
+.listtable-data table tr td div.action .hddlon a{ color:#000; text-decoration:none; }
+.listtable-data table tr td div.action .hddlon a span{ background:url(images/style_fxy.gif) -343px -137px; }
+.listtable-data table tr td div.action .hddlon div{ display:inline; }
+
+/* 列表页脚层 */
+.listtable-footer{ height:30px; background:#FBFDFD; }
+
+/* 列表页脚层 - 操作层 */
+.listtable-footer div.action{ margin:3px 0 5px 10px; float:left; display:inline; color:#888; }
+.listtable-footer div.action a{ margin-right:10px; float:left; line-height:200%; color:#555; text-decoration:none; }
+.listtable-footer div.action a:hover{ color:#000; }
+
+/* 列表页脚层 - 下拉操作层 */
+.listtable-footer div.action .hddl{ float:left; }
+.listtable-footer div.action .hddl a{ display:block; float:none; color:#555; }
+.listtable-footer div.action .hddl a span{ margin-left:2px; padding:6px 4px; *padding:4px; background:url(images/style_fxy.gif) -290px -139px; font-size:0; line-height:100%; }
+.listtable-footer div.action .hddl div{ display:none; position:absolute; border:1px solid #CCC; background:#FFF; }
+.listtable-footer div.action .hddl div a{ margin:0; padding:4px; float:left; line-height:125%; }
+.listtable-footer div.action .hddl div a:hover{ background:#F0F0F0; }
+.listtable-footer div.action .hddlon a{ color:#000; }
+.listtable-footer div.action .hddlon a span{ background:url(images/style_fxy.gif) -303px -139px; }
+.listtable-footer div.action .hddlon div{ display:inline; }
+
+/* 列表页脚层 - 分页 */
+.listtable-footer .pager{ margin:4px 3px 0 0; float:right; }
+.listtable-footer .pager a{ padding:2px 4px; text-decoration:none; color:#005363; }
+.listtable-footer .pager a.first{ padding:2px; color:#93B6BD; }
+.listtable-footer .pager a.on{ font-size:16px; font-weight:bold; color:#FF0000!important; }
+.listtable-footer .pager a.last{ padding:2px; color:#93B6BD; }
+.listtable-footer .pager a.info{ color:#70AAB5; }
 
 
 /* ------------------------------------------------------ */
@@ -431,36 +453,6 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 .table-header{ height:27px; background:url(images/style_fy.gif) 0 -560px; }
 .table-header i{ width:25px; height:25px; float:left; background:url(images/style_fxy.gif) -447px -167px; }
 .table-header span{ padding:6px 0 0 0; float:left; color:#062D75; filter:dropshadow(color=#FFFFFF,offx=1,offy=1); background:url(images/style_fy.gif) 0 -560px; }
-
-
-/* ------------------------------------------------------ */
-/* - 表格尾部层
-/* ------------------------------------------------------ */
-.table-footer{ height:30px; background:#FBFDFD; }
-
-/* 操作层 */
-.table-footer div.action{ margin:3px 0 5px 10px; float:left; display:inline; color:#888; }
-.table-footer div.action a{ margin-right:10px; float:left; line-height:200%; color:#555; text-decoration:none; }
-.table-footer div.action a:hover{ color:#000; }
-
-/* 下拉操作层 */
-.table-footer div.action .hddl{ float:left; }
-.table-footer div.action .hddl a{ display:block; float:none; color:#555; }
-.table-footer div.action .hddl a span{ margin-left:2px; padding:6px 4px; *padding:4px; background:url(images/style_fxy.gif) -290px -139px; font-size:0; line-height:100%; }
-.table-footer div.action .hddl div{ display:none; position:absolute; border:1px solid #CCC; background:#FFF; }
-.table-footer div.action .hddl div a{ margin:0; padding:4px; float:left; line-height:125%; }
-.table-footer div.action .hddl div a:hover{ background:#F0F0F0; }
-.table-footer div.action .hddlon a{ color:#000; }
-.table-footer div.action .hddlon a span{ background:url(images/style_fxy.gif) -303px -139px; }
-.table-footer div.action .hddlon div{ display:inline; }
-
-/* 分页 */
-.table-footer .pager{ margin:4px 3px 0 0; float:right; }
-.table-footer .pager a{ padding:2px 4px; text-decoration:none; color:#005363; }
-.table-footer .pager a.first{ padding:2px; color:#93B6BD; }
-.table-footer .pager a.on{ font-size:16px; font-weight:bold; color:#FF0000!important; }
-.table-footer .pager a.last{ padding:2px; color:#93B6BD; }
-.table-footer .pager a.info{ color:#70AAB5; }
 
 
 /* ------------------------------------------------------ */

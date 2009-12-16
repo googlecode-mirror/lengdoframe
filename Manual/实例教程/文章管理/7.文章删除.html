@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../../lib/style.css">
+<script type="text/javascript" src="../../lib/window.js"></script>
+<title>文章删除</title>
+</head>
+<style>
+body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
+<body>
+
+
+
+<div style="text-indent:2em">
+    文章删除，相对于文章列表和增编的编码来说算是简单的一个业务流程。
+</div>
+<br />
+
+<b id="lfm-article-mdel-code-title">1. 文章删除的模块文件</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        在<a target="_blank" href="5.文章列表.html#lfm-article-mlist-code-title" style="color:#000">文章列表</a>中我们已经给删除按钮提供触发接口，参见第29行的ListTable.del()函数;
+    </div>
+    <div style="text-indent:2em;">
+        ListTable.del()是一个javascript函数，该函数会自动默认提交'act'=del&id=xxx'参数到服务器端，服务器端编写方法如下：
+    </div>
+    
+    <br />
+
+    <div style="text-indent:2em;">
+        拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-article-mdel-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>模块文件 /admin/modules/article/article.php
+    </div>
+
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
+        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-article-mdel-code');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a>
+        <font style="color:#666"> - </font> 
+        <a href="javascript:void(0)" style="color:#090;text-decoration:none;" onclick="explain_code('lfm-article-mdel-code-explain')">代码解释</a> 
+    </div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-article-mdel-code">
+        <table>
+        <tr>
+            <td width="30">
+                1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />
+                11<br />12<br />13<br />14<br />15<br />16<br />17<br />18<br />19<br />20<br />
+                21<br />22<br />23<br />24<br />25<br />26<br />27<br />28<br />29<br />30<br />
+                31<br />32<br />33<br />34<br />35<br />36<br />37<br />38<br />39<br />40<br />
+                41<br />42<br />43<br />44<br />45<br />46<br />47<br />48<br />49<br />50<br />
+                51<br />52<br />53
+            </td>
+            <td>
+                &lt;?php<br />
+                /* 文件加载 */<br />
+                require('../../includes/init.php');<br />
+                require('../../includes/lib_article.php');<br />
+                <br />
+                <br />
+                /*  异步 - 增加 */<br />
+                if( $_REQUEST['act'] == 'add' ){
+                    <div style="margin-left:2em;">
+                        // <a target="_blank" href="6.文章增编.html#lfm-article-mfill-code-title" style="color:#666;">增加的模块文件代码</a>
+                    </div>
+                }<br />
+                /* 异步 - 写入数据库 */<br />
+                elseif( $_REQUEST['act'] == 'insert' ){
+                    <div style="margin-left:2em;">
+                        // <a target="_blank" href="6.文章增编.html#lfm-article-mfill-code-title" style="color:#666;">写入的模块文件代码</a>
+                    </div>
+                }<br />
+                <br />
+                <br />
+                /*  异步 - 编辑 */<br />
+                elseif( $_REQUEST['act'] == 'edit' ){
+                    <div style="margin-left:2em;">
+                        // <a target="_blank" href="6.文章增编.html#lfm-article-mfill-code-title" style="color:#666;">编辑的模块文件代码</a>
+                    </div>
+                }<br />
+                /*  异步 - 更新数据库 */<br />
+                elseif( $_REQUEST['act'] == 'update' ){
+                    <div style="margin-left:2em;">
+                        // <a target="_blank" href="6.文章增编.html#lfm-article-mfill-code-title" style="color:#666;">更新的模块文件代码</a>
+                    </div>
+                }<br />
+                <br />
+                <br />
+                <div style="background:#efefef;">
+                /*  异步 - 删除 */<br />
+                elseif( $_REQUEST['act'] == 'del' ){<br />
+                    <div style="margin-left:2em;">
+                        /* 权限检查 */<br />
+                        admin_privilege_valid('article.php', 'del');<br />
+                        <br />
+                        /* 根据ID或者IDS删除文章 */<br />
+                        if( is_numeric($_POST['id']) && intval($_POST['id']) > 0 ){
+                            <div style="margin-left:2em;">
+                                $_POST['ids'] = array($_POST['id']);
+                            </div>
+                        }<br />
+                        <br />
+                        /* 删除文章 */<br />
+                        del_article( array('article_ids'=>$_POST['ids']) );<br />
+                        <br />
+                        /* 系统提示 */<br />
+                        make_json_ok();
+                    </div>
+                }<br />
+                </div>
+                <br />
+                <br />
+                /*  异步 - 列表(默认页) */<br />
+                else{
+                    <div style="margin-left:2em;">
+                        // <a target="_blank" href="5.文章列表.html#lfm-article-mlist-code-title" style="color:#666;">列表的模块文件代码</a>
+                    </div>
+                }<br />
+                ?&gt;<br />
+                <br />
+                &lt;?php<br />
+                    <div style="margin-left:2em;">
+                        // <a target="_blank" href="6.文章增编.html#lfm-article-mfillfunc-code-title" style="color:#666;">增编的相关辅助函数</a>
+                    </div>
+                ?&gt;<br />
+            </td>
+        </tr>
+        </table>
+    </div>
+
+    <div style="display:none" id="lfm-article-mdel-code-explain">
+        <table style="font-size:12px;">
+        <tr>
+            <td style="text-align:right;width:50px;">
+                28-42行<br />
+            </td>
+            <td>
+                文章删除代码块<br />
+            </td>
+        </tr>
+        </table>
+    </div>
+</div>
+
+<br />
+
+<b id="lfm-article-mdel-code-title">2. 文章删除的库文件</b>
+<div style="margin-left:1.2em;">
+    <div style="text-indent:2em;">
+        追加<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-article-ldel-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到库文件 /admin/includes/lib_article.php
+    </div>
+
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
+        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-article-ldel-code');o.style.display=o.style.display=='none'?'':'none'">View Code 2</a>
+    </div>
+    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-article-ldel-code">
+        &lt;?php<br />
+        /* 删除文章 */<br />
+        function del_article( $filter )<br />
+        {
+            <div style="margin-left:2em;">
+                global $_LANG;<br />
+                <br />
+                /* 根据文章IDS删除 */<br />
+                if( is_array($filter['article_ids']) && !empty($filter['article_ids']) ){
+                    <div style="margin-left:2em;">
+                        /* 删除文章 */<br />
+                        $GLOBALS['db']->delete( tname('article'), 'article_id IN("'. implode('","',$filter['article_ids']) .'")' );<br />
+                        <br />
+                        return array('error'=>0, 'message'=>$_LANG['del_ok']);
+                    </div>
+                }<br />
+                <br />
+                return array('error'=>1, 'message'=>$_LANG['fail_del']);
+            </div>
+        }<br />
+        ?&gt;<br />
+    </div>
+</div>
+
+<script>
+function hash2title( hash )
+{
+    obj = hash.replace('#','').replace(/-title$/,'');
+    obj = document.getElementById(obj);
+    obj ? obj.style.display = '' : '';
+}
+
+hash2title(window.location.hash);
+
+function explain_code( id )
+{
+    var wnd = Wnds.find(id);
+
+    if( !wnd ){
+        wnd = new Wnd(id, null, {'width':660,'height':420,'overflow':100,'overlay':false});
+
+        wnd.create();
+        wnd.buttonAddDefault('ok');
+
+        wnd.title('代码解释');
+        wnd.inner(document.getElementById(id).innerHTML, 'html');
+    }
+
+    wnd.show();
+    wnd.moved();
+    wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
+}
+</script>
+
+
+</body>
+</html>

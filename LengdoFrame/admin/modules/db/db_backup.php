@@ -533,7 +533,7 @@ function sql_import( $path_file )
     $sqls = explode(";\n", $sqls);
 
     /* 执行SQL语句 */
-    foreach( $sql AS $i=>$sql ){
+    foreach( $sqls AS $i=>$sql ){
         $sql = trim($sql, " \r\n;"); //移除多余信息
 
         if( empty($sql) ) continue;

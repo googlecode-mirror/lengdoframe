@@ -328,9 +328,9 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                     <br />
                     <div style="margin-left:2em;">
                     &lt;?php if( $tpl['_bodysub'] != 'query' ){?&gt;<br />
-                    &lt;div class="list-box" onmouseover="ListTable.init('list-articlecat','modules/article/article_cat.php','?act=list');"&gt;<br />
+                    &lt;div class="listtable-div" id="listtable-articlecat" onmouseover="ListTable.init(this.id,'modules/article/article_cat.php','?act=list');"&gt;<br />
                     <div style="margin-left:2em;">
-                        &lt;div id="list-articlecat" class="list-div" style="border-top:0;border-bottom:0;"&gt;<br />
+                        &lt;div class="listtable-data" style="border-top:0;border-bottom:0;"&gt;<br />
                     </div>
                     &lt;?php }?&gt;<br />
                     <div style="margin-left:4em;">

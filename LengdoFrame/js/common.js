@@ -849,12 +849,12 @@ function deal_form_submit( form, url, func, type, msg )
             if( type != 'TEXT' ){
                 result = eval('('+ result +')');
             }
-
-            if( typeof(func) == 'function' ){
-                func(result, text, form);
-            }
         }catch(e){
-            wnd_alert('服务器端错误！<br />'+result);
+            wnd_alert('数据解析出错！<br />'+result);
+        }
+
+        if( typeof(func) == 'function' ){
+            func(result, text, form);
         }
     }
 
