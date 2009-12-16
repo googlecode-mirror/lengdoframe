@@ -58,7 +58,7 @@ function deal_admin_fill()
     function callback( result, text ){
         if( result.error == 0 ){
             /* 初始化并重载列表 */
-            ListTable.init('list-admin', url, '?act=list');
+            ListTable.init('listtable-admin', url, '?act=list');
             ListTable.loadList();
 
             wnd.hidden();
@@ -119,7 +119,7 @@ function deal_role_fill()
     function callback( result, text ){
         if( result.error == 0 ){
             /* 初始化并重载列表 */
-            ListTable.init('list-role', url, '?act=list');
+            ListTable.init('listtable-role', url, '?act=list');
             ListTable.loadList();
 
             wnd.hidden();
@@ -161,8 +161,8 @@ function deal_dboptimize()
 
         if( result.error == 0 ){
             /* 初始化并重载列表 */
-            ListTable.init('list-dboptimize', url, '?act=list');
-            ListTable.loadList(true, true);
+            ListTable.init('listtable-dboptimize', url, '?act=list');
+            ListTable.loadList( {'quiet':true} );
         }
     }
 }
@@ -221,8 +221,8 @@ function deal_dbbackup_fill( params )
             wnd_alert(result.message);
 
             /* 初始化并重载列表 */
-            ListTable.init('list-dbbackup', url, '?act=list');
-            ListTable.loadList(true, true);
+            ListTable.init('listtable-dbbackup', url, '?act=list');
+            ListTable.loadList( {'quiet':true} );
         }
     }
 }
@@ -271,7 +271,7 @@ function deal_dbbackup_import( params, file )
 /**
  * 数据库备份 - 上传SQL文件
  */
-function deal_dbbackup_upload( form, result )
+function deal_dbbackup_upload( result, text, form )
 {
     if( result.message ){
         wnd_alert(result.message);
@@ -334,7 +334,7 @@ function deal_module_fill()
     function callback( result, text ){
         if( result.error == 0 ){
             /* 初始化并重载列表 */
-            ListTable.init('list-module', url, '?act=list');
+            ListTable.init('listtable-module', url, '?act=list');
             ListTable.loadList();
 
             wnd.hidden();
@@ -395,7 +395,7 @@ function deal_privilege_fill()
     function callback( result, text ){
         if( result.error == 0 ){
             /* 初始化并重载列表 */
-            ListTable.init('list-privilege', url, '?act=list');
+            ListTable.init('listtable-privilege', url, '?act=list');
             ListTable.loadList();
 
             wnd.hidden();
@@ -587,7 +587,6 @@ function deal_list_export( id, form, url, limit )
 
         if( !form ){
             form = document.createElement('FORM');
-
             form.id = 'wfm-list-export-auto';
 
             document.body.appendChild(form);
@@ -598,13 +597,14 @@ function deal_list_export( id, form, url, limit )
 
         /* 添加表单域 - 要导出的记录ID集 */
         if( limit == 'choice' ){
-            var flag = false;
+            var cnt = 0;
+            var ids = ListTable.getChoiced();
 
-            for( var id in ListTable.oChoiced ){
-                form.innerHTML += '<input type="hidden" name="ids[]" value="'+ id +'" />'; flag = true;
+            for( var i=0,j=ids.length; i < j; i++ ){
+                form.innerHTML += '<input type="hidden" name="ids[]" value="'+ ids[i] +'" />'; cnt++;
             }
 
-            if( flag == false ){
+            if( cnt == 0 ){
                 wnd_alert('请选择要导出的记录！'); return false;
             }
         }

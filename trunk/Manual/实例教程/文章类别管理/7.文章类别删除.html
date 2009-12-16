@@ -21,10 +21,10 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <b id="lfm-articlecat-mdel-code-title">1. 文章类别删除的模块文件</b>
 <div style="margin-left:1.2em;">
     <div style="text-indent:2em;">
-        在<a target="_blank" href="5.文章类别列表.html#lfm-articlecat-mlist-code-title" style="color:#000">文章类别列表</a>中我们已经给按钮按钮提供触发接口，参见第37行的ListTable.del()函数;
+        在<a target="_blank" href="5.文章类别列表.html#lfm-articlecat-mlist-code-title" style="color:#000">文章类别列表</a>中我们已经给删除按钮提供触发接口，参见第37行的ListTable.del()函数;
     </div>
     <div style="text-indent:2em;">
-        ListTable.del()是一个javascript函数，该函数会自动提交act='del'和其他参数到服务器端，服务器端编写方法如下：
+        ListTable.del()是一个javascript函数，该函数会自动默认提交'act'=del&id=xxx'参数到服务器端，服务器端编写方法如下：
     </div>
     
     <br />

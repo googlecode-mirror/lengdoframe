@@ -4,8 +4,8 @@
 <?php if( $tpl['_body'] == 'list' ){ ?>
 
     <?php if( $tpl['_bodysub'] != 'query' ){?>
-    <div class="list-box" onmouseover="ListTable.init('list-admin','modules/admin/admin.php','?act=list');">
-        <form class="search-form" onsubmit="deal_search_list(this);return false;">
+    <div class="listtable-div" id="listtable-admin" onmouseover="ListTable.init(this.id,'modules/admin/admin.php','?act=list');">
+        <form class="listtable-search" onsubmit="deal_search_list(this);return false;">
             <table>
             <tr>
                 <td width="30"><i class="icon"></i></td>
@@ -18,12 +18,12 @@
             </table>
         </form>
 
-        <div id="list-admin" class="list-div">
+        <div class="listtable-data">
     <?php }?>
 
             <table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
             <tr>
-                <th width="5%"><input type="checkbox" id="list-admin-touch" class="checkbox" onclick="ListTable.achoice(this.checked,this,'list-admin-ids')"/></th>
+                <th width="5%"><input type="checkbox" id="listtable-admin-touch" class="checkbox" onclick="ListTable.achoice(this.checked,this,'listtable-admin-ids')"/></th>
                 <th width="19%"><a href="javascript:void(0)" onclick="ListTable.orderBy('username')">管理员帐号</a><?php echo $tpl['img_username']; ?></th>
                 <th width="19%"><a href="javascript:void(0)" onclick="ListTable.orderBy('name')">管理员姓名</a><?php echo $tpl['img_name']; ?></th>
                 <th width="20%"><a href="javascript:void(0)" onclick="ListTable.orderBy('rht')">管理员角色</a><?php echo $tpl['img_rht']; ?></th>
@@ -33,8 +33,8 @@
             <?php if( !empty($tpl['list']['data']) ){ foreach( $tpl['list']['data'] AS $r ){?>
             <tr align="center">
                 <td>
-                    <input type="checkbox" name="list-admin-ids" value="<?php echo $r['admin_id'] ?>" class="checkbox" 
-                    onclick="ListTable.mchoice(this,'<?php echo $r['admin_id'] ?>');Formc.cbgSyncCb(this.name,null,'list-admin-touch')"/>
+                    <input type="checkbox" name="listtable-admin-ids" value="<?php echo $r['admin_id'] ?>" class="checkbox" 
+                    onclick="ListTable.mchoice(this,'<?php echo $r['admin_id'] ?>');Formc.cbgSyncCb(this.name,null,'listtable-admin-touch')"/>
                 </td>
 
                 <?php if( admin_privilege_valid('admin.php', 'edit', false) ){?>
@@ -58,13 +58,13 @@
             <?php }?>
             </table>
 
-            <div class="table-footer">
+            <div class="listtable-footer">
                 <div class="action">
                     <div class="hddl" onmouseover="this.className+=' hddlon'" onmouseout="this.className='hddl'">
-                        <a href="javascript:void(0)" onclick="ListTable.achoice(-1,'list-admin-touch','list-admin-ids')">选择<span>&nbsp;</span></a><div>
-                            <a href="javascript:void(0);" onclick="ListTable.achoice(1,'list-admin-touch','list-admin-ids')">全选</a>
-                            <a href="javascript:void(0);" onclick="ListTable.achoice(-1,'list-admin-touch','list-admin-ids')">反选</a>
-                            <a href="javascript:void(0);" onclick="ListTable.achoice(0,'list-admin-touch','list-admin-ids')">不选</a></div>
+                        <a href="javascript:void(0)" onclick="ListTable.achoice(-1,'listtable-admin-touch','listtable-admin-ids')">选择<span>&nbsp;</span></a><div>
+                            <a href="javascript:void(0);" onclick="ListTable.achoice(1,'listtable-admin-touch','listtable-admin-ids')">全选</a>
+                            <a href="javascript:void(0);" onclick="ListTable.achoice(-1,'listtable-admin-touch','listtable-admin-ids')">反选</a>
+                            <a href="javascript:void(0);" onclick="ListTable.achoice(0,'listtable-admin-touch','listtable-admin-ids')">不选</a></div>
                     </div>
                 </div>
                 <div class="pager"><?php echo $tpl['list']['pager']['html']; ?></div>

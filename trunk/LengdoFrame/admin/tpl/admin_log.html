@@ -4,8 +4,8 @@
 <?php if( $tpl['_body'] == 'list' ){ ?>
 
     <?php if( $tpl['_bodysub'] != 'query' ){?>
-    <div class="list-box" onmouseover="ListTable.init('list-adminlog','modules/admin/admin_log.php','?act=list');">
-        <form class="search-form" onsubmit="deal_search_list(this);return false;">
+    <div class="listtable-div" id="listtable-adminlog" onmouseover="ListTable.init(this.id,'modules/admin/admin_log.php','?act=list');">
+        <form class="listtable-search" onsubmit="deal_search_list(this);return false;">
             <table>
             <tr>
                 <td width="30"><i class="icon"></i></td>
@@ -26,7 +26,7 @@
             </table>
         </form>
 
-        <div id="list-adminlog" class="list-div">
+        <div class="listtable-data">
     <?php }?>
 
             <table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
@@ -48,7 +48,7 @@
             <?php }?>
             </table>
 
-            <div class="table-footer">
+            <div class="listtable-footer">
                 <div class="action">
                     <div class="hddl" onmouseover="this.className+=' hddlon'" onmouseout="this.className='hddl'">
                         <a href="javascript:void(0)">删除<span>&nbsp;</span></a><div>

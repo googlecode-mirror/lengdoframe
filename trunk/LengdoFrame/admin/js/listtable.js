@@ -12,44 +12,15 @@
 
 var ListTable = {
     /**
-     * 列表容器层ID
+     * 当前激活的列表ID
      */
     sId : '',
 
-    /**
-     * 列表基础URL
-     */
-    sUrl : '',
 
     /**
-     * 列表请求和查询URL
+     * 所有列表的配置数据
      */
-    sUList  : '',
-    sUQuery : '',
-
-    /**
-     * 过滤条件
-     * 存储格式：$field => $val
-     */
-    oFilter : {},
-
-    /**
-     * 列表选中项
-     * 存储格式：$id => {'id':$id,'caller':$caller,'data':$data}
-     */
-    oChoiced : {},
-
-    /**
-     * 多选时数量限制
-     * 0表示不限制. 针对 ListTable.mchoice()
-     */
-    iMCLimit : 0,
-
-    /**
-     * 列表集的配置数据
-     * 格式：$var => $data
-     */
-    _cfg : {},
+    oCfgs : {},
 
 
     /* ------------------------------------------------------ */
@@ -58,78 +29,79 @@ var ListTable = {
 
     /**
      * 初始化列表绑定或重绑定
-     * 如果列表已绑定中，那么设置新的配置(如果提供配置数据)
-     * 如果列表未绑定，那么备份上个绑定的列表配置数据，然后调出并设置即将要绑定列表的旧数据，再设置新的配置(如果提供配置数据)
      *
-     * @params str  id       要绑定的列表ID
-     * @params str  url      列表基础的URL。例如：'module.php'
-     * @params str  ulist    列表请求的URL。例如：'?act=list'
-     * @params str  uquery   列表查询的URL。例如：'?act=query'，默认：ulist+'&actsub=query'
+     * @params str  id       列表层对象ID
+     * @params str  url      列表基础的URL。例如：'x/xx.php'
+     * @params str  ulist    列表请求的URL。例如：'?act=list'， 默认：url+'?act=list'
+     * @params str  uquery   列表查询的URL。例如：'?act=query'，默认：url+'?act=list&actsub=query'
      */
     init : function( id, url, ulist, uquery ){
+        /* 激活当前列表ID */
+        this.sId = id;
+
+        /* 初始化配置 - 基础部分 */
+        this.initCfg(id, url, ulist, uquery);
+
+        /* 初始化配置 - 同步机制部分 */
+        this.initCfgSync(id);
+    },
+
+    /**
+     * 初始化配置 - 基础部分
+     */
+    initCfg : function( id, url, ulist, uquery ){
+        /* 初始化请求列表的配置数据 */
+        if( typeof(this.oCfgs[id]) == 'undefined' ){
+            /* 初始化配置 */
+            this.oCfgs[id] = {};
+
+            /* 初始化配置 - 列表ID */
+            this.oCfgs[id].sId      = id;
+
+            /* 初始化配置 - 基础URL，列表层URL，列表数据层URL */
+            this.oCfgs[id].sUrl     = url;
+            this.oCfgs[id].sUList   = typeof(ulist)  == 'string' && ulist.substr(0,1)  != '?' ? ulist  : (url+'?act=list');
+            this.oCfgs[id].sUQuery  = typeof(uquery) == 'string' && uquery.substr(0,1) != '?' ? uquery : (url+'?act=list&actsub=query');
+
+            /* 初始化配置 - 多选时数量限制，false表示不限制. 针对 ListTable.mchoice() */
+            this.oCfgs[id].iMCLimit = 0;
+        }
+    },
+
+    /**
+     * 初始化配置 - 同步机制部分
+     */
+    initCfgSync : function( id ){
         /* 初始化 */
-        var listtable = document.getElementById(id);
+        var div = document.getElementById(id);
+        var divdata = document.getElementById(id+'-divdata');
 
-        /* 无效的列表ID */
-        if( !listtable ){ alert('ListTable Id Error!'); return false; }
+        /* 同步机制 - 列表层对象 */
+        if( div != this.oCfgs[id].oDiv ){
+            /* 初始化配置 - 列表层对象 */
+            this.oCfgs[id].oDiv = div;
 
-        /* 补充全URL */
-        ulist  = typeof(ulist)  == 'string' && ulist.substr(0,1)  == '?' ? (url+ulist) : ulist;
-        uquery = typeof(uquery) == 'string' ? (uquery.substr(0,1)=='?' ? url+uquery : uquery) : (ulist+'&actsub=query');
+            /* 初始化配置 - 过滤条件，存储格式：$field => $val */
+            this.oCfgs[id].oFilter = {};
 
-        /* 列表同步机制 - 无同步标识 */
-        if( listtable.className.indexOf(' LISTTABLE-SYNC-FLAG') == -1 ){
-            /* 如果列表已绑定中，重置数据 */
-            if( this.sId == id ){
-                this.oFilter  = {};
-                this.oChoiced = {};
+            /* 初始化配置 - 列表选中项，存储格式：$id => {'id':$id,'caller':$caller,'data':$data} */
+            this.oCfgs[id].oChoiced = {};
+        }
+
+        /* 同步机制 - 列表数据层对象 */
+        if( !divdata ){
+            /* 初始化配置 - 列表数据层对象 */
+            for( var i=0,j=div.childNodes.length; i < j; i++ ){
+                if( div.childNodes[i].className && 
+                    div.childNodes[i].className.indexOf('listtable-data') != -1 
+                ){
+                    this.oCfgs[id].oDivData = div.childNodes[i]; 
+                    this.oCfgs[id].oDivData.id = id + '-divdata';
+
+                    break;
+                }
             }
-
-            /* 如果列表已绑定过，重置数据 */
-            if( this._cfg[id] ){
-                this._cfg[id].oFilter  = {};
-                this._cfg[id].oChoiced = {};
-            }
-
-            /* 设置同步标别 */
-            listtable.className += ' LISTTABLE-SYNC-FLAG';
         }
-
-        /* 列表已绑定 */
-        if( this.sId == id ){
-            /* 设置列表的新配置数据 */
-            if( typeof(url)    == 'string' && url ) this.sUrl = url;
-            if( typeof(ulist)  == 'string' && ulist ) this.sUList = ulist;
-            if( typeof(uquery) == 'string' && uquery ) this.sUQuery = uquery;
-
-            return true;
-        }
-
-        /* 列表重绑定 - 保存当前绑定中的列表配置数据 */
-        if( this.sId ){
-            this._cfg[this.sId] = {
-                                    'sUrl'     : this.sUrl,
-                                    'sUList'   : this.sUList,
-                                    'sUQuery'  : this.sUQuery,
-                                    'oFilter'  : this.oFilter,
-                                    'oChoiced' : this.oChoiced,
-                                    'iMCLimit' : this.iMCLimit
-                                  };
-        }
-
-        /* 列表重绑定 - 设置列表的原配置数据 */
-        this.sUrl     = this._cfg[id] ? this._cfg[id].sUrl     : '';
-        this.sUList   = this._cfg[id] ? this._cfg[id].sUList   : '';
-        this.sUQuery  = this._cfg[id] ? this._cfg[id].sUQuery  : '';
-        this.oFilter  = this._cfg[id] ? this._cfg[id].oFilter  : {};
-        this.oChoiced = this._cfg[id] ? this._cfg[id].oChoiced : {};
-        this.iMCLimit = this._cfg[id] ? this._cfg[id].iMCLimit : 0;
-
-        /* 列表重绑定 - 设置列表的新配置数据 */
-        if( typeof(id)     == 'string' && id ) this.sId = id;
-        if( typeof(url)    == 'string' && url ) this.sUrl = url;
-        if( typeof(ulist)  == 'string' && ulist ) this.sUList = ulist;
-        if( typeof(uquery) == 'string' && uquery ) this.sUQuery = uquery;
     },
 
 
@@ -144,15 +116,11 @@ var ListTable = {
      * @params mix  value   字段值
      */
     filter : function( filter, value ){
-        if( typeof(filter) == 'object' && filter ){
-            this.oFilter = filter;
+        if( typeof(filter) == 'object' ){
+            this.oCfgs[this.sId].oFilter = filter ? filter : {};
         }
-
-        else if( typeof(filter) == 'string' && 
-                 typeof(value)  == 'string' &&
-                 typeof(value)  == 'number'
-        ){
-            this.oFilter[filter] = value;
+        else{
+            this.oCfgs[this.sId].oFilter[filter] = value;
         }
     },
 
@@ -163,7 +131,7 @@ var ListTable = {
      */
     pageTo : function( page ){
         /* 设置过滤变量 */
-        this.oFilter['page'] = typeof(page) == 'number' ? page : 1;
+        this.oCfgs[this.sId].oFilter['page'] = typeof(page) == 'number' ? page : 1;
 
         /* 加载列表 */
         this.loadList();
@@ -176,8 +144,8 @@ var ListTable = {
      */
     orderBy : function( field ){
         /* 设置过滤变量 */
-        this.oFilter['order_fd']   = field;
-        this.oFilter['order_type'] = this.oFilter['order_type'] == 'DESC' ? 'ASC' : 'DESC';
+        this.oCfgs[this.sId].oFilter['order_fd']   = field;
+        this.oCfgs[this.sId].oFilter['order_type'] = this.oCfgs[this.sId].oFilter['order_type'] == 'DESC' ? 'ASC' : 'DESC';
 
         /* 加载列表 */
         this.loadList();
@@ -190,7 +158,7 @@ var ListTable = {
      */
     search : function( filter ){
         /* 设置过滤变量 */
-        this.oFilter = typeof(filter) == 'object' ? filter : {};
+        this.oCfgs[this.sId].oFilter = typeof(filter) == 'object' ? filter : {};
 
         /* 加载列表 */
         this.loadList();
@@ -199,19 +167,22 @@ var ListTable = {
     /**
      * 载入列表
      *
-     * @params bol  asyn  异步请求方式。true 表示异步等待(默认)，false表示同步等待
-     * @params bol  quiet 是否安静模式请求。默认flase
+     * @params obj  configs  重置列表时配置
+     *         bol           configs.asyn   异步请求方式。true 表示异步等待(默认)，false表示同步等待
+     *         bol           configs.quiet  是否安静模式请求。默认flase
      */
-    loadList : function( asyn, quiet ){
+    loadList : function( configs ){
         /* 初始化参数 */
-        asyn = asyn === false ? false : true;
+        configs = typeof(configs) == 'object' && configs ? configs : {};
+
+        configs.asyn  = configs.asyn === false ? false : true;
+        configs.quiet = configs.quiet === true ? true  : false;
 
         /* 异步调用 */
-        Ajax.call(this.sUQuery, this.buildFilter(), callback, 'POST', 'JSON', asyn, quiet);
+        Ajax.call(this.oCfgs[this.sId].sUQuery, this.buildFilter(), callback, 'POST', 'JSON', configs.asyn, configs.quiet);
 
         /**
          * 回调函数
-         * 负责将列表插入到由 ListTable.sId 指定的容器
          */
         function callback( result, text ){
             /* 错误 - 服务器端返回错误 */
@@ -227,8 +198,8 @@ var ListTable = {
             ListTable.initChoice();
             ListTable.filter(result.filter);
 
-            /* 填充新的列表HTML */
-            document.getElementById(ListTable.sId).innerHTML = result.content;
+            /* 填充新的列表数据层HTML */
+            ListTable.oCfgs[ListTable.sId].oDivData.innerHTML = result.content;
         }
     },
 
@@ -238,10 +209,11 @@ var ListTable = {
     buildFilter : function(){
         /* 初始化 */
         var params = '';
+        var filter = this.oCfgs[this.sId].oFilter;
 
-        for( var i in this.oFilter ){
-            if( typeof(this.oFilter[i]) !== 'function' && this.oFilter[i] !== null ){
-                params += "&"+ i +"="+ encodeURIComponent(this.oFilter[i]);
+        for( var i in filter ){
+            if( typeof(filter[i]) == 'string' || typeof(filter[i]) == 'number' ){
+                params += "&"+ i +"="+ encodeURIComponent(filter[i]);
             }
         }
 
@@ -256,29 +228,31 @@ var ListTable = {
     /**
      * 重置列表
      *
-     * @params bol  asyn     异步请求方式。true 表示异步等待(默认)，false表示同步等待
-     * @params bol  loading  显示列表BOX加载层。默认true
+     * @params obj  configs  重置列表时配置
+     *         bol           configs.asyn     异步请求方式。true 表示异步等待(默认)，false表示同步等待
+     *         bol           configs.loading  显示列表加载层。默认true
      */
-    resetList : function( asyn, loading ){
+    resetList : function( configs ){
         /* 初始化参数 */
-        asyn = asyn === false ? false : true;
-        loading = loading === false ? false : true;
+        configs = typeof(configs) == 'object' && configs ? configs : {};
 
-        /* 构建列表BOX加载层 */
-        loading ? this.buildListLoading() : '';
+        configs.asyn = configs.asyn === false ? false : true;
+        configs.loading = configs.loading === false ? false : true;
+
+        /* 构建列表加载层 */
+        if( configs.loading ) this.buildListLoading();
 
         /* 异步调用 */
-        Ajax.call(this.sUList, '', callback, 'POST', 'JSON', asyn, true);
+        Ajax.call(this.oCfgs[this.sId].sUList, '', callback, 'POST', 'JSON', configs.asyn, true);
 
         /**
          * 回调函数
-         * 负责将列表插入到由 ListTable.sId 指定的容器
          */
         function callback( result, text ){
             /* 错误 - 服务器段返回错误 */
             if( result.error != 0 ){
-                /* 移除列表BOX加载层 */
-                loading ? ListTable.removeListLoading() : '';
+                /* 移除列表加载层 */
+                configs.loading ? ListTable.removeListLoading() : '';
 
                 /* 提示并返回 */
                 wnd_alert('Server Error!'); return false;
@@ -288,24 +262,24 @@ var ListTable = {
             ListTable.initChoice();
             ListTable.filter({});
 
-            /* 移除列表BOX层的首尾标签代码 */
+            /* 移除列表层的首尾标签代码 */
             result.content = result.content.substring( result.content.indexOf('>')+1, result.content.lastIndexOf('</div>') );
 
-            /* 填充新的HTML内容到列表BOX层 */
-            document.getElementById(ListTable.sId).parentNode.innerHTML = result.content;
+            /* 填充新的列表层HTML */
+            ListTable.oCfgs[ListTable.sId].oDiv.innerHTML = result.content;
         }
     },
 
     /* ------------------------------------------------------ */
-    // - 列表BOX加载层
+    // - 列表加载层
     /* ------------------------------------------------------ */
 
     /**
-     * 构建列表BOX加载层
+     * 构建列表加载层
      */
     buildListLoading : function(){
-        /* 列表BOX层 */
-        var box = document.getElementById(this.sId).parentNode;
+        /* 列表层 */
+        var div = this.oCfgs[this.sId].oDiv;
 
         /* 创建层 */
         var b = document.createElement('DIV');
@@ -316,29 +290,29 @@ var ListTable = {
         b.appendChild(o);
         b.appendChild(i);
 
-        /* 写入节点到BOX层 */
-        box.insertBefore(b, box.childNodes[0]);
+        /* 写入节点到列表层 */
+        div.insertBefore(b, div.childNodes[0]);
 
         /* 设置属性 */
-        b.id           = 'list-box-loading-' + this.sId;
-        b.className    = 'list-box-loading';
-        b.style.width  = box.offsetWidth + 'px';
-        b.style.height = box.offsetHeight + 'px';
+        b.id           = 'listtable-div-loading-' + this.oCfgs[this.sId].sId;
+        b.className    = 'listtable-div-loading';
+        b.style.width  = div.offsetWidth + 'px';
+        b.style.height = div.offsetHeight + 'px';
 
         o.className    = 'overlay';
         o.style.width  = b.style.width;
         o.style.height = b.style.height;
 
         i.className    = 'loading';
-        i.style.top    = (box.offsetHeight-10)/2 + 'px';
+        i.style.top    = (div.offsetHeight-10)/2 + 'px';
     },
 
     /**
-     * 移除列表BOX加载层
+     * 移除列表加载层
      */
     removeListLoading : function(){
         /* 获取对象 */
-        var o = document.getElementById('list-box-loading-'+this.sId);
+        var o = document.getElementById('listtable-div-loading-'+this.oCfgs[this.sId].sId);
 
         /* 移除对象 */
         if( o ) o.parentNode.removeChild(o);
@@ -356,7 +330,7 @@ var ListTable = {
      * @params obj  caller  调用者对象
      * @params mix  id      数据：记录ID
      * @params str  msg     删除提示消息
-     * @params str  url     要提交的URL，默认使用 ListTable.sUrl + '?act=del'
+     * @params str  url     要提交的URL，默认使用 列表的基础URL + '?act=del'
      * @params obj  callbacks      回调函数
      *         fun  callbacks.ok   处理成功时回调的函数(不与默认的重载列表事件同时执行)
      *         fun  callbacks.fail 处理失败时回调的函数
@@ -369,7 +343,7 @@ var ListTable = {
         function callback(){
             /* 初始化URL */
             url = typeof(url) == 'string' && url ? url : '?act=del';
-            if( url.substr(0,1) == '?' ) url = ListTable.sUrl + url;
+            if( url.substr(0,1) == '?' ) url = ListTable.oCfgs[ListTable.sId].sUrl + url;
 
             /* 异步传输(同步等待) */
             var result = Ajax.call(url, 'id='+id, null, 'POST', 'JSON', false);
@@ -405,7 +379,7 @@ var ListTable = {
      * @params obj  caller  调用者对象
      * @params int  id      数据：记录的ID
      * @params str  field   要更新的字段名
-     * @params str  url     要提交的URL，默认使用 ListTable.sUrl + '?act=ufield'
+     * @params str  url     要提交的URL，默认使用 列表的基础URL + '?act=ufield'
      * @params obj  callbacks      回调函数
      *         fun  callbacks.ok   处理成功时回调的函数
      *         fun  callbacks.fail 处理失败时回调的函数
@@ -463,7 +437,7 @@ var ListTable = {
             else{
                 /* 初始化URL */
                 url = typeof(url) == 'string' && url ? url : '?act=ufield';
-                if( url.substr(0,1) == '?' ) url = ListTable.sUrl + url;
+                if( url.substr(0,1) == '?' ) url = ListTable.oCfgs[ListTable.sId].sUrl + url;
 
                 /* 构建参数 */
                 var params = 'val='+ encodeURIComponent(this.value) +'&id='+ id +'&field='+ field;
@@ -509,7 +483,7 @@ var ListTable = {
      * @params obj  caller  调用者对象
      * @params int  id      数据：记录ID
      * @params str  field   要切换状态的字段名称
-     * @params str  url     要提交的URL，默认使用 ListTable.sUrl + '?act=ufield'
+     * @params str  url     要提交的URL，默认使用 列表的基础URL + '?act=ufield'
      * @params obj  callbacks      回调函数
      *         fun  callbacks.ok   处理成功时回调的函数
      *         fun  callbacks.fail 处理失败时回调的函数
@@ -526,7 +500,7 @@ var ListTable = {
 
         /* 初始化URL */
         url = typeof(url) == 'string' && url ? url : '?act=ufield';
-        if( url.substr(0,1) == '?' ) url = ListTable.sUrl + url;
+        if( url.substr(0,1) == '?' ) url = ListTable.oCfgs[ListTable.sId].sUrl + url;
 
         /* 构建参数 */
         var params = 'val='+ val +'&id='+ id +'&field='+ field;
@@ -561,93 +535,12 @@ var ListTable = {
     },
 
     /**
-     * [测试阶段]
-     * 创建一个下拉框
-     * 默认提交 act,id,field,val 三个参数以及对应的数据
-     *
-     * @params obj  caller  调用者对象
-     * @params int  id      数据：记录的ID
-     * @params str  field   要更新的字段名
-     * @params str  opts    JSON格式，下拉框的项[{val:xx,txt:xx}]
-     * @params str  url     要提交的URL，默认使用 ListTable.sUrl + '?act=ufield'
-     */
-    ddl : function( caller, id, field, opts, url ){
-        /* 防止重复点击创建 */
-        if( caller.firstChild && caller.firstChild.tagName && caller.firstChild.tagName.toLowerCase() == 'select' ) return false;
-
-        /* 保存原来的内容 */
-        var s_html = f(caller.innerHTML, 'trim');
-        var s_text = f((window.ActiveXObject ? caller.innerText : caller.textContent), 'trim');
-
-        /* 创建一个下拉框 */
-        var sel = document.createElement("SELECT");
-
-        for( var i=0,len=opts.length; i < len; i++ ){
-            /* 无效数据 */
-            if( typeof(opts[i]) != 'object' ) continue;
-
-            opt = document.createElement("OPTION");
-            opt.text  = opts[i].txt;
-            opt.value = opts[i].val;
-
-            sel.options.add(opt);
-
-            if( f(s_text,'trim') == f(opts[i].txt,'trim') ){
-                sel.selectedIndex = i;
-            }
-        }
-
-        /* 隐藏对象中的内容，并将下拉框加入到对象中 */
-        caller.innerHTML = '';
-        caller.appendChild(sel);
-
-        sel.focus();
-
-        /* 编辑区失去焦点的处理函数 */
-        sel.onblur = function(e){
-            /* 去除边界空白符 */
-            text = f(this.options[this.selectedIndex].text, 'trim');
-
-            /* 字段值未发生变化 */
-            if( text == s_text ){
-                caller.innerHTML = s_html;
-            }
-            /* 字段值发生变化 */
-            else{
-                /* 初始化URL */
-                url = typeof(url) == 'string' && url ? url : '?act=ufield';
-                if( url.substr(0,1) == '?' ) url = ListTable.sUrl + url;
-
-                /* 构建参数 */
-                var params = 'val='+ encodeURIComponent(this.value) +'&id='+ id +'&field='+ field;
-
-                /* 异步传输(同步等待) */
-                var result = Ajax.call(url, params, null, "POST", "JSON", false);
-
-                /* 显示消息 */
-                if( result.message ){
-                    wnd_alert(result.message);
-                }
-
-                /* 事件源对象赋值 */
-                if( result.error == 0 ){
-                    caller.innerHTML = text;
-                }
-                /* 出错，恢复到原编辑状态 */
-                else{
-                    caller.innerHTML = s_html;
-                }
-            }
-        }
-    },
-
-    /**
      * 批量处理
-     * 数据为 ListTable.oChoiced 中的ID值
+     * 数据为 ListTable.oCfgs[ListTable.sId].oChoiced 中的ID值
      * 默认提交 act,ids[] 参数以及附加参数
      *
      * @params obj  caller  调用者对象
-     * @params str  url     要提交的URL，默认使用 ListTable.sUrl + url(如果url的格式为'?xx=xx&...')
+     * @params str  url     要提交的URL，默认使用 列表的基础URL + url(如果url的格式为'?xx=xx&...')
      * @params obj  params  附加参数{$param:$value}
      * @params str  msg     消息提示，如果没填则表示不提示消息。
      *                      消息中的%d将会被转换为批处理记录个数
@@ -656,8 +549,8 @@ var ListTable = {
      *         fun  callbacks.fail 处理失败时回调的函数
      */
     batch : function( caller, url, params, msg, callbacks ){
-        /* 补充全URL */
-        if( url.substr(0,1) == '?' ) url = ListTable.sUrl + url;
+        /* 补全URL */
+        if( url.substr(0,1) == '?' ) url = ListTable.oCfgs[ListTable.sId].sUrl + url;
 
         /* 初始化附加属性 */
         if( typeof(params) != 'object' || !params ) params={};
@@ -667,7 +560,7 @@ var ListTable = {
 
         /* 构建记录IDS参数 */
         if( typeof(params) == 'object' && params ){
-            for( var id in this.oChoiced ){
+            for( var id in this.oCfgs[this.sId].oChoiced ){
                 param += '&ids[]='+id; count++;
             }
         }
@@ -722,7 +615,7 @@ var ListTable = {
      * 获取选中的值
      *
      * @params str  type  返回值类型
-     *                    'VALUE'    表示返回 ID：[$id] - 默认
+     *                    'IDS'      表示返回 ID集：[$id] - 默认
      *                    'ASSOC'    表示返回 ID关联数据对象：{$id:{'id':$id,'caller':$caller,'data':$data}}
      *                    'UNASSOC'  表示返回 无关联数据对象：[{'id':$id,'caller':$caller,'data':$data}]
      *
@@ -732,13 +625,16 @@ var ListTable = {
         /* 初始化返回值类型 */
         var arr = type == 'ASSOC' ? {} : [];
 
+        /* 初始化当前列表选中项数据 */
+        var choiced = this.oCfgs[this.sId].oChoiced;
+
         /* 构建返回值 */
-        for( var id in this.oChoiced ){
+        for( var id in choiced ){
             if( type == 'ASSOC' ){
-                arr.id = this.oChoiced[id];
+                arr.id = choiced[id];
             }
             else if( type == 'UNASSOC' ){
-                arr.push(this.oChoiced[id]);
+                arr.push(choiced[id]);
             }
             else{
                 arr.push(id);
@@ -752,11 +648,11 @@ var ListTable = {
     /**
      * 初始化选中记录
      *
-     * @params bool  load  是否重载列表，默认 false
+     * @params bol  reload  是否重载列表，默认 false
      */
     initChoice : function( reload ){
         /* 初始化选中数据 */
-        this.oChoiced = {};
+        this.oCfgs[this.sId].oChoiced = {};
 
         /* 重载列表 */
         reload === true ? this.loadList() : '';
@@ -767,7 +663,7 @@ var ListTable = {
      */
     setMCLimit : function( limit ){
         if( typeof(limit) == 'number' && limit >= 0 ){
-            this.iMCLimit = limit;
+            this.oCfgs[this.sId].iMCLimit = limit;
         }
     },
 
@@ -860,21 +756,21 @@ var ListTable = {
         callbacks = typeof(callbacks) == 'object' && callbacks ? callbacks : listtable_schoice_callbacks_default;
 
         /* 处理已选中的数据 */
-        for( var i in this.oChoiced ){
+        for( var i in this.oCfgs[this.sId].oChoiced ){
             /* 撤销选中时的回调函数 */
             if( callbacks && typeof(callbacks.unchoice) == 'function' ){
-                callbacks.unchoice(this.oChoiced[i].caller);
+                callbacks.unchoice(this.oCfgs[this.sId].oChoiced[i].caller);
             }
 
             /* 撤销选中 */
-            delete this.oChoiced[i];
+            delete this.oCfgs[this.sId].oChoiced[i];
 
             /* 再次点击触发的撤销选中 */
             if( i == id ) return 0;
         }
 
         /* 保存选中记录ID */
-        this.oChoiced[id] = {'id':id, 'caller':caller, 'data':data};
+        this.oCfgs[this.sId].oChoiced[id] = {'id':id, 'caller':caller, 'data':data};
 
         /* 选中时的回调函数 */
         if( callbacks && typeof(callbacks.choice) == 'function' ){
@@ -900,30 +796,30 @@ var ListTable = {
      */
     mchoice : function( caller, id, data, callbacks ){
         /* 初始化 */
-        var limit = this.iMCLimit;
+        var limit = this.oCfgs[this.sId].iMCLimit;
         callbacks = typeof(callbacks) == 'object' && callbacks ? callbacks : listtable_schoice_callbacks_default;
 
         /* 处理已选中的数据 */
-        for( var i in this.oChoiced ){
+        for( var i in this.oCfgs[this.sId].oChoiced ){
             /* 再次点击触发的撤销选中 */
             if( i == id ){
                 /* 撤销选中时的回调函数 */
                 if( callbacks && typeof(callbacks.unchoice) == 'function' ){
-                    callbacks.unchoice(this.oChoiced[i].caller);
+                    callbacks.unchoice(this.oCfgs[this.sId].oChoiced[i].caller);
                 }
 
                 /* 撤销选中 */
-                delete this.oChoiced[i]; return 0;
+                delete this.oCfgs[this.sId].oChoiced[i]; return 0;
             }
 
             /* 多选限制 */
             if( limit != 0 && --limit <= 0 ){
-                wnd_alert('最多只能选择 '+ this.iMCLimit +' 项！'); return false;
+                wnd_alert('最多只能选择 '+ this.oCfgs[this.sId].iMCLimit +' 项！'); return false;
             }
         }
 
         /* 保存选中记录ID */
-        this.oChoiced[id] = {'id':id, 'caller':caller, 'data':data};
+        this.oCfgs[this.sId].oChoiced[id] = {'id':id, 'caller':caller, 'data':data};
 
         /* 选中时的回调函数 */
         if( callbacks && typeof(callbacks.choice) == 'function' ){

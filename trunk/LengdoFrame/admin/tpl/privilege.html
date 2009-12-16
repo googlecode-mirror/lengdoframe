@@ -4,8 +4,8 @@
 <?php if( $tpl['_body'] == 'list' ){ ?>
 
     <?php if( $tpl['_bodysub'] != 'query' ){?>
-    <div class="list-box" onmouseover="ListTable.init('list-privilege','modules/kernel/privilege.php','?act=list');ListTable.filter('module_id','<?php echo $_GET['module_id']; ?>');">
-        <form class="search-form" onsubmit="deal_search_list(this);return false;">
+    <div class="listtable-div" id="listtable-privilege" onmouseover="ListTable.init(this.id,'modules/kernel/privilege.php','?act=list');ListTable.filter('module_id','<?php echo $_GET['module_id']; ?>');">
+        <form class="listtable-search" onsubmit="deal_search_list(this);return false;">
             <table>
             <tr>
                 <td width="30"><i class="icon"></i></td>
@@ -16,7 +16,7 @@
             </table>
         </form>
 
-        <div id="list-privilege" class="list-div">
+        <div class="listtable-data">
     <?php }?>       
 
             <table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
@@ -44,7 +44,7 @@
             <?php }?>
             </table>
 
-            <div class="table-footer"><div class="pager"><?php echo $tpl['list']['pager']['html']; ?></div></div>
+            <div class="listtable-footer"><div class="pager"><?php echo $tpl['list']['pager']['html']; ?></div></div>
 
     <?php if( $tpl['_bodysub'] != 'query' ){?>
         </div>
