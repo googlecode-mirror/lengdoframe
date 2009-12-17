@@ -674,9 +674,9 @@ function wnd_wait( msg, configs )
 { 
     configs = typeof(configs) == 'object' && configs ? configs : {};
     
-    configs.action = 0;
-    configs.zindex = 50;
-    configs.button = '';
+    configs.zindex   = 50;
+    configs.button   = '';
+    configs.titleact = 0;
 
     wnd_sysmsg(msg, configs, 'wait');
 }
@@ -691,9 +691,9 @@ function wnd_alert( msg, configs, active )
 { 
     configs = typeof(configs) == 'object' && configs ? configs : {};
 
-    configs.action = 1;
-    configs.zindex = 51;
-    configs.button = 'ok';
+    configs.zindex   = 51;
+    configs.button   = 'ok';
+    configs.titleact = 1;
 
     wnd_sysmsg(msg, configs, 'alert', active);
 }
@@ -702,9 +702,9 @@ function wnd_confirm( msg, configs, active )
 {
     configs = typeof(configs) == 'object' && configs ? configs : {};
 
-    configs.action = 1;
-    configs.zindex = 51;
-    configs.button = 'ok&cannel';
+    configs.zindex   = 51;
+    configs.button   = 'ok&cannel';
+    configs.titleact = 1;
 
     wnd_sysmsg(msg, configs, 'confirm', active);
 }
@@ -724,7 +724,7 @@ function wnd_sysmsg( msg, configs, type, active )
 
     /* 构建窗口 */
     if( !wnd ){
-        wnd = new Wnd('wnd-sysmsg-'+type, null, {'width':420, 'action':configs.action}); 
+        wnd = new Wnd('wnd-sysmsg-'+type, null, {'width':420, 'titleact':configs.titleact}); 
 
         wnd.create(); 
         wnd.zindex(configs.zindex);
@@ -734,16 +734,15 @@ function wnd_sysmsg( msg, configs, type, active )
     /* 配置窗口 - 初始数据 */
     var html    = '<div class="wnd-client-sysmsg"><table><tr><td class="i"><i class="plaint"></i></td><td class="t">'+ msg +'</td></tr></table></div>';
 
-    var func    = function(){};
     var title   = configs.title ? configs.title : '系统消息';
     var overlay = typeof(configs.overlay) == 'number' ? configs.overlay : 40;
-    
+
     /* 配置窗口 - 窗口回调 */
-    wnd.callback('ok', (typeof(configs.ok) == 'function' ? configs.ok : func) );
-    wnd.callback('okb', (typeof(configs.okb) == 'function' ? configs.okb : func) );
-    wnd.callback('hidden', (typeof(configs.hidden) == 'function' ? configs.hidden : func) );
-    wnd.callback('cannel', (typeof(configs.cannel) == 'function' ? configs.cannel : func) );
-    wnd.callback('cannelb', (typeof(configs.cannelb) == 'function' ? configs.cannelb : func) );
+    wnd.callback('ok'      , (typeof(configs.ok)      == 'function' ? configs.ok      : function(){}) );
+    wnd.callback('okb'     , (typeof(configs.okb)     == 'function' ? configs.okb     : function(){}) );
+    wnd.callback('hidden'  , (typeof(configs.hidden)  == 'function' ? configs.hidden  : function(){}) );
+    wnd.callback('cannel'  , (typeof(configs.cannel)  == 'function' ? configs.cannel  : function(){}) );
+    wnd.callback('cannelb' , (typeof(configs.cannelb) == 'function' ? configs.cannelb : function(){}) );
 
     /* 配置窗口 - 数据设置 */
     wnd.title(title, 'plaint');
@@ -758,7 +757,7 @@ function wnd_sysmsg( msg, configs, type, active )
         /* 初始化 */
         active = typeof(active) == 'string' ? active : 'ok';
         keypress = active == 'ok' ? function(e){if(e.keyCode==27)this.cannel()} : null;
-        
+
         /* 激活 */
         wnd.buttonActive(active, keypress);
     }
@@ -802,80 +801,63 @@ function deal_form_params( form )
 }
 
 /**
- * 初始化模拟异步提交表单的条件并设置表单参数。 
+ * 模拟异步提交表单。
+ * 注：该函数并不提交表单，只是为表单的模拟异步创建条件
  *
- * @params obj  form  表单对象
- * @params str  url   提交的URL地址
- * @params fnc  func  完成后回调
- * @params str  type  响应的数据类型，JSON(默认) TEXT
- * @params str  msg   系统等待提示消息，false表示不显示
+ * @params obj  form     表单对象
+ * @params str  url      提交的URL地址
+ * @params obj  configs  完成后回调
+ *         str           configs.msg       等待时提示消息，false表示不显示
+ *         str           configs.rtype     响应的数据类型，JSON(默认) TEXT
+ *         fun           configs.complete  完成时回调的函数
  */
-function deal_form_submit( form, url, func, type, msg )
+function deal_form_submit( form, url, configs )
 {
+    /* 初始化 */
+    configs = typeof(configs) == 'object' && configs ? configs : {};
+
 	/* 获取IFRAME */
-	var iframe = document.getElementById('deal-form-submit');
-
-	/* 创建IFRAME */
-	if( !iframe ){
-		/* 创建IFRAME插入层 */
-		var div = document.createElement('DIV');
-
-        div.style.display = 'none';
-
-		document.body.appendChild(div);
-
-		/* 创建IFRAME */
-		div.innerHTML = '<IFRAME id="deal-form-submit" name="deal-form-submit"></IFRAME>';
-
-		iframe = document.getElementById('deal-form-submit');
-	}
-
-    /* 构建回调函数 */
-    var callback = function(){
-        /* 清除执行等待窗口 */
-        wnd_wait_clear();
-
-        /* 读取响应内容并JSON化 */
-        try{
-            var text = iframe.contentWindow.document.body.innerHTML;
-            var result = text;
-
-            /* 解决FF下由于fileUpload导致返回的数据加上<pre>标签的BUG */
-            if( result.indexOf('<pre>') != -1 && result.substr(0, 5) == '<pre>' ){
-                result = result.substring(5, result.length-6);
-            }
-
-            /* 格式化JSON数据 */
-            if( type != 'TEXT' ){
-                result = eval('('+ result +')');
-            }
-        }catch(e){
-            wnd_alert('数据解析出错！<br />'+result);
-        }
-
-        if( typeof(func) == 'function' ){
-            func(result, text, form);
-        }
-    }
-
-	/* 设置回调函数 - IE */
-	if( window.ActiveXObject ){
-		iframe.detachEvent("onload", iframe.onload);
-		iframe.attachEvent("onload", callback);
-	}
-
-	/* 设置回调函数 - FF */
-	iframe.onload = callback;
+	var iframe = deal_ajax_iframe();
+    
+    /* 设置IFRAME加载函数 */
+    deal_ajax_iframe_attribs( {'onload':function(){deal_form_submit_complete(form,url,configs)}} )
 
     /* 初始化表单参数 */
     form.action   = url;
+	form.target   = iframe.name;
+
+    /* 初始化表单常量 */
     form.method   = 'post';
-	form.target   = 'deal-form-submit';
 	form.encoding = 'multipart/form-data';
 
-    /* 执行等待中 */
-    if( msg !== false ){
-        wnd_wait( msg ? msg : '请稍等！数据提交中....' );
+    /* 显示等待消息 */
+    if( configs.msg !== false ) wnd_wait( configs.msg ? configs.msg : '请稍等！数据提交中....' );
+}
+function deal_form_submit_complete( form, url, configs )
+{
+    /* 清除窗口 */
+    wnd_wait_clear();
+
+    /* 读取响应内容并JSON化 */
+    try{
+        var text = deal_ajax_iframe().contentWindow.document.body.innerHTML;
+        var result = text;
+
+        /* 解决FF下由于文件上传表单域导致返回的数据加上<pre>标签的BUG */
+        if( result.indexOf('<pre>') != -1 && result.substr(0, 5) == '<pre>' ){
+            result = result.substring(5, result.length-6);
+        }
+
+        /* 格式化JSON数据 */
+        if( configs.rtype != 'TEXT' ){
+            result = eval('('+ result +')');
+        }
+    }catch(e){
+        wnd_alert('数据解析出错！<br />'+result); return false;
+    }
+
+    if( typeof(configs.complete) == 'function' ){
+        configs.complete(result, text, form);
     }
 }
 
@@ -915,6 +897,61 @@ function deal_wfm_keyboard( event, wndele )
     else if( event.keyCode == 27 ){
         /* 调用窗口的取消函数 */
         wnd.cannel();
+    }
+}
+
+
+/* ------------------------------------------------------ */
+// - 模拟异步IFRAME
+/* ------------------------------------------------------ */
+
+/**
+ * 获取模拟异步的IFRAME
+ */
+function deal_ajax_iframe()
+{
+	/* 获取IFRAME */
+	var iframe = document.getElementById('deal-ajax-iframe');
+
+    /* 返回IFRAME */
+    if( iframe ) return iframe;
+
+    /* 创建IFRAME容器层 */
+    var div = document.createElement('DIV');
+    div.style.display = 'none';
+
+    /* 追加IFRAME容器层到DOM */
+    document.body.appendChild(div);
+
+    /* 创建IFRAME */
+    div.innerHTML = '<IFRAME id="deal-ajax-iframe" name="deal-ajax-iframe"></IFRAME>';
+
+    /* 返回IFRAME */
+	return document.getElementById('deal-ajax-iframe');
+}
+
+/**
+ * 设置模拟异步的IFRAME属性
+ */
+function deal_ajax_iframe_attribs( attribs )
+{
+	/* 获取IFRAME */
+	var iframe = deal_ajax_iframe();
+
+    /* 初始化 */
+    attribs = typeof(attribs) == 'object' && attribs ? attribs : {};
+
+    /* 移除，绑定 onload 属性 */
+    if( iframe.onload ){
+        window.ActiveXObject ? iframe.detachEvent('onload',iframe.onload) : iframe.removeEventListener('load',iframe.onload,true);
+    }
+    if( typeof(attribs.onload) == 'function' ){
+        window.ActiveXObject ? iframe.attachEvent('onload',attribs.onload) : iframe.addEventListener('load',attribs.onload,true);
+    }
+
+    /* 绑定 src 属性 */
+    if( typeof(attribs.src) == 'string' && attribs.src != '' ){
+        iframe.src = attribs.src +'&'+ Math.random();
     }
 }
 

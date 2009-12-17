@@ -88,7 +88,7 @@
                 <tr><td colspan="6"><div class="warn-div"><span><?php echo $tpl['error']; ?></span></div></td></tr>
                 <?php }else{?>
                     <?php if( !empty($tpl['all']) ){ foreach( $tpl['all'] AS $r ){?>
-                    <tr class="<?php echo $r['level']; ?>" style="<?php if( $r['type'] == 'volumes' ){ echo 'display:none;color:#999'; } ?>" align="center">
+                    <tr class="<?php echo $r['type']=='volumes' ? 2 : 1 ; ?>" style="<?php echo $r['type']=='volumes' ? 'display:none;color:#999' : ''; ?>" align="center">
                         <td>
                             <?php if( $r['type'] != 'volumes' ){?>
                             <input type="checkbox" name="listtable-dbbackup-ids" value="<?php e($r['file'],'formc'); ?>" class="checkbox" 
@@ -97,7 +97,7 @@
                         </td>
                         <td align="left"><?php echo $r['name']; ?></td>
                         <td><?php echo $r['date']; ?></td>
-                        <td><?php echo $r['file_size']; ?></td>
+                        <td><?php echo $r['size']; ?></td>
                         <td><?php echo $r['vol']; ?></td>
                         <td class="action"><?php echo $r['acts']; ?></td>
                     </tr>
@@ -126,7 +126,7 @@
 
     <?php if( $tpl['_body'] == 'index' ){?>
         <div style="display:none">
-            <form onsubmit="deal_form_submit(this,'modules/db/db_backup.php?act=upload',deal_dbbackup_upload);">
+            <form onsubmit="deal_form_submit(this,'modules/db/db_backup.php?act=upload',{'complete':deal_dbbackup_upload});">
                 <div class="table-header"><i></i><span>请上传扩展名为.sql , 容量小于2048 KB 的文件</span></div>
                 <div class="form-div" style="border-bottom:0;">
                     <table cellspacing="1">
