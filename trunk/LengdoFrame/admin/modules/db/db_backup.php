@@ -19,9 +19,56 @@ require('../../../class/dumpsql.class.php');
 
 
 /* ------------------------------------------------------ */
-// - 备份 - 界面
+// - 查看备份文件
 /* ------------------------------------------------------ */
-if( $_REQUEST['act'] == 'backup' ){
+if( $_REQUEST['act'] == 'view' ){
+    /* 权限检查 */
+    admin_privilege_valid('db_backup.php', 'backup');
+
+    /* 构建备份文件路径 */
+    $file = $_CFG['DIR_DB_DUMPSQL'].$_GET['file'];
+    
+    /* 无效参数 */
+    if( substr($file,-8) != '.sql.php' || !is_file($file) ){
+        sys_msg($_LANG['lawless_submit']);
+    }
+
+    /* 构建HTML */
+    $html = file_get_contents($file);
+    $html = str_replace(' ', '&nbsp;', $html);
+    $html = str_replace(array("\r\n","\r","\n"), '<br />', $html);
+    $html = substr($html, strpos($html,'<br />')+6);
+    
+    /* 输出HTML */
+    echo $html; exit();
+}
+
+
+/* ------------------------------------------------------ */
+// - 下载备份文件
+/* ------------------------------------------------------ */
+elseif( $_REQUEST['act'] == 'download' ){
+    /* 权限检查 */
+    admin_privilege_valid('db_backup.php', 'backup');
+
+    /* 构建备份文件路径 */
+    $file = $_CFG['DIR_DB_DUMPSQL'].$_GET['file'];
+
+    /* 无效参数 */
+    if( substr($file,-8) != '.sql.php' || !is_file($file) ){
+        sys_msg($_LANG['lawless_submit']);
+    }
+
+    $str = file_get_contents($file);
+
+    http_export( basename($file,'.php'), $str );
+}
+
+
+/* ------------------------------------------------------ */
+// - 异步 - 备份界面
+/* ------------------------------------------------------ */
+elseif( $_REQUEST['act'] == 'backup' ){
     /* 权限检查 */
     admin_privilege_valid('db_backup.php', 'backup');
 
@@ -45,7 +92,7 @@ if( $_REQUEST['act'] == 'backup' ){
     $tpl['_block'] = true;
 }
 /* ------------------------------------------------------ */
-// - 备份 - 导出SQL
+// - 异步 - 备份导出SQL
 /* ------------------------------------------------------ */
 elseif( $_REQUEST['act'] == 'dumpsql' ){
     /* 权限检查 */
@@ -53,7 +100,7 @@ elseif( $_REQUEST['act'] == 'dumpsql' ){
 
     /* 初始化常量 */
     $vol      = intval($_POST['vol']) > 0 ? intval($_POST['vol']) : 1;
-    $vol_size = intval($_POST['vol_size']) > 0 ? intval($_POST['vol_size']) : 2048; //分卷文件大小( KB为单位 )
+    $vol_size = intval($_POST['vol_size']) > 0 ? intval($_POST['vol_size']) : 1536; //分卷文件大小( KB为单位 )
 
     $columns  = intval($_POST['columns']);
     $extended = intval($_POST['extended']);
@@ -116,7 +163,7 @@ elseif( $_REQUEST['act'] == 'dumpsql' ){
     if( empty($tables) ){
         /* 多个文件 */
         if( $vol > 1 ){
-            if( @file_put_contents("{$file_path}_{$vol}.sql",$dump->sDumpSql) === false ){
+            if( @file_put_contents("{$file_path}_{$vol}.sql.php","-- <?php exit(); ?>\r\n".$dump->sDumpSql) === false ){
                 make_json_fail($_LANG['fail_dbbackup_write']);
             }
 
@@ -125,7 +172,7 @@ elseif( $_REQUEST['act'] == 'dumpsql' ){
 
         /* 单个文件 */
         else{
-            if( @file_put_contents("{$file_path}.sql",$dump->sDumpSql) === false ){
+            if( @file_put_contents("{$file_path}.sql.php","-- <?php exit(); ?>\r\n".$dump->sDumpSql) === false ){
                 make_json_fail($_LANG['fail_dbbackup_write']);
             }
 
@@ -134,7 +181,7 @@ elseif( $_REQUEST['act'] == 'dumpsql' ){
     }
     /* 部分表未备份完成 */
     else{
-        if( @file_put_contents( "{$file_path}_{$vol}.sql", $dump->sDumpSql) === false ){;
+        if( @file_put_contents( "{$file_path}_{$vol}.sql.php","-- <?php exit(); ?>\r\n".$dump->sDumpSql) === false ){;
             make_json_fail($_LANG['fail_dbbackup_write']);
         }
 
@@ -160,18 +207,18 @@ elseif( $_REQUEST['act'] == 'import' ){
     /* 文件名初始化并检查 */
     $file_name = empty($_POST['file']) ? '' : trim($_POST['file']);
 
-    if( substr($file_name,-4) != '.sql' ){
+    if( substr($file_name,-8) != '.sql.php' ){
         make_json_fail($_LANG['file_ext_error']);
     }
 
     /* 分卷导入 */
-    if( preg_match('/_[0-9]+\.sql$/', $file_name) ){
+    if( preg_match('/_[0-9]+\.sql\.php$/', $file_name) ){
         /* 初始化 */
         $num = intval( substr($file_name, strrpos($file_name, '_')+1) );
         $short_name = substr( $file_name, 0, strrpos($file_name, '_') );
 
         /* 无效文件 */
-        $str = $_CFG['DIR_DB_DUMPSQL'].$short_name .'_'. $num .'.sql';
+        $str = $_CFG['DIR_DB_DUMPSQL'].$short_name .'_'. $num .'.sql.php';
         if( !is_file($str) ){
             make_json_fail($_LANG['fail_dbbackup_import']);
         }
@@ -180,7 +227,7 @@ elseif( $_REQUEST['act'] == 'import' ){
         if( intval($_POST['init']) == 1 ){
             /* 取得分卷总数 */
             for( $i=1; $i < 100; $i++ ){
-                $str = $_CFG['DIR_DB_DUMPSQL'].$short_name .'_'. $i .'.sql';
+                $str = $_CFG['DIR_DB_DUMPSQL'].$short_name .'_'. $i .'.sql.php';
 
                 if( !is_file($str) ){
                     $_POST['total'] = $i-1; break;
@@ -188,7 +235,7 @@ elseif( $_REQUEST['act'] == 'import' ){
             }
 
             /* 构建返回消息 */
-            $str = 'file='. $short_name .'_'. $num .'.sql&total='.$_POST['total'];
+            $str = 'file='. $short_name .'_'. $num .'.sql.php&total='.$_POST['total'];
             $msg = sprintf($_LANG['spr_dbbackup_import_part'], $num, $_POST['total']);
 
             /* 返回消息 */
@@ -200,13 +247,13 @@ elseif( $_REQUEST['act'] == 'import' ){
             make_json_fail($_LANG['fail_dbbackup_import']);
         }else{
             /* 导入完成 */
-            $str = $_CFG['DIR_DB_DUMPSQL'].$short_name .'_'. ($num+1) .'.sql';
+            $str = $_CFG['DIR_DB_DUMPSQL'].$short_name .'_'. ($num+1) .'.sql.php';
             if( !is_file($str) ){
                 make_json_ok($_LANG['ok_dbbackup_import']);
             }
 
             /* 构建返回消息 */
-            $str = 'file='. $short_name .'_'. ($num+1) .'.sql&total='.$_POST['total'];
+            $str = 'file='. $short_name .'_'. ($num+1) .'.sql.php&total='.$_POST['total'];
             $msg = sprintf($_LANG['spr_dbbackup_import_part'], ($num+1), $_POST['total']);
 
             /* 返回消息 */
@@ -248,7 +295,7 @@ elseif( $_REQUEST['act'] == 'upload' ){
     }
 
     /* 设置文件路径 */
-    $file_path = $_CFG['DIR_DB_DUMPSQL'] . '_upload_sql_file.sql';
+    $file_path = $_CFG['DIR_DB_DUMPSQL'] . 'upload_sql_file_temp.sql';
 
     /* 将文件移动到备份文件夹下 */
     if( !move_uploaded_file($_FILES['file']['tmp_name'] , $file_path) ){
@@ -280,9 +327,9 @@ elseif( $_REQUEST['act'] == 'del' ){
     $m_files = array(); //多卷文件
     $s_files = array(); //单卷文件
     foreach( $_POST['ids'] AS $file ){
-        if( substr($file,-4) != '.sql' ) continue;
+        if( substr($file,-8) != '.sql.php' ) continue;
 
-        if( preg_match('/_[0-9]+\.sql$/', $file) ){
+        if( preg_match('/_[0-9]+\.sql\.php$/', $file) ){
             $m_files[] = substr( $file, 0, strrpos($file, '_') );
         }else{
            $s_files[] = $file;
@@ -298,7 +345,7 @@ elseif( $_REQUEST['act'] == 'del' ){
 
         $folder = opendir($_CFG['DIR_DB_DUMPSQL']);
         while( $file = readdir($folder) ){
-            if( preg_match('/_[0-9]+\.sql$/',$file) && is_file($_CFG['DIR_DB_DUMPSQL'].$file) ){
+            if( preg_match('/_[0-9]+\.sql\.php$/',$file) && is_file($_CFG['DIR_DB_DUMPSQL'].$file) ){
                 $files[] = $file;
             }
         }
@@ -310,7 +357,7 @@ elseif( $_REQUEST['act'] == 'del' ){
             }
         }
     }
-    
+
     /* 单卷文件删除 */
     if( !empty($s_files) ){
         foreach( $s_files AS $file ){
@@ -417,13 +464,17 @@ function list_sqlfile()
     $folder = @opendir($_CFG['DIR_DB_DUMPSQL']);
 
     while( $file = @readdir($folder) ){
-        if( substr($file, -4) == '.sql' ){
+        if( substr($file, -8) == '.sql.php' ){
             $files[] = $file;
         }
     }
 
     return $files;
 }
+
+/**
+ * 格式化SQL文件列表
+ */
 function list_sqlfile_format( $files )
 {
     global $_LANG, $_CFG;
@@ -433,82 +484,84 @@ function list_sqlfile_format( $files )
 
     /* 构建列表数据 */
     foreach( $files AS $file ){
-        /* 设置备份文件的层级，类型和当前卷 */
-        if( preg_match('/_[0-9]+\.sql$/', $file, $matchs) ){
-            $level = 2; $type = 'volumes'; $volume = intval( substr($matchs[0],1) );
+        /* 解析备份文件类型和当前卷 */
+        if( preg_match('/_[0-9]+\.sql.php$/', $file, $matchs) ){
+            $type = 'volumes'; $volume = intval( substr($matchs[0],1) );
         }else{
-            $level = 1; $type = 'volume';  $volume = 1;
+            $type = 'volume'; $volume = 1;
         }
 
         /* 构建用于排序的文件名和引导的文件名 */
         $filearr = explode('_', $file);  $offset = count($filearr) - 1;
-        $filearr[$offset] = $type == 'volumes' ? str_pad($filearr[$offset], 8, '0', STR_PAD_LEFT) : $filearr[$offset];
+        $filearr[$offset] = $type == 'volumes' ? str_pad($filearr[$offset], strlen('.sql.php')+4, '0', STR_PAD_LEFT) : $filearr[$offset];
 
-        $filesort  = implode('_', $filearr);
-        $fileindex = preg_replace('/_[0-9]+\.sql$/', '.sql', $file);
+        $fnamesort  = implode('_', $filearr);
+        $fnameindex = preg_replace('/_[0-9]+\.sql\.php$/', '.sql.php', $file);
 
-        /* 备份文件信息 */
-        $info = DumpSql::getHeader($_CFG['DIR_DB_DUMPSQL'].$file);
-        $info['file_size'] = filesize($_CFG['DIR_DB_DUMPSQL'].$file);
+        /* 备份文件的信息 */
+        $header = DumpSql::getHeader($_CFG['DIR_DB_DUMPSQL'].$file);
+        $header['size'] = filesize($_CFG['DIR_DB_DUMPSQL'].$file);
 
         /* 记录操作 */
         if( $acts = '' || $volume == 1 ){
             $acts = '<a href="javascript:void(0)" onclick="deal_dbbackup_import(\'file='. $file;
-            $acts.= '&init=1\',\''. $fileindex .'\')">'. $_LANG['act_import'] .'</a>';
+            $acts.= '&init=1\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fnameindex), 'html') .'\')">'. $_LANG['act_import'] .'</a>';
         }
 
-        /* 构建引导文件名的HTML */
+        /* 单卷文件时 */
         if( $type == 'volume' ){
             /* 文件名HTML格式化 */
-            $name = '<a style="margin-left:16px;" target="_blank" href="'. $_CFG['URL_DB_DUMPSQL'].$file .'">'. f($file,'html') .'</a>';
+            $name = '<a style="margin-left:16px;" target="_blank" href="modules/db/db_backup.php?act=view&file='. $file;
+            $name.= '">'. f( preg_replace('/\.sql\.php$/','.sql',$file), 'html' ) .'</a>';
         }
+        /* 多卷文件且是第一卷时 */
         elseif( $volume == 1 ){
             /* 文件名HTML格式化 */
             $name = '<span class="plus" style="cursor:pointer;margin-left:0em" ';
-            $name.= 'onclick="tabletree_click(this)"></span><a target="_blank" href="'. $_CFG['URL_DB_DUMPSQL'].$file .'">'. f($fileindex,'html') .'</a>';
+            $name.= 'onclick="tabletree_click(this)"></span><a target="_blank" href="'. $_CFG['URL_DB_DUMPSQL'].$file;
+            $name.= '">'. f( preg_replace('/\.sql\.php$/','.sql',$fnameindex), 'html' ) .'</a>';
 
-            /* 文件信息写入列表 - 引导文件 - 多卷情况下 */
-            $list[$fileindex] = array( 'vol'       => 0,               //文件卷
-                                       'file'      => $file,           //文件名(真实的文件名)
-                                       'name'      => $name,           //文件名(经过HTML格式化)
-                                       'date'      => $info['date'],   //文件创建时间
-                                       'type'      => 'volumesindex',  //文件类型 - volume表示单卷文件, volumes表示多卷文件, volumes表示多卷索引文件
-                                       'level'     => 1,               //文件层级
-                                       'file_size' => 0,               //文件大小
-                                       'acts'      => $acts            //记录操作
-                                     );
+            /* 文件信息写入列表 - 引导文件 */
+            $list[$fnameindex] = array( 'vol'  => 0,               //文件卷
+                                        'file' => $file,           //文件名(真实的文件名)
+                                        'name' => $name,           //文件名(经过HTML格式化)
+                                        'date' => $header['date'], //文件创建时间
+                                        'type' => 'volumesindex',  //文件类型 - volume表示单卷文件, volumes表示多卷文件, volumesindex表示多卷的索引文件
+                                        'size' => 0,               //文件大小
+                                        'acts' => $acts            //记录操作
+                                      );
+        }
 
-            /* 重置 */
+        /* 多卷文件时 */
+        if( $type == 'volumes' ){
+            /* 构建文件名的HTML */
+            $name = '<span style="display:none"></span><a target="_blank" href="'. $_CFG['URL_DB_DUMPSQL'].$file .'" ';
+            $name.= 'style="color:#999;margin-left:16px;">'. f( preg_replace('/\.sql\.php$/','.sql',$file), 'html' ) .'</a>';
+            
+            /* 重置操作 */
             $acts = '';
         }
 
-        /* 构建真实文件名的HTML - 单卷时引导文件名HTML即为真实文件名HTML */
-        if( $type == 'volumes' ){
-            $name = '<span style="display:none"></span><a target="_blank" href="'. $_CFG['URL_DB_DUMPSQL'].$file .'" ';
-            $name.= 'style="color:#999;margin-left:16px;">'. f($file,'html') .'</a>';
-        }
-
         /* 文件信息写入列表 - 多卷情况下 */
-        $list[$filesort] = array( 'vol'       => $info['vol'],
-                                  'date'      => $info['date'], 
-                                  'file'      => $file,
-                                  'name'      => $name,
-                                  'type'      => $type,
-                                  'level'     => $level,
-                                  'file_size' => $info['file_size'], 
-                                  'acts'      => $acts
-                                );
+        $list[$fnamesort] = array( 'vol'  => $header['vol'],
+                                   'date' => $header['date'], 
+                                   'file' => $file,
+                                   'name' => $name,
+                                   'type' => $type,
+                                   'size' => $header['size'], 
+                                   'acts' => $acts
+                                 );
 
-        /* 重构引导文件信息 */
+        /* 重构多卷的索引文件信息 */
         if( $type == 'volumes' ){
-            $list[$fileindex]['vol']++;
-            $list[$fileindex]['file_size'] += $list[$filesort]['file_size'];
+            $list[$fnameindex]['vol']++;
+            $list[$fnameindex]['size'] += $list[$fnamesort]['size'];
         }
     }
 
     /* 格式化列表数据 */
     foreach( $list AS $i=>$r ){
-        $list[$i]['file_size'] = bitunit($r['file_size']);
+        $list[$i]['size'] = bitunit($r['size']);
     }
 
     /* 下标排序 */
@@ -521,14 +574,14 @@ function list_sqlfile_format( $files )
 /**
  * 将文件中的sql语句导入到数据库
  *
- * @params str  $path_file  文件绝对路径
+ * @params str  $file_path  文件绝对路径
  *
  * @return bol  true表示导入成功，false表示导入失败
  */
-function sql_import( $path_file )
+function sql_import( $file_path )
 {
     /* 初始化SQL数组 */
-    $sqls = array_filter(file($path_file), 'sql_comment_remove');
+    $sqls = array_filter(file($file_path), 'sql_comment_remove');
     $sqls = str_replace( "\r", '', implode('',$sqls) );
     $sqls = explode(";\n", $sqls);
 
@@ -549,7 +602,7 @@ function sql_import( $path_file )
 /**
  * 移除SQL注释
  */
-function sql_comment_remove($var)
+function sql_comment_remove( $var )
 {
     return (substr(trim($var), 0, 2) != '--');
 }

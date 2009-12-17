@@ -551,67 +551,31 @@ function deal_search_list( form, filter, id )
 /* ------------------------------------------------------ */
 
 /**
- * 列表数据导出
- *
  * @params str  id     列表ID
- * @params str  form   自定义导出参数的表单ID
- * @params str  url    自定义导出参数的URL
- * @params str  urldo  要导出的URL
- */
-function wnd_list_export( id, form, url, urldo )
-{
-}
-/**
- * @params str  id     列表ID
- * @params str  form   自定义导出参数的表单ID
  * @params str  url    要导出的URL
  * @params mix  limit  要导出的记录数 'all','page','choice',number
  */
-function deal_list_export( id, form, url, limit )
+function deal_list_export( id, url, limit )
 {
     /* 初始化列表 */
     ListTable.init(id);
 
-    /* 附加列表搜索参数 */
-    url += ListTable.buildFilter();
+    /* 附加列表搜索参数和限制参数 */
+    url += ListTable.buildFilter() +'&limit='+ limit;
 
-    /* 自定义导出 */
-    if( form ){
-        form = document.getElementById(form);
-    }
-
-    /* 快速导出 */
-    else{
-        /* 获取表单对象 */
-        form = document.getElementById('wfm-list-export-auto');
-
-        if( !form ){
-            form = document.createElement('FORM');
-            form.id = 'wfm-list-export-auto';
-
-            document.body.appendChild(form);
+    /* 附加要导出的记录ID集 */
+    if( limit == 'choice' ){
+        var ids = ListTable.getChoiced();
+            
+        if( ids.length == 0 ){
+            wnd_alert('请选择要导出的记录！'); return false;
         }
 
-        /* 添加表单域 - 要导出的记录数 */
-        form.innerHTML = '<input type="hidden" name="limit" value="'+ limit +'" />';
-
-        /* 添加表单域 - 要导出的记录ID集 */
-        if( limit == 'choice' ){
-            var cnt = 0;
-            var ids = ListTable.getChoiced();
-
-            for( var i=0,j=ids.length; i < j; i++ ){
-                form.innerHTML += '<input type="hidden" name="ids[]" value="'+ ids[i] +'" />'; cnt++;
-            }
-
-            if( cnt == 0 ){
-                wnd_alert('请选择要导出的记录！'); return false;
-            }
-        }
+        url += '&ids='+ids;
     }
 
-    /* 表单提交 */
-    deal_form_submit(form, url, null, 'TEXT', false); form.submit();
+    /* 模拟异步提交 */
+    deal_ajax_iframe_attribs( {'src':url} );
 }
 
 

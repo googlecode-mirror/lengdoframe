@@ -277,50 +277,70 @@ function pager_current( $rows_page, $rows_total )
  * 列表数据导出
  *
  * @params str  $file  导出的文件名
- * @params arr  $rs    导出的数据集
+ * @params arr  $rows  导出的数据集
  * @params str  $cols  要导出的列名
  */
-function list_export( $file, $rs, $cols = '' )
+function list_export( $file, $rows, $cols = '' )
 {
-    /* 输出文件信息头 */
-    header("Content-Type: application/vnd.ms-excel");           //文件类型
-    header('Content-disposition: attachment; filename='.$file); //文件名称
+    /* 初始化 */
+    $str = '';
 
-    /* 列名数组化 */
+    /* 初始化列名 */
     $cols = empty($cols) ? array() : explode(',',$cols);
 
     /* 输出数据 */
-    foreach( $rs AS $r ){
-        /* 调整输出数据 */
-        $r = array_map('list_export_adjust', $r);
-
+    foreach( $rows AS $r ){
         if( empty($cols) ){
-            $str = '"'. implode('","', $r) .'",';
+            $str .= '"'. implode('","', str_replace('"','""',$r)) ."\"\r\n";
         }else{
-            $str = '';
-
             foreach( $cols AS $col ){
-                $str .= '"'. $r[$col] .'",';
+                $str .= '"'. str_replace('"','""',$r[$col]) .'",';
             }
-        }
-
-        if( $str ){
-            echo substr($str,0,-1),"\r\n";
+            $str = rtrim($str, ',')."\r\n";
         }
     }
 
-    exit();
+    http_export($file, $str, 'GB2312');
 }
-function list_export_adjust( $str )
-{
-    $str = str_replace('"', '""', $str);
 
+
+/**
+ * HTTP导出
+ *
+ * @params str  $file     导出的文件名
+ * @params str  $data     导出的数据
+ * @params str  $oencode  输出编码，'UTF-8', 'GB2312'
+ */
+function http_export( $file, $data, $oencode = 'UTF-8' )
+{
+    /* 输出数据导出的文件头 */
+    http_export_header($file);
+
+    /* 编码并输出数据 */
+    echo http_export_encode($data, $oencode); exit();
+}
+function http_export_header( $file )
+{
+    /* 文件扩展名 */
+    $ext = end( explode('.',$file) );
+
+    /* HTML文件头的内容类型 */
+    $ctype = array();
+    $ctype['sql'] = 'text/plain';
+    $ctype['csv'] = 'application/vnd.ms-excel';
+
+    /* 输出文件头 */
+    header('Content-Type: '.$ctype[$ext]);                      //文件类型
+    header('Content-disposition: attachment; filename='.$file); //文件名称
+}
+function http_export_encode( $str, $oencode, $iencode = 'UTF-8' )
+{
     if( function_exists('mb_convert_encoding') ){
-        return mb_convert_encoding($str, 'GB2312', 'UTF-8');
+        return mb_convert_encoding($str, $oencode, $iencode);
     }
 
     if( function_exists('iconv') ){
-        return iconv('UTF-8', 'GB2312//IGNORE', $str);
+        return iconv($iencode, $oencode.'//IGNORE', $str);
     }
 
     return $str;
