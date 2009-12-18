@@ -88,204 +88,131 @@ var Formc = {
 
 
     /* ------------------------------------------------------ */
-    // - 复选框类
+    // - 复选框
     /* ------------------------------------------------------ */
+
+    /**
+     * 获取复选框组
+     *
+     * @params str  name  复选框组名称
+     */
+    cbgByName : function( name ){
+        /* 初始化 */
+        var cbg = [];
+        var arr = document.getElementsByName(name);
+
+        /* 过滤非复选框项 */
+        for( var i=0,len=arr.length; i < len; i++ ){
+            if( arr[i].type && arr[i].type.toLowerCase() == 'checkbox' ) cbg.push(arr[i]);
+        }
+
+        /* 返回 */
+        return cbg;
+    },
+
+    /**
+     * 获取复选框组
+     *
+     * @params str  container  复选框组容器对象或者ID
+     */
+    cbgByContainer : function( container ){
+        /* 初始化 */
+        container = typeof(container) == 'object' && container ? container : document.getElementById(container);
+
+        /* 递归结束 */
+        if( container.type && container.type.toLowerCase() == 'checkbox' ) return [container];
+
+        /* 递归获取复选框 */
+        for( var i=0,cbg=[],len=container.childNodes.length; i < len; i++ ){
+            cbg = cbg.concat(this.cbgByContainer(container.childNodes[i]));
+        }
+
+        /* 返回 */
+        return cbg;
+    },
 
     /**
      * 复选框同步复选框组
      *
-     * @params obj  obj        复选框对象
-     * @params str  name       复选框组名字(优先)
-     * @params mix  container  复选框组所在容器对象或者ID
+     * @params mix  cb   复选框对象或者ID
+     * @params obj  cbg  复选框组对象
      */
-    cbSyncCbg : function( obj, name, container ){
-        this.cbgChecked(obj.checked, name, container);
+    cbSyncCbg : function( cb, cbg ){
+        /* 初始化复选框对象 */
+        cb = typeof(cb) == 'object' && cb ? cb : document.getElementById(cb);
+
+        /* 同步 */
+        this.cbgChecked(cbg, cb.checked);
     },
 
     /**
      * 容器内的复选框组同步复选框(递归容器)
      *
-     * @params str  name       复选框组名字(优先)
-     * @params mix  container  复选框组所在容器对象或者ID
-     * @params mix  obj        复选框对象或者ID
+     * @params obj  cbg  复选框组对象
+     * @params mix  cb   复选框对象或者ID
      */
-    cbgSyncCb : function( name, container, obj ){
+    cbgSyncCb : function( cbg, cb ){
         /* 初始化复选框对象 */
-        obj = typeof(obj) == 'object' ? obj : document.getElementById(obj);
+        cb = typeof(cb) == 'object' && cb ? cb : document.getElementById(cb);
 
-        if( this.isCb(obj) ){
-            obj.checked = this.cbgState(name, container) == 1 ? true : false;
-        }
+        /* 同步 */
+        cb.checked = this.cbgState(cbg) == 1 ? true : false;
     },
 
     /**
      * 复选框组同步复选框组
      *
-     * @params str  s_name       源复选框组名字(优先)
-     * @params mix  s_container  源复选框组容器对象或者ID
-     * @params str  d_name       目标复选框组名字(优先)
-     * @params mix  d_container  目标复选框组容器对象或者ID
+     * @params obj  cbg1  复选框组对象
+     * @params obj  cbg2  复选框组对象
      */
-    cbgSyncCbg : function( s_name, s_container, d_name, d_container )
+    cbgSyncCbg : function( cbg1, cbg2 )
     {
-        this.cbgChecked( (this.cbgState(s_name,s_container) == 1 ? true : false), d_name, d_container );
+        this.cbgChecked( cbg1, this.cbgState(cbg2)>0 );
     },
 
     /**
-     * 设置复选框组状态
+     * 设置复选框组的选中状态
      *
-     * @params bol  checked    是否选中
-     * @params str  name       复选框组名字(优先)
-     * @params mix  container  复选框组所在容器对象或者ID
+     * @params obj  cbg      复选框组对象
+     * @params bol  checked  选中状态
      */
-    cbgChecked : function( checked, name, container ){
-        if( name ){
-            return this.cbgCheckedByName(checked, name);
-        }else{
-            /* 初始化容器对象 */
-            container = typeof(container) == 'object' ? container : document.getElementById(container);
-
-            return this.cbgCheckedByContainer(checked, container);
+    cbgChecked : function( cbg, checked ){
+        for( var i=0,len=cbg.length; i < len; i++ ){
+            cbg[i].checked = checked;
         }
     },
-    cbgCheckedByName : function( checked, name ){
-        var cbs = document.getElementsByName(name);
-
-        for( var i=0,len=cbs.length; i < len; i++ ){
-            if( this.isCb(cbs[i]) ) cbs[i].checked = checked;
-        }
-
-        return true;
-    },
-    cbgCheckedByContainer : function( checked, container ){
-        if( this.isCb(container) ){
-            container.checked = checked; return true;
-        }
-
-        for( var i=0,len=container.childNodes.length; i < len; i++ ){
-            this.cbgCheckedByContainer(checked, container.childNodes[i]);
-        }
-    },
-
 
     /**
-     * 获取复选框组状态
+     * 复选框组的状态
      *
-     * @params str  name       复选框组名字(优先)
-     * @params mix  container  复选框组所在容器对象或者ID
+     * @params obj  cbg  复选框组对象
      *
-     * @return bol  0表示全不选中，1表示全选中，-1表示部分选中
+     * @return int  1表示全选中
+     *              0表示全不选中
+     *             -1表示部分选中
      */
-    cbgState : function( name, container ){
-        if( name ){
-            return this.cbgStateByName(name);
-        }else{
-            /* 初始化容器对象 */
-            container = typeof(container) == 'object' ? container : document.getElementById(container);
+    cbgState : function( cbg ){
+        /* 获取复选框组的选中个数 */
+        var checked = this.cbgCheckeds(cbg);
 
-            return this.cbgStateByContainer(container);
-        }
-    },
-    cbgStateByName : function( name ){
-        var checked = 0;
-
-        var cbs = document.getElementsByName(name);
-        var len = cbs.length;
-
-        if( len == 0 ) return 0;
-
-        for( var i=0; i < len; i++ ){
-            if( this.isCb(cbs[i]) && cbs[i].checked ){
-                checked++;
-            }
-        }
-
-        if( len == checked ){
-            return 1;
-        }else{
-            return -1;
-        }
-
-        return true;
-    },
-    cbgStateByContainer : function( container, checked ){
-        if( this.isCb(container) ){
-            if( isNaN(checked) ){
-                return container.checked ? 1 : 0;
-            }else if( checked == 0 ){
-                return container.checked ? -1 : 0;
-            }else if( checked == 1 ){
-                return container.checked ? 1 : -1;
-            }
-
-            return -1;
-        }
-
-        for( var i=0,len=container.childNodes.length; i < len; i++ ){
-            checked = this.cbgStateByContainer(container.childNodes[i], checked);
-
-            if( checked == -1 ) break;
-        }
-
-        return checked;
+        /* 返回 */
+        return checked ? (checked==cbg.length ? 1 : -1) : 0;
     },
 
     /**
      * 复选框组的选中个数
      *
-     * @params str  name       复选框组名字(优先)
-     * @params mix  container  复选框组所在容器对象或者ID
+     * @params obj  cbg  复选框组对象
      *
      * @return int  选中的个数
      */
-    cbgCheckeds : function( name, container ){
-        var cnt = 0;
-
-        if( name ){
-            return this.cbgCheckedsByName(name);
-        }else{
-            /* 初始化容器对象 */
-            container = typeof(container) == 'object' ? container : document.getElementById(container);
-
-            return this.cbgCheckedsByContainer(container);
-        }
-    },
-    cbgCheckedsByName : function( name ){
-        var cnt = 0;
-
-        var cbg = document.getElementsByName(name);
-        for( var i=0,len=cbg.length; i < len; i++ ){
-            if( this.isCb(cbg[i]) && cbg[i].checked ){
-                cnt++;
-            }
+    cbgCheckeds : function( cbg ){
+        /* 获取复选框组的选中个数 */
+        for( var i=0,len=cbg.length,cnt=0; i < len; i++ ){
+            if( cbg[i].checked ) cnt++;
         }
 
+        /* 返回 */
         return cnt;
     },
-    cbgCheckedsByContainer : function( container ){
-        var cnt = 0;
-
-        if( this.isCb(container) && container.checked ){
-            return ++cnt;
-        }
-
-        for( var i=0,len=container.childNodes.length; i < len; i++ ){
-            cnt += this.cbgCheckedsByContainer(container.childNodes[i]);
-        }
-
-        return cnt;
-    },
-
-    /**
-     * 检测是否是复选框
-     *
-     * @params obj  obj  被检测对象
-     */
-    isCb : function( obj ){
-        try{
-            return obj.type.toLowerCase() == 'checkbox';
-        }catch(e){
-            return false;
-        }
-    }
 }

@@ -957,7 +957,7 @@ function html_privilege_table( $name, $seled_ids = array() , $priv_ids = false )
             $cbg .= '<input class="checkbox" type="checkbox"';
             $cbg .= 'name="'. $name .'[]" value="'. $r['privilege_id'] .'" id="'. $pid  .'" ';
             $cbg .= (in_array($r['privilege_id'], $seled_ids) ? 'checked="checked"' : '') .' ';
-            $cbg .= 'onclick="Formc.cbgSyncCbg(null,this.parentNode,null,this.parentNode.previousSibling)">';
+            $cbg .= 'onclick="Formc.cbgSyncCbg(Formc.cbgByContainer(this.parentNode.previousSibling),Formc.cbgByContainer(this.parentNode))">';
             $cbg .= '<label for="'. $pid .'">'. $r['module_act_name'] .'</label>';
 
             $cb_checked &= in_array($r['privilege_id'], $seled_ids);
@@ -967,7 +967,7 @@ function html_privilege_table( $name, $seled_ids = array() , $priv_ids = false )
         $mid = 'ptbl_module_'. $module['module_id'] .'_'. time();
 
         $cb .= '<tr><td>';
-        $cb .= '<input class="checkbox" type="checkbox" onclick="Formc.cbSyncCbg(this,null,this.parentNode.nextSibling)" ';
+        $cb .= '<input class="checkbox" type="checkbox" onclick="Formc.cbSyncCbg(this,Formc.cbgByContainer(this.parentNode.nextSibling))" ';
         $cb .= 'id="'. $mid .'"';
         $cb .= $cb_checked ? 'checked="checked"' : '';
         $cb .= '><label for="'. $mid .'" style="color:#005363">'. $module['name'] .'</label></td>';

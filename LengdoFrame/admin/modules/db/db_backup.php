@@ -50,18 +50,40 @@ if( $_REQUEST['act'] == 'view' ){
 elseif( $_REQUEST['act'] == 'download' ){
     /* 权限检查 */
     admin_privilege_valid('db_backup.php', 'backup');
+    
+    /* 输出文件下载头 */
+    http_export_header( preg_replace('/\.sql\.php$/', '.sql', $_GET['file']) );
 
-    /* 构建备份文件路径 */
-    $file = $_CFG['DIR_DB_DUMPSQL'].$_GET['file'];
+    /* 文件数据输出 - 单卷文件 */
+    if( is_file($_CFG['DIR_DB_DUMPSQL'].$_GET['file']) ){
+        /* 获取数据 */
+        $datas = file($_CFG['DIR_DB_DUMPSQL'].$_GET['file']); array_shift($datas);
 
-    /* 无效参数 */
-    if( substr($file,-8) != '.sql.php' || !is_file($file) ){
-        sys_msg($_LANG['lawless_submit']);
+        /* 输出数据 */
+        echo implode('', $datas); exit();
     }
 
-    $str = file_get_contents($file);
+    /* 文件数据输出 - 多卷文件 */
+    else{
+        /* 初始化 */
+        $volume = 1;
 
-    http_export( basename($file,'.php'), $str );
+        /* 初始化文件名 */
+        $_GET['file'] = preg_replace('/\.sql\.php$/', '_1.sql.php', $_GET['file']);
+
+        while( is_file($_CFG['DIR_DB_DUMPSQL'].$_GET['file']) ){
+            /* 获取数据 */
+            $datas = file($_CFG['DIR_DB_DUMPSQL'].$_GET['file']); array_shift($datas);
+
+            /* 输出数据 */
+            echo implode('', $datas) . "\r\n\r\n";
+
+            /* 构建下一卷文件名 */
+            $_GET['file'] = preg_replace('/_'.($volume++).'\.sql\.php$/', '_'.$volume.'.sql.php', $_GET['file']);
+        }
+    }
+
+    exit();
 }
 
 
@@ -77,7 +99,7 @@ elseif( $_REQUEST['act'] == 'backup' ){
 
     /* 生成所有表 */
     $tables = $db->getCol("SHOW TABLES");
-    $onclick= "Formc.cbgSyncCb(null,'wfm-dbbackup-customtable','wfm-dbbackup-selall')";
+    $onclick= "Formc.cbgSyncCb(Formc.cbgByContainer('wfm-dbbackup-customtable'),'wfm-dbbackup-selall')";
 
     foreach( $tables AS $table ){
         $items[] = array('value'=>$table, 'text'=>$table, 'onclick'=>$onclick, 'class'=>'checkbox');
@@ -449,7 +471,8 @@ function valid_dbbackup_folder()
         $msg .= '<br />' . $_CFG['DIR_DB_DUMPSQL'];
     }
 
-    $msg ? sys_msg($msg) : '';
+    /* 显示消息 */
+    if( $msg ) sys_msg($msg);
 }
 
 
@@ -504,7 +527,9 @@ function list_sqlfile_format( $files )
 
         /* 记录操作 */
         if( $acts = '' || $volume == 1 ){
-            $acts = '<a href="javascript:void(0)" onclick="deal_dbbackup_import(\'file='. $file;
+            $acts = '<a href="javascript:void(0)" onclick="deal_dbbackup_download(\''. $fnameindex;
+            $acts.= '\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fnameindex), 'html') .'\')">'. $_LANG['act_download'] .'</a> ';
+            $acts.= '<a href="javascript:void(0)" onclick="deal_dbbackup_import(\'file='. $file;
             $acts.= '&init=1\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fnameindex), 'html') .'\')">'. $_LANG['act_import'] .'</a>';
         }
 
@@ -518,7 +543,7 @@ function list_sqlfile_format( $files )
         elseif( $volume == 1 ){
             /* 文件名HTML格式化 */
             $name = '<span class="plus" style="cursor:pointer;margin-left:0em" ';
-            $name.= 'onclick="tabletree_click(this)"></span><a target="_blank" href="'. $_CFG['URL_DB_DUMPSQL'].$file;
+            $name.= 'onclick="tabletree_click(this)"></span><a href="javascript:void(0)" onclick="tabletree_click(this.previousSibling)"';
             $name.= '">'. f( preg_replace('/\.sql\.php$/','.sql',$fnameindex), 'html' ) .'</a>';
 
             /* 文件信息写入列表 - 引导文件 */
@@ -535,9 +560,9 @@ function list_sqlfile_format( $files )
         /* 多卷文件时 */
         if( $type == 'volumes' ){
             /* 构建文件名的HTML */
-            $name = '<span style="display:none"></span><a target="_blank" href="'. $_CFG['URL_DB_DUMPSQL'].$file .'" ';
-            $name.= 'style="color:#999;margin-left:16px;">'. f( preg_replace('/\.sql\.php$/','.sql',$file), 'html' ) .'</a>';
-            
+            $name = '<span style="display:none"></span><a target="_blank" href="modules/db/db_backup.php?act=view&file='. $file;
+            $name.= '" style="color:#999;margin-left:16px;">'. f( preg_replace('/\.sql\.php$/','.sql',$file), 'html' ) .'</a>';
+
             /* 重置操作 */
             $acts = '';
         }

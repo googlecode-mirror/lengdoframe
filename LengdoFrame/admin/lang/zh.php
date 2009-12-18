@@ -19,7 +19,7 @@ $_LANG = array();
 // - 系统信息
 /* ------------------------------------------------------ */
 $_LANG['sys_title']                = 'LengdoFrame';
-$_LANG['sys_kernel']               = 'LengdoFrame - 20091217';
+$_LANG['sys_kernel']               = 'LengdoFrame - 20091218';
 
 
 /* ------------------------------------------------------ */
@@ -123,6 +123,7 @@ $_LANG['act_umove']                = '上移';
 $_LANG['act_dmove']                = '下移';
 $_LANG['act_import']               = '导入';
 $_LANG['act_export']               = '导出';
+$_LANG['act_download']             = '下载';
 $_LANG['act_export_all']           = '导出全部记录';
 $_LANG['act_export_page']          = '导出当页记录';
 $_LANG['act_export_choice']        = '导出选中记录';

@@ -25,7 +25,7 @@
                     <table>
                     <tr>
                         <td style="padding-left:4px; border:0;">
-                            <input type="checkbox" id="wfm-dbbackup-selall" onclick="Formc.cbSyncCbg(this,null,'wfm-dbbackup-customtable')" class="checkbox"/>
+                            <input type="checkbox" id="wfm-dbbackup-selall" onclick="Formc.cbSyncCbg(this,Formc.cbgByContainer('wfm-dbbackup-customtable'))" class="checkbox"/>
                             <label for="wfm-dbbackup-selall"><b>全选</b></label>
                         </td>
                     </tr>
@@ -92,7 +92,7 @@
                         <td>
                             <?php if( $r['type'] != 'volumes' ){?>
                             <input type="checkbox" name="listtable-dbbackup-ids" value="<?php e($r['file'],'formc'); ?>" class="checkbox" 
-                            onclick="ListTable.mchoice(this,'<?php e($r['file'],'hstr'); ?>');Formc.cbgSyncCb(this.name,null,'listtable-dbbackup-touch')"/>
+                            onclick="ListTable.mchoice(this,'<?php e($r['file'],'hstr'); ?>');Formc.cbgSyncCb(Formc.cbgByName(this.name),'listtable-dbbackup-touch')"/>
                             <?php }?>
                         </td>
                         <td align="left"><?php echo $r['name']; ?></td>
