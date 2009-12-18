@@ -214,5 +214,5 @@ var Formc = {
 
         /* 返回 */
         return cnt;
-    },
+    }
 }

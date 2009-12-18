@@ -24,23 +24,9 @@ require('../../../class/dumpsql.class.php');
 if( $_REQUEST['act'] == 'view' ){
     /* 权限检查 */
     admin_privilege_valid('db_backup.php', 'backup');
-
-    /* 构建备份文件路径 */
-    $file = $_CFG['DIR_DB_DUMPSQL'].$_GET['file'];
-    
-    /* 无效参数 */
-    if( substr($file,-8) != '.sql.php' || !is_file($file) ){
-        sys_msg($_LANG['lawless_submit']);
-    }
-
-    /* 构建HTML */
-    $html = file_get_contents($file);
-    $html = str_replace(' ', '&nbsp;', $html);
-    $html = str_replace(array("\r\n","\r","\n"), '<br />', $html);
-    $html = substr($html, strpos($html,'<br />')+6);
     
     /* 输出HTML */
-    echo $html; exit();
+    echo_sqlfile($_GET['file'], 'html'); exit();
 }
 
 
@@ -50,37 +36,16 @@ if( $_REQUEST['act'] == 'view' ){
 elseif( $_REQUEST['act'] == 'download' ){
     /* 权限检查 */
     admin_privilege_valid('db_backup.php', 'backup');
-    
+
     /* 输出文件下载头 */
     http_export_header( preg_replace('/\.sql\.php$/', '.sql', $_GET['file']) );
 
-    /* 文件数据输出 - 单卷文件 */
-    if( is_file($_CFG['DIR_DB_DUMPSQL'].$_GET['file']) ){
-        /* 获取数据 */
-        $datas = file($_CFG['DIR_DB_DUMPSQL'].$_GET['file']); array_shift($datas);
+    /* 根据索引文件获取所有文件 */
+    $all = all_sqlfile( array('findex'=> $_GET['file']) );
 
-        /* 输出数据 */
-        echo implode('', $datas); exit();
-    }
-
-    /* 文件数据输出 - 多卷文件 */
-    else{
-        /* 初始化 */
-        $volume = 1;
-
-        /* 初始化文件名 */
-        $_GET['file'] = preg_replace('/\.sql\.php$/', '_1.sql.php', $_GET['file']);
-
-        while( is_file($_CFG['DIR_DB_DUMPSQL'].$_GET['file']) ){
-            /* 获取数据 */
-            $datas = file($_CFG['DIR_DB_DUMPSQL'].$_GET['file']); array_shift($datas);
-
-            /* 输出数据 */
-            echo implode('', $datas) . "\r\n\r\n";
-
-            /* 构建下一卷文件名 */
-            $_GET['file'] = preg_replace('/_'.($volume++).'\.sql\.php$/', '_'.$volume.'.sql.php', $_GET['file']);
-        }
+    /* 输出文件数据 */
+    foreach( $all AS $i=>$fname ){
+        echo_sqlfile($fname); echo "\r\n\r\n";
     }
 
     exit();
@@ -265,7 +230,7 @@ elseif( $_REQUEST['act'] == 'import' ){
         }
 
         /* 开始导入SQL数据 */
-        if( !sql_import($_CFG['DIR_DB_DUMPSQL'].$file_name) ){
+        if( !import_sqlfile($_CFG['DIR_DB_DUMPSQL'].$file_name) ){
             make_json_fail($_LANG['fail_dbbackup_import']);
         }else{
             /* 导入完成 */
@@ -292,7 +257,7 @@ elseif( $_REQUEST['act'] == 'import' ){
         }
 
         /* 开始导入SQL数据 */
-        if( !sql_import($_CFG['DIR_DB_DUMPSQL'].$file_name) ){
+        if( !import_sqlfile($_CFG['DIR_DB_DUMPSQL'].$file_name) ){
             make_json_fail($_LANG['fail_dbbackup_import']);
         }
     }
@@ -325,7 +290,7 @@ elseif( $_REQUEST['act'] == 'upload' ){
     }
 
     /* 导入SQL文件 */
-    if( sql_import($file_path) === false ){
+    if( import_sqlfile($file_path) === false ){
         @unlink($file_path); make_json_ok($_LANG['fail_dbbackup_import']);
     }else{
         @unlink($file_path); make_json_ok($_LANG['ok_dbbackup_import']);
@@ -340,50 +305,16 @@ elseif( $_REQUEST['act'] == 'del' ){
     /* 权限检查 */
     admin_privilege_valid('db_backup.php', 'backup');
 
-    /* 无效参数 */
-    if( !is_array($_POST['ids']) || empty($_POST['ids']) ){
-        make_json_fail();
-    }
+    /* 初始化参数 */
+    $_POST['ids'] = is_array($_POST['ids']) ? $_POST['ids'] : array();
 
-    /* 多卷或单卷文件名处理 */
-    $m_files = array(); //多卷文件
-    $s_files = array(); //单卷文件
-    foreach( $_POST['ids'] AS $file ){
-        if( substr($file,-8) != '.sql.php' ) continue;
+    /* 删除SQL文件 */
+    foreach( $_POST['ids'] AS $findex ){
+        /* 根据索引获取所有SQL文件 */
+        $fnames = all_sqlfile( array('findex'=>$findex) );
 
-        if( preg_match('/_[0-9]+\.sql\.php$/', $file) ){
-            $m_files[] = substr( $file, 0, strrpos($file, '_') );
-        }else{
-           $s_files[] = $file;
-        }
-    }
-
-    /* 多卷文件删除 */
-    if( !empty($m_files) ){
-        $m_files = array_unique($m_files);
-
-        /* 取得文件列表 */
-        $files = array();
-
-        $folder = opendir($_CFG['DIR_DB_DUMPSQL']);
-        while( $file = readdir($folder) ){
-            if( preg_match('/_[0-9]+\.sql\.php$/',$file) && is_file($_CFG['DIR_DB_DUMPSQL'].$file) ){
-                $files[] = $file;
-            }
-        }
-
-        foreach( $files AS $file ){
-            $short_file = substr($file, 0, strrpos($file, '_'));
-            if( in_array($short_file, $m_files) ){
-                @unlink($_CFG['DIR_DB_DUMPSQL'].$file);
-            }
-        }
-    }
-
-    /* 单卷文件删除 */
-    if( !empty($s_files) ){
-        foreach( $s_files AS $file ){
-            @unlink($_CFG['DIR_DB_DUMPSQL'].$file);
+        foreach( $fnames AS $fname ){
+            @unlink($_CFG['DIR_DB_DUMPSQL'].$fname);
         }
     }
 
@@ -402,7 +333,7 @@ else{
     valid_dbbackup_folder();
 
     /* SQL文件列表 - 数据格式化 */
-    $tpl['all'] = list_sqlfile_format( list_sqlfile() );
+    $tpl['all'] = all_sqlfile();
 
     /* 初始化页面信息 */
     $tpl['_body'] = 'index';
@@ -475,176 +406,225 @@ function valid_dbbackup_folder()
     if( $msg ) sys_msg($msg);
 }
 
-
 /**
- * SQL文件列表
+ * 获取所有SQL文件
  */
-function list_sqlfile()
+function all_sqlfile( $filter = array() )
 {
     global $_CFG;
 
-    $files  = array();
-    $folder = @opendir($_CFG['DIR_DB_DUMPSQL']);
+    /* 初始化 */
+    $all = array();
 
-    while( $file = @readdir($folder) ){
-        if( substr($file, -8) == '.sql.php' ){
-            $files[] = $file;
+    /* 获取全部SQL文件 */
+    if( empty($filter) ){
+        $fgroup = all_sqlfile_group();
+
+        foreach( $fgroup AS $i=>$files ){
+            $all = array_merge( $all, array_values($files) );
         }
     }
-list_sqlfile_group();
-    return $files;
-}
 
-function list_sqlfile_group()
+    /* 根据文件索引获取全部文件 */
+    elseif( $findex = $filter['findex'] ){
+        /* 单卷文件 */
+        if( is_file($_CFG['DIR_DB_DUMPSQL'].$findex) ){
+            $all = array($findex);
+        }
+        /* 多卷文件 */
+        else{
+            $volume = 1;
+            $findex = preg_replace('/\.sql\.php$/', '_1.sql.php', $findex);
+
+            while( is_file($_CFG['DIR_DB_DUMPSQL'].$findex) ){
+                $all[] = $findex;
+                $findex = preg_replace('/_'.($volume++).'\.sql\.php$/', '_'.$volume.'.sql.php', $findex);
+            }
+        }
+    }
+
+    return $all;
+}
+/**
+ * 分组获取全部SQL文件
+ */
+function all_sqlfile_group()
 {
     global $_CFG;
     
     /* 初始化 */
     $fgroup = array();
     $folder = @opendir($_CFG['DIR_DB_DUMPSQL']);
-    
+
     /* 遍历备份文件夹 */
-    while( $file = @readdir($folder) ){
+    while( $fname = @readdir($folder) ){
         /* 无效备份文件 */
-        if( !preg_match('/\.sql\.php$/',$file,$matchs) ) continue;
+        if( !preg_match('/\.sql\.php$/',$fname,$matchs) ) continue;
 
         /* 单卷时文件卷和索引文件名 */
-        $volume = 1; $findex = $file;
+        $volume = 1; $findex = $fname;
 
         /* 多卷时文件卷和索引文件名 */
-        if( preg_match('/_[0-9]+\.sql\.php$/',$file,$matchs) ){
+        if( preg_match('/_[0-9]+\.sql\.php$/',$fname,$matchs) ){
             $volume = intval( substr($matchs[0],1) );
-            $findex = preg_replace('/_[0-9]+\.sql\.php$/', '.sql.php', $file);
+            $findex = preg_replace('/_[0-9]+\.sql\.php$/', '.sql.php', $fname);
         }
 
         /* 按索引文件名，文件卷分类存储 */
-        $fgroup[$findex][str_pad($volume,4,'0',STR_PAD_LEFT)] = $file;
+        $fgroup[$findex][str_pad($volume,4,'0',STR_PAD_LEFT)] = $fname;
     }
-    
-    /* 排序文件组 */
-    foreach( $fgroup AS $findex=>$files ){
-        ksort($fgroup[$findex]);
 
+    /* 格式化文件组信息 */
+    foreach( $fgroup AS $findex=>$files ){
+        /* 格式化单卷或多卷文件组 */
         foreach( $fgroup[$findex] AS $volume=>$file ){
-            $vol = ltrim($volume, '0');
-            $fgroup[$findex][$volume] = list_sqlfile_group_format($file, $vol);
+            /* 格式化单卷文件组 */
+            if( count($fgroup[$findex]) == 1 ){
+                $fgroup[$findex][$volume] = all_sqlfile_format_vol($file);
+            }
+
+            /* 格式化多卷文件组 */
+            else{
+                $fgroup[$findex][$volume] = all_sqlfile_format_vols($file, ltrim($volume,'0'));
+            }
         }
+
+        /* 格式化多卷索引文件 */
+        if( count($fgroup[$findex]) > 1 ){
+            $fgroup[$findex]['0000'] = all_sqlfile_format_volsi($findex, $fgroup[$findex]);
+        }
+        
+        /* 排序数组属性 */
+        ksort($fgroup[$findex]);
     }
-print_r($fgroup);
+
     return $fgroup;
 }
+/**
+ * 获取全部SQL文件的文件信息
+ */
+function all_sqlfile_format_vol( $fname )
+{
+    global $_CFG, $_LANG;
 
-function list_sqlfile_group_format( $file, $vol )
+    /* 备份文件的头信息 */
+    $header = DumpSql::getHeader($_CFG['DIR_DB_DUMPSQL'].$fname);
+
+    /* 基本信息 */
+    $info['vol']  = 1;
+    $info['file'] = $fname;
+    $info['type'] = 'volume';
+    $info['date'] = $header['date'];
+    $info['size'] = filesize($_CFG['DIR_DB_DUMPSQL'].$fname);
+
+    /* 基本信息 - 显示的文件名 */
+    $info['name'] = '<a style="margin-left:16px;" target="_blank" ';
+    $info['name'].= 'href="modules/db/db_backup.php?act=view&file='. $fname;
+    $info['name'].= '">'. f( preg_replace('/\.sql\.php$/','.sql',$fname), 'html' ) .'</a>';
+
+    /* 基本信息 - 文件操作链接 */
+    $info['acts'] = '<a href="javascript:void(0)" onclick="deal_dbbackup_download(\''. $fname;
+    $info['acts'].= '\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fname), 'html') .'\')">'. $_LANG['act_download'] .'</a> ';
+    $info['acts'].= '<a href="javascript:void(0)" onclick="deal_dbbackup_import(\'file='. $fname;
+    $info['acts'].= '&init=1\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fname), 'html') .'\')">'. $_LANG['act_import'] .'</a>';
+
+    return $info;
+}
+function all_sqlfile_format_vols( $fname, $vol )
 {
     global $_CFG;
 
     /* 备份文件的头信息 */
-    $info = DumpSql::getHeader($_CFG['DIR_DB_DUMPSQL'].$file);
-    
-    /* 文件卷，文件名，文件大小 */
-    $info['vol']  = $vol;
-    $info['file'] = $file;
-    $info['size'] = filesize($_CFG['DIR_DB_DUMPSQL'].$file);
+    $header = DumpSql::getHeader($_CFG['DIR_DB_DUMPSQL'].$fname);
 
-    $info['name'] = 
+    /* 基本信息 */
+    $info['vol']  = 1;
+    $info['file'] = $fname;
+    $info['type'] = 'volumes';
+    $info['date'] = $header['date'];
+    $info['size'] = filesize($_CFG['DIR_DB_DUMPSQL'].$fname);
+
+    /* 基本信息 - 显示的文件名 */
+    $info['name'] = '<span style="display:none"></span><a style="color:#999;margin-left:16px;" target="_blank" ';
+    $info['name'].= 'href="modules/db/db_backup.php?act=view&file='. $fname;
+    $info['name'].= '">'. f( preg_replace('/\.sql\.php$/','.sql',$fname), 'html' ) .'</a>';
+
+    return $info;
+}
+function all_sqlfile_format_volsi( $fname, $files )
+{
+    global $_LANG;
+
+    /* 基本信息 */
+    $info['vol']  = 0;
+    $info['size'] = 0;
+    $info['file'] = $fname;
+    $info['type'] = 'volumesindex';
+    $info['date'] = $files['0001']['date'];
+
+    /* 基本信息 - 显示的文件名 */
+    $info['name'] = '<span class="plus" style="cursor:pointer;margin-left:0em" ';
+    $info['name'].= 'onclick="tabletree_click(this)"></span><a href="javascript:void(0)" onclick="tabletree_click(this.previousSibling)"';
+    $info['name'].= '">'. f( preg_replace('/\.sql\.php$/','.sql',$fname), 'html' ) .'</a>';
+
+    /* 基本信息 - 文件操作链接 */
+    $info['acts'] = '<a href="javascript:void(0)" onclick="deal_dbbackup_download(\''. $fname;
+    $info['acts'].= '\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fname), 'html') .'\')">'. $_LANG['act_download'] .'</a> ';
+    $info['acts'].= '<a href="javascript:void(0)" onclick="deal_dbbackup_import(\'file='. $fname;
+    $info['acts'].= '&init=1\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fname), 'html') .'\')">'. $_LANG['act_import'] .'</a>';
+
+    /* 重构信息 */
+    foreach( $files AS $vol=>$file ){
+        $info['vol']  += 1;
+        $info['size'] += $file['size'];
+    }
 
     return $info;
 }
 
 /**
- * 格式化SQL文件列表
+ * 输出SQL文件数据
+ *
+ * @params str  $fname    SQL文件名
+ * @params str  $oencode  输出的编码，'HTML'或者''
  */
-function list_sqlfile_format( $files )
+function echo_sqlfile( $fname, $oencode = '' )
 {
-    global $_LANG, $_CFG;
+    global $_CFG, $_LANG;
 
-    /* 初始化 */
-    $list = array();
+    /* 构建SQL文件路径 */
+    $fpath = $_CFG['DIR_DB_DUMPSQL'].$fname;
 
-    /* 构建列表数据 */
-    foreach( $files AS $file ){
-        /* 记录操作 */
-        if( $acts = '' || $volume == 1 ){
-            $acts = '<a href="javascript:void(0)" onclick="deal_dbbackup_download(\''. $fnameindex;
-            $acts.= '\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fnameindex), 'html') .'\')">'. $_LANG['act_download'] .'</a> ';
-            $acts.= '<a href="javascript:void(0)" onclick="deal_dbbackup_import(\'file='. $file;
-            $acts.= '&init=1\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fnameindex), 'html') .'\')">'. $_LANG['act_import'] .'</a>';
-        }
-
-        /* 单卷文件时 */
-        if( $type == 'volume' ){
-            /* 文件名HTML格式化 */
-            $name = '<a style="margin-left:16px;" target="_blank" href="modules/db/db_backup.php?act=view&file='. $file;
-            $name.= '">'. f( preg_replace('/\.sql\.php$/','.sql',$file), 'html' ) .'</a>';
-        }
-        /* 多卷文件且是第一卷时 */
-        elseif( $volume == 1 ){
-            /* 文件名HTML格式化 */
-            $name = '<span class="plus" style="cursor:pointer;margin-left:0em" ';
-            $name.= 'onclick="tabletree_click(this)"></span><a href="javascript:void(0)" onclick="tabletree_click(this.previousSibling)"';
-            $name.= '">'. f( preg_replace('/\.sql\.php$/','.sql',$fnameindex), 'html' ) .'</a>';
-
-            /* 文件信息写入列表 - 引导文件 */
-            $list[$fnameindex] = array( 'vol'  => 0,               //文件卷
-                                        'file' => $file,           //文件名(真实的文件名)
-                                        'name' => $name,           //文件名(经过HTML格式化)
-                                        'date' => $header['date'], //文件创建时间
-                                        'type' => 'volumesindex',  //文件类型 - volume表示单卷文件, volumes表示多卷文件, volumesindex表示多卷的索引文件
-                                        'size' => 0,               //文件大小
-                                        'acts' => $acts            //记录操作
-                                      );
-        }
-
-        /* 多卷文件时 */
-        if( $type == 'volumes' ){
-            /* 构建文件名的HTML */
-            $name = '<span style="display:none"></span><a target="_blank" href="modules/db/db_backup.php?act=view&file='. $file;
-            $name.= '" style="color:#999;margin-left:16px;">'. f( preg_replace('/\.sql\.php$/','.sql',$file), 'html' ) .'</a>';
-
-            /* 重置操作 */
-            $acts = '';
-        }
-
-        /* 文件信息写入列表 - 多卷情况下 */
-        $list[$fnamesort] = array( 'vol'  => $header['vol'],
-                                   'date' => $header['date'], 
-                                   'file' => $file,
-                                   'name' => $name,
-                                   'type' => $type,
-                                   'size' => $header['size'], 
-                                   'acts' => $acts
-                                 );
-
-        /* 重构多卷的索引文件信息 */
-        if( $type == 'volumes' ){
-            $list[$fnameindex]['vol']++;
-            $list[$fnameindex]['size'] += $list[$fnamesort]['size'];
-        }
+    /* 无效SQL文件名 */
+    if( substr($fname,-8) != '.sql.php' || !is_file($fpath) ){
+        sys_msg($_LANG['lawless_submit']);
     }
 
-    /* 格式化列表数据 */
-    foreach( $list AS $i=>$r ){
-        $list[$i]['size'] = bitunit($r['size']);
+    /* 根据编码输出SQL文件 */
+    if( $oencode == 'html' ){
+        $str = file_get_contents($fpath);
+        $str = str_replace(' ', '&nbsp;', $str);
+        $str = str_replace(array("\r\n","\r","\n"), '<br />', $str);
+        $str = substr($str, strpos($str,'<br />')+6);
+    }else{
+        $arr = file($fpath); array_shift($arr);
+        $str = implode('', $arr);
     }
 
-    /* 下标排序 */
-    ksort($list);
-
-    return $list;
+    echo $str;
 }
 
-
 /**
- * 将文件中的sql语句导入到数据库
+ * 导入文件SQL到数据库
  *
- * @params str  $file_path  文件绝对路径
+ * @params str  $fpath  文件绝对路径
  *
  * @return bol  true表示导入成功，false表示导入失败
  */
-function sql_import( $file_path )
+function import_sqlfile( $fpath )
 {
     /* 初始化SQL数组 */
-    $sqls = array_filter(file($file_path), 'sql_comment_remove');
+    $sqls = array_filter(file($fpath), 'remove_sqlfile_comment');
     $sqls = str_replace( "\r", '', implode('',$sqls) );
     $sqls = explode(";\n", $sqls);
 
@@ -665,8 +645,8 @@ function sql_import( $file_path )
 /**
  * 移除SQL注释
  */
-function sql_comment_remove( $var )
+function remove_sqlfile_comment( $str )
 {
-    return (substr(trim($var), 0, 2) != '--');
+    return (substr(trim($str), 0, 2) != '--');
 }
 ?>
