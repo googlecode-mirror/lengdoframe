@@ -226,8 +226,9 @@ function deal_dbbackup_fill( params )
         }
     }
 }
+
 /**
- * 数据库备份 - 导入服务器文件
+ * 数据库备份 - 导入服务器SQL文件
  */
 function deal_dbbackup_import( params, file )
 {
@@ -261,13 +262,26 @@ function deal_dbbackup_import( params, file )
 		}
 	}
 
-	/* 确认提示 */
+	/* 导入确认提示 */
     if( file ){
 	    wnd_confirm('确定导入备份文件 <b>'+ file +'</b> ？', {'ok':confirm_callback});
     }else{
         confirm_callback();
     }
 }
+
+/**
+ * 数据库备份 - 下载服务器SQL文件
+ */
+function deal_dbbackup_download( file )
+{
+    /* 初始化 */
+    var url = 'modules/db/db_backup.php?act=download&file='+ file;
+
+    /* 模拟异步提交 */
+    deal_ajax_iframe_attribs( {'src':url} );
+}
+
 /**
  * 数据库备份 - 上传SQL文件
  */
@@ -563,7 +577,7 @@ function deal_list_export( id, url, limit )
     /* 附加列表搜索参数和限制参数 */
     url += ListTable.buildFilter() +'&limit='+ limit;
 
-    /* 附加要导出的记录ID集 */
+    /* 附加要导出的记录IDS */
     if( limit == 'choice' ){
         var ids = ListTable.getChoiced();
             

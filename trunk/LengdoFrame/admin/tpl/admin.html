@@ -34,7 +34,7 @@
             <tr align="center">
                 <td>
                     <input type="checkbox" name="listtable-admin-ids" value="<?php echo $r['admin_id'] ?>" class="checkbox" 
-                    onclick="ListTable.mchoice(this,'<?php echo $r['admin_id'] ?>');Formc.cbgSyncCb(this.name,null,'listtable-admin-touch')"/>
+                    onclick="ListTable.mchoice(this,'<?php echo $r['admin_id'] ?>');Formc.cbgSyncCb(Formc.cbgByName(this.name),'listtable-admin-touch')"/>
                 </td>
 
                 <?php if( admin_privilege_valid('admin.php', 'edit', false) ){?>
