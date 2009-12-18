@@ -491,8 +491,64 @@ function list_sqlfile()
             $files[] = $file;
         }
     }
-
+list_sqlfile_group();
     return $files;
+}
+
+function list_sqlfile_group()
+{
+    global $_CFG;
+    
+    /* 初始化 */
+    $fgroup = array();
+    $folder = @opendir($_CFG['DIR_DB_DUMPSQL']);
+    
+    /* 遍历备份文件夹 */
+    while( $file = @readdir($folder) ){
+        /* 无效备份文件 */
+        if( !preg_match('/\.sql\.php$/',$file,$matchs) ) continue;
+
+        /* 单卷时文件卷和索引文件名 */
+        $volume = 1; $findex = $file;
+
+        /* 多卷时文件卷和索引文件名 */
+        if( preg_match('/_[0-9]+\.sql\.php$/',$file,$matchs) ){
+            $volume = intval( substr($matchs[0],1) );
+            $findex = preg_replace('/_[0-9]+\.sql\.php$/', '.sql.php', $file);
+        }
+
+        /* 按索引文件名，文件卷分类存储 */
+        $fgroup[$findex][str_pad($volume,4,'0',STR_PAD_LEFT)] = $file;
+    }
+    
+    /* 排序文件组 */
+    foreach( $fgroup AS $findex=>$files ){
+        ksort($fgroup[$findex]);
+
+        foreach( $fgroup[$findex] AS $volume=>$file ){
+            $vol = ltrim($volume, '0');
+            $fgroup[$findex][$volume] = list_sqlfile_group_format($file, $vol);
+        }
+    }
+print_r($fgroup);
+    return $fgroup;
+}
+
+function list_sqlfile_group_format( $file, $vol )
+{
+    global $_CFG;
+
+    /* 备份文件的头信息 */
+    $info = DumpSql::getHeader($_CFG['DIR_DB_DUMPSQL'].$file);
+    
+    /* 文件卷，文件名，文件大小 */
+    $info['vol']  = $vol;
+    $info['file'] = $file;
+    $info['size'] = filesize($_CFG['DIR_DB_DUMPSQL'].$file);
+
+    $info['name'] = 
+
+    return $info;
 }
 
 /**
@@ -507,24 +563,6 @@ function list_sqlfile_format( $files )
 
     /* 构建列表数据 */
     foreach( $files AS $file ){
-        /* 解析备份文件类型和当前卷 */
-        if( preg_match('/_[0-9]+\.sql.php$/', $file, $matchs) ){
-            $type = 'volumes'; $volume = intval( substr($matchs[0],1) );
-        }else{
-            $type = 'volume'; $volume = 1;
-        }
-
-        /* 构建用于排序的文件名和引导的文件名 */
-        $filearr = explode('_', $file);  $offset = count($filearr) - 1;
-        $filearr[$offset] = $type == 'volumes' ? str_pad($filearr[$offset], strlen('.sql.php')+4, '0', STR_PAD_LEFT) : $filearr[$offset];
-
-        $fnamesort  = implode('_', $filearr);
-        $fnameindex = preg_replace('/_[0-9]+\.sql\.php$/', '.sql.php', $file);
-
-        /* 备份文件的信息 */
-        $header = DumpSql::getHeader($_CFG['DIR_DB_DUMPSQL'].$file);
-        $header['size'] = filesize($_CFG['DIR_DB_DUMPSQL'].$file);
-
         /* 记录操作 */
         if( $acts = '' || $volume == 1 ){
             $acts = '<a href="javascript:void(0)" onclick="deal_dbbackup_download(\''. $fnameindex;
