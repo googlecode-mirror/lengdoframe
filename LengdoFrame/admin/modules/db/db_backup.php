@@ -24,9 +24,9 @@ require('../../../class/dumpsql.class.php');
 if( $_REQUEST['act'] == 'view' ){
     /* 权限检查 */
     admin_privilege_valid('db_backup.php', 'backup');
-    
+
     /* 输出HTML */
-    echo_sqlfile($_GET['file'], 'html'); exit();
+    echo_sqlfile($_GET['fname'], 'html'); exit();
 }
 
 
@@ -38,13 +38,13 @@ elseif( $_REQUEST['act'] == 'download' ){
     admin_privilege_valid('db_backup.php', 'backup');
 
     /* 输出文件下载头 */
-    http_export_header( preg_replace('/\.sql\.php$/', '.sql', $_GET['file']) );
+    http_export_header( preg_replace('/\.sql\.php$/', '.sql', $_GET['findex']) );
 
     /* 根据索引文件获取所有文件 */
-    $all = all_sqlfile( array('findex'=> $_GET['file']) );
+    $fnames = all_sqlfile( array('findex'=>$_GET['findex']) );
 
     /* 输出文件数据 */
-    foreach( $all AS $i=>$fname ){
+    foreach( $fnames AS $i=>$fname ){
         echo_sqlfile($fname); echo "\r\n\r\n";
     }
 
@@ -60,11 +60,11 @@ elseif( $_REQUEST['act'] == 'backup' ){
     admin_privilege_valid('db_backup.php', 'backup');
 
     /* 生成备份的文件名 */
-    $tpl['file_name'] = DumpSql::getRandName().'.sql';
+    $tpl['sqlfname'] = DumpSql::getRandName().'.sql';
 
     /* 生成所有表 */
-    $tables = $db->getCol("SHOW TABLES");
-    $onclick= "Formc.cbgSyncCb(Formc.cbgByContainer('wfm-dbbackup-customtable'),'wfm-dbbackup-selall')";
+    $tables  = $db->getCol("SHOW TABLES");
+    $onclick = "Formc.cbgSyncCb(Formc.cbgByContainer('wfm-dbbackup-customtable'),'wfm-dbbackup-selall')";
 
     foreach( $tables AS $table ){
         $items[] = array('value'=>$table, 'text'=>$table, 'onclick'=>$onclick, 'class'=>'checkbox');
@@ -79,7 +79,7 @@ elseif( $_REQUEST['act'] == 'backup' ){
     $tpl['_block'] = true;
 }
 /* ------------------------------------------------------ */
-// - 异步 - 备份导出SQL
+// - 异步 - 导出SQL
 /* ------------------------------------------------------ */
 elseif( $_REQUEST['act'] == 'dumpsql' ){
     /* 权限检查 */
@@ -87,16 +87,14 @@ elseif( $_REQUEST['act'] == 'dumpsql' ){
 
     /* 初始化常量 */
     $vol      = intval($_POST['vol']) > 0 ? intval($_POST['vol']) : 1;
-    $vol_size = intval($_POST['vol_size']) > 0 ? intval($_POST['vol_size']) : 1536; //分卷文件大小( KB为单位 )
+    $volsize  = intval($_POST['volsize']) > 0 ? intval($_POST['volsize']) : 1536; //分卷文件大小( KB为单位 )
 
     $columns  = intval($_POST['columns']);
     $extended = intval($_POST['extended']);
 
     /* 初始化常量 - 备份文件名(去除扩展名) */
-    $file_name = empty($_POST['file']) || trim($_POST['file']) == '.sql' ? DumpSql::getRandName() : trim($_POST['file']);
-    if( substr($file_name, -4) == '.sql' ){
-        $file_name = substr($file_name, 0, -4);
-    }
+    $sqlfname = substr($_POST['sqlfname'],-4) != '.sql' ? DumpSql::getRandName() : trim($_POST['sqlfname']);
+    $sqlfname = substr($sqlfname, 0, -4);
 
     /* 创建 DumpSql 对象 */
     $dump = new DumpSql($db);
@@ -106,17 +104,15 @@ elseif( $_REQUEST['act'] == 'dumpsql' ){
     $dump->bExtended = $extended;
 
     /* 设置 DumpSql 对象属性 - 卷大小限制 */
-    $dump->iMaxSize = $vol_size * 1024;
+    $dump->iMaxSize = $volsize * 1024;
 
     /* 文件路径 */
-    $log_path  = $_CFG['DIR_DB_DUMPSQL'] . 'run.log';
-    $file_url  = $_CFG['DIR_DB_DUMPSQL'] . $file_name;
-    $file_path = $_CFG['DIR_DB_DUMPSQL'] . $file_name;
+    $logpath  = $_CFG['DIR_DB_DUMPSQL'] . 'run.log';
 
     /* 取得要备份的表 */
     $tables = array();
 
-    /* 全部备份 */
+    /* 全部表备份 */
     if( trim($_POST['backup_type']) == 'full' ){ 
         $temp = $db->getCol('SHOW TABLES'); 
 
@@ -124,7 +120,7 @@ elseif( $_REQUEST['act'] == 'dumpsql' ){
             $tables[$table] = -1;
         }
 
-        $dump->putTablesList($log_path, $tables);
+        $dump->putTablesList($logpath, $tables);
     }
 
     /* 自定义备份 */
@@ -135,51 +131,46 @@ elseif( $_REQUEST['act'] == 'dumpsql' ){
             $tables[$table] = -1;
         }
 
-        $dump->putTablesList($log_path, $tables);
+        $dump->putTablesList($logpath, $tables);
     }
 
-    /* 备份表(根据数据表位置文件) */
-    $tables = $dump->dumpTables($log_path, $vol);
+    /* 备份表 - 根据数据表位置文件 */
+    $tables = $dump->dumpTables($logpath, $vol);
 
-    /* 备份失败 */
+    /* 备份失败 - 数据表位文件不可读 */
     if( $tables === false ){
         make_json_fail($_LANG['fail_dbbackup_position']);
     }
 
-    /* 所有表备份完成 */
+    /* 单卷备份或者多卷的最后一卷备份 */
     if( empty($tables) ){
-        /* 多个文件 */
-        if( $vol > 1 ){
-            if( @file_put_contents("{$file_path}_{$vol}.sql.php","-- <?php exit(); ?>\r\n".$dump->sDumpSql) === false ){
-                make_json_fail($_LANG['fail_dbbackup_write']);
-            }
+        /* 初始化备份文件名 */
+        $fname = $vol > 1 ? "{$sqlfname}_{$vol}.sql.php" : "{$sqlfname}.sql.php";
 
-            make_json_ok( sprintf($_LANG['spr_dbbackup_ok'],$vol) );
-        }
+        /* 初始化备份成功消息 */
+        $_LANG['ok_dbbackup'] = $vol > 1 ? sprintf($_LANG['spr_dbbackup_ok'],$vol) : $_LANG['ok_dbbackup'];
 
-        /* 单个文件 */
-        else{
-            if( @file_put_contents("{$file_path}.sql.php","-- <?php exit(); ?>\r\n".$dump->sDumpSql) === false ){
-                make_json_fail($_LANG['fail_dbbackup_write']);
-            }
-
+        /* 写入SQL到文件 */
+        if( write_sqlfile($fname,$dump->sDumpSql) === false ){
+            make_json_fail($_LANG['fail_dbbackup_write']);
+        }else{
             make_json_ok($_LANG['ok_dbbackup']);
         }
     }
-    /* 部分表未备份完成 */
+
+    /* 多卷的非最后一卷备份 */
     else{
-        if( @file_put_contents( "{$file_path}_{$vol}.sql.php","-- <?php exit(); ?>\r\n".$dump->sDumpSql) === false ){;
+        /* 写入SQL到文件 */
+        if( write_sqlfile("{$sqlfname}_{$vol}.sql.php",$dump->sDumpSql) === false ){
             make_json_fail($_LANG['fail_dbbackup_write']);
         }
 
-        /* 下一卷 */
-        $vol++;
-
-        /* 构建下一个部分备份的提交参数 */
-        $params = "file={$file_name}&vol={$vol}&vol_size={$vol_size}&columns={$columns}&extended={$extended}";
+        /* 构建下个文件备份参数 */
+        $params = 'sqlfname='. $sqlfname .'.sql&vol='. ($vol+1);
+        $params.= '&volsize='. $volsize .'&columns='. $columns .'&extended='. $extended;
 
         /* 沉睡1秒再返回 */
-        sleep(1); make_json_response('-1', sprintf($_LANG['spr_dbbackup_ok_part'],$vol-1), $params);
+        sleep(1); make_json_response('-1', sprintf($_LANG['spr_dbbackup_ok_part'],$vol), $params);
     }
 }
 
@@ -191,78 +182,43 @@ elseif( $_REQUEST['act'] == 'import' ){
     /* 权限检查 */
     admin_privilege_valid('db_backup.php', 'backup');
 
-    /* 文件名初始化并检查 */
-    $file_name = empty($_POST['file']) ? '' : trim($_POST['file']);
-
-    if( substr($file_name,-8) != '.sql.php' ){
-        make_json_fail($_LANG['file_ext_error']);
+    /* 导入文件SQL到数据库 */
+    if( import_sqlfile($_POST['fname']) === false ){
+        make_json_fail($_LANG['fail_dbbackup_import']);
+    }
+    
+    /* 导入完成 */
+    if( $_POST['vol'] == $_POST['total'] ){
+        make_json_ok($_LANG['ok_dbbackup_import']);
     }
 
-    /* 分卷导入 */
-    if( preg_match('/_[0-9]+\.sql\.php$/', $file_name) ){
-        /* 初始化 */
-        $num = intval( substr($file_name, strrpos($file_name, '_')+1) );
-        $short_name = substr( $file_name, 0, strrpos($file_name, '_') );
+    /* 下一卷的备份文件名 */
+    $fname = preg_replace('/_[0-9]+\.sql\.php$/', '_'. ($_POST['vol']+1) .'.sql.php', $_POST['fname']);
 
-        /* 无效文件 */
-        $str = $_CFG['DIR_DB_DUMPSQL'].$short_name .'_'. $num .'.sql.php';
-        if( !is_file($str) ){
-            make_json_fail($_LANG['fail_dbbackup_import']);
-        }
+    /* 构建返回参数 */
+    $params = 'fname='. $fname .'&vol='. ($_POST['vol']+1) .'&total='. $_POST['total'];
 
-        /* 导入初始化 */
-        if( intval($_POST['init']) == 1 ){
-            /* 取得分卷总数 */
-            for( $i=1; $i < 100; $i++ ){
-                $str = $_CFG['DIR_DB_DUMPSQL'].$short_name .'_'. $i .'.sql.php';
+    /* 构建返回消息 */
+    $_LANG['ok_dbbackup_importing'] = sprintf($_LANG['spr_dbbackup_import_part'], ($_POST['vol']+1), $_POST['total']);
 
-                if( !is_file($str) ){
-                    $_POST['total'] = $i-1; break;
-                }
-            }
+    /* 返回消息 */
+    make_json_response(-1, $_LANG['ok_dbbackup_importing'], $params);
+}
+elseif( $_REQUEST['act'] == 'importinit' ){
+    /* 根据索引文件获取所有文件 */
+    $fnames = all_sqlfile( array('findex'=>$_POST['findex']) );
 
-            /* 构建返回消息 */
-            $str = 'file='. $short_name .'_'. $num .'.sql.php&total='.$_POST['total'];
-            $msg = sprintf($_LANG['spr_dbbackup_import_part'], $num, $_POST['total']);
+    /* 文件总卷 */
+    $total = count($fnames);
 
-            /* 返回消息 */
-            make_json_response(-1, $msg, $str);
-        }
+    /* 构建返回参数 */
+    $params = 'fname='. $fnames[0] .'&vol=1&total='. $total;
 
-        /* 开始导入SQL数据 */
-        if( !import_sqlfile($_CFG['DIR_DB_DUMPSQL'].$file_name) ){
-            make_json_fail($_LANG['fail_dbbackup_import']);
-        }else{
-            /* 导入完成 */
-            $str = $_CFG['DIR_DB_DUMPSQL'].$short_name .'_'. ($num+1) .'.sql.php';
-            if( !is_file($str) ){
-                make_json_ok($_LANG['ok_dbbackup_import']);
-            }
+    /* 构建返回消息 */
+    if( $total > 1 ) $_LANG['ok_dbbackup_importing'] = sprintf($_LANG['spr_dbbackup_import_part'], 1, $total);
 
-            /* 构建返回消息 */
-            $str = 'file='. $short_name .'_'. ($num+1) .'.sql.php&total='.$_POST['total'];
-            $msg = sprintf($_LANG['spr_dbbackup_import_part'], ($num+1), $_POST['total']);
-
-            /* 返回消息 */
-            make_json_response(-1, $msg, $str);
-        }
-    }
-
-    /* 单卷导入 */
-    else{
-        /* 导入初始化 */
-        if( intval($_POST['init']) == 1 ){
-            /* 返回消息 */
-            make_json_response(-1, $_LANG['ok_dbbackup_importing'], 'file='.$file_name);
-        }
-
-        /* 开始导入SQL数据 */
-        if( !import_sqlfile($_CFG['DIR_DB_DUMPSQL'].$file_name) ){
-            make_json_fail($_LANG['fail_dbbackup_import']);
-        }
-    }
-
-    make_json_ok($_LANG['ok_dbbackup_import']);
+    /* 返回消息 */
+    make_json_response(-1, $_LANG['ok_dbbackup_importing'], $params);
 }
 /* ------------------------------------------------------ */
 // - 异步 - 导入备份文件 - 上传SQL文件导入
@@ -282,18 +238,19 @@ elseif( $_REQUEST['act'] == 'upload' ){
     }
 
     /* 设置文件路径 */
-    $file_path = $_CFG['DIR_DB_DUMPSQL'] . 'upload_sql_file_temp.sql';
+    $fname = 'upload_sqlfile_temp.sql.php';
+    $fpath = $_CFG['DIR_DB_DUMPSQL'].$fname;
 
     /* 将文件移动到备份文件夹下 */
-    if( !move_uploaded_file($_FILES['file']['tmp_name'] , $file_path) ){
+    if( !move_uploaded_file($_FILES['file']['tmp_name'],$fpath) ){
         make_json_fail($_LANG['file_move_fail']);
     }
 
     /* 导入SQL文件 */
-    if( import_sqlfile($file_path) === false ){
-        @unlink($file_path); make_json_ok($_LANG['fail_dbbackup_import']);
+    if( import_sqlfile($fname) === false ){
+        @unlink($fpath); make_json_ok($_LANG['fail_dbbackup_import']);
     }else{
-        @unlink($file_path); make_json_ok($_LANG['ok_dbbackup_import']);
+        @unlink($fpath); make_json_ok($_LANG['ok_dbbackup_import']);
     }
 }
 
@@ -416,7 +373,7 @@ function all_sqlfile( $filter = array() )
     /* 初始化 */
     $all = array();
 
-    /* 获取全部SQL文件 */
+    /* 获取服务器上全部SQL文件 */
     if( empty($filter) ){
         $fgroup = all_sqlfile_group();
 
@@ -426,19 +383,21 @@ function all_sqlfile( $filter = array() )
     }
 
     /* 根据文件索引获取全部文件 */
-    elseif( $findex = $filter['findex'] ){
+    elseif( $findex = trim($filter['findex']) ){
         /* 单卷文件 */
         if( is_file($_CFG['DIR_DB_DUMPSQL'].$findex) ){
-            $all = array($findex);
+            $all[] = $findex;
         }
         /* 多卷文件 */
         else{
-            $volume = 1;
-            $findex = preg_replace('/\.sql\.php$/', '_1.sql.php', $findex);
-
-            while( is_file($_CFG['DIR_DB_DUMPSQL'].$findex) ){
-                $all[] = $findex;
-                $findex = preg_replace('/_'.($volume++).'\.sql\.php$/', '_'.$volume.'.sql.php', $findex);
+            /* 初始化卷和SQL文件名 */
+            $vol = 1;
+            $fname = preg_replace('/\.sql\.php$/', '_1.sql.php', $findex);
+            
+            /* 根据索引遍历文件组 */
+            while( is_file($_CFG['DIR_DB_DUMPSQL'].$fname) ){
+                $all[] = $fname;
+                $fname = preg_replace('/_'.$vol++.'\.sql\.php$/', '_'.$vol.'.sql.php', $fname);
             }
         }
     }
@@ -519,14 +478,14 @@ function all_sqlfile_format_vol( $fname )
 
     /* 基本信息 - 显示的文件名 */
     $info['name'] = '<a style="margin-left:16px;" target="_blank" ';
-    $info['name'].= 'href="modules/db/db_backup.php?act=view&file='. $fname;
+    $info['name'].= 'href="modules/db/db_backup.php?act=view&fname='. $fname;
     $info['name'].= '">'. f( preg_replace('/\.sql\.php$/','.sql',$fname), 'html' ) .'</a>';
 
     /* 基本信息 - 文件操作链接 */
     $info['acts'] = '<a href="javascript:void(0)" onclick="deal_dbbackup_download(\''. $fname;
     $info['acts'].= '\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fname), 'html') .'\')">'. $_LANG['act_download'] .'</a> ';
-    $info['acts'].= '<a href="javascript:void(0)" onclick="deal_dbbackup_import(\'file='. $fname;
-    $info['acts'].= '&init=1\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fname), 'html') .'\')">'. $_LANG['act_import'] .'</a>';
+    $info['acts'].= '<a href="javascript:void(0)" onclick="deal_dbbackup_import_init(\''. $fname;
+    $info['acts'].= '\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fname), 'html') .'\')">'. $_LANG['act_import'] .'</a>';
 
     return $info;
 }
@@ -538,7 +497,7 @@ function all_sqlfile_format_vols( $fname, $vol )
     $header = DumpSql::getHeader($_CFG['DIR_DB_DUMPSQL'].$fname);
 
     /* 基本信息 */
-    $info['vol']  = 1;
+    $info['vol']  = $vol;
     $info['file'] = $fname;
     $info['type'] = 'volumes';
     $info['date'] = $header['date'];
@@ -546,7 +505,7 @@ function all_sqlfile_format_vols( $fname, $vol )
 
     /* 基本信息 - 显示的文件名 */
     $info['name'] = '<span style="display:none"></span><a style="color:#999;margin-left:16px;" target="_blank" ';
-    $info['name'].= 'href="modules/db/db_backup.php?act=view&file='. $fname;
+    $info['name'].= 'href="modules/db/db_backup.php?act=view&fname='. $fname;
     $info['name'].= '">'. f( preg_replace('/\.sql\.php$/','.sql',$fname), 'html' ) .'</a>';
 
     return $info;
@@ -570,8 +529,8 @@ function all_sqlfile_format_volsi( $fname, $files )
     /* 基本信息 - 文件操作链接 */
     $info['acts'] = '<a href="javascript:void(0)" onclick="deal_dbbackup_download(\''. $fname;
     $info['acts'].= '\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fname), 'html') .'\')">'. $_LANG['act_download'] .'</a> ';
-    $info['acts'].= '<a href="javascript:void(0)" onclick="deal_dbbackup_import(\'file='. $fname;
-    $info['acts'].= '&init=1\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fname), 'html') .'\')">'. $_LANG['act_import'] .'</a>';
+    $info['acts'].= '<a href="javascript:void(0)" onclick="deal_dbbackup_import_init(\''. $fname;
+    $info['acts'].= '\',\''. f(preg_replace('/\.sql\.php$/','.sql',$fname), 'html') .'\')">'. $_LANG['act_import'] .'</a>';
 
     /* 重构信息 */
     foreach( $files AS $vol=>$file ){
@@ -615,14 +574,36 @@ function echo_sqlfile( $fname, $oencode = '' )
 }
 
 /**
+ * 写入SQL到文件
+ */
+function write_sqlfile( $fname, $sql )
+{
+    global $_CFG;
+
+    /* 构建SQL文件的路径 */
+    $fpath = $_CFG['DIR_DB_DUMPSQL'].$fname;
+
+    /* 写入到文件 */
+    return file_put_contents($fpath, "-- <?php exit(); ?>\r\n".$sql);
+}
+
+/**
  * 导入文件SQL到数据库
  *
- * @params str  $fpath  文件绝对路径
+ * @params str  $fname  SQL文件名
  *
  * @return bol  true表示导入成功，false表示导入失败
  */
-function import_sqlfile( $fpath )
+function import_sqlfile( $fname )
 {
+    global $_CFG;
+
+    /* 构建SQL文件的路径 */
+    $fpath = $_CFG['DIR_DB_DUMPSQL'].$fname;
+
+    /* 无效参数 */
+    if( !is_file($fpath) ) return false;
+
     /* 初始化SQL数组 */
     $sqls = array_filter(file($fpath), 'remove_sqlfile_comment');
     $sqls = str_replace( "\r", '', implode('',$sqls) );
