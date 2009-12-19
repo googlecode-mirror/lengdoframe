@@ -200,7 +200,7 @@ function deal_dbbackup_fill( params )
     var act = '?act=dumpsql';
 
 	/* 执行等待中 */
-	if( !params ) wnd_wait('备份中...');
+	if( typeof(params) == 'undefined' ) wnd_wait('备份中...');
 
 	/* 提交的参数 */
 	var params = typeof(params) == 'string' ? params : deal_form_params('wfm-dbbackup-fill');
@@ -230,53 +230,42 @@ function deal_dbbackup_fill( params )
 /**
  * 数据库备份 - 导入服务器SQL文件
  */
-function deal_dbbackup_import( params, file )
+function deal_dbbackup_import( result, text )
+{
+    /* 0表示导入完成，-1表示导入未完成，1表示出错 */
+    if( result.error == -1 ){
+        wnd_wait(result.message);
+        Ajax.call('modules/db/db_backup.php?act=import', result.content, deal_dbbackup_import, 'POST', 'JSON', true, true);
+    }
+    else{
+        wnd_wait_clear();
+        wnd_alert(result.message);
+    }
+}
+function deal_dbbackup_import_init( findex, sqlfname )
 {
     /* 初始化 */
-    var url = 'modules/db/db_backup.php?act=import';
-
-	/* 确认OK - 回调函数 */
-	function confirm_callback(){
+    var url = 'modules/db/db_backup.php?act=importinit';
+    
+    function callback(){
         /* 初始化提示 */
-        if( params.indexOf('init=1') != -1 ){
-            wnd_wait('数据导入初始化中...');
-        }
-
+        wnd_wait('数据导入初始化中...');
+        
         /* 异步提交(异步等待) */
-		Ajax.call(url, params, ajax_callback, 'POST', 'JSON', true, true);
-
-		function ajax_callback( result, text ){
-            /* 0表示导入完成，-1表示导入未完成，1表示出错 */
-            if( result.error == 0 ){
-                wnd_wait_clear();
-                wnd_alert(result.message);
-            }
-            else if( result.error == -1 ){
-                wnd_wait(result.message);
-                deal_dbbackup_import(result.content);
-            }
-            else if( result.error == 1 ){
-                wnd_wait_clear();
-                wnd_alert(result.message);
-            }
-		}
-	}
-
-	/* 导入确认提示 */
-    if( file ){
-	    wnd_confirm('确定导入备份文件 <b>'+ file +'</b> ？', {'ok':confirm_callback});
-    }else{
-        confirm_callback();
+        Ajax.call(url, 'findex='+findex, deal_dbbackup_import, 'POST', 'JSON', true, true);
     }
+
+    /* 导入确认提示 */
+    wnd_confirm('确定导入备份文件 <b>'+ sqlfname +'</b>', {'ok':callback});
 }
 
 /**
  * 数据库备份 - 下载服务器SQL文件
  */
-function deal_dbbackup_download( file )
+function deal_dbbackup_download( findex )
 {
     /* 初始化 */
-    var url = 'modules/db/db_backup.php?act=download&file='+ file;
+    var url = 'modules/db/db_backup.php?act=download&findex='+ findex;
 
     /* 模拟异步提交 */
     deal_ajax_iframe_attribs( {'src':url} );
@@ -287,6 +276,7 @@ function deal_dbbackup_download( file )
  */
 function deal_dbbackup_upload( result, text, form )
 {
+    /* 显示消息 */
     if( result.message ){
         wnd_alert(result.message);
     }
