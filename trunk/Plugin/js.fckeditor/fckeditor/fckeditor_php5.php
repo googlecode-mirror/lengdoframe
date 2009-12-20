@@ -19,7 +19,7 @@
  *
  * == END LICENSE ==
  *
- * This is the integration file for PHP 4.
+ * This is the integration file for PHP 5.
  *
  * It defines the FCKeditor class that can be used to create editor
  * instances in PHP pages on server side.
@@ -35,19 +35,20 @@ class FCKeditor
 	var $Value ;
 	var $Config ;
 
-	// PHP 4 Constructor
-	function FCKeditor( $instanceName ,$attribs = array() )
-	{
+	// PHP 5 Constructor (by Marcus Bointon <coolbru@users.sourceforge.net>)
+	function __construct( $instanceName ,$attribs = array())
+ 	{
         global $_CFG;
 
 		$this->InstanceName	= $instanceName ;
-		$this->BasePath		= $_CFG['URL_JSEDITOR_FOLDER'] ;
-		$this->Width		= isset($attribs['width']) ? $attribs['width'] : '100%' ;
-		$this->Height		= isset($attribs['height']) ? $attribs['height'] : '200' ;
-		$this->ToolbarSet	= isset($attribs['toolbar']) ? ucfirst($attribs['toolbar']) : 'Small' ;
-		$this->Value		= isset($attribs['value']) ? $attribs['value'] : '' ;
+		$this->BasePath		= $_CFG['URL_JSEDITOR_FOLDER'];
+		$this->Value		= isset($attribs['value'])   ? $attribs['value']  : '';
+		$this->Width		= isset($attribs['width'])   ? $attribs['width']  : '100%';
+		$this->Height		= isset($attribs['height'])  ? $attribs['height'] : '200';
+		$this->ToolbarSet	= isset($attribs['toolbar']) ? ucfirst($attribs['toolbar']) : 'Small';
 
-		$this->Config		= array() ;
+
+		$this->Config		= array();
 	}
 
 	function Create()
@@ -60,11 +61,6 @@ class FCKeditor
 		$HtmlValue = htmlspecialchars( $this->Value ) ;
 
 		$Html = '<div>' ;
-		
-		if ( !isset( $_GET ) ) {
-			global $HTTP_GET_VARS ;
-		    $_GET = $HTTP_GET_VARS ;
-		}
 
 		if ( $this->IsCompatible() )
 		{
