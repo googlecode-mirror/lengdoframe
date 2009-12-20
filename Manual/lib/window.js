@@ -73,21 +73,21 @@ var Wnds = {
  *          fun  callbacks.complete  当窗口加载完成后调用此函数
  * @params  obj  configs             配置集
  *          str  configs.title       窗口标题
- *          int  configs.width       窗口宽度。  默认：'200px'                                           注：客户区宽度=窗口宽度-2
- *          int  configs.height      客户区高度。默认：'auto'
- *          int  configs.overlay     遮掩层透明度。false表示不显示，0-100表示透明度
- *          int  configs.titleact    标题栏的操作按钮 000(最小化，最大化，关闭)。默认001                 注：前辍0省略
- *          int  configs.overflow    窗口溢出时滚动条，默认0000(scroll-x，scroll-y，hidden-x，hidden-y)  注：前辍0省略
+ *          int  configs.width       窗口宽度。      默认：200                                               注：窗口客户区宽度=窗口宽度-2
+ *          int  configs.height      窗口客户区高度。默认：'auto'
+ *          int  configs.overlay     窗口遮掩层透明度。false表示不显示，0-100表示透明度
+ *          int  configs.titleact    窗口标题栏的操作按钮 000(最小化，最大化，关闭)。默认001                 注：前辍0省略
+ *          int  configs.overflow    窗口窗口溢出时滚动条，默认0000(scroll-x，scroll-y，hidden-x，hidden-y)  注：前辍0省略
  */
 function Wnd( id, callbacks, configs ){
     /* 初始化参数 - 配置 */
     if( typeof(configs) != 'object' || !configs ) configs = {};
 
     this.sId       = id;
-    this.sTitle    = typeof(configs.title)    == 'string' ? configs.title  : '';
-    this.sWidth    = typeof(configs.width)    == 'number' ? configs.width  + 'px' : '200px';
-    this.sHeight   = typeof(configs.height)   == 'number' ? configs.height + 'px' : 'auto';
-    this.iOverlay  = typeof(configs.overlay)  == 'number' ? configs.overlay  : (configs.overlay === false ? false : 40);
+    this.sTitle    = typeof(configs.title)    == 'string' ? configs.title    : '';
+    this.iWidth    = typeof(configs.width)    == 'number' ? configs.width    : 200;
+    this.iHeight   = typeof(configs.height)   == 'number' ? configs.height   : 'auto';
+    this.iOverlay  = typeof(configs.overlay)  == 'number' ? configs.overlay  : (configs.overlay===false ? false : 40);
     this.iTitleAct = typeof(configs.titleact) == 'number' ? configs.titleact : 1;
     this.iOverflow = typeof(configs.overflow) == 'number' ? configs.overflow : 0;
 
@@ -129,24 +129,27 @@ function Wnd( id, callbacks, configs ){
 /**
  * 设置/返回标题文本
  *
- * @params str  str   要显示的文本，undefined表示返回标题文本
+ * @params str  text  要显示的文本，undefined表示返回标题文本
  * @params str  icon  图标的样式
+ *
+ * @return str  返回当前或者上一个标题
  */
-Wnd.prototype.title = function( str, icon ){
+Wnd.prototype.title = function( text, icon ){
     /* 返回标题文本 */
-    if( typeof(str) == 'undefined' ) return this.sTitle;
+    if( typeof(text) == 'undefined' ) return this.sTitle;
+    
+    /* 保存，更新配置 */
+    var tsrc = this.sTitle;
+    this.sTitle = typeof(text) == 'string' ? text : '';
+
+    /* 初始化图标参数 */
+    icon = typeof(icon) == 'string' ? ('<i class="'+ icon +'"></i>') : '';
 
     /* 设置标题 */
-    if( typeof(str) == 'string' ){
-        /* 初始化图标的样式类 */
-        icon = typeof(icon) == 'string' ? ('<i class="'+ icon +'"></i>') : '';
-
-        /* 设置标题 */
-        this.oTitleDivs['title'].innerHTML = icon + str + '&nbsp;';
-
-        /* 更新配置 */
-        this.sTitle = str;
-    }
+    this.oTitleDivs['title'].innerHTML = icon + this.sTitle + '&nbsp;';
+    
+    /* 返回 */
+    return tscr;
 }
 
 /**
@@ -154,46 +157,44 @@ Wnd.prototype.title = function( str, icon ){
  *
  * @params int  width  宽度值，undefined表示返回宽度
  *
- * @return str
+ * @return int  返回当前或者上一个窗口宽度
  */
 Wnd.prototype.width = function( width ){
     /* 返回宽度 */
-    if( typeof(width) == 'undefined' ){
-        return this.sWidth;
-    }
+    if( typeof(width) == 'undefined' ) return this.iWidth;
+
+    /* 保存，更新配置 */
+    var wsrc = this.iWidth;
+    this.iWidth = typeof(width) == 'number' && width >= 2 ? width : 200;
 
     /* 设置宽度 */
-    if( typeof(width) == 'number' && width >= 2 ){
-        /* 更新配置 */
-        this.sWidth = width + 'px';
-
-        /* 设置宽度 */
-        this.oWnd.style.width    = this.sWidth;
-        this.oClient.style.width = width-2 + 'px';
-    }
+    this.oWnd.style.width    = this.iWidth + 'px';
+    this.oClient.style.width = this.iWidth - 2 + 'px';
+    
+    /* 返回 */
+    return wsrc;
 }
 
 /**
- * 设置/返回客户区高度
+ * 设置/返回窗口客户区高度
  *
- * @params mix  height  int或'auto'表示设置高度，undefined表示返回高度
+ * @params int  height  int或'auto'表示设置高度，undefined表示返回高度
  *
- * @return str
+ * @return mix  返回当前或者上一个窗口客户区高度
  */
 Wnd.prototype.height = function( height ){
     /* 返回高度 */
-    if( typeof(height) == 'undefined' ){
-        return this.sHeight;
-    }
+    if( typeof(height) == 'undefined' ) return this.iHeight;
 
-    /* 设置高度 - 参数有效 */
-    if( height == 'auto' || (typeof(height) == 'number' && parseInt(height) >= 0) ){
-        /* 设置高度 */
-        this.sHeight = height == 'auto' ? 'auto' : parseInt(height)+'px';
+    /* 保存，更新配置 */
+    var hsrc = this.iHeight;
+    this.iHeight = typeof(height) == 'number' && height >= 0 ? height : 'auto';
 
-        /* 设置高度 */
-        this.oClient.style.height = this.sHeight;
-    }
+    /* 设置高度 */
+    this.oClient.style.height = this.iHeight == 'auto' ? 'auto' : (this.iHeight+'px');
+
+    /* 返回 */
+    return hsrc;
 }
 
 /**
@@ -206,53 +207,56 @@ Wnd.prototype.client = function(){
 /**
  * 设置/返回窗口z-index
  *
- * @params mix  zindex  int表示设置z-index，undefined表示返回z-index
+ * @params int  zindex  int表示设置z-index，undefined表示返回z-index
  *
- * @params mix
+ * @params int  返回当前或者上一个窗口z-index
  */
 Wnd.prototype.zindex = function( zindex ){
     /* 返回z-index */
-    if( typeof(zindex) == 'undefined' ){
-        return this.oWnd.style.zIndex;
-    }
+    if( typeof(zindex) == 'undefined' ) return this.oWnd.style.zIndex;
+    
+    /* 保存 */
+    var zsrc = this.oWnd.style.zIndex;
+    zindex = typeof(zindex) == 'number' && zindex > 0 ? zindex : 0; 
+    
+    /* 设置zindex */
+    this.oWnd.style.zIndex = zindex;
+    this.oOverlay ? this.oOverlay.style.zIndex = zindex : '';
 
-    /* 设置z-index */
-    if( typeof(zindex) == 'number' && zindex >= 0 ){
-        this.oWnd.style.zIndex = zindex;
-        this.oOverlay ? this.oOverlay.style.zIndex = zindex : '';
-    }
+    /* 返回 */
+    return zsrc;
 }
 
 /**
- * 设置/返回遮掩层透明度
+ * 设置/返回窗口遮掩层透明度
  *
  * @params mix  overlay  int表示设置透明度，false表示隐掉overlay，undefined表示返回透明度
  *
  * @return int
  */
 Wnd.prototype.overlay = function( overlay ){
-    /* 返回遮掩层透明度 */
-    if( typeof(overlay) == 'undefined' ){
-        return this.iOverlay;
-    }
+    /* 返回窗口遮掩层透明度 */
+    if( typeof(overlay) == 'undefined' ) return this.iOverlay;
 
-    /* 遮掩层存在检查 */
-    if( !this.oOverlay ) return ;
+    /* 窗口遮掩层存在检查 */
+    if( !this.oOverlay ) return false;
 
-    /* 设置遮掩层透明度 */
-    if( overlay === false ){
+    /* 保存，更新配置 */
+    var lsrc = this.iOverlay;
+    this.iOverlay = typeof(overlay) == 'number' && overlay >= 0 ? overlay : (overflay===false ? false : 40);
+
+    /* 设置窗口遮掩层透明度 */
+    if( this.iOverlay === false ){
         this.oOverlay.style.display = 'none';
     }
-    else if( typeof(overlay) == 'number' && overlay >= 0 ){
-        this.oOverlay.style.filter  = 'alpha(opacity='+ overlay +')';
-        this.oOverlay.style.opacity = overlay/100;
+    else{
+        this.oOverlay.style.filter  = 'alpha(opacity='+ this.iOverlay +')';
+        this.oOverlay.style.opacity = this.iOverlay/100;
         this.oOverlay.style.display = '';
-    }else{
-        return ;
     }
 
-    /* 更新配置 */
-    this.iOverlay = overlay;
+    /* 返回 */
+    return lsrc;
 }
 
 /**
@@ -264,17 +268,19 @@ Wnd.prototype.overlay = function( overlay ){
  * @return int  xxxx
  */
 Wnd.prototype.overflow = function( overflow ){
-    /* 返回溢出时滚动条显示情况 */
-    if( typeof(overflow) == 'undefined' ){
-        return this.iOverflow;
-    }
+    /* 返回窗口溢出时滚动条显示情况 */
+    if( typeof(overflow) == 'undefined' ) return this.iOverflow;
 
-    /* 设置滚动条 */
+    /* 保存，更新配置 */
+    var fsrc = this.iOverflow;
+    this.iOverflow = typeof(overflow) == 'number' && overflow >= 0 ? overflow : 0;
+
+    /* 设置窗口溢出时滚动条 */
     this.oClient.style.overflowX = parseInt(overflow%100/10) ? 'hidden' : (parseInt(overflow/1000) ? 'scroll' : '');
     this.oClient.style.overflowY = overflow%10 ? 'hidden' : (parseInt(overflow%1000/100) ? 'scroll' : '');
 
     /* 更新配置 */
-    this.iOverflow = overflow;
+    return fsrc;
 }
 
 /**
@@ -391,7 +397,9 @@ Wnd.prototype.buttonActive = function( index, keypress ){
     if( !this.oControlBtns[index] ) return;
 
     /* 键盘按下时处理函数 */
-    if( typeof(keypress) == 'function' ) this.oControlBtns[index].onkeypress = function(e){return keypress.apply(self,[(e||window.event)]);};
+    if( typeof(keypress) == 'function' ){
+        this.oControlBtns[index].onkeypress = function(e){ return keypress.apply(self,[(e||window.event)]) };
+    }
 
     /* 按钮聚焦 */
     this.oControlBtns[index].focus();
@@ -422,8 +430,8 @@ Wnd.prototype.inner = function( str, type, attribs ){
     /* 客户区内容填充加载层 */
     if( attribs.loading !== false ){
         /* 初始化加载层宽度和高度 */
-        var w = parseInt(this.sWidth)-2;
-        var h = this.sHeight == 'auto' ? 60 : parseInt(this.sHeight);
+        var w = this.iWidth - 2;
+        var h = this.iHeight == 'auto' ? 60 : this.iHeight;
 
         /* 填充客户区加载层 */
         this.oClient.innerHTML = '';
@@ -586,33 +594,36 @@ Wnd.prototype.hidden = function(){
 /**
  * 窗口定位
  *
- * @params int  l  Left位置 - 非数字类型时水平居中
- * @params int  t  Top位置  - 非数字类型时垂直居中
+ * @params int  top   Top位置  - 非数字类型时垂直居中
+ * @params int  left  Left位置 - 非数字类型时水平居中
  */
-Wnd.prototype.moved = function( l, t ){
-    /* 获取窗口的实际宽度和高度 */
-    var w = this.oWnd.offsetWidth;
-    var h = this.oWnd.offsetHeight;
+Wnd.prototype.moved = function( top, left ){
+    /* 垂直或水平居中时获取窗口的宽度或高度数据 */
+    if( typeof(top) != 'number' || typeof(left) != 'number' ){
+        /* 获取窗口的实际宽度和高度 */
+        var w = this.oWnd.offsetWidth;
+        var h = this.oWnd.offsetHeight;
 
-    /* 获取窗口的实际宽度和高度 - 如果当前窗口隐藏 */
-    if( this.oWnd.style.display == 'none' ){
-        this.oWnd.style.visibility = 'hidden';
-        this.oWnd.style.display = '';
+        /* 获取窗口的实际宽度和高度 - 如果当前窗口隐藏 */
+        if( this.oWnd.style.display == 'none' ){
+            this.oWnd.style.visibility = 'hidden';
+            this.oWnd.style.display = '';
 
-        w = this.oWnd.offsetWidth;
-        h = this.oWnd.offsetHeight;
+            w = this.oWnd.offsetWidth;
+            h = this.oWnd.offsetHeight;
 
-        this.oWnd.style.display = 'none';
-        this.oWnd.style.visibility = 'visible';
+            this.oWnd.style.display = 'none';
+            this.oWnd.style.visibility = 'visible';
+        }
     }
 
     /* 保存配置 */
-    this.iLeft = typeof(l) == 'number' ? l : (document.documentElement.clientWidth-w)/2;
-    this.iTop  = typeof(t) == 'number' ? t : (document.documentElement.clientHeight-h)/2;
+    this.iTop  = typeof(top)  == 'number' ? top  : (document.documentElement.clientHeight-h)/2;
+    this.iLeft = typeof(left) == 'number' ? left : (document.documentElement.clientWidth-w)/2;
 
     /* 设置窗口位置 */
+    this.oWnd.style.top  = (this.iTop  + document.documentElement.scrollTop) + 'px';
     this.oWnd.style.left = (this.iLeft + document.documentElement.scrollLeft) + 'px';
-    this.oWnd.style.top  = (this.iTop + document.documentElement.scrollTop) + 'px';
 }
 
 /**
@@ -625,12 +636,12 @@ Wnd.prototype.max = function(){
     /* 卸载窗口拖动 */
     this.undrag();
 
-    /* 最大化 */
-    this.oWnd.style.top       = 0;
-    this.oWnd.style.left      = 0;
-    this.oWnd.style.width     = document.documentElement.clientWidth +'px';
-    this.oClient.style.width  = document.documentElement.clientWidth - 2 +'px';
-    this.oClient.style.height = document.documentElement.clientHeight-this.oTitle.offsetHeight-this.oControl.offsetHeight +'px';
+    /* 最大化 - 设置位置 */
+    this.moved(0, 0);
+
+    /* 最大化 - 设置宽度和高度 */
+    this.iWidth  = this.width(document.documentElement.clientWidth);
+    this.iHeight = this.height(document.documentElement.clientHeight-this.oTitle.offsetHeight-this.oControl.offsetHeight);
 }
 Wnd.prototype.remax = function(){
     /* 窗口未显示时不允许恢复 */
@@ -639,12 +650,12 @@ Wnd.prototype.remax = function(){
     /* 安装窗口拖动 */
     this.drag();
 
-    /* 恢复 */
-    this.oWnd.style.top       = this.iTop  + 'px';
-    this.oWnd.style.left      = this.iLeft + 'px';
-    this.oWnd.style.width     = this.sWidth;
-    this.oClient.style.width  = parseInt(this.sWidth)-2 + 'px';
-    this.oClient.style.height = this.sHeight;
+    /* 恢复位置 */
+    this.moved(this.iTop, this.iLeft);
+
+    /* 恢复宽度和高度 */
+    this.width(this.iWidth);
+    this.height(this.iHeight);
 }
 
 
@@ -683,10 +694,10 @@ Wnd.prototype.createWnd = function(){
     this.oWnd.id = this.sId;
     this.oWnd.className = 'wnd-div';
 
-    /* 窗口总层基本样式 */
-    this.oWnd.style.top = document.documentElement.scrollTop +'px';
-    this.oWnd.style.left = document.documentElement.scrollLeft +'px';
-    this.oWnd.style.width = this.sWidth;
+    /* 窗口总层基本样式 - 窗口位置 */
+    this.moved(0, 0);
+
+    /* 窗口总层基本样式 - 窗口隐藏 */
     this.oWnd.style.display = 'none';
 
     /* 将窗口总层增加到body */
@@ -779,9 +790,13 @@ Wnd.prototype.createClient = function(){
     this.oClient = document.createElement('DIV');
 
     /* 客户区层基本属性 */
-    this.oClient.className       = 'wnd-client';
-    this.oClient.style.height    = this.sHeight;
-    this.oClient.style.width     = parseInt(this.sWidth)-2 +'px';
+    this.oClient.className = 'wnd-client';
+
+    /* 客户区层基本属性 - 宽度和高度 */
+    this.width(this.iWidth);
+    this.height(this.iHeight);
+
+    /* 客户区层基本属性 - 溢出时情况 */
     this.oClient.style.overflowX = parseInt(this.iOverflow%100/10) ? 'hidden' : (parseInt(this.iOverflow/1000) ? 'scroll' : '');
     this.oClient.style.overflowY = this.iOverflow%10 ? 'hidden' : (parseInt(this.iOverflow%1000/100) ? 'scroll' : '');
 

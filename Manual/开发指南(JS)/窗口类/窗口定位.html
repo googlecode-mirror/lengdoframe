@@ -16,13 +16,13 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     但很多时候这个位置并不是我们所希望的！不同通过使用下面的方法来改变一个窗口的位置......
 </div>
 
-<br /><br />
+<br />
 
 <div style="text-indent:2em">
     窗口类 - 成员函数：<a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-moved'" style="color:#008ECD;font-weight:bold;">moved(...)</a>
 </div>
 
-<br /><br />
+<br />
 
 <b>1. 窗口定位 - 全居中</b><br />
 <div style="margin-left:1.2em;">
@@ -61,15 +61,15 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 wnd.buttonAddDefault();<br />
                 <br />
                 wnd.show();<br />
-                wnd.moved(null,100);
+                wnd.moved(10,null);
             </div>
         &lt;/script&gt;
         <span style="color:#008ECD">
-            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id2',null,{'width':400});wnd.create();wnd.buttonAddDefault();wnd.show();wnd.moved(null,100);">演示</a>]
+            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id2',null,{'width':400});wnd.create();wnd.buttonAddDefault();wnd.show();wnd.moved(10,null);">演示</a>]
         </span>
     </div>
     <div>
-        通过以上的代码，可以创建出一个距顶部100像素并水平居中的<a target="_blank" href="窗口创建.html" style="color:#000">固定宽度的窗口</a>！ 
+        通过以上的代码，可以创建出一个距顶部10像素并水平居中的<a target="_blank" href="窗口创建.html" style="color:#000">固定宽度的窗口</a>！ 
         [ <a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-moved'" style="color:#008ECD">API：窗口类-窗口定位</a> ]
     </div>
 </div>
@@ -87,11 +87,11 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 wnd.buttonAddDefault();<br />
                 <br />
                 wnd.show();<br />
-                wnd.moved(100);
+                wnd.moved(null,10);
             </div>
         &lt;/script&gt;
         <span style="color:#008ECD">
-            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id3',null,{'width':400});wnd.create();wnd.buttonAddDefault();wnd.show();wnd.moved(100);">演示</a>]
+            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id3',null,{'width':400});wnd.create();wnd.buttonAddDefault();wnd.show();wnd.moved(null,10);">演示</a>]
         </span>
     </div>
     <div>
@@ -114,19 +114,19 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-wndcls-moved');o.style.display=o.style.display=='none'?'':'none'" style="color:#008ECD;">1. API：窗口类-窗口定位</a>
     <table style="margin-left:1.2em;padding:5px 0;font-size:12px;" id="lfm-wndcls-moved">
     <tr>
-        <th colspan="4" align="left">Wnd.prototype.moved( l, t );</th>
+        <th colspan="4" align="left">Wnd.prototype.moved( top, left );</th>
     </tr>
     <tr style="background:#eee;">
         <td align="center" width="60">@params</td>
         <td align="center" width="30">int</td>
-        <td width="30">l</td>
-        <td>Left位置 - 非数字类型时水平居中</td>
+        <td width="30">top</td>
+        <td>Top位置  - 非数字类型时垂直居中</td>
     </tr>
     <tr style="background:#eee;">
         <td align="center">@params</td>
         <td align="center">int</td>
-        <td>t</td>
-        <td>Top位置 - 非数字类型时垂直居中</td>
+        <td>left</td>
+        <td>Left位置 - 非数字类型时水平居中</td>
     </tr>
     </table>
 </div>
