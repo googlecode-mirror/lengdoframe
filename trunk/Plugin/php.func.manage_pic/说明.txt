@@ -1,7 +1,0 @@
-﻿功能简介：
-    管理图片：包括上传图片，缩放图片，删除图片
-
-
-加载使用： 
-    1. 拷贝 code.php 中的代码到 /includes/systemfunc.php 或者 /admin/includes/systemfunc.php
-    2. 在程序中调用 upload_pic(..)，thumb_pic(..)，delete_pic(..) 函数使用

@@ -1,0 +1,23 @@
+﻿功能简介：
+    图片验证码
+
+
+加载使用：
+    1. 拷贝 vcode.class.php和candarai.ttf文件 到 /plugin/vcode 文件夹下
+    2. 在程序中加载 /plugin/vcode/vcode.class.php 文件
+    3. 在程序中构建 Vcode 对象并调用其成员函数使用
+
+
+实例代码：
+    1. 显示验证码图片
+         include($_CFG['DIR_ROOT'].'/plugin/vcode/vcode.class.php');
+
+         $vcode = new VCode();
+         $vcode->image();
+
+
+    2. 检查验证码是否正确
+         include($_CFG['DIR_ROOT'].'/plugin/vcode/vcode.class.php');
+
+         $vcode = new VCode();
+         $vcode->check($_POST['vcode']);
