@@ -24,7 +24,7 @@
 
 global $Config ;
 
-require_once( preg_replace('/\/js\/(.*)/i', '', str_replace('\\', '/', __FILE__) ) .'/includes/config.php' );
+require_once( preg_replace('/\/plugin\/(.*)/i', '', str_replace('\\', '/', __FILE__) ) .'/includes/config.php' );
 
 // SECURITY: You must explicitly enable this "connector". (Set it to "true").
 // WARNING: don't just set "$Config['Enabled'] = true ;", you must be sure that only 

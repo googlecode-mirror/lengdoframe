@@ -149,7 +149,7 @@ Wnd.prototype.title = function( text, icon ){
     this.oTitleDivs['title'].innerHTML = icon + this.sTitle + '&nbsp;';
     
     /* 返回 */
-    return tscr;
+    return tsrc;
 }
 
 /**
