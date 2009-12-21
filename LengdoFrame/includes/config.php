@@ -62,6 +62,10 @@ $_CFG['URL_ADMIN'] = URL_ROOT.'admin/';
 $_CFG['DIR_CLS'] = isset($_CFG['DIR_CLS']) ? $_CFG['DIR_CLS'] : $_CFG['DIR_ROOT'].'class/';
 $_CFG['DIR_INC'] = isset($_CFG['DIR_INC']) ? $_CFG['DIR_INC'] : $_CFG['DIR_ROOT'].'includes/';
 
+/* 公用文件夹路径 - 组件文件夹 */
+$_CFG['DIR_PLUGIN'] =  isset($_CFG['DIR_PLUGIN']) ? $_CFG['DIR_PLUGIN'] : $_CFG['DIR_ROOT'].'plugin/';
+$_CFG['URL_PLUGIN'] =  isset($_CFG['URL_PLUGIN']) ? $_CFG['URL_PLUGIN'] : $_CFG['URL_ROOT'].'plugin/';
+
 
 /* 前台文件夹路径 */
 $_CFG['DIR_TPL'] = isset($_CFG['DIR_TPL']) ? $_CFG['DIR_TPL'] : $_CFG['DIR_ROOT'].'tpl/';
