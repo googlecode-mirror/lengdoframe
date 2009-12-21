@@ -235,16 +235,18 @@ function deal_filecbox_upload( obj, msg )
 /**
  * 文件组合框 - 已上传的文件的删除操作
  *
- * @params obj  caller  调用者对象
- * @params str  url     提交的URL
- * @params str  msg     提交前的消息提示
- * @params fnc  fok     提交成功后的回调函数
- * @params bol  merge   提交成功后合并操作框，增宽文本框。默认 true
+ * @params obj  caller   调用者对象
+ * @params str  url      提交的URL
+ * @params obj  configs  配置集
+ *         str           configs.msg       提交前的消息提示
+ *         bol           configs.merge     提交成功后合并操作框，增宽文本框。默认 true
+ *         fun           configs.complete  提交成功后的回调函数
  */
-function deal_filecbox_uploaded_del( caller, url, msg, fok, merge )
+function deal_filecbox_uploaded_del( caller, url, configs )
 {
-    /* 初始化消息 */
-    msg = msg ? msg : '确认删除文件?';
+    /* 初始化配置集 */
+    configs = typeof(configs) == 'object' && configs ? configs : {};
+    configs.msg = configs.msg ? configs.msg : '确认删除文件？';
 
     /* 确认OK - 回调函数 */
     function confirm_callback(){
@@ -261,26 +263,31 @@ function deal_filecbox_uploaded_del( caller, url, msg, fok, merge )
                 caller.parentNode.style.display = 'none';
 
                 /* 合并操作框，增宽文本框 */
-                if( merge !== false ){
-                    /* 向上 - 扩展文本框 */
+                if( configs.merge !== false ){
+                    /* 向上 - 查找文本框 */
                     var textbox = caller.parentNode;
                     while( textbox = textbox.previousSibling ){
-                        if( textbox.tagName && textbox.type == 'text' ){
-                            break;
-                        }
-                    }
+                        /* 无效文本框，继续查找 */
+                        if( !textbox ) continue;
+                        if( !textbox.type ) continue;
+                        if(  textbox.type.toLowerCase() != 'text' ) continue;
 
-                    textbox.style.width = parseInt(textbox.style.width)+ 53 +'px';
+                        /* 找到文本框，跳出循环 */
+                        break;
+                    }
+                    
+                    /* 增宽文本框 */
+                    textbox.style.width = parseInt(textbox.style.width) + 53 +'px';
                 }
 
                 /* 提交成功后的函数回调 */
-                if( typeof(fok) == 'function' ) fok();
+                if( typeof(configs.complete) == 'function' ) configs.complete();
             }
         }
     }
 
     /* 删除提示 */
-    wnd_confirm(msg, {'ok':confirm_callback});
+    wnd_confirm(configs.msg, {'ok':confirm_callback});
 }
 
 
