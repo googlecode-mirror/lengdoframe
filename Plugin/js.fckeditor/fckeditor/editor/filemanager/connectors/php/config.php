@@ -47,7 +47,7 @@ $Config['ForceSingleExtension'] = true ;
 
 // Perform additional checks for image files
 // if set to true, validate image size (using getimagesize)
-$Config['SecureImageUploads'] = true;
+$Config['SecureImageUploads'] = true ;
 
 // What the user can do with this connector
 $Config['ConfigAllowedCommands'] = array('QuickUpload', 'FileUpload', 'GetFolders', 'GetFoldersAndFiles', 'CreateFolder') ;

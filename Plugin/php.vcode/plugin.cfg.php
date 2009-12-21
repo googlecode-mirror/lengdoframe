@@ -1,10 +1,10 @@
-﻿功能简介：
+﻿功能说明：
     图片验证码
 
 
-加载使用：
-    1. 拷贝 vcode.class.php和candarai.ttf文件 到 /plugin/vcode 文件夹下
-    2. 在程序中加载 /plugin/vcode/vcode.class.php 文件
+使用说明：
+    1. 拷贝 所有文件 到 /plugin/php.vcode 文件夹下
+    2. 在程序中加载 /plugin/php.vcode/vcode.class.php 文件
     3. 在程序中构建 Vcode 对象并调用其成员函数使用
 
 
