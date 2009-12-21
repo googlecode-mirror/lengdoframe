@@ -4,14 +4,14 @@ $_PLUGIN_CFG = array();
 
 
 /* 设置组件配置 - 组件版本 */
-$_PLUGIN_CFG['ver']      = 'v1.0.0';
+$_PLUGIN_CFG['ver']       = 'v1.0.0';
 
 /* 设置组件配置 - 组件标题 */
-$_PLUGIN_CFG['title']    = '图片动画效果';
+$_PLUGIN_CFG['title']     = '图片动画效果';
 
-/* 设置组件配置 - 文件融合 */
-$_PLUGIN_CFG['append']   = array();
-$_PLUGIN_CFG['append'][] = array($_CFG['DIR_ADMIN'].'js/system.js', 'anime.js');
+/* 设置组件配置 - 组件安装 */
+$_PLUGIN_CFG['install']   = array();
+$_PLUGIN_CFG['install'][] = array($_CFG['DIR_ADMIN'].'js/system.js', 'anime.js');
 
 
 /* 返回组件配置 */
