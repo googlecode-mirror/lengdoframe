@@ -6,15 +6,12 @@ $_PLUGIN_CFG = array();
 /* 设置组件配置 - 组件版本 */
 $_PLUGIN_CFG['ver']      = 'v1.0.0';
 
-/* 设置组件配置 - 索引文件 */
-$_PLUGIN_CFG['file']     = 'anime.js';
-
 /* 设置组件配置 - 组件标题 */
 $_PLUGIN_CFG['title']    = '图片动画效果';
 
-/* 设置组件配置 - 融合文件 */
+/* 设置组件配置 - 文件融合 */
 $_PLUGIN_CFG['append']   = array();
-$_PLUGIN_CFG['append'][] = $_CFG['DIR_ADMIN'] . 'js/system.js';
+$_PLUGIN_CFG['append'][] = array($_CFG['DIR_ADMIN'].'js/system.js', 'anime.js');
 
 
 /* 返回组件配置 */

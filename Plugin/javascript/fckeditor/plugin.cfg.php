@@ -6,13 +6,10 @@ $_PLUGIN_CFG = array();
 /* 设置组件配置 - 组件版本 */
 $_PLUGIN_CFG['ver']      = 'v2.5.1';
 
-/* 设置组件配置 - 索引文件 */
-$_PLUGIN_CFG['file']     = 'fckeditor.php';
-
 /* 设置组件配置 - 组件标题 */
 $_PLUGIN_CFG['title']    = 'FCKeditor编辑器';
 
-/* 设置组件配置 - 融合文件 */
+/* 设置组件配置 - 文件融合 */
 $_PLUGIN_CFG['append']   = array();
 
 

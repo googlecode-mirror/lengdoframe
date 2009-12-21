@@ -6,13 +6,10 @@ $_PLUGIN_CFG = array();
 /* 设置组件配置 - 组件版本 */
 $_PLUGIN_CFG['ver']      = 'v1.0.0';
 
-/* 设置组件配置 - 索引文件 */
-$_PLUGIN_CFG['file']     = 'image.class.php';
-
 /* 设置组件配置 - 组件标题 */
 $_PLUGIN_CFG['title']    = '图片处理类';
 
-/* 设置组件配置 - 融合文件 */
+/* 设置组件配置 - 文件融合 */
 $_PLUGIN_CFG['append']   = array();
 
 
