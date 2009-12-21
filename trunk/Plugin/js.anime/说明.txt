@@ -1,7 +1,0 @@
-﻿功能简介：
-    图片动画效果对象
-
-
-加载使用：
-    1. 拷贝 anime.js 中的代码到 /js/system.js 或者 /admin/js/system.js
-    2. 在程序中调用 Anime 对象的成员函数使用
