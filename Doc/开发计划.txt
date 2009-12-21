@@ -1,3 +1,5 @@
+x. 多语言机制完善
+x. 模块菜单树所在的左侧栏隐藏功能
 x. 解决等入超时问题
 
 x. format_module_acts等函数添加按钮其他属性 style,onmousemove 等HTML属性通用化

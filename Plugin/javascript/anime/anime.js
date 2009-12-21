@@ -40,16 +40,16 @@ var Anime = {
         obj.style.backgroundPosition = (-parseInt(x*(img_w-obj_w)/obj_w)) +'px '+ (-parseInt(y*(img_h-obj_h)/obj_h)) + 'px';
     },
 
-	/**
-	 * 自动滑动图片(根据鼠标相对于容器位置比例)
-	 *
+    /**
+     * 自动滑动图片(根据鼠标相对于容器位置比例)
+     *
      * @params obj  obj  背景的容器对象
-     * @params obj  e    对象的事件源	 
-	 */
-	 slideImgAuto : function( img, e ){
-	 	/* 基础样式 */
-	 	if( img.parentNode.style.position != 'relative' ) img.parentNode.style.position = 'relative';
-	 	if( img.style.position != 'relative' ) img.style.position = 'relative';
+     * @params obj  e    对象的事件源
+     */
+    slideImgAuto : function( img, e ){
+        /* 基础样式 */
+        if( img.parentNode.style.position != 'relative' ) img.parentNode.style.position = 'relative';
+        if( img.style.position != 'relative' ) img.style.position = 'relative';
 
         /* 事件源兼容 */
         e = window.event || e;
@@ -62,14 +62,14 @@ var Anime = {
         var obj_w = img.parentNode.offsetWidth-1;
         var obj_h = img.parentNode.offsetHeight-1;
 
-	    /* 获取当前鼠标位置 */
-		var l = isNaN(parseInt(img.style.left)) ? 0 : parseInt(img.style.left);
-		var t = isNaN(parseInt(img.style.top))  ? 0 : parseInt(img.style.top);
-		
+        /* 获取当前鼠标位置 */
+        var l = isNaN(parseInt(img.style.left)) ? 0 : parseInt(img.style.left);
+        var t = isNaN(parseInt(img.style.top))  ? 0 : parseInt(img.style.top);
+
         var x = (typeof(e.offsetX) == 'number' ? e.offsetX : e.layerX) + l;
         var y = (typeof(e.offsetY) == 'number' ? e.offsetY : e.layerY) + t;
 
-		img.style.top  = -parseInt(y*(img_h-obj_h)/obj_h) + 'px';
-		img.style.left = -parseInt(x*(img_w-obj_w)/obj_w) + 'px';
-	 }
+        img.style.top  = -parseInt(y*(img_h-obj_h)/obj_h) + 'px';
+        img.style.left = -parseInt(x*(img_w-obj_w)/obj_w) + 'px';
+    }
 }
