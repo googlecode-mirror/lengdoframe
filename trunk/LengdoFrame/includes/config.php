@@ -77,7 +77,7 @@ $_CFG['DIR_ADMIN_TPL']   = isset($_CFG['DIR_ADMIN_TPL'])   ? $_CFG['DIR_ADMIN_TP
 $_CFG['DIR_ADMIN_LNG']   = isset($_CFG['DIR_ADMIN_LNG'])   ? $_CFG['DIR_ADMIN_LNG']   : $_CFG['DIR_ADMIN'].'lang/';
 $_CFG['DIR_ADMIN_INC']   = isset($_CFG['DIR_ADMIN_INC'])   ? $_CFG['DIR_ADMIN_INC']   : $_CFG['DIR_ADMIN'].'includes/';
 
-/* 后台文件夹路径 - 自定义数据缓存 */
+/* 后台文件夹路径 - 数据缓存 */
 $_CFG['DIR_DB_DATA']     = isset($_CFG['DIR_DB_DATA'])     ? $_CFG['DIR_DB_DATA']     : $_CFG['DIR_ADMIN'].'data/dbd/';
 $_CFG['URL_DB_DATA']     = isset($_CFG['URL_DB_DATA'])     ? $_CFG['URL_DB_DATA']     : $_CFG['URL_ADMIN'].'data/dbd/';
 
