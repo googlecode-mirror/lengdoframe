@@ -32,8 +32,8 @@ var ListTable = {
      *
      * @params str  id       列表层对象ID
      * @params str  url      列表基础的URL。例如：'x/xx.php'
-     * @params str  ulist    列表请求的URL。例如：'?act=list'， 默认：url+'?act=list'
-     * @params str  uquery   列表查询的URL。例如：'?act=query'，默认：url+'?act=list&actsub=query'
+     * @params str  ulist    列表请求的URL。例如：'?act=list'， 默认：url   + '?act=list'
+     * @params str  uquery   列表查询的URL。例如：'?act=query'，默认：ulist + '&actsub=query'
      */
     init : function( id, url, ulist, uquery ){
         /* 激活当前列表ID */
@@ -50,22 +50,26 @@ var ListTable = {
      * 初始化配置 - 基础部分
      */
     initCfg : function( id, url, ulist, uquery ){
-        /* 初始化请求列表的配置数据 */
-        if( typeof(this.oCfgs[id]) == 'undefined' ){
-            /* 初始化配置 */
-            this.oCfgs[id] = {};
+        /* 配置已经初始化过 */
+        if( this.oCfgs[id] ) return this.oCfgs[id];
 
-            /* 初始化配置 - 列表ID */
-            this.oCfgs[id].sId      = id;
+        /* 初始化参数 */
+        ulist  = typeof(ulist)  != 'string' || !ulist  ? (url+'?act=list') : (ulist.substr(0,1)=='?' ? (url+ulist) : ulist);
+        uquery = typeof(uquery) != 'string' || !uquery ? (ulist+'&actsub=query') : (uquery.substr(0,1)=='?' ? (url+uquery) : uquery);
 
-            /* 初始化配置 - 基础URL，列表层URL，列表数据层URL */
-            this.oCfgs[id].sUrl     = url;
-            this.oCfgs[id].sUList   = typeof(ulist)  == 'string' && ulist.substr(0,1)  != '?' ? ulist  : (url+'?act=list');
-            this.oCfgs[id].sUQuery  = typeof(uquery) == 'string' && uquery.substr(0,1) != '?' ? uquery : (url+'?act=list&actsub=query');
+        /* 初始化配置 */
+        this.oCfgs[id] = {};
 
-            /* 初始化配置 - 多选时数量限制，false表示不限制. 针对 ListTable.mchoice() */
-            this.oCfgs[id].iMCLimit = 0;
-        }
+        /* 初始化配置 - 列表ID */
+        this.oCfgs[id].sId      = id;
+
+        /* 初始化配置 - 基础URL，列表层URL，列表数据层URL */
+        this.oCfgs[id].sUrl     = url;
+        this.oCfgs[id].sUList   = ulist;
+        this.oCfgs[id].sUQuery  = uquery;
+
+        /* 初始化配置 - 多选时数量限制，false表示不限制. 针对 ListTable.mchoice() */
+        this.oCfgs[id].iMCLimit = 0;
     },
 
     /**
