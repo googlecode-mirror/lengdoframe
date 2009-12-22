@@ -27,7 +27,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 /* ------------------------------------------------------ */
 
 /* 加载整站公用配置库 */
-require_once( str_replace('includes/init.php', '', str_replace("\\", '/', __FILE__) ) . 'includes/config.php' );
+require_once( str_replace('includes/init.php','',str_replace("\\", '/',__FILE__)) .'includes/config.php' );
 
 /* 加载整站和前台公用函数库 */
 require_once($_CFG['DIR_INC'] . 'func.php');
@@ -37,7 +37,7 @@ require_once($_CFG['DIR_INC'] . 'func.php');
 require_once($_CFG['DIR_CLS'] . 'mysql.class.php');
 
 /* 加载前台公用语言库 - 加载全局变量 $_LANG */
-@include_once($_CFG['DIR_LNG'] . 'systemzh.php');
+@include_once($_CFG['DIR_LNG'] . 'system'.$_CFG['SYS_LANG'].'.php');
 
 /* 加载整站公用数据库数据(文件格式) - 加载全局变量 $_DBD */
 @include_once($_CFG['DIR_INC'] . 'systemdbd.php');
@@ -48,8 +48,8 @@ require_once($_CFG['DIR_CLS'] . 'mysql.class.php');
 /* ------------------------------------------------------ */
 
 /* 设置时区 */
-if( PHP_VERSION >= '5.1' && !empty($_CFG['timezone']) ){
-    date_default_timezone_set($_CFG['timezone']);
+if( PHP_VERSION >= '5.1' && !empty($_CFG['SYS_TIMEZONE']) ){
+    date_default_timezone_set($_CFG['SYS_TIMEZONE']);
 }
 
 

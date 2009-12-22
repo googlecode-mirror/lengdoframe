@@ -21,12 +21,6 @@ require('../../includes/lib_module.php');
 
 
 /* ------------------------------------------------------ */
-// - 运行时语言
-/* ------------------------------------------------------ */
-init_temp_lang('privilege.php');
-
-
-/* ------------------------------------------------------ */
 // - 异步 - 增加
 /* ------------------------------------------------------ */
 if( $_REQUEST['act'] == 'add' ){
@@ -217,16 +211,16 @@ function post_privilege( $act )
 
     /* 字段值检查 */
     if( $fields['name'] == '' ){
-        make_json_fail($_LANG['fill_priv_name']);
+        make_json_fail($_LANG['fill_privilege_name']);
     }
     if( $fields['module_id'] == 0 ){
-        make_json_fail($_LANG['fill_priv_module']);
+        make_json_fail($_LANG['fill_privilege_module']);
     }
     if( $fields['module_act_name'] == '' ){
-        make_json_fail($_LANG['fill_priv_aname']);
+        make_json_fail($_LANG['fill_privilege_aname']);
     }
     if( $fields['module_act_code'] == '' ){
-        make_json_fail($_LANG['fill_priv_acode']);
+        make_json_fail($_LANG['fill_privilege_acode']);
     }
 
     /* 字段值检查 - 权限重复检查 */
@@ -236,7 +230,7 @@ function post_privilege( $act )
     $filter['module_act_code'] = $fields['module_act_code'];
 
     if( exist_privilege($filter) ){
-        make_json_fail($_LANG['fill_priv_exist']);
+        make_json_fail($_LANG['fill_privilege_exist']);
     }
 
     return $fields;

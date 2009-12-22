@@ -16,11 +16,11 @@
 /* ----------------------------------------------------------------------- */
 
 /* 管理员 SESSION 的下标 */
-define('SN_ADMIN', md5(__FILE__) );
+define('SN_ADMIN', md5(__FILE__));
 
 /* 根路径的相对路径和绝对路径(保留末尾斜杠) */
-define('DIR_ROOT', str_ireplace( 'includes/config.php', '', str_replace("\\",'/',__FILE__) ) );
-define('URL_ROOT', str_ireplace( rtrim(str_replace("\\",'/',$_SERVER['DOCUMENT_ROOT']),'/'), '', DIR_ROOT) );
+define('DIR_ROOT', str_ireplace('includes/config.php','',str_replace("\\",'/',__FILE__)));
+define('URL_ROOT', str_ireplace(rtrim(str_replace("\\",'/',$_SERVER['DOCUMENT_ROOT']),'/'),'',DIR_ROOT));
 
 
 /* ----------------------------------------------------------------------- */
@@ -28,14 +28,6 @@ define('URL_ROOT', str_ireplace( rtrim(str_replace("\\",'/',$_SERVER['DOCUMENT_R
 /* ----------------------------------------------------------------------- */
 
 $_CFG = array();
-
-
-/* ----------------------------------------------------------------------- */
-// - 环境配置
-/* ----------------------------------------------------------------------- */
-
-/* 时区 */
-$_CFG['timezone'] = 'PRC';
 
 
 /* ----------------------------------------------------------------------- */
@@ -55,6 +47,18 @@ $_CFG['URL_PLUGIN'] = URL_ROOT.'plugin/';
 // - 扩展配置
 /* ----------------------------------------------------------------------- */
 @include_once($_CFG['DIR_ROOT'] . 'includes/systemconfig.php');
+
+
+/* ----------------------------------------------------------------------- */
+// - 环境配置
+/* ----------------------------------------------------------------------- */
+
+/* 时区 */
+$_CFG['SYS_TIMEZONE'] = isset($_CFG['SYS_TIMEZONE']) ? $_CFG['SYS_TIMEZONE'] : 'PRC';
+
+/* 语言库 */
+$_CFG['SYS_LANG'] = isset($_CFG['SYS_LANG']) ? $_CFG['SYS_LANG'] : 'zh';
+$_CFG['SYS_ADMIN_LANG'] = isset($_CFG['SYS_ADMIN_LANG']) ? $_CFG['SYS_ADMIN_LANG'] : 'zh';
 
 
 /* ----------------------------------------------------------------------- */

@@ -90,19 +90,19 @@ $_LANG['fill_admin_exist']         = '管理员帐号已经存在！';
 
 $_LANG['fill_role_name']           = '请填写角色名称！';
 
-$_LANG['fill_dbbackup_sqlfile']    = '请上传SQL文件！';
-
 $_LANG['fill_module_name']         = '请填写模块名称！';
 $_LANG['fill_module_file']         = '请填写模块处理文件！';
 $_LANG['fill_module_exist']        = '模块重复，请重先填写模块处理文件！';
 
-$_LANG['fill_priv_name']           = '请填写权限名称！';
-$_LANG['fill_priv_aname']          = '请填写操作名称！';
-$_LANG['fill_priv_acode']          = '请填写操作代码！';
-$_LANG['fill_priv_module']         = '请选择模块！';
-$_LANG['fill_priv_exist']          = '权限重复，请重先填写操作代码！';
+$_LANG['fill_privilege_name']      = '请填写权限名称！';
+$_LANG['fill_privilege_aname']     = '请填写操作名称！';
+$_LANG['fill_privilege_acode']     = '请填写操作代码！';
+$_LANG['fill_privilege_exist']     = '权限重复，请重先填写操作代码！';
+$_LANG['fill_privilege_module']    = '请选择模块！';
 
-$_LANG['fill_myaccount_pwdr']      = '重复密码错误，请重新填写！';
+$_LANG['fill_myaccount_repwd']     = '重复密码错误，请重新填写！';
+
+$_LANG['fill_dbbackup_sqlfile']    = '请上传SQL文件！';
 
 
 /* ------------------------------------------------------ */
