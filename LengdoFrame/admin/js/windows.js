@@ -478,15 +478,15 @@ function wnd_sysinfo_view()
 
     /* 构建窗口 */
     if( !wnd ){
-        wnd = new Wnd('wnd-sysinfo-view', null, {'width':420,'control':'ok'});
+        wnd = new Wnd('wnd-sysinfo-view', null, {'width':420});
 
         wnd.create();
-        wnd.buttonAddDefault();
-
-        /* 初始化参数 */
-        wnd.title('系统信息');
-        wnd.inner(url, 'url');
+        wnd.buttonAddDefault('ok');
     }
+
+    /* 初始化参数 */
+    wnd.title('系统信息');
+    wnd.inner(url, 'url');
 
     wnd.show();
     wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
