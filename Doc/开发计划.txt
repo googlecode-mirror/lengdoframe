@@ -1,5 +1,3 @@
-x. 通用化init_temp_lang
-x. 多语言机制完善
 x. 模块菜单树所在的左侧栏隐藏功能
 x. 解决等入超时问题
 
@@ -9,6 +7,4 @@ x. 增加模块Tabbar功能，左侧菜单的每次请求都将重新载入，Tabbar标签的请求则使用Dom
 
 x. 添加下拉组合框JS功能
 
-x. 网页在线编辑组件化
-
-x. 重写 image.class.php
+x. 重写 image.class.php 组件

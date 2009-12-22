@@ -21,12 +21,6 @@ require('../../includes/lib_lrtree.php');
 
 
 /* ------------------------------------------------------ */
-// - 运行时语言
-/* ------------------------------------------------------ */
-init_temp_lang('role.php');
-
-
-/* ------------------------------------------------------ */
 // - 异步 - 增加
 /* ------------------------------------------------------ */
 if( $_REQUEST['act'] == 'add' ){
@@ -78,7 +72,7 @@ elseif( $_REQUEST['act'] == 'insert' ){
         post_privilege_insert( $db->insertId() );
 
         /* 写入日志 */
-        admin_log($_LANG['add:'].$fields['name']);
+        admin_log(admin_privilege_name_fk('role.php','add').': '.$fields['name']);
 
         /* 初始化管理员的权限文件时间, 刷新权限系统和系统提示 */
         admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
@@ -156,7 +150,7 @@ elseif( $_REQUEST['act'] == 'update' ){
         post_privilege_insert($info['role_id']);
 
         /* 写入日志 */
-        admin_log($_LANG['edit:'].$info['name']);
+        admin_log(admin_privilege_name_fk('role.php','edit').': '.$info['name']);
 
         /* 初始化管理员的权限文件时间，刷新权限系统和系统提示 */
         admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
@@ -183,7 +177,7 @@ elseif( $_REQUEST['act'] == 'ufield' ){
         $db->update( tname('role'), array($_POST['field']=>trim($_POST['val'])), 'role_id='.$info['role_id'] );
 
         /* 写入日志和系统提示 */
-        admin_log($_LANG['edit:'].$info['name']); make_json_ok();
+        admin_log(admin_privilege_name_fk('role.php','edit').': '.$info['name']); make_json_ok();
     }
 
     make_json_fail();
@@ -207,7 +201,7 @@ elseif( $_REQUEST['act'] == 'del' ){
     del_role( array('info'=>$info) );
 
     /* 写入日志 */
-    admin_log($_LANG['del:'].$info['name']);
+    admin_log(admin_privilege_name_fk('role.php','del').': '.$info['name']);
 
     /* 初始化管理员的权限文件时间，刷新权限系统和系统提示 */
     admin_pfile_init(0); flush_privilege_sys(); make_json_ok();

@@ -419,6 +419,9 @@ function deal_jseditor_show( id )
  */
 function tagtitle( e, title, config )
 {
+    /* 无效参数 */
+    if( title.replace(/^\s*|\s*$/g, '') == '' ) return false;
+
     /* 初始化事件对象和事件源对象 */
     var event = e || window.event;
     var caller = window.ActiveXObject ? event.srcElement : event.target;

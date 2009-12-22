@@ -362,24 +362,4 @@ function order_img( $filter )
 
     return $flag;
 }
-
-
-/* ------------------------------------------------------ */
-// - 运行时设置
-/* ------------------------------------------------------ */
-
-/**
- * 初始化临时语言
- *
- * @params str  $module  模块文件名
- */
-function init_temp_lang( $module )
-{
-    global $_LANG;
-
-    $_LANG['add:']    = admin_privilege_name_fk($module, 'add').'：';
-    $_LANG['del:']    = admin_privilege_name_fk($module, 'del').'：';
-    $_LANG['edit:']   = admin_privilege_name_fk($module, 'edit').'：';
-    $_LANG['assign:'] = admin_privilege_name_fk($module, 'assign').'：';
-}
 ?>

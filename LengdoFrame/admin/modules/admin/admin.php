@@ -21,12 +21,6 @@ require('../../includes/lib_module.php');
 
 
 /* ------------------------------------------------------ */
-// - 运行时语言
-/* ------------------------------------------------------ */
-init_temp_lang('admin.php');
-
-
-/* ------------------------------------------------------ */
 // - 异步 - 增加
 /* ------------------------------------------------------ */
 if( $_REQUEST['act'] == 'add' ){
@@ -59,7 +53,7 @@ elseif( $_REQUEST['act'] == 'insert' ){
         post_privilege_insert( $db->insertId() );
 
         /* 写入日志和系统提示 */
-        admin_log($_LANG['add:'].$fields['name']); make_json_ok();
+        admin_log(admin_privilege_name_fk('admin.php','add').': '.$fields['name']); make_json_ok();
     }
 }
 
@@ -115,7 +109,7 @@ elseif( $_REQUEST['act'] == 'update' ){
         @unlink( admin_pfile($info['username']) );
 
         /* 写入日志和系统提示 */
-        admin_log($_LANG['edit:'].$info['name']); make_json_ok();
+        admin_log(admin_privilege_name_fk('admin.php','edit').': '.$info['name']); make_json_ok();
     }
 }
 
@@ -138,7 +132,7 @@ elseif( $_REQUEST['act'] == 'ufield' ){
         $db->update( tname('admin'), array($_POST['field']=>trim($_POST['val'])), 'admin_id='.$info['admin_id'] );
 
         /* 写入日志和系统提示 */
-        admin_log($_LANG['edit:'].$info['name']); make_json_ok();
+        admin_log(admin_privilege_name_fk('admin.php','edit').': '.$info['name']); make_json_ok();
     }
 
     make_json_fail();
@@ -165,7 +159,7 @@ elseif( $_REQUEST['act'] == 'del' ){
     @unlink( admin_pfile($info['username']) );
 
     /* 写入日志和系统提示 */
-    admin_log($_LANG['del:'].$info['name']); make_json_ok();
+    admin_log(admin_privilege_name_fk('admin.php','del').': '.$info['name']); make_json_ok();
 }
 
 

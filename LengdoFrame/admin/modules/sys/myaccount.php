@@ -72,7 +72,7 @@ function post_myaccount()
 
     /* 字段值检查 */
     if( $fields['password'] != trim($_POST['passwordr']) ){
-        make_json_fail($_LANG['fill_myaccount_pwdr']);
+        make_json_fail($_LANG['fill_myaccount_repwd']);
     }
 
     /* 字段值重构 */
