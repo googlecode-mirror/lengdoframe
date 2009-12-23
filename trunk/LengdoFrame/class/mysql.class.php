@@ -14,18 +14,16 @@
 class Mysql
 {
     /* 数据库连接句柄 */
-    var $hLink = null;
+    var $hLink       = null;
+
+    /* Mysql版本 */
+    var $sVersion    = '';
 
     /* SQL语句执行信息 */
+    var $aQueryErr   = array();
     var $aQueryLog   = array();
     var $iQueryTime  = null;
     var $iQueryCount = 0;
-
-    /* Mysql版本 */
-    var $sVersion = '';
-
-    /* 最新错误消息 */
-    var $aError = array();
 
 
     /**
@@ -120,10 +118,10 @@ class Mysql
 
         /* 执行 SQL */
         if( !($result = mysql_query($sql, $this->hLink)) ){
-            $this->aError['SQL']   = $sql;
-            $this->aError['MSG']   = 'MySQL Query Error';
-            $this->aError['ERROR'] = mysql_error($this->hLink);
-            $this->aError['ERRNO'] = mysql_errno($this->hLink);
+            $this->aQueryErr['SQL']   = $sql;
+            $this->aQueryErr['MSG']   = 'MySQL Query Error';
+            $this->aQueryErr['ERROR'] = mysql_error($this->hLink);
+            $this->aQueryErr['ERRNO'] = mysql_errno($this->hLink);
 
             $halt ? $this->halt() : '';
         }
@@ -169,7 +167,7 @@ class Mysql
         else{
             echo '<table style="font-size:12px; font-family:Courier New">';
 
-            foreach( $this->aError AS $k=>$v ){
+            foreach( $this->aQueryErr AS $k=>$v ){
                 echo "<tr><td valign='top'><b>{$k}: </b><td>{$v}<td></tr>";
             }
 
@@ -198,9 +196,7 @@ class Mysql
         if( $result !== false ){
             $row = mysql_fetch_row($result);
 
-            if( $row ){
-                return $row[0];
-            }
+            if( $row ) return $row[0];
         }
 
         return '';
@@ -244,9 +240,7 @@ class Mysql
         if( $result !== false ){
             $row = mysql_fetch_assoc($result);
 
-            if( $row ){
-                return $row;
-            }
+            if( $row ) return $row;
         }
 
         return array();
@@ -261,7 +255,7 @@ class Mysql
 	 */
     function getCol( $sql )
     {
-        $result = $this->query( $sql );
+        $result = $this->query($sql);
 
         if( $result !== false ){
             $arr = array();
@@ -278,7 +272,7 @@ class Mysql
 
 
     /**
-     * 插入
+     * 写入
      *
      * @params str  $table          表名
      * @params arr  $fields_values  字段值
@@ -308,9 +302,7 @@ class Mysql
         }
 
         /* 执行 SQL */
-        if( $sql ){
-            return $this->query($sql);
-        }
+        if( $sql ) return $this->query($sql);
 
         return false;
     }
@@ -339,9 +331,7 @@ class Mysql
         }
 
         /* 执行SQL */
-        if( $sql ){
-            return $this->query($sql);
-        }
+        if( $sql ) return $this->query($sql);
 
         return false;
     }
