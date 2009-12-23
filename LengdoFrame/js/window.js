@@ -427,7 +427,7 @@ Wnd.prototype.buttonActive = function( index, keypress ){
 /**
  * 客户区内容载入
  *
- * @params mix  str      载入数据
+ * @params str  str      载入数据
  * @params str  type     载入类型(url, html)，默认html
  * @params obj  attribs  载入属性
  *         bol  attribs.move     加载完后窗口自动居中，默认true
@@ -449,7 +449,7 @@ Wnd.prototype.inner = function( str, type, attribs ){
 
         /* 填充客户区加载层 */
         this.oClient.innerHTML = '';
-        this.createClientLoading(w, h, true);
+        this.createClientLoading(w, h, 'fill');
     }
 
     /* 加载类型 */
@@ -501,14 +501,24 @@ Wnd.prototype.innerHTML = function( html, attribs ){
 }
 
 /**
- * 客户区内容重载入
+ * 客户区内容重载
+ *
+ * @params str  str    载入数据(临时)
+ * @params str  type   载入类型(临时)
  */
-Wnd.prototype.reinner = function(){
+Wnd.prototype.reinner = function( str, type ){
+    /* 初始化 */
+    srcstr = this.oInner.str; str = typeof(str) == 'string' && str ? str : this.oInner.str;
+    srctype = this.oInner.type; type = typeof(type) == 'string' && type ? type : this.oInner.type;
+
     /* 创建客户区加载层 */
     this.createClientLoading(this.oClient.offsetWidth-2, this.oClient.offsetHeight);
 
     /* 重新载入 */
-    this.inner( this.oInner.str, this.oInner.type, {'loading':false,'move':false,'complete':false} );
+    this.inner(str, type, {'loading':false,'move':false,'complete':false});
+
+    /* 重置配置 */
+    this.oInner = {'str':srcstr, 'type':srctype};
 }
 
 
@@ -821,11 +831,11 @@ Wnd.prototype.createClient = function(){
 /**
  * 创建客户区加载层
  *
- * @params int width     宽度
- * @params int height    高度
- * @params bol relative  使用 position:relative 加载层。默认：false
+ * @params int width   宽度
+ * @params int height  高度
+ * @params str type    加载层类型，'float'表示浮动加载层(默认)，'fill'表示填充加载层
  */
-Wnd.prototype.createClientLoading = function( width, height, relative )
+Wnd.prototype.createClientLoading = function( width, height, type )
 {
     /* 初始化参数 */
     if( !(width > 0 && height > 0) ) return false;
@@ -843,7 +853,7 @@ Wnd.prototype.createClientLoading = function( width, height, relative )
     this.oClient.childNodes[0] ? this.oClient.insertBefore(b, this.oClient.childNodes[0]) : this.oClient.appendChild(b);
 
     /* 设置属性 */
-    b.className    = 'wnd-client-loading' + (relative===true ? ' wnd-client-loading-relative' : '');
+    b.className    = 'wnd-client-loading' + (type=='fill' ? ' wnd-client-loading-relative' : '');
     b.style.width  = width + 'px';
     b.style.height = height + 'px';
 

@@ -139,7 +139,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     </tr>
     <tr style="background:#eee;">
         <td align="center" width="60">@params</td>
-        <td align="center" width="30">mix</td>
+        <td align="center" width="30">str</td>
         <td width="100">str</td>
         <td>载入数据</td>
     </tr>
@@ -182,7 +182,19 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-wndcls-reinner');o.style.display=o.style.display=='none'?'':'none'" style="color:#008ECD;">2. API：窗口类-客户区内容重载</a>
     <table style="margin-left:1.2em;padding:5px 0;font-size:12px;" id="lfm-wndcls-reinner">
     <tr>
-        <th colspan="4" align="left">Wnd.prototype.reinner();</th>
+        <th colspan="4" align="left">Wnd.prototype.reinner( str, type );</th>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center" width="60">@params</td>
+        <td align="center" width="30">str</td>
+        <td width="100">str</td>
+        <td>载入数据(临时)</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center">@params</td>
+        <td align="center">str</td>
+        <td>type</td>
+        <td>载入类型(临时)</td>
     </tr>
     </table>
 </div>
