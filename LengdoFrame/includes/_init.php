@@ -35,7 +35,7 @@ require_once($_CFG['DIR_INC'] . 'func.php');
 /* 加载Mysql数据库类 */
 require_once($_CFG['DIR_CLS'] . 'mysql.class.php');
 
-/* 加载前台公用函数库 */
+/* 加载前台公用自定义函数库 */
 @include_once($_CFG['DIR_INC'] . 'systemfunc.php');
 
 /* 加载整站公用数据库数据(文件格式) - 加载全局变量 $_DBD */
