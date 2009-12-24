@@ -37,6 +37,8 @@ require_once($_CFG['DIR_CLS'] . 'mysql.class.php');
 
 /* 加载后台公用函数库 */
 require_once($_CFG['DIR_ADMIN_INC'] . 'lib_func.php');
+
+/* 加载后台公用自定义函数库 */
 @include_once($_CFG['DIR_ADMIN_INC'] . 'systemfunc.php');
 
 /* 加载权限系统库 */
@@ -44,6 +46,8 @@ require_once($_CFG['DIR_ADMIN_INC'] . 'lib_privilege.php');
 
 /* 加载后台公用语言库 - 加载全局变量 $_LANG */
 require_once($_CFG['DIR_ADMIN_LNG'] . $_CFG['SYS_ADMIN_LANG'].'.php');
+
+/* 加载后台公用自定义语言库 - 扩展全局变量 $_LANG */
 @include_once($_CFG['DIR_ADMIN_LNG'] . 'system'.$_CFG['SYS_ADMIN_LANG'].'.php');
 
 
@@ -69,10 +73,10 @@ if( !get_magic_quotes_gpc() ){
     $_COOKIE = addslashes_deep($_COOKIE);
 }
 
-/* 初始化数据库类, 设置全局变量 $db */
+/* 初始化数据库类，设置全局变量 $db */
 $db = new Mysql($_CFG['dbhost'], $_CFG['dbuser'], $_CFG['dbpass'], $_CFG['dbname']);
 
-/* 初始化模板变量 */
+/* 初始化模板变量，设置全局变量 $tpl */
 $tpl = array();
 
 /* 初始化请求变量 */
@@ -107,7 +111,7 @@ else{
     /* 运行时权限文件异常，刷新权限系统 */
     if( !admin_pfile_valid() ){ flush_privilege_sys(); } 
 
-    /* 解析权限文件, 设置全局变量 $_RPIV */
+    /* 解析权限文件，构建全局变量 $_RPIV */
     $_PRIV = admin_pfile_parse();
 
     /* 加载数据辅助库 */
@@ -115,7 +119,6 @@ else{
 
     /* 加载数据库数据(文件格式) - 加载全局变量 $_DBD */
     @include_once($_CFG['DIR_INC'] . 'systemdbd.php');
-    @include_once($_CFG['DIR_ADMIN_DATA'] . 'dbd/systemdbd.php');
 }
 
 

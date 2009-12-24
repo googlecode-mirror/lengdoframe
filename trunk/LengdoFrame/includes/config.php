@@ -53,11 +53,11 @@ $_CFG['URL_PLUGIN'] = URL_ROOT.'plugin/';
 // - 环境配置
 /* ----------------------------------------------------------------------- */
 
-/* 皮肤 */
-$_CFG['SYS_SKIN'] = isset($_CFG['SYS_SKIN']) ? $_CFG['SYS_SKIN'] : 'default';
-
 /* 语言 */
 $_CFG['SYS_LANG'] = isset($_CFG['SYS_LANG']) ? $_CFG['SYS_LANG'] : 'zh';
+
+/* 皮肤 */
+$_CFG['SYS_SKIN'] = isset($_CFG['SYS_SKIN']) ? $_CFG['SYS_SKIN'] : 'default';
 
 /* 时区 */
 $_CFG['SYS_TIMEZONE'] = isset($_CFG['SYS_TIMEZONE']) ? $_CFG['SYS_TIMEZONE'] : 'PRC';
@@ -84,10 +84,6 @@ $_CFG['DIR_LNG'] = isset($_CFG['DIR_LNG']) ? $_CFG['DIR_LNG'] : $_CFG['DIR_ROOT'
 $_CFG['DIR_ADMIN_TPL'] = isset($_CFG['DIR_ADMIN_TPL']) ? $_CFG['DIR_ADMIN_TPL'] : $_CFG['DIR_ADMIN'].'tpl/';
 $_CFG['DIR_ADMIN_LNG'] = isset($_CFG['DIR_ADMIN_LNG']) ? $_CFG['DIR_ADMIN_LNG'] : $_CFG['DIR_ADMIN'].'lang/';
 $_CFG['DIR_ADMIN_INC'] = isset($_CFG['DIR_ADMIN_INC']) ? $_CFG['DIR_ADMIN_INC'] : $_CFG['DIR_ADMIN'].'includes/';
-
-/* 后台文件夹路径 - 数据缓存 */
-$_CFG['DIR_ADMIN_DBD'] = isset($_CFG['DIR_ADMIN_DBD']) ? $_CFG['DIR_ADMIN_DBD'] : $_CFG['DIR_ADMIN'].'data/dbd/';
-$_CFG['URL_ADMIN_DBD'] = isset($_CFG['URL_ADMIN_DBD']) ? $_CFG['URL_ADMIN_DBD'] : $_CFG['URL_ADMIN'].'data/dbd/';
 
 /* 后台文件夹路径 - 后台皮肤 */
 $_CFG['DIR_ADMIN_SKIN'] = isset($_CFG['DIR_ADMIN_SKIN']) ? $_CFG['DIR_ADMIN_SKIN'] : $_CFG['DIR_ADMIN'].'skin/';
