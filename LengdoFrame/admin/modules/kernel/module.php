@@ -53,8 +53,8 @@ elseif( $_REQUEST['act'] == 'insert' ){
 
     /* 数据写入 */
     if( lrtree_insert($fields, $filter) ){
-        /* 初始化所有管理员的权限文件时间，刷新权限系统和系统提示 */
-        admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
+        /* 初始化权限系统的权限文件和系统提示 */
+        init_privilege_sys_pfile(); make_json_ok();
     }
 }
 
@@ -85,8 +85,8 @@ elseif( $_REQUEST['act'] == 'update' ){
 
     /* 数据更新 */
     if( $db->update(tname('module'), $fields, 'module_id='.intval($_POST['module_id'])) ){
-        /* 初始化所有管理员的权限文件时间，刷新权限系统和系统提示 */
-        admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
+        /* 初始化权限系统的权限文件和系统提示 */
+        init_privilege_sys_pfile(); make_json_ok();
     }
 }
 
@@ -103,8 +103,8 @@ elseif( $_REQUEST['act'] == 'ufield' ){
         /* 更新数据库 */
         $db->update( tname('module'), array( 'hidden'=>(intval($_POST['val'])?0:1) ), 'module_id='.intval($_POST['id']) ); 
 
-        /* 初始化所有管理员的权限文件时间，刷新权限系统和系统提示 */
-        admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
+        /* 初始化权限系统的权限文件和系统提示 */
+        init_privilege_sys_pfile(); make_json_ok();
     }
 
     make_json_fail();
@@ -124,8 +124,8 @@ elseif( $_REQUEST['act'] == 'del' ){
     /* 删除模块 */
     del_module( array('info'=>$info) );
 
-    /* 初始化所有管理员的权限文件时间，刷新权限系统和系统提示 */
-    admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
+    /* 初始化权限系统的权限文件和系统提示 */
+    init_privilege_sys_pfile(); make_json_ok();
 }
 
 
@@ -149,8 +149,8 @@ elseif( $_REQUEST['act'] == 'updown' ){
         if( !lrtree_dmove($filter) ) make_json_fail();
     }
 
-    /* 初始化所有管理员的权限文件时间，刷新权限系统和系统提示 */
-    admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
+    /* 初始化权限系统的权限文件和系统提示 */
+    init_privilege_sys_pfile(); make_json_ok();
 }
 
 

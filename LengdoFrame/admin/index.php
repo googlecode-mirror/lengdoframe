@@ -40,7 +40,7 @@ elseif( $_REQUEST['act'] == 'loginsubmit' ){
     }
 
     /* 登陆 */
-    if( admin_login( array('username'=>$_POST['username'], 'password'=>$_POST['password']) ) ){
+    if( admin_login(trim($_POST['username']), md5(trim($_POST['password']))) ){
         admin_log($_LANG['str_login']); make_json_ok();
     }
 

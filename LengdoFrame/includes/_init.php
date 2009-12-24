@@ -29,18 +29,20 @@ error_reporting(E_ALL & ~E_NOTICE);
 /* 加载整站公用配置库 */
 require_once( str_replace('includes/init.php','',str_replace("\\", '/',__FILE__)) .'includes/config.php' );
 
-/* 加载整站和前台公用函数库 */
+/* 加载整站公用函数库 */
 require_once($_CFG['DIR_INC'] . 'func.php');
-@include_once($_CFG['DIR_INC'] . 'systemfunc.php');
 
 /* 加载Mysql数据库类 */
 require_once($_CFG['DIR_CLS'] . 'mysql.class.php');
 
-/* 加载前台公用语言库 - 加载全局变量 $_LANG */
-@include_once($_CFG['DIR_LNG'] . 'system'.$_CFG['SYS_LANG'].'.php');
+/* 加载前台公用函数库 */
+@include_once($_CFG['DIR_INC'] . 'systemfunc.php');
 
 /* 加载整站公用数据库数据(文件格式) - 加载全局变量 $_DBD */
 @include_once($_CFG['DIR_INC'] . 'systemdbd.php');
+
+/* 加载前台公用语言库 - 加载全局变量 $_LANG */
+@include_once($_CFG['DIR_LNG'] . 'system'.$_CFG['SYS_LANG'].'.php');
 
 
 /* ------------------------------------------------------ */
@@ -65,17 +67,17 @@ if( !get_magic_quotes_gpc() ){
     $_COOKIE = addslashes_deep($_COOKIE);
 }
 
+/* 初始化数据库类, 设置全局变量 $db */
+$db = new Mysql($_CFG['dbhost'], $_CFG['dbuser'], $_CFG['dbpass'], $_CFG['dbname']);
+
+/* 初始化模板变量 */
+$tpl = array();
+
 /* 初始化请求变量 */
 $_REQUEST = array_merge($_GET, $_POST);
 
 /* 初始化操作变量 */
 $_REQUEST['act'] = $_REQUEST['act'] ? trim($_REQUEST['act']) : '';
-
-/* 初始化模板变量 */
-$tpl = array();
-
-/* 初始化数据库类, 设置全局变量 $db */
-$db = new Mysql($_CFG['dbhost'], $_CFG['dbuser'], $_CFG['dbpass'], $_CFG['dbname']);
 
 
 /* 文件头信息 */

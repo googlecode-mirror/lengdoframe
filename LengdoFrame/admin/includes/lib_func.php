@@ -178,11 +178,13 @@ function admin_log( $info )
 {
     $fields = array();
 
-    $fields['ip']         = $_SERVER['REMOTE_ADDR'];
-    $fields['info']       = addslashes(stripslashes($info));
-    $fields['admin_id']   = admin_id();
+    $fields['ip'] = $_SERVER['REMOTE_ADDR'];
+    $fields['info'] = addslashes(stripslashes($info));
+    $fields['in_time'] = time();
+
+    $fields['admin_id'] = admin_id();
     $fields['admin_name'] = addslashes(admin_name());
-    $fields['in_time']    = time();
+    $fields['admin_username'] = addslashes(admin_username());
 
     $GLOBALS['db']->insert( tname('admin_log'), $fields );
 }

@@ -74,8 +74,8 @@ elseif( $_REQUEST['act'] == 'insert' ){
         /* 写入日志 */
         admin_log(admin_privilege_name_fk('role.php','add').': '.$fields['name']);
 
-        /* 初始化管理员的权限文件时间, 刷新权限系统和系统提示 */
-        admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
+        /* 初始化权限系统的权限文件和系统提示 */
+        init_privilege_sys_pfile(); make_json_ok();
     }
 }
 
@@ -152,8 +152,8 @@ elseif( $_REQUEST['act'] == 'update' ){
         /* 写入日志 */
         admin_log(admin_privilege_name_fk('role.php','edit').': '.$info['name']);
 
-        /* 初始化管理员的权限文件时间，刷新权限系统和系统提示 */
-        admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
+        /* 初始化权限系统的权限文件和系统提示 */
+        init_privilege_sys_pfile(); make_json_ok();
     }
 }
 
@@ -203,8 +203,8 @@ elseif( $_REQUEST['act'] == 'del' ){
     /* 写入日志 */
     admin_log(admin_privilege_name_fk('role.php','del').': '.$info['name']);
 
-    /* 初始化管理员的权限文件时间，刷新权限系统和系统提示 */
-    admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
+    /* 初始化权限系统的权限文件和系统提示 */
+    init_privilege_sys_pfile(); make_json_ok();
 }
 
 
