@@ -46,8 +46,8 @@ elseif( $_REQUEST['act'] == 'insert' ){
 
     /* 数据写入 */
     if( $db->insert(tname('privilege'), $fields) ){
-        /* 初始化管理员的权限文件时间，刷新权限系统和系统提示 */
-        admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
+        /* 初始化权限系统的权限文件和系统提示 */
+        init_privilege_sys_pfile(); make_json_ok();
     }
 }
 
@@ -81,8 +81,8 @@ elseif( $_REQUEST['act'] == 'update' ){
 
     /* 数据更新 */
     if( $db->update(tname('privilege'), $fields, 'privilege_id='.intval($_POST['privilege_id'])) ){
-        /* 初始化管理员的权限文件时间，刷新权限系统和系统提示 */
-        admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
+        /* 初始化权限系统的权限文件和系统提示 */
+        init_privilege_sys_pfile(); make_json_ok();
     }
 }
 
@@ -97,8 +97,8 @@ elseif( $_REQUEST['act'] == 'del' ){
     /* 删除权限 */
     del_privilege( array('privilege_id'=>$_POST['id']) );
 
-    /* 初始化管理员的权限文件时间，刷新权限系统和系统提示 */
-    admin_pfile_init(0); flush_privilege_sys(); make_json_ok();
+    /* 初始化权限系统的权限文件和系统提示 */
+    init_privilege_sys_pfile(); make_json_ok();
 }
 
 

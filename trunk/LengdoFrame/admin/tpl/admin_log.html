@@ -19,6 +19,8 @@
                         <input type="text" name="datet" class="textbox" style="width:70px;"/><input type="button" onmouseover="deal_combobox_mouseover(this)" onclick="deal_jscalendar_show(this.previousSibling)" class="choice"/>
                     </div>
                 </td>
+                <td width="60"><h1>管理员：</h1></td>
+                <td width="80"><input type="text" class="textbox" style="width:80px" name="admin"></td>
                 <td width="60"><h1>关键字：</h1></td>
                 <td width="100"><input type="text" class="textbox" style="width:100px" name="info"></td>
                 <td style="padding-left:15px;"><input type="submit" value="搜 索" class="submit"/><input type="button" class="flush" onmouseover="deal_combobox_mouseover(this)" onclick="ListTable.resetList()" title="初始化搜索"/></td>
@@ -33,14 +35,14 @@
             <tr>
                 <th width="14%">IP</th>
                 <th width="20%">时间</th>
-                <th width="10%">操作人</th>
+                <th width="10%">管理员</th>
                 <th width="56%">操作</th>
             </tr>
             <?php if( !empty($tpl['list']['data']) ){ foreach( $tpl['list']['data'] AS $r ){?>
             <tr align="center">
                 <td><?php echo $r['ip']; ?></td>
                 <td><?php echo date('Y-m-d H:i:s', $r['in_time']); ?></td>
-                <td onmousemove="tagtitle(event,'<?php e($r['admin_name'],'hstr'); ?>')"><?php e($r['admin_name'],'html'); ?></td>
+                <td onmousemove="tagtitle(event,'帐号: <?php e($r['admin_username'],'hstr'); ?>')"><?php e($r['admin_name'],'html'); ?></td>
                 <td align="left" style="background-color:#FFFDDF; padding-left:8px;" onmousemove="tagtitle(event,'<?php e($r['info'],'hstr'); ?>')"><?php e($r['info'],'html'); ?></td>
             </tr>
             <?php }}else{?>

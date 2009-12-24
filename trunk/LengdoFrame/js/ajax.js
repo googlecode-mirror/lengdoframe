@@ -183,6 +183,9 @@ var Ajax = {
         var result = null;
 
         switch( responseType ){
+            case 'XML' :
+                result = xhr.responseXML; break;
+
             case 'JSON' :
                 result = this.preFilter(xhr.responseText);
 
@@ -191,16 +194,14 @@ var Ajax = {
                 }catch(ex){
                     alert(this.filename +"/parseResult() error: can't parse to JSON.\n\n"+ xhr.responseText);
                 }
-            break;
 
-            case "XML" :
-                result = xhr.responseXML; break;
+                break;
 
-            case "TEXT" :
+            case 'TEXT' :
                 result = this.preFilter(xhr.responseText); break;
 
             default :
-                alert(this.filename +"/parseResult() error: unknown response type:"+ responseType);
+                alert(this.filename +'/parseResult() error: unknown response type:'+ responseType);
         }
 
         return result;

@@ -107,7 +107,7 @@ elseif( $_REQUEST['act'] == 'dumpsql' ){
     $dump->iMaxSize = $volsize * 1024;
 
     /* 文件路径 */
-    $logpath  = $_CFG['DIR_DB_DUMPSQL'] . 'run.log';
+    $logpath  = $_CFG['DIR_ADMIN_DUMPSQL'] . 'run.log';
 
     /* 取得要备份的表 */
     $tables = array();
@@ -239,7 +239,7 @@ elseif( $_REQUEST['act'] == 'upload' ){
 
     /* 设置文件路径 */
     $fname = 'upload_sqlfile_temp.sql.php';
-    $fpath = $_CFG['DIR_DB_DUMPSQL'].$fname;
+    $fpath = $_CFG['DIR_ADMIN_DUMPSQL'].$fname;
 
     /* 将文件移动到备份文件夹下 */
     if( !move_uploaded_file($_FILES['file']['tmp_name'],$fpath) ){
@@ -271,7 +271,7 @@ elseif( $_REQUEST['act'] == 'del' ){
         $fnames = all_sqlfile( array('findex'=>$findex) );
 
         foreach( $fnames AS $fname ){
-            @unlink($_CFG['DIR_DB_DUMPSQL'].$fname);
+            @unlink($_CFG['DIR_ADMIN_DUMPSQL'].$fname);
         }
     }
 
@@ -345,10 +345,10 @@ function valid_dbbackup_folder()
 {
     global $_LANG, $_CFG;
 
-    $mask = file_privilege($_CFG['DIR_DB_DUMPSQL']);
+    $mask = file_privilege($_CFG['DIR_ADMIN_DUMPSQL']);
  
     if( $mask === false ){
-        $msg = $_LANG['fail_dbbackup_fdno'] .'<br />'. $_CFG['DIR_DB_DUMPSQL'];
+        $msg = $_LANG['fail_dbbackup_fdno'] .'<br />'. $_CFG['DIR_ADMIN_DUMPSQL'];
     }
     elseif( $mask < 7 ){
         $msg = $_LANG['fail_dbbackup_fdpriv'];
@@ -356,7 +356,7 @@ function valid_dbbackup_folder()
         if( ($mask&2) < 1 ) $tpl['error'] .= $_LANG['file_unwrite'] .', ';
         if( ($mask&4) < 1 ) $tpl['error'] .= $_LANG['file_unedit']  .'.';
 
-        $msg .= '<br />' . $_CFG['DIR_DB_DUMPSQL'];
+        $msg .= '<br />' . $_CFG['DIR_ADMIN_DUMPSQL'];
     }
 
     /* 显示消息 */
@@ -385,7 +385,7 @@ function all_sqlfile( $filter = array() )
     /* 根据文件索引获取全部文件 */
     elseif( $findex = trim($filter['findex']) ){
         /* 单卷文件 */
-        if( is_file($_CFG['DIR_DB_DUMPSQL'].$findex) ){
+        if( is_file($_CFG['DIR_ADMIN_DUMPSQL'].$findex) ){
             $all[] = $findex;
         }
         /* 多卷文件 */
@@ -395,7 +395,7 @@ function all_sqlfile( $filter = array() )
             $fname = preg_replace('/\.sql\.php$/', '_1.sql.php', $findex);
             
             /* 根据索引遍历文件组 */
-            while( is_file($_CFG['DIR_DB_DUMPSQL'].$fname) ){
+            while( is_file($_CFG['DIR_ADMIN_DUMPSQL'].$fname) ){
                 $all[] = $fname;
                 $fname = preg_replace('/_'.$vol++.'\.sql\.php$/', '_'.$vol.'.sql.php', $fname);
             }
@@ -413,7 +413,7 @@ function all_sqlfile_group()
     
     /* 初始化 */
     $fgroup = array();
-    $folder = @opendir($_CFG['DIR_DB_DUMPSQL']);
+    $folder = @opendir($_CFG['DIR_ADMIN_DUMPSQL']);
 
     /* 遍历备份文件夹 */
     while( $fname = @readdir($folder) ){
@@ -467,14 +467,14 @@ function all_sqlfile_format_vol( $fname )
     global $_CFG, $_LANG;
 
     /* 备份文件的头信息 */
-    $header = DumpSql::getHeader($_CFG['DIR_DB_DUMPSQL'].$fname);
+    $header = DumpSql::getHeader($_CFG['DIR_ADMIN_DUMPSQL'].$fname);
 
     /* 基本信息 */
     $info['vol']  = 1;
     $info['file'] = $fname;
     $info['type'] = 'volume';
     $info['date'] = $header['date'];
-    $info['size'] = filesize($_CFG['DIR_DB_DUMPSQL'].$fname);
+    $info['size'] = filesize($_CFG['DIR_ADMIN_DUMPSQL'].$fname);
 
     /* 基本信息 - 显示的文件名 */
     $info['name'] = '<a style="margin-left:16px;" target="_blank" ';
@@ -494,14 +494,14 @@ function all_sqlfile_format_vols( $fname, $vol )
     global $_CFG;
 
     /* 备份文件的头信息 */
-    $header = DumpSql::getHeader($_CFG['DIR_DB_DUMPSQL'].$fname);
+    $header = DumpSql::getHeader($_CFG['DIR_ADMIN_DUMPSQL'].$fname);
 
     /* 基本信息 */
     $info['vol']  = $vol;
     $info['file'] = $fname;
     $info['type'] = 'volumes';
     $info['date'] = $header['date'];
-    $info['size'] = filesize($_CFG['DIR_DB_DUMPSQL'].$fname);
+    $info['size'] = filesize($_CFG['DIR_ADMIN_DUMPSQL'].$fname);
 
     /* 基本信息 - 显示的文件名 */
     $info['name'] = '<span style="display:none"></span><a style="color:#999;margin-left:16px;" target="_blank" ';
@@ -552,7 +552,7 @@ function echo_sqlfile( $fname, $oencode = '' )
     global $_CFG, $_LANG;
 
     /* 构建SQL文件路径 */
-    $fpath = $_CFG['DIR_DB_DUMPSQL'].$fname;
+    $fpath = $_CFG['DIR_ADMIN_DUMPSQL'].$fname;
 
     /* 无效SQL文件名 */
     if( substr($fname,-8) != '.sql.php' || !is_file($fpath) ){
@@ -581,7 +581,7 @@ function write_sqlfile( $fname, $sql )
     global $_CFG;
 
     /* 构建SQL文件的路径 */
-    $fpath = $_CFG['DIR_DB_DUMPSQL'].$fname;
+    $fpath = $_CFG['DIR_ADMIN_DUMPSQL'].$fname;
 
     /* 写入到文件 */
     return file_put_contents($fpath, "-- <?php exit(); ?>\r\n".$sql);
@@ -599,7 +599,7 @@ function import_sqlfile( $fname )
     global $_CFG;
 
     /* 构建SQL文件的路径 */
-    $fpath = $_CFG['DIR_DB_DUMPSQL'].$fname;
+    $fpath = $_CFG['DIR_ADMIN_DUMPSQL'].$fname;
 
     /* 无效参数 */
     if( !is_file($fpath) ) return false;

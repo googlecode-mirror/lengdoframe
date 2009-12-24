@@ -26,6 +26,7 @@ CREATE TABLE `%tblpre%admin_log` (
   `admin_log_id` mediumint(8) unsigned NOT NULL auto_increment,
   `admin_id` smallint(5) unsigned NOT NULL default '0',
   `admin_name` varchar(30) NOT NULL,
+  `admin_username` varchar(20) NOT NULL,
   `ip` varchar(15) NOT NULL,
   `info` varchar(255) NOT NULL,
   `in_time` int(10) unsigned NOT NULL,

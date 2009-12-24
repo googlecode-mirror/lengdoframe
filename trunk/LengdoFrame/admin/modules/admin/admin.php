@@ -105,8 +105,8 @@ elseif( $_REQUEST['act'] == 'update' ){
         /* 更新管理员权限 */
         post_privilege_insert($info['admin_id']);
 
-        /* 删除管理员的权限文件 */
-        @unlink( admin_pfile($info['username']) );
+        /* 初始化管理员的权限文件 */
+        init_privilege_sys_pfile($info['username']);
 
         /* 写入日志和系统提示 */
         admin_log(admin_privilege_name_fk('admin.php','edit').': '.$info['name']); make_json_ok();
@@ -155,8 +155,8 @@ elseif( $_REQUEST['act'] == 'del' ){
     /* 删除管理员 */
     del_admin( array('admin_id'=>$info['admin_id']) );
 
-    /* 删除管理员的权限文件 */
-    @unlink( admin_pfile($info['username']) );
+    /* 初始化管理员的权限文件 */
+    init_privilege_sys_pfile($info['username']);
 
     /* 写入日志和系统提示 */
     admin_log(admin_privilege_name_fk('admin.php','del').': '.$info['name']); make_json_ok();

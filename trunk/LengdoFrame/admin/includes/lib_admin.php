@@ -268,9 +268,10 @@ function list_admin_log()
     $p = $f = $list = array();
 
     /* 过滤条件初始化*/
-    $f['info']  = trim($_REQUEST['info']) != '' ? trim($_REQUEST['info'])  : null;
-    $f['datef'] = strtotime($_REQUEST['datef']) ? trim($_REQUEST['datef']) : null;
-    $f['datet'] = strtotime($_REQUEST['datet']) ? trim($_REQUEST['datet']) : null;
+    $f['info']  = trim($_REQUEST['info'])  != '' ? trim($_REQUEST['info'])  : null;
+    $f['admin'] = trim($_REQUEST['admin']) != '' ? trim($_REQUEST['admin']) : null;
+    $f['datef'] = strtotime($_REQUEST['datef'])  ? trim($_REQUEST['datef']) : null;
+    $f['datet'] = strtotime($_REQUEST['datet'])  ? trim($_REQUEST['datet']) : null;
 
     /* 排序字段初始化 */
     $fields = array();
@@ -283,6 +284,7 @@ function list_admin_log()
     /* 构建过滤条件SQL */
     $where  = ' WHERE 1=1';
     $where .= $f['info']  === null ? '' : ' AND info LIKE "%'. mysql_like_slash($f['info']) .'%"';
+    $where .= $f['admin'] === null ? '' : ' AND admin_name="'. mysql_like_slash($f['admin']) .'"';
     $where .= $f['datef'] === null ? '' : ' AND in_time>='. (strtotime($f['datef'])/100000*100000);
     $where .= $f['datet'] === null ? '' : ' AND in_time<='. (strtotime($f['datet'])/100000*100000+86399);
 

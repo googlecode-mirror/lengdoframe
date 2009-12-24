@@ -21,25 +21,21 @@
 /**
  * 管理员登陆
  *
- * @params arr  $info  登陆信息
- *                     $info['username'],$info['password']  //[用户登陆]使用用户名和密码登陆
+ * @params str  $username  登陆帐号
+ * @params str  $password  登陆密码
+ *                     $info[''],$info['password']  //[用户登陆]使用和
  *                     $info['admin_id']  //[系统内用]使用管理员ID登陆
  *
  * @return bol  true 表示登陆成功, false 表示失败
  */
-function admin_login( $info )
+function admin_login( $username, $password )
 {
-    /* 登陆方式 - 1.管理员ID - 2.用户名密码 */
-    if( intval($info['admin_id']) > 0 ){
-        $sql = 'SELECT * FROM '. tname('admin') .' WHERE admin_id='.intval($info['admin_id']);
-    }
-    elseif( trim($info['username']) != '' && trim($info['password']) != '' ){
-        $sql = ' SELECT * FROM '. tname('admin');
-        $sql.= ' WHERE username="'. trim($info['username']) .'" AND password="'. md5(trim($info['password'])) .'"';
-    }
-    else{
-        return false;
-    }
+    /* 登陆失败 */
+    if( $username == '' || $password == '' ) return false;
+
+    /* 登陆SQL */
+    $sql = ' SELECT * FROM '. tname('admin');
+    $sql.= ' WHERE username="'. $username .'" AND password="'. $password .'"';
 
     /* 管理员信息 */
     $info = $GLOBALS['db']->getRow($sql);
@@ -51,14 +47,26 @@ function admin_login( $info )
     $_SESSION[SN_ADMIN]['id']        = $info['admin_id'];
     $_SESSION[SN_ADMIN]['name']      = $info['name'];
     $_SESSION[SN_ADMIN]['username']  = $info['username'];
+    $_SESSION[SN_ADMIN]['password']  = $info['password'];
     $_SESSION[SN_ADMIN]['pfiletime'] = $info['pfile_time'];
 
     /* 检查当前权限文件有效性 */
-    if( !admin_pfile_valid() ){
-        return init_privilege_sys($info['admin_id']);
-    }
+    return admin_pfile_valid() ? true : init_privilege_sys($info['admin_id']);
+}
 
-    return true;
+/**
+ * 当前管理员登出
+ */
+function admin_logout()
+{
+    /* 初始化 */
+    global $_CFG;
+
+    /* 注销登陆 */
+    admin_destroy();
+
+    /* 跳转到后台登陆窗口 */
+    redirect($_CFG['URL_ADMIN'] . 'index.php?act=login');
 }
 
 /**
@@ -77,39 +85,26 @@ function admin_destroy()
     unset($_SESSION[SN_ADMIN]);
 }
 
-/**
- * 当前管理员登出
- */
-function admin_logout()
-{
-    /* 初始化 */
-    global $_CFG;
-
-    /* 注销登陆 */
-    admin_destroy();
-
-    /* 跳转到后台登陆窗口 */
-    redirect($_CFG['URL_ADMIN'] . 'index.php?act=login');
-}
-
-
 
 /* ------------------------------------------------------ */
 // - 权限系统 - 核心接口
 /* ------------------------------------------------------ */
 
 /**
- * 刷新权限系统 - 重新初始化权限系统
+ * 刷新权限系统 - 初始化权限系统并重新登陆
  */
 function flush_privilege_sys()
 {
+    /* 初始化权限系统 */
     init_privilege_sys( admin_id() );
+
+    /* 重新登陆 */
+    admin_login($_SESSION[SN_ADMIN]['username'], $_SESSION[SN_ADMIN]['password']);
 }
 
-
 /**
- * 初始化权限系统 - 构建权限系统所需的完整数据
- * 初始化权限信息并写入权限文件，保存权限文件修改时间并重新登陆
+ * 初始化权限系统
+ * 初始化权限系统所需的数据和文件
  *
  * @params int  $admin_id  管理员ID
  *
@@ -123,15 +118,9 @@ function init_privilege_sys( $admin_id )
     /* 创建权限文件 */
     admin_pfile_create( info_privilege_sys($admin_id) );
 
-    /* 清除文件状态缓存 - 防止filemtime返回缓存的上次修改时间 */
-    clearstatcache();
-
     /* 保存权限文件修改时间到数据库 */
     $fields = array( 'pfile_time'=>filemtime(admin_pfile()) );
     $GLOBALS['db']->update( tname('admin'), $fields, 'admin_id='.admin_id() );
-
-    /* 重新登陆 */
-    admin_login( array('admin_id'=>admin_id()) );
 
     return true;
 }
@@ -294,6 +283,81 @@ function info_privilege_sys( $admin_id )
 }
 
 /**
+ * 初始化权限系统的权限文件
+ *
+ * @params str  username  管理员的登陆帐号
+ */
+function init_privilege_sys_pfile( $username = '' )
+{
+    global $_CFG;
+
+    /* 初始化指定帐号的管理员权限文件 */
+    if( trim($username) ){
+        @unlink( admin_pfile($username) );
+    }
+
+    /* 初始化所有管理员的权限文件 */
+    else{
+        /* 初始化 */
+        $folder = @opendir($_CFG['DIR_ADMIN_PFILE']);
+
+        /* 遍历文件夹 */
+        while( $fname = @readdir($folder) ){
+            /* 删除权限文件 */
+            if( preg_match('/\.php$/',$fname) ){
+                @unlink($_CFG['DIR_ADMIN_PFILE'].$fname);
+            }
+        }
+    }
+}
+
+
+/**
+ * 取得当前管理员ID
+ */
+function admin_id()
+{
+    return intval($_SESSION[SN_ADMIN]['id']);
+}
+
+/**
+ * 取得当前管理员姓名
+ */
+function admin_name()
+{
+    return $_SESSION[SN_ADMIN]['name'];
+}
+
+/**
+ * 取得当前管理员帐号
+ */
+function admin_username()
+{
+    return $_SESSION[SN_ADMIN]['username'];
+}
+
+
+/**
+ * 取得当前管理员的所有模块ID数组
+ *
+ * @return arr
+ */
+function admin_module_ids()
+{
+    return $GLOBALS['_PRIV']['module_ids'];
+}
+
+/**
+ * 取得模块ID(间接，以当前管理员的权限模块数据为基础)
+ *
+ * @params str  $module_file  模块的文件名
+ */
+function admin_module_id_fk( $module_file )
+{
+    return intval($GLOBALS['_PRIV']['module_map'][$module_file]['id']);
+}
+
+/**
  * 取得当前管理员对某一模块的所有操作
  *
  * @params str  $module_file  模块处理文件
@@ -321,14 +385,16 @@ function admin_module_acts( $module_file )
 }
 
 /**
- * 取得当前管理员的所有模块ID数组
+ * 取得模块操作名称(间接，以当前管理员的权限数据为基础)
  *
- * @return arr
+ * @params str  $module_file  模块的文件名
  */
-function admin_module_ids()
+function admin_module_act_name_fk( $module_file, $act )
 {
-    return $GLOBALS['_PRIV']['module_ids'];
+    return $GLOBALS['_PRIV']['privilege_map'][ $module_file.'_'.$act ]['module_act_name'];
 }
+
+
 /**
  * 取得当前管理员权限IDS。细粒度权限，不包括角色的权限
  *
@@ -340,7 +406,7 @@ function admin_privilege_ids()
 }
 
 /**
- * 取得权限ID/权限名称(间接，以当前管理员的权限模块数据为基础)
+ * 取得权限ID(间接，以当前管理员的权限模块数据为基础)
  *
  * @params str  $module_file      模块的文件名
  * @params str  $module_act_code  模块的操作码
@@ -350,29 +416,17 @@ function admin_privilege_id_fk( $module_file, $module_act_code )
 {
     return intval($GLOBALS['_PRIV']['privilege_map'][ $module_file.'_'.$module_act_code ]['id']);
 }
+
+/**
+ * 取得权限名称(间接，以当前管理员的权限模块数据为基础)
+ *
+ * @params str  $module_file      模块的文件名
+ * @params str  $module_act_code  模块的操作码
+ *
+ */
 function admin_privilege_name_fk( $module_file, $module_act_code )
 {
     return $GLOBALS['_PRIV']['privilege_map'][ $module_file.'_'.$module_act_code ]['name'];
-}
-
-/**
- * 取得模块ID(间接，以当前管理员的权限模块数据为基础)
- *
- * @params str  $module_file  模块的文件名
- */
-function admin_module_id_fk( $module_file )
-{
-    return intval($GLOBALS['_PRIV']['module_map'][$module_file]['id']);
-}
-
-/**
- * 取得模块操作名称(间接，以当前管理员的权限数据为基础)
- *
- * @params str  $module_file  模块的文件名
- */
-function admin_module_act_name_fk( $module_file, $act )
-{
-    return $GLOBALS['_PRIV']['privilege_map'][ $module_file.'_'.$act ]['module_act_name'];
 }
 
 /**
@@ -391,30 +445,20 @@ function admin_privilege_valid( $module_file, $module_act_code, $halt = true )
     /* 分解操作码 */
     $module_act_codes = explode('|', $module_act_code);
 
+    /* 权限检查 */
     foreach( $module_act_codes AS $i=>$v ){
         if( admin_privilege_id_fk($module_file, $v) > 0 ){
             return true;
         }
     }
 
-    if( $halt === false ){
-        return false;
-    }else{
-        sys_msg($_LANG['lawless_act']);
-    }
+    /* 中断显示 */
+    if( $halt ) sys_msg($_LANG['lawless_act']);
+
+    /* 返回 */
+    return false;
 }
 
-/**
- * 取得当前管理员ID，姓名
- */
-function admin_id()
-{
-    return intval($_SESSION[SN_ADMIN]['id']);
-}
-function admin_name()
-{
-    return $_SESSION[SN_ADMIN]['name'];
-}
 
 /**
  * 返回管理员的权限文件路径
@@ -433,6 +477,38 @@ function admin_pfile( $username = '' )
         return $_CFG['DIR_ADMIN_PFILE'].trim($username).'.php';
     }
 }
+
+/**
+ * 解析当前管理员权限文件内容
+ *
+ * @return arr
+ */
+function admin_pfile_parse()
+{
+    /* 权限文件路径 */
+    $pfile = admin_pfile();
+
+	/* 获取文件内容 */
+    $str = @file_get_contents($pfile);
+
+    /* 反序列化并返回 */
+	return unserialize($str);
+}
+
+/**
+ * 验证当前管理员的权限文件是否有效
+ *
+ * @return bol  true 表示文件存在且正确，false 表示文件不存在或者被非法修改
+ */
+function admin_pfile_valid()
+{
+    /* 权限文件路径 */
+    $pfile = admin_pfile();
+
+    /* 权限文件有效性检查 */
+    return is_file($pfile) && (filemtime($pfile)==$_SESSION[SN_ADMIN]['pfiletime']);
+}
+
 /**
  * 创建或者更新当前管理员权限文件
  *
@@ -456,46 +532,11 @@ function admin_pfile_create( $privs )
         admin_destroy(); make_json_fail($_LANG['fail_pfile_create']);
     }
 
+    /* 清除文件状态缓存 */
+    clearstatcache();  // 防止文件修改时间的缓存
+
+    /* 返回 */
     return true;
-}
-/**
- * 解析当前管理员权限文件内容
- *
- * @return arr
- */
-function admin_pfile_parse()
-{
-    /* 权限文件路径 */
-    $pfile = admin_pfile();
-
-	/* 取得内容 */
-    $str = @file_get_contents($pfile);
-
-	return unserialize($str);
-}
-/**
- * 验证当前管理员的权限文件是否有效
- *
- * @return bol  true 表示文件存在且正确，false 表示文件不存在或者被非法修改
- */
-function admin_pfile_valid()
-{
-    $pfile = admin_pfile();
-
-    return is_file($pfile) && filemtime($pfile)==$_SESSION[SN_ADMIN]['pfiletime'];
-}
-/**
- * 初始化管理员的权限文件时间 - 权限文件时间全清零
- *
- * @params int  $admin_id  要初始化的管理员ID，0表示全部初始化
- */
-function admin_pfile_init( $admin_id = 0 )
-{
-    if( intval($admin_id) > 0 ){
-        $GLOBALS['db']->query('UPDATE '. tname('admin') .' SET pfile_time=0 WHERE admin_id='.intval($admin_id));
-    }else{
-        $GLOBALS['db']->query('UPDATE '. tname('admin') .' SET pfile_time=0');
-    }
 }
 
 

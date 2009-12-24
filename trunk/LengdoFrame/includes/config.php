@@ -53,11 +53,16 @@ $_CFG['URL_PLUGIN'] = URL_ROOT.'plugin/';
 // - 环境配置
 /* ----------------------------------------------------------------------- */
 
+/* 皮肤 */
+$_CFG['SYS_SKIN'] = isset($_CFG['SYS_SKIN']) ? $_CFG['SYS_SKIN'] : 'default';
+
+/* 语言 */
+$_CFG['SYS_LANG'] = isset($_CFG['SYS_LANG']) ? $_CFG['SYS_LANG'] : 'zh';
+
 /* 时区 */
 $_CFG['SYS_TIMEZONE'] = isset($_CFG['SYS_TIMEZONE']) ? $_CFG['SYS_TIMEZONE'] : 'PRC';
 
-/* 语言库 */
-$_CFG['SYS_LANG'] = isset($_CFG['SYS_LANG']) ? $_CFG['SYS_LANG'] : 'zh';
+/* 语言 */
 $_CFG['SYS_ADMIN_LANG'] = isset($_CFG['SYS_ADMIN_LANG']) ? $_CFG['SYS_ADMIN_LANG'] : 'zh';
 
 
@@ -76,23 +81,27 @@ $_CFG['DIR_LNG'] = isset($_CFG['DIR_LNG']) ? $_CFG['DIR_LNG'] : $_CFG['DIR_ROOT'
 
 
 /* 后台文件夹路径 */
-$_CFG['DIR_ADMIN_TPL']   = isset($_CFG['DIR_ADMIN_TPL'])   ? $_CFG['DIR_ADMIN_TPL']   : $_CFG['DIR_ADMIN'].'tpl/';
-$_CFG['DIR_ADMIN_LNG']   = isset($_CFG['DIR_ADMIN_LNG'])   ? $_CFG['DIR_ADMIN_LNG']   : $_CFG['DIR_ADMIN'].'lang/';
-$_CFG['DIR_ADMIN_INC']   = isset($_CFG['DIR_ADMIN_INC'])   ? $_CFG['DIR_ADMIN_INC']   : $_CFG['DIR_ADMIN'].'includes/';
+$_CFG['DIR_ADMIN_TPL'] = isset($_CFG['DIR_ADMIN_TPL']) ? $_CFG['DIR_ADMIN_TPL'] : $_CFG['DIR_ADMIN'].'tpl/';
+$_CFG['DIR_ADMIN_LNG'] = isset($_CFG['DIR_ADMIN_LNG']) ? $_CFG['DIR_ADMIN_LNG'] : $_CFG['DIR_ADMIN'].'lang/';
+$_CFG['DIR_ADMIN_INC'] = isset($_CFG['DIR_ADMIN_INC']) ? $_CFG['DIR_ADMIN_INC'] : $_CFG['DIR_ADMIN'].'includes/';
 
 /* 后台文件夹路径 - 数据缓存 */
-$_CFG['DIR_DB_DATA']     = isset($_CFG['DIR_DB_DATA'])     ? $_CFG['DIR_DB_DATA']     : $_CFG['DIR_ADMIN'].'data/dbd/';
-$_CFG['URL_DB_DATA']     = isset($_CFG['URL_DB_DATA'])     ? $_CFG['URL_DB_DATA']     : $_CFG['URL_ADMIN'].'data/dbd/';
+$_CFG['DIR_ADMIN_DBD'] = isset($_CFG['DIR_ADMIN_DBD']) ? $_CFG['DIR_ADMIN_DBD'] : $_CFG['DIR_ADMIN'].'data/dbd/';
+$_CFG['URL_ADMIN_DBD'] = isset($_CFG['URL_ADMIN_DBD']) ? $_CFG['URL_ADMIN_DBD'] : $_CFG['URL_ADMIN'].'data/dbd/';
 
-/* 后台文件夹路径 - 数据库备份 */
-$_CFG['DIR_DB_DUMPSQL']  = isset($_CFG['DIR_DB_DUMPSQL'])  ? $_CFG['DIR_DB_DUMPSQL']  : $_CFG['DIR_ADMIN'].'data/dumpsql/';
-$_CFG['URL_DB_DUMPSQL']  = isset($_CFG['URL_DB_DUMPSQL'])  ? $_CFG['URL_DB_DUMPSQL']  : $_CFG['URL_ADMIN'].'data/dumpsql/';
+/* 后台文件夹路径 - 后台皮肤 */
+$_CFG['DIR_ADMIN_SKIN'] = isset($_CFG['DIR_ADMIN_SKIN']) ? $_CFG['DIR_ADMIN_SKIN'] : $_CFG['DIR_ADMIN'].'skin/';
+$_CFG['URL_ADMIN_SKIN'] = isset($_CFG['URL_ADMIN_SKIN']) ? $_CFG['URL_ADMIN_SKIN'] : $_CFG['URL_ADMIN'].'skin/';
 
-/* 后台文件夹路径 - 数据库SQL缓存 */
-$_CFG['DIR_DB_CACHESQL'] = isset($_CFG['DIR_DB_CACHESQL']) ? $_CFG['DIR_DB_CACHESQL'] : $_CFG['DIR_ADMIN'].'data/cachesql/';
-$_CFG['URL_DB_CACHESQL'] = isset($_CFG['URL_DB_CACHESQL']) ? $_CFG['URL_DB_CACHESQL'] : $_CFG['URL_ADMIN'].'data/cachesql/';
-
-/* 后台文件夹路径 - 管理员权限文件 */
+/* 后台文件夹路径 - 权限文件 */
 $_CFG['DIR_ADMIN_PFILE'] = isset($_CFG['DIR_ADMIN_PFILE']) ? $_CFG['DIR_ADMIN_PFILE'] : $_CFG['DIR_ADMIN'].'data/pfile/';
 $_CFG['URL_ADMIN_PFILE'] = isset($_CFG['URL_ADMIN_PFILE']) ? $_CFG['URL_ADMIN_PFILE'] : $_CFG['URL_ADMIN'].'data/pfile/';
+
+/* 后台文件夹路径 - 数据库备份 */
+$_CFG['DIR_ADMIN_DUMPSQL'] = isset($_CFG['DIR_ADMIN_DUMPSQL']) ? $_CFG['DIR_ADMIN_DUMPSQL'] : $_CFG['DIR_ADMIN'].'data/dumpsql/';
+$_CFG['URL_ADMIN_DUMPSQL'] = isset($_CFG['URL_ADMIN_DUMPSQL']) ? $_CFG['URL_ADMIN_DUMPSQL'] : $_CFG['URL_ADMIN'].'data/dumpsql/';
+
+/* 后台文件夹路径 - 数据库SQL缓存 */
+$_CFG['DIR_ADMIN_CACHESQL'] = isset($_CFG['DIR_ADMIN_CACHESQL']) ? $_CFG['DIR_ADMIN_CACHESQL'] : $_CFG['DIR_ADMIN'].'data/cachesql/';
+$_CFG['URL_ADMIN_CACHESQL'] = isset($_CFG['URL_ADMIN_CACHESQL']) ? $_CFG['URL_ADMIN_CACHESQL'] : $_CFG['URL_ADMIN'].'data/cachesql/';
 ?>
