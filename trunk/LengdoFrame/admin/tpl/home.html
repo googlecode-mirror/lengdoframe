@@ -5,7 +5,11 @@
     <?php if( admin_privilege_valid('sysmodule.php', 'myaccount', false) ){?>
 	<a href="javascript:void(0)" onmousedown="this.className='mdown'" onmouseup="this.className=''" onmouseout="this.className=''" onfocus="this.blur()" onclick="wnd_myaccount_fill();"><i class="account"></i>我的帐号</a>
 	<?php }?>
+
+    <?php if( admin_id() == 1){?>
+    <a href="javascript:void(0)" onmousedown="this.className='mdown'" onmouseup="this.className=''" onmouseout="this.className=''" onfocus="this.blur()" onclick="wnd_sysplugin_view();"><i class="sysinfo"></i>系统组件</a>
     <a href="javascript:void(0)" onmousedown="this.className='mdown'" onmouseup="this.className=''" onmouseout="this.className=''" onfocus="this.blur()" onclick="wnd_sysinfo_view();"><i class="sysinfo"></i>系统信息</a>
+    <?php }?>
 </div>
 
 <div class="home-body">

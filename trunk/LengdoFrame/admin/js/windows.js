@@ -468,7 +468,7 @@ function deal_myaccount_fill()
 
 
 /**
- * 系统信息
+ * 系统信息查看
  */
 function wnd_sysinfo_view()
 {
@@ -491,6 +491,57 @@ function wnd_sysinfo_view()
     wnd.show();
     wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
 }
+
+
+/**
+ * 系统组件查看
+ */
+function wnd_sysplugin_view()
+{
+    /* 初始化 */
+    var url = 'modules/sys/sysplugin.php';
+    var wnd = Wnds.find('wnd-sysplugin-view');
+
+    /* 构建窗口 */
+    if( !wnd ){
+        wnd = new Wnd('wnd-sysplugin-view', null, {'width':700});
+
+        wnd.create();
+
+        wnd.buttonAdd({'index':'install','text':'安装','click':deal_sysplugin_install});
+        wnd.buttonAddDefault('cannel');
+    }
+
+    /* 初始化参数 */
+    wnd.title('系统组件');
+    wnd.inner(url, 'url json');
+
+    wnd.show();
+    wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
+}
+
+/**
+ * 系统组件安装
+ */
+function deal_sysplugin_install()
+{
+    /* 初始化 */
+    var url = 'modules/sys/sysplugin.php?act=install';
+
+    /* CONFIRM回调函数 */
+    function confirm_callback(){
+        /* AJAX回调函数 */
+        function ajax_callback( result, text ){
+            Wnds.find('wnd-sysplugin-view').reinner(result, 'html');
+        }
+
+        /* 异步提交(异步等待) */
+        Ajax.call(url, null, ajax_callback, 'GET', 'TEXT');
+    }
+
+    wnd_confirm('确认安装所有组件？', {'ok':confirm_callback});
+}
+
 
 /**
  * 系统退出

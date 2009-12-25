@@ -1,0 +1,33 @@
+<div class="listtable-div" id="listtable-sysplugin" onmouseover="ListTable.init(this.id,'modules/sys/sysplugin.php','?act=list');">
+    <div class="listtable-data" style="border-bottom:0;border-top:0;">
+        <table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
+        <tr>
+            <th width="20%">组件名称</th>
+            <th width="12%">组件版本</th>
+            <th width="12%">组件类型</th>
+            <th width="48%">组件目录</th>
+            <th>安装</th>
+        </tr>
+        <?php foreach( $tpl['list']['data'] AS $r ){?>
+        <tr align="center">
+            <td><b><?php e($r['title'],'html'); ?></b></td>
+            <td><?php e($r['ver'],'html'); ?></td>
+            <td><?php e($r['type'],'html'); ?></td>
+            <td align="left" onmousemove="tagtitle(event,'<?php e($r['folder'],'hstr'); ?>')"><?php e($r['folder'],'html'); ?></td>
+            <td><span class="<?php echo $r['installed'] ? 'yes' : 'no' ?>"></span></td>
+        </tr>
+
+        <?php if( $r['error'] ){?>
+        <tr style="background:#FFFCC1">
+            <td colspan="5">
+                <div style="color:#900;padding:5px 0 10px 5px;">[安装失败 - <?php e($r['title'],'html'); ?>]<br /><?php e($r['error'], 'html'); ?></div>
+            </td>
+        </tr>
+        <?php }?>
+
+        <?php }?>
+        </table>
+
+        <div class="listtable-footer"><div class="pager"><?php echo $tpl['list']['pager']['html']; ?></div></div>
+    </div>
+</div>

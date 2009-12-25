@@ -171,7 +171,7 @@ var ListTable = {
     /**
      * 载入列表
      *
-     * @params obj  configs  重置列表时配置
+     * @params obj  configs  载入列表时配置
      *         bol           configs.asyn   异步请求方式。true 表示异步等待(默认)，false表示同步等待
      *         bol           configs.quiet  是否安静模式请求。默认flase
      */
