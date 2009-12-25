@@ -108,6 +108,7 @@
                 </table>
 
                 <div class="listtable-footer">
+                    <?php if( !empty($tpl['all']) ){?>
                     <div class="action">
                         <div class="hddl" onmouseover="this.className+=' hddlon'" onmouseout="this.className='hddl'">
                             <a href="javascript:void(0)" onclick="ListTable.achoice(-1,'listtable-dbbackup-touch','listtable-dbbackup-ids')">选择<span>&nbsp;</span></a><div>
@@ -117,6 +118,7 @@
                         </div>
                         <a href="javascript:void(0)" onclick="ListTable.batch(this,'?act=del',{},'确认删除？')">删除</a>
                     </div>
+                    <?php }?>
                 </div>
 
         <?php if( $tpl['_bodysub'] != 'query' ){?>

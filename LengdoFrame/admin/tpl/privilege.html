@@ -29,7 +29,7 @@
                 <th width="12%">排序</th>
                 <th width="21%">操作</th>
             </tr>
-            <?php if( !empty($tpl['list']['data']) ){ foreach( $tpl['list']['data'] AS $r ){?>
+            <?php foreach( $tpl['list']['data'] AS $r ){?>
             <tr align="center">
                 <td><?php echo $r['privilege_id']; ?></td>
                 <td><?php e($r['name'],'html'); ?></td>
@@ -39,8 +39,6 @@
                 <td><?php echo $r['order']; ?></td>
                 <td class="action"><?php echo $r['acts']; ?></td>
             </tr>
-            <?php }}else{?>
-            <tr><td colspan="7"><div class="warn-div"><span>无数据</span></div></td></tr>
             <?php }?>
             </table>
 

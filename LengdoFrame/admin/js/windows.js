@@ -504,12 +504,8 @@ function wnd_sysplugin_view()
 
     /* 构建窗口 */
     if( !wnd ){
-        wnd = new Wnd('wnd-sysplugin-view', null, {'width':700});
-
+        wnd = new Wnd('wnd-sysplugin-view', {'complete':wnd_sysplugin_view_complete}, {'width':700});
         wnd.create();
-
-        wnd.buttonAdd({'index':'install','text':'安装','click':deal_sysplugin_install});
-        wnd.buttonAddDefault('cannel');
     }
 
     /* 初始化参数 */
@@ -518,6 +514,17 @@ function wnd_sysplugin_view()
 
     wnd.show();
     wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
+}
+function wnd_sysplugin_view_complete( result, text )
+{
+    var wnd = Wnds.find('wnd-sysplugin-view');
+
+    if( result.error == -1 ){
+        wnd.buttonAddDefault('cannel');
+    }else{
+        wnd.buttonAdd({'index':'install','text':'安装','click':deal_sysplugin_install});
+        wnd.buttonAddDefault('cannel');
+    }
 }
 
 /**
