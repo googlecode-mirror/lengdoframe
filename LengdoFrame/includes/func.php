@@ -59,22 +59,22 @@ function f( $value, $modify, $attrib = '' )
         /* html 编码( & , " , < , > , 空格, 换行 ) */
         case 'html': $value = strtr( htmlspecialchars($value), array(' '=>'&nbsp;',"\r\n"=>'<br />',"\n"=>'<br />') ); break;
 
-        /* html 编码( & , " , < , > ) */
+        /* html formc 编码( & , " , < , > ) */
         case 'formc': $value = htmlspecialchars($value); break;
 
-        /* html中的JS字符常量编码(以单引号为边界). 编码( " ) 转义( ' => \' ) */
-        case 'hstr': $value = addslashes(strtr( $value, array('"'=>'&quot;')) ); break;
+        /* html js string 编码(以单引号为边界). 编码( " ) 转义( ' => \' ) */
+        case 'hstr': $value = addslashes( strtr($value,array('"'=>'&quot;')) ); break;
 
-        /* 截取字符。默认截取80个字 */
+        /* 字符截取。默认截取80个字 */
         case 'truncate': $value = sub_str($value, (intval($attrib)?intval($attrib):80), true); break;
 
-        /* 为变量加颜色，格式化成FONT。默认红色 */
+        /* 字符颜色，格式化成FONT。默认红色 */
         case 'color': $value = '<font color="'. ($attrib?$attrib:'#ff0000') .'">'. $value .'</font>'; break;
 
-        /* 变量默认值( '', false, 0, '0', null, array() ) */
+        /* 变量默认值。默认值：'', false, 0, '0', null, array() ) */
         case 'default' : $value = empty($value) ? $attrib : $value; break;
 
-        /* 格式化时间. ( 默认格式YYYY-MM-DD HH:II, 无效值则返回'' ) */
+        /* 格式化时间。默认格式YYYY-MM-DD HH:II, 无效值则返回'' */
         case 'date': $value = ($value>=57600&&$value<=2147443200) ? date(f($attrib,'default','Y-m-d H:i'),$value):''; break;
     }
 

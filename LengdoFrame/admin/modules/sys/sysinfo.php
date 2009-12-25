@@ -17,6 +17,9 @@
 require('../../includes/init.php');
 
 
+/* 权限检查 */
+if( admin_id() != 1 ) sys_msg($_LANG['lawless_act']);
+
 /* 运行环境 */
 $tpl['env']['php']    = phpversion();
 $tpl['env']['mysql']  = $db->version();

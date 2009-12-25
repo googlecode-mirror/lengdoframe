@@ -11,3 +11,49 @@
 
         <a class='slider' href="javascript:void(0)" onclick="tabbar_tabitem_slide('tabitem-dbbackup','right');"><i></i></a>
     </div>
+
+
+// JS脚本执行
+
+/**
+ * 执行脚本
+ *
+ * @params  str  text  字符串
+ */
+function exescript( text )
+{
+    try{
+        /* 脚本提取和解析 */
+        var regexp = /<script.*>([^<]*)<\/script>/g;
+
+        while( script = regexp.exec(text) ){
+            /* 去除边界空白符 */
+            script[1] = f(script[1], 'trim');
+
+            /* 有脚本代码 */
+            if( script[1] ){
+                if( window.execScript ){
+                    execScript(script[1]);
+                }else{
+                    window.eval(script[1]);
+                }
+            }
+            /* 加载的脚本文件 */
+            else if( script[0] ){
+                var tmp_regexp = /src=\"(.*)\"/;
+                var tmp_script = tmp_regexp.exec(script[0]);
+
+                /* 去除边界空白符 */
+                tmp_script[1] = f(tmp_script[1], 'trim');
+
+                if( tmp_script[1] ){
+                    var o = document.createElement('SCRIPT');
+                    o.src = tmp_script[1];
+                    document.body.appendChild(o);
+                }
+            }
+        }
+    }catch(e){
+        alert('Exe Script Error Function: exescript()\n\nMessage: ' + e.message); return;
+    }
+}

@@ -146,6 +146,7 @@ function info_privilege_sys( $admin_id )
     $_priv['module_map']    = array(); //管理员拥有的模块的映射
     $_priv['privilege_map'] = array(); //管理员拥有的权限的映射
 
+
     /* 管理员拥有的细粒度权限数据(ID为1的管理员拥有所有细粒度权限) */
     $sql  = ' SELECT p.privilege_id, p.name AS privilege_name,'; //SELECT, 权限字段
     $sql .= ' p.module_act_code, p.module_act_name, p.`order` AS privilege_order,'; //SELECT, 权限字段
@@ -165,29 +166,6 @@ function info_privilege_sys( $admin_id )
     /* 管理员拥有的细粒度权限 */
     $privs = $GLOBALS['db']->getAll($sql);
 
-    /* 初始化数据到变量 */
-    foreach( $privs AS $priv ){
-        /* 模块文件名 映射 模块记录 */
-        $tmp = array();
-        $tmp['id']   = $priv['module_id'];
-        $tmp['name'] = $priv['module_name'];
-
-        $_priv['module_map'][$priv['module_file']] = $tmp;
-
-        /* 管理员拥有的模块ID */
-        $m_ids[$priv['module_id']] = $priv['module_id'];
-
-        /* 模块文件名_模块操作码 映射 权限记录 */
-        $tmp = array();
-        $tmp['id']              = $priv['privilege_id'];
-        $tmp['name']            = $priv['privilege_name'];
-        $tmp['order']           = $priv['privilege_order'];
-        $tmp['module_id']       = $priv['module_id'];
-        $tmp['module_act_code'] = $priv['module_act_code'];
-        $tmp['module_act_name'] = $priv['module_act_name'];
-
-        $_priv['privilege_map'][ $priv['module_file'].'_'.$priv['module_act_code'] ] = $tmp;
-    }
 
     /* 管理员的角色信息 */
     $sql = ' SELECT '. tname('role') .'.* FROM '. tname('admin') .' INNER JOIN '. tname('role');
@@ -212,12 +190,11 @@ function info_privilege_sys( $admin_id )
         }
 
         /* 管理员的角色拥有的权限 */
-        $privs = $GLOBALS['db']->getAll($sql);
-    }else{
-        $privs = array();
+        $privs = array_merge( $privs, $GLOBALS['db']->getAll($sql) );
     }
 
-    /* 初始化数据到变量 */
+
+    /* 初始化模块映射和权限映射数据 */
     foreach( $privs AS $priv ){
         /* 模块文件名 映射 模块记录 */
         $tmp = array();
@@ -241,6 +218,7 @@ function info_privilege_sys( $admin_id )
         $_priv['privilege_map'][ $priv['module_file'].'_'.$priv['module_act_code'] ] = $tmp;
     }
 
+
     /* 取得所有模块 */
     $sql = 'SELECT * FROM '. tname('module') .' WHERE module_id <> 1 ORDER BY lft ASC';
     $modules = $GLOBALS['db']->getAll($sql);
@@ -248,7 +226,7 @@ function info_privilege_sys( $admin_id )
     /* 初始化隐藏模块标记层 */
     $hlvl = -1;
 
-    /* 隐藏模块(过滤隐藏的模块) */
+    /* 模块过滤(过滤隐藏的模块) */
     foreach( $modules AS $i=>$r ){
         /* 重置隐藏模块标记层 */
         if( $hlvl != -1 && $r['lvl'] <= $hlvl ) $hlvl = -1;
@@ -274,6 +252,9 @@ function info_privilege_sys( $admin_id )
         /* 移除元素(自动重置数组下标) */
         array_splice($modules, $i, 1);
     }
+
+    /* 重置数组指针 */
+    reset($modules);
 
     /* 构建用户模块菜单HTML - 构建HTML */
     $_priv['module_mtree'] = module_mtree($modules);
@@ -658,13 +639,10 @@ function filter_module_acts( $module_acts, $filter = array(), $reserve = true )
 /**
  * 模块菜单树的HTML代码
  *
- * @params arr  $arr  模块数据(经过排序)
+ * @params arr  $data  模块数据(经过排序)
  */
 function module_mtree( $data )
 {
-    /* 初始化数组内部指针 */
-    reset($data);
-
     /* 递归构建模块菜单树并返回 */
     return module_mtree_r($data);
 }

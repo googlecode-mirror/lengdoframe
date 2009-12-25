@@ -11,60 +11,6 @@
 
 
 /* ------------------------------------------------------ */
-// - 浏览器对象
-/* ------------------------------------------------------ */
-var Browser  = new Object();
-
-Browser.isIE = window.ActiveXObject ? true : false;
-Browser.isFF = navigator.userAgent.toLowerCase().indexOf("firefox") != -1;
-
-
-/* ------------------------------------------------------ */
-// - 兼容对象
-/* ------------------------------------------------------ */
-var Compatible = new Object();
-
-/**
- * 取得下一个节点, 跳过空白节点
- */
-Compatible.nextSibling = function( obj ){
-	try{
-        do{
-            obj = obj.nextSibling;
-        }while( obj.nodeType != 1 );
-	}catch(e){}
-
-	return obj;
-}
-
-/**
- * 取得第一个孩子节点, 跳过空白节点
- */
-Compatible.childNode = function( obj ){
-    try{
-        for( var i=0; i < obj.childNodes.length; i++ ){
-            if( obj.childNodes[i].nodeType == 1 ){
-                return obj.childNodes[i];
-            }
-        }
-    }catch(e){}
-
-	return null;
-}
-
-/**
- * 取得事件发生的源对象
- */
-Compatible.srcElement = function( e ){
-    if( e.target ){
-        return e.target;
-    }else{
-        return window.event.srcElement;
-    }
-}
-
-
-/* ------------------------------------------------------ */
 // - 常规组件函数 - 组合框 - 日历组合框
 /* ------------------------------------------------------ */
 
@@ -623,7 +569,7 @@ function tabbar_tabitem_width_init( caller, tabitems_id )
 function tabletree_click( obj )
 {
     /* 初始化 */
-    var tbl, tr, td, tdi, i, len;
+    var tbl, tr, td, tdi, i, len, i, llen;
 
 	/* 向上递归找到 TD, TR, TABLE 对象 */
 	while( obj.tagName.toLowerCase() != 'table' ){
@@ -648,7 +594,7 @@ function tabletree_click( obj )
     var fnd = false;
     var lvl = parseInt(tr.className);
 
-    for( var i=0,len=tbl.rows.length; i < len; i++ ){
+    for( i=0,len=tbl.rows.length; i < len; i++ ){
         if( tbl.rows[i] == tr ){
 			if( (i+1) == tbl.rows.length ) break;
             fnd = true;
@@ -666,13 +612,21 @@ function tabletree_click( obj )
 			    tbl.rows[i].style.display = dis;
 			}
 
-			Compatible.childNode(tbl.rows[i].cells[tdi]).className = 'minus';
+            for( ii=0,llen=tbl.rows[i].cells[tdi].childNodes.length; ii < llen; ii++ ){
+                if( tbl.rows[i].cells[tdi].childNodes[ii].nodeType == 1 ){
+                    tbl.rows[i].cells[tdi].childNodes[ii].className = 'minus'; break;
+                }
+            }
         }
     }
 
 	if( cnt == 0 ) return ;
 
-	Compatible.childNode(tr.cells[tdi]).className = dis == 'none' ?  'plus' : 'minus';
+    for( i=0,len=tr.cells[tdi].childNodes.length; i < len; i++ ){
+        if( tr.cells[tdi].childNodes[i].nodeType == 1 ){
+            tr.cells[tdi].childNodes[i].className = dis == 'none' ?  'plus' : 'minus'; break;
+        }
+    }
 }
 
 
@@ -981,8 +935,9 @@ function deal_webpage_loaded()
 }
 
 
+
 /* ------------------------------------------------------ */
-// - 其他功能函数
+// - Javascript数据格式化
 /* ------------------------------------------------------ */
 
 /**
@@ -1001,7 +956,7 @@ function f( value, modify )
         case 'html': value = value.replace(/\&|\"|\<|\>| |\n/g, f_html_match); break;
 
         /* 清除空白符 */
-        case 'trim': value = value.replace(/^\s*|\s*$/g, '');
+        case 'trim': value = value.replace(/^\s*|\s*$/g, ''); break;
     }
 
     return value;
@@ -1015,51 +970,8 @@ function f_html_match( match )
         case "'"  : return '&#39;';
         case ' '  : return '&nbsp;';
         case '"'  : return '&quot;'; 
-        case "\n" : return '<br />';
-        default   : return match;
+        case '\n' : return '<br />';
     }
-}
 
-
-/**
- * 执行脚本
- *
- * @params  str  text  字符串
- */
-function exescript( text )
-{
-    try{
-        /* 脚本提取和解析 */
-        var regexp = /<script.*>([^<]*)<\/script>/g;
-
-        while( script = regexp.exec(text) ){
-            /* 去除边界空白符 */
-            script[1] = f(script[1], 'trim');
-
-            /* 有脚本代码 */
-            if( script[1] ){
-                if( window.execScript ){
-                    execScript(script[1]);
-                }else{
-                    window.eval(script[1]);
-                }
-            }
-            /* 加载的脚本文件 */
-            else if( script[0] ){
-                var tmp_regexp = /src=\"(.*)\"/;
-                var tmp_script = tmp_regexp.exec(script[0]);
-
-                /* 去除边界空白符 */
-                tmp_script[1] = f(tmp_script[1], 'trim');
-
-                if( tmp_script[1] ){
-                    var o = document.createElement('SCRIPT');
-                    o.src = tmp_script[1];
-                    document.body.appendChild(o);
-                }
-            }
-        }
-    }catch(e){
-        alert('Exe Script Error Function: exescript()\n\nMessage: ' + e.message); return;
-    }
+    return match;
 }
