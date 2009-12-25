@@ -8,7 +8,7 @@
             <th width="48%">组件目录</th>
             <th>安装</th>
         </tr>
-        <?php foreach( $tpl['list']['data'] AS $r ){?>
+        <?php if( !empty($tpl['list']['data']) ){ foreach( $tpl['list']['data'] AS $r ){?>
         <tr align="center">
             <td><b><?php e($r['title'],'html'); ?></b></td>
             <td><?php e($r['ver'],'html'); ?></td>
@@ -25,9 +25,17 @@
         </tr>
         <?php }?>
 
+        <?php }}else{?>
+        <tr><td colspan="5"><div class="warn-div"><span>无组件</span></div></td></tr>
         <?php }?>
         </table>
+        
+        
+        <div class="listtable-footer">
+            <?php if( !empty($tpl['list']['data']) ){?>
+            <div class="pager"><?php echo $tpl['list']['pager']['html']; ?></div>
+            <?php }?>
+        </div>
 
-        <div class="listtable-footer"><div class="pager"><?php echo $tpl['list']['pager']['html']; ?></div></div>
     </div>
 </div>

@@ -59,6 +59,7 @@
             </table>
 
             <div class="listtable-footer">
+                <?php if( !empty($tpl['list']['data']) ){?>
                 <div class="action">
                     <div class="hddl" onmouseover="this.className+=' hddlon'" onmouseout="this.className='hddl'">
                         <a href="javascript:void(0)" onclick="ListTable.achoice(-1,'listtable-admin-touch','listtable-admin-ids')">选择<span>&nbsp;</span></a><div>
@@ -68,6 +69,7 @@
                     </div>
                 </div>
                 <div class="pager"><?php echo $tpl['list']['pager']['html']; ?></div>
+                <?php }?>
             </div>
 
     <?php if( $tpl['_bodysub'] != 'query' ){?>

@@ -73,7 +73,7 @@ else{
 
 
 /* 加载视图 */
-make_json_ok( '', tpl_fetch('sysplugin.html',$tpl) );
+make_json_response( (empty($tpl['list']['data']) ? -1 : 0), '', tpl_fetch('sysplugin.html',$tpl) );
 ?>
 
 <?php
