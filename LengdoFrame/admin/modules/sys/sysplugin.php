@@ -40,7 +40,7 @@ $_CFG['TMP_PLUGIN_FOOTER_PREG'] = "\\r\\n\\r\\n\/\/ LengdoFrame Plugin Code EOF"
 /* ------------------------------------------------------ */
 if( $_REQUEST['act'] == 'install' ){
     /* 所有组件 */
-    $tpl['list'] = all_plugin();
+    $tpl['list'] = list_plugin();
 
     /* 安装组件 */
     $errors = install_plugin($tpl['list']['data']);
@@ -55,6 +55,11 @@ if( $_REQUEST['act'] == 'install' ){
         /* 补全文件夹 */
         $tpl['list']['data'][$i]['folder'] = $_CFG['DIR_PLUGIN'].$r['folder'];
     }
+
+    /* 错误统计 */
+    if( count($errors[$i]) ){
+        $tpl['list']['total'] = '共 '. count($errors[$i]) .' 个组件安装失败';
+    }
 }
 
 
@@ -64,9 +69,10 @@ if( $_REQUEST['act'] == 'install' ){
 else{
     /* 组件列表 */
     $tpl['list'] = list_plugin();
-    
+
     /* 所有组件 - 数据重构 */
     foreach( $tpl['list']['data'] AS $i=>$r ){
+        /* 补全文件夹 */
         $tpl['list']['data'][$i]['folder'] = $_CFG['DIR_PLUGIN'].$r['folder'];
     }
 }
@@ -194,7 +200,7 @@ function install_plugin_init( $plugins )
         /* 初始化组件代码和分组代码集 */
         $code_plugin = '';
         $codes_plugin = array();
-        
+
         /* 构建组件代码 */
         foreach( $plugin['install'] AS $ii=>$install ){
             /* 构建组件文件和安装文件路径 */
@@ -203,7 +209,7 @@ function install_plugin_init( $plugins )
 
             /* 验证是否可以组件安装 */
             $error = install_plugin_init_valid($fpath_install, $fpath_plugin);
-            if( $error ){ $errors[$i][] = $error; continue; }
+            if( $error ){ $errors[$i][] = (count($errors[$i])+1).'. '.$error; continue; }
 
             /* 获取并重构组件文件的代码 */
             $code_plugin.= sprintf($_CFG['TMP_PLUGIN_ID'],$plugin['folder'],$i) ."\r\n";
