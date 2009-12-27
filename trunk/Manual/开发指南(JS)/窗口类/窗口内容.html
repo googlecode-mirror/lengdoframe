@@ -87,7 +87,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 
 <b>3. 窗口内容 - 内容重载</b><br />
 <div style="margin-left:1.2em;">
-    就像表单的重置功能，客户区内容重载功能根据上次窗口的参数(载入数据)进行客户区内容的重新载入！<br />
+    内容载入和内容重载的主要区别在于加载层的类型，内容载入时加载层为填充，内容重载时加载则为浮动！<br />
     <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
         &lt;script type="application/javascript"&gt;<br />
             <div style="margin-left:2em;">
@@ -96,15 +96,11 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 wnd.create();<br />
                 wnd.buttonAddDefault();<br />
                 <br />
-                var html = '';<br />
-                html += '&lt;input type="buttom" value="重载" onclick="';<br />
-                html += "this.value='窗口内容重载中....';this.style.color='#f00'";<br />
-                html += "alert('点击确认后开始重载!');";<br />
-                html += "Wnds.find('wnd-unique-id3').reinner();";<br />
-                html += '"&gt;';<br /><br />
-
-                wnd.inner(html, 'html');<br />
+                wnd.inner('1. X&lt;br /&gt;2. X&lt;br /&gt;3. X&lt;br /&gt;4. X&lt;br /&gt;', 'html');<br />
                 wnd.show();<br />
+                <br />
+                alert('点击确定后重载');<br />
+                wnd.reinner('http://www.lengdo.com/about.php', 'url');<br />
             </div>
         &lt;/script&gt;
         <span style="color:#008ECD">
@@ -118,8 +114,12 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 wnd.create();
                 wnd.buttonAddDefault();
 
-                wnd.inner('<br /><input type="button" value="重载" onclick="this.value=\'窗口内容重载中....\';this.style.color=\'#f00\';alert(\'点击确认后重载!\');Wnds.find(\'wnd-unique-id3\').reinner();"><br /><br />', 'html');
+                wnd.inner('<div>1. X</div><div>2. X</div><div>3. X</div><div>4. X</div>', 'html');
                 wnd.show();
+
+                alert('点击确定后重载');
+
+                wnd.reinner('http://www.lengdo.com/about.php', 'url');
             }
         </script>
     </div>
@@ -135,12 +135,12 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-wndcls-inner');o.style.display=o.style.display=='none'?'':'none'" style="color:#008ECD;">1. API：窗口类-客户区内容载入</a>
     <table style="margin-left:1.2em;padding:5px 0;font-size:12px;" id="lfm-wndcls-inner">
     <tr>
-        <th colspan="4" align="left">Wnd.prototype.inner( str, type, attribs );</th>
+        <th colspan="4" align="left">Wnd.prototype.inner( data, type, attribs );</th>
     </tr>
     <tr style="background:#eee;">
         <td align="center" width="60">@params</td>
         <td align="center" width="30">str</td>
-        <td width="100">str</td>
+        <td width="100">data</td>
         <td>载入数据</td>
     </tr>
     <tr style="background:#eee;">
@@ -182,19 +182,43 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-wndcls-reinner');o.style.display=o.style.display=='none'?'':'none'" style="color:#008ECD;">2. API：窗口类-客户区内容重载</a>
     <table style="margin-left:1.2em;padding:5px 0;font-size:12px;" id="lfm-wndcls-reinner">
     <tr>
-        <th colspan="4" align="left">Wnd.prototype.reinner( str, type );</th>
+        <th colspan="4" align="left">Wnd.prototype.reinner( data, type, attribs );</th>
     </tr>
     <tr style="background:#eee;">
         <td align="center" width="60">@params</td>
         <td align="center" width="30">str</td>
-        <td width="100">str</td>
-        <td>载入数据(临时)</td>
+        <td width="100">data</td>
+        <td>载入数据</td>
     </tr>
     <tr style="background:#eee;">
         <td align="center">@params</td>
         <td align="center">str</td>
         <td>type</td>
-        <td>载入类型(临时)</td>
+        <td>载入类型(url, html)，默认html</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center">@params</td>
+        <td align="center">obj</td>
+        <td>attribs</td>
+        <td>载入属性</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center"></td>
+        <td align="center">bol</td>
+        <td>attribs.move</td>
+        <td>加载完后窗口自动居中，默认false</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center"></td>
+        <td align="center">bol</td>
+        <td>attribs.loading</td>
+        <td>客户区内容浮显加载层，默认true</td>
+    </tr>
+    <tr style="background:#eee;">
+        <td align="center"></td>
+        <td align="center">bol</td>
+        <td>attribs.complete</td>
+        <td>加载完后执行回调函数，默认false</td>
     </tr>
     </table>
 </div>

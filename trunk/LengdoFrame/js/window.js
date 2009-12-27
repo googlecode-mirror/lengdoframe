@@ -108,7 +108,6 @@ function Wnd( id, callbacks, configs ){
     this.iTop         = 0;    //窗口Top
     this.iLeft        = 0;    //窗口Left
     this.oData        = {};   //自定义数据
-    this.oInner       = {};   //客户区载入配置
 
     this.oWnd         = null; //窗口对象
     this.oOverlay     = null; //遮掩层对象
@@ -427,19 +426,16 @@ Wnd.prototype.buttonActive = function( index, keypress ){
 /**
  * 客户区内容载入
  *
- * @params str  str      载入数据
+ * @params str  data     载入数据
  * @params str  type     载入类型(url, html)，默认html
  * @params obj  attribs  载入属性
  *         bol  attribs.move     加载完后窗口自动居中，默认true
  *         bol  attribs.loading  客户区内容填充加载层，默认true
  *         bol  attribs.complete 加载完后执行回调函数，默认true
  */
-Wnd.prototype.inner = function( str, type, attribs ){
+Wnd.prototype.inner = function( data, type, attribs ){
     /* 初始化 */
-    attribs = typeof(attribs) == 'object' && attribs ? attribs : {}
-
-    /* 保存配置 */
-    this.oInner = {'str':str, 'type':type};
+    attribs = typeof(attribs) == 'object' && attribs ? attribs : {};
 
     /* 客户区内容填充加载层 */
     if( attribs.loading !== false ){
@@ -447,19 +443,19 @@ Wnd.prototype.inner = function( str, type, attribs ){
         var w = this.iWidth - 2;
         var h = this.iHeight == 'auto' ? 60 : this.iHeight;
 
-        /* 填充客户区加载层 */
+        /* 客户区内容填充加载层 */
         this.oClient.innerHTML = '';
         this.createClientLoading(w, h, 'fill');
     }
 
-    /* 加载类型 */
+    /* 载入 */
     switch( type ){
         /* URL载入 */
-        case 'url': this.innerURL(str, 'TEXT', attribs); break;
-        case 'url json': this.innerURL(str, 'JSON', attribs); break;
+        case 'url': this.innerURL(data, 'TEXT', attribs); break;
+        case 'url json': this.innerURL(data, 'JSON', attribs); break;
 
         /* HTML载入 */
-        default: this.innerHTML(str, attribs);
+        default: this.innerHTML(data, attribs);
     }
 
     /* 窗口居中 */
@@ -474,7 +470,7 @@ Wnd.prototype.innerURL = function( url, rtype, attribs ){
         wnd_alert('Please Load Ajax Object'); return false;
     }
 
-    /* 引用this指针 */
+    /* 指针引用 */
     var self = this;
 
     /* 异步回调函数 */
@@ -489,7 +485,7 @@ Wnd.prototype.innerURL = function( url, rtype, attribs ){
         if( attribs.complete !== false ) self.fComplete(result, text);
     }
 
-    /* 异步加载 */
+    /* 异步加载(异步等待) */
     Ajax.call(url, '', callback, 'GET', rtype, true, true);
 }
 Wnd.prototype.innerHTML = function( html, attribs ){
@@ -497,28 +493,30 @@ Wnd.prototype.innerHTML = function( html, attribs ){
     this.oClient.innerHTML = html;
 
     /* 执行加载完成后的回调函数 */
-    if( attribs.complete !== false ) this.fComplete();
+    if( attribs.complete !== false ) this.fComplete(html, html);
 }
 
 /**
  * 客户区内容重载
  *
- * @params str  str    载入数据(临时)
- * @params str  type   载入类型(临时)
+ * @params str  data     载入数据
+ * @params str  type     载入类型(url, html)，默认html
+ * @params obj  attribs  载入属性
+ *         bol  attribs.move     加载完后窗口自动居中，默认false
+ *         bol  attribs.loading  客户区内容浮显加载层，默认true
+ *         bol  attribs.complete 加载完后执行回调函数，默认false
  */
-Wnd.prototype.reinner = function( str, type ){
+Wnd.prototype.reinner = function( data, type, attribs ){
     /* 初始化 */
-    srcstr = this.oInner.str; str = typeof(str) == 'string' && str ? str : this.oInner.str;
-    srctype = this.oInner.type; type = typeof(type) == 'string' && type ? type : this.oInner.type;
+    attribs = typeof(attribs) == 'object' && attribs ? attribs : {};
 
     /* 创建客户区加载层 */
-    this.createClientLoading(this.oClient.offsetWidth-2, this.oClient.offsetHeight);
+    if( attribs.loading === false ){
+        this.createClientLoading(this.oClient.offsetWidth-2, this.oClient.offsetHeight, 'float');
+    }
 
     /* 重新载入 */
-    this.inner(str, type, {'loading':false,'move':false,'complete':false});
-
-    /* 重置配置 */
-    this.oInner = {'str':srcstr, 'type':srctype};
+    this.inner(data, type, {'loading':false,'move':(attribs.move===true),'complete':(attribs.complete===true)});
 }
 
 
@@ -833,7 +831,7 @@ Wnd.prototype.createClient = function(){
  *
  * @params int width   宽度
  * @params int height  高度
- * @params str type    加载层类型，'float'表示浮动加载层(默认)，'fill'表示填充加载层
+ * @params str type    加载层类型，'float'表示浮显加载层(默认)，'fill'表示填充加载层
  */
 Wnd.prototype.createClientLoading = function( width, height, type )
 {

@@ -73,16 +73,17 @@ var Wnds = {
  *          fun  callbacks.complete  当窗口加载完成后调用此函数
  * @params  obj  configs             配置集
  *          str  configs.title       窗口标题
- *          int  configs.width       窗口宽度。      默认：200                                               注：窗口客户区宽度=窗口宽度-2
+ *          int  configs.width       窗口宽度。      默认：200                                                 注：窗口客户区宽度=窗口宽度-2
  *          int  configs.height      窗口客户区高度。默认：'auto'
  *          int  configs.overlay     窗口遮掩层透明度。false表示不显示，0-100表示透明度
- *          int  configs.titleact    窗口标题栏的操作按钮 000(最小化，最大化，关闭)。默认001                 注：前辍0省略
- *          int  configs.overflow    窗口窗口溢出时滚动条，默认0000(scroll-x，scroll-y，hidden-x，hidden-y)  注：前辍0省略
+ *          int  configs.titleact    窗口标题栏的操作按钮 000(最小化，最大化，关闭)。默认001                   注：前辍0省略
+ *          int  configs.overflow    窗口客户区溢出时滚动条，默认0000(scroll-x，scroll-y，hidden-x，hidden-y)  注：前辍0省略
  */
 function Wnd( id, callbacks, configs ){
     /* 初始化参数 - 配置 */
     if( typeof(configs) != 'object' || !configs ) configs = {};
-
+    
+    /* 初始化参数 - 配置 */
     this.sId       = id;
     this.sTitle    = typeof(configs.title)    == 'string' ? configs.title    : '';
     this.iWidth    = typeof(configs.width)    == 'number' ? configs.width    : 200;
@@ -107,7 +108,6 @@ function Wnd( id, callbacks, configs ){
     this.iTop         = 0;    //窗口Top
     this.iLeft        = 0;    //窗口Left
     this.oData        = {};   //自定义数据
-    this.oInner       = {};   //客户区载入配置
 
     this.oWnd         = null; //窗口对象
     this.oOverlay     = null; //遮掩层对象
@@ -127,18 +127,19 @@ function Wnd( id, callbacks, configs ){
 /* ------------------------------------------------------ */
 
 /**
- * 设置/返回标题文本
+ * 设置/返回窗口标题
  *
  * @params str  text  要显示的文本，undefined表示返回标题文本
  * @params str  icon  图标的样式
  *
- * @return str  返回当前或者上一个标题
+ * @return str  返回标题
+ *              设置标题时返回旧的标题
  */
 Wnd.prototype.title = function( text, icon ){
     /* 返回标题文本 */
     if( typeof(text) == 'undefined' ) return this.sTitle;
-    
-    /* 保存，更新配置 */
+
+    /* 拷贝，更新配置 */
     var tsrc = this.sTitle;
     this.sTitle = typeof(text) == 'string' ? text : '';
 
@@ -147,7 +148,7 @@ Wnd.prototype.title = function( text, icon ){
 
     /* 设置标题 */
     this.oTitleDivs['title'].innerHTML = icon + this.sTitle + '&nbsp;';
-    
+
     /* 返回 */
     return tsrc;
 }
@@ -157,20 +158,21 @@ Wnd.prototype.title = function( text, icon ){
  *
  * @params int  width  宽度值，undefined表示返回宽度
  *
- * @return int  返回当前或者上一个窗口宽度
+ * @return int  返回宽度
+ *              设置宽度时返回旧的宽度
  */
 Wnd.prototype.width = function( width ){
     /* 返回宽度 */
     if( typeof(width) == 'undefined' ) return this.iWidth;
 
-    /* 保存，更新配置 */
+    /* 拷贝，更新配置 */
     var wsrc = this.iWidth;
     this.iWidth = typeof(width) == 'number' && width >= 2 ? width : 200;
 
     /* 设置宽度 */
     this.oWnd.style.width    = this.iWidth + 'px';
     this.oClient.style.width = this.iWidth - 2 + 'px';
-    
+
     /* 返回 */
     return wsrc;
 }
@@ -180,13 +182,14 @@ Wnd.prototype.width = function( width ){
  *
  * @params int  height  int或'auto'表示设置高度，undefined表示返回高度
  *
- * @return mix  返回当前或者上一个窗口客户区高度
+ * @return int  返回高度
+ *              设置高度时返回旧的高度
  */
 Wnd.prototype.height = function( height ){
     /* 返回高度 */
     if( typeof(height) == 'undefined' ) return this.iHeight;
 
-    /* 保存，更新配置 */
+    /* 拷贝，更新配置 */
     var hsrc = this.iHeight;
     this.iHeight = typeof(height) == 'number' && height >= 0 ? height : 'auto';
 
@@ -198,27 +201,28 @@ Wnd.prototype.height = function( height ){
 }
 
 /**
- * 返回客户端对象
+ * 返回客户区对象
  */
 Wnd.prototype.client = function(){
     return this.oClient;
 }
 
 /**
- * 设置/返回窗口z-index
+ * 设置/返回窗口zindex
  *
- * @params int  zindex  int表示设置z-index，undefined表示返回z-index
+ * @params int  zindex  int表示设置zindex，undefined表示返回zindex
  *
- * @params int  返回当前或者上一个窗口z-index
+ * @return int  返回zindex
+ *              设置zindex时返回旧的zindex
  */
 Wnd.prototype.zindex = function( zindex ){
-    /* 返回z-index */
+    /* 返回zindex */
     if( typeof(zindex) == 'undefined' ) return this.oWnd.style.zIndex;
-    
-    /* 保存 */
+
+    /* 拷贝配置 */
     var zsrc = this.oWnd.style.zIndex;
     zindex = typeof(zindex) == 'number' && zindex > 0 ? zindex : 0; 
-    
+
     /* 设置zindex */
     this.oWnd.style.zIndex = zindex;
     this.oOverlay ? this.oOverlay.style.zIndex = zindex : '';
@@ -232,7 +236,8 @@ Wnd.prototype.zindex = function( zindex ){
  *
  * @params mix  overlay  int表示设置透明度，false表示隐掉overlay，undefined表示返回透明度
  *
- * @return int
+ * @return int  返回透明度
+ *              设置透明度时返回旧的透明度
  */
 Wnd.prototype.overlay = function( overlay ){
     /* 返回窗口遮掩层透明度 */
@@ -241,7 +246,7 @@ Wnd.prototype.overlay = function( overlay ){
     /* 窗口遮掩层存在检查 */
     if( !this.oOverlay ) return false;
 
-    /* 保存，更新配置 */
+    /* 拷贝，更新配置 */
     var lsrc = this.iOverlay;
     this.iOverlay = typeof(overlay) == 'number' && overlay >= 0 ? overlay : (overflay===false ? false : 40);
 
@@ -260,18 +265,19 @@ Wnd.prototype.overlay = function( overlay ){
 }
 
 /**
- * 设置/返回窗口溢出时滚动条
+ * 设置/返回窗口客户区溢出时滚动条
  *
- * @params int  overflow  溢出时滚动显示情况
+ * @params int  overflow  溢出时滚动条标识码，undefined表示返回标识码
  *                        xxxx(scroll-x，scroll-y，hidden-x，hidden-y). 注：前辍0省略
  *
- * @return int  xxxx
+ * @return int  返回滚动条标识码
+ *              设置滚动条标识码时返回旧的标识码
  */
 Wnd.prototype.overflow = function( overflow ){
     /* 返回窗口溢出时滚动条显示情况 */
     if( typeof(overflow) == 'undefined' ) return this.iOverflow;
 
-    /* 保存，更新配置 */
+    /* 拷贝，更新配置 */
     var fsrc = this.iOverflow;
     this.iOverflow = typeof(overflow) == 'number' && overflow >= 0 ? overflow : 0;
 
@@ -279,7 +285,7 @@ Wnd.prototype.overflow = function( overflow ){
     this.oClient.style.overflowX = parseInt(overflow%100/10) ? 'hidden' : (parseInt(overflow/1000) ? 'scroll' : '');
     this.oClient.style.overflowY = overflow%10 ? 'hidden' : (parseInt(overflow%1000/100) ? 'scroll' : '');
 
-    /* 更新配置 */
+    /* 返回 */
     return fsrc;
 }
 
@@ -287,7 +293,7 @@ Wnd.prototype.overflow = function( overflow ){
  * 设置/返回窗口回调函数
  *
  * @params str  type  回调函数类型
- * @params fun  func  回调函数
+ * @params fun  func  回调函数，undefined表示返回回调函数
  *
  * @return fun
  */
@@ -308,7 +314,7 @@ Wnd.prototype.callback = function( type, func ){
 /* ------------------------------------------------------ */
 
 /**
- * 设置/获取自定义数据
+ * 设置/返回自定义数据
  *
  * @params str  index  数据索引
  * @params mix  value  数据值
@@ -326,33 +332,38 @@ Wnd.prototype.getData = function( index ){
 /* ------------------------------------------------------ */
 
 /**
- * 设置/返回控制区按钮对象
+ * 设置/返回控制区按钮
  *
  * @params  str  index   控制区按钮索引
- * @params  str  attrib  对象HTML内置属性，undefined表示返回控制区按钮对象
- * @params  mix  value   属性值，undefined表示返回控制区按钮对象原属性值
+ * @params  str  attrib  控制区按钮属性，undefined表示返回控制区按钮对象
+ * @params  mix  value   控制区按钮属性值，undefined表示返回控制区按钮属性值
+ *
+ * @return int  返回控制区按钮对象，属性值
+ *              设置属性值时返回旧的属性值
  */
 Wnd.prototype.button = function( index, attrib, value ){
     /* 返回控制区按钮对象 */
     if( typeof(attrib) == 'undefined' ) return this.oControlBtns[index];
 
-    /* 返回控制区按钮对象原属性值 */
-    if( typeof(value) == 'undefined' ){
-        return this.oControlBtns[index] ? this.oControlBtns[index][attrib] : 'undefined';
-    }
+    /* 返回控制区按钮属性值 */
+    if( typeof(value) == 'undefined' ) return this.oControlBtns[index] ? this.oControlBtns[index][attrib] : 'undefined';
 
-    /* 设置控制区按钮 */
+    /* 拷贝，设置控制区按钮属性 */
     if( this.oControlBtns[index] ){
+        var vsrc = this.oControlBtns[index][attrib]
         this.oControlBtns[index][attrib] = value;
     }
+
+    /* 返回 */
+    return vsrc;
 }
 
 /**
- * 增加控制区默认按钮
+ * 增加控制区按钮
  *
  * @params obj  config  按钮配置
- *         str          config.index  按钮索引
  *         str          config.text   按钮文字
+ *         str          config.index  按钮索引
  *         fun          config.click  按钮单击事件
  */
 Wnd.prototype.buttonAdd = function( config ){
@@ -369,6 +380,8 @@ Wnd.prototype.buttonAdd = function( config ){
 
 /**
  * 增加控制区默认按钮
+ *
+ * @params str  indexs  默认按钮标识码，默认'ok&cannel'
  */
 Wnd.prototype.buttonAddDefault = function( indexs ){
     /* 初始化 */
@@ -413,19 +426,16 @@ Wnd.prototype.buttonActive = function( index, keypress ){
 /**
  * 客户区内容载入
  *
- * @params mix  str      载入数据
+ * @params str  data     载入数据
  * @params str  type     载入类型(url, html)，默认html
  * @params obj  attribs  载入属性
  *         bol  attribs.move     加载完后窗口自动居中，默认true
  *         bol  attribs.loading  客户区内容填充加载层，默认true
  *         bol  attribs.complete 加载完后执行回调函数，默认true
  */
-Wnd.prototype.inner = function( str, type, attribs ){
+Wnd.prototype.inner = function( data, type, attribs ){
     /* 初始化 */
-    attribs = typeof(attribs) == 'object' && attribs ? attribs : {}
-
-    /* 保存配置 */
-    this.oInner = {'str':str, 'type':type};
+    attribs = typeof(attribs) == 'object' && attribs ? attribs : {};
 
     /* 客户区内容填充加载层 */
     if( attribs.loading !== false ){
@@ -433,19 +443,19 @@ Wnd.prototype.inner = function( str, type, attribs ){
         var w = this.iWidth - 2;
         var h = this.iHeight == 'auto' ? 60 : this.iHeight;
 
-        /* 填充客户区加载层 */
+        /* 客户区内容填充加载层 */
         this.oClient.innerHTML = '';
-        this.createClientLoading(w, h, true);
+        this.createClientLoading(w, h, 'fill');
     }
 
-    /* 加载类型 */
+    /* 载入 */
     switch( type ){
         /* URL载入 */
-        case 'url': this.innerURL(str, 'TEXT', attribs); break;
-        case 'url json': this.innerURL(str, 'JSON', attribs); break;
+        case 'url': this.innerURL(data, 'TEXT', attribs); break;
+        case 'url json': this.innerURL(data, 'JSON', attribs); break;
 
         /* HTML载入 */
-        default: this.innerHTML(str, attribs);
+        default: this.innerHTML(data, attribs);
     }
 
     /* 窗口居中 */
@@ -460,7 +470,7 @@ Wnd.prototype.innerURL = function( url, rtype, attribs ){
         wnd_alert('Please Load Ajax Object'); return false;
     }
 
-    /* 引用this指针 */
+    /* 指针引用 */
     var self = this;
 
     /* 异步回调函数 */
@@ -475,7 +485,7 @@ Wnd.prototype.innerURL = function( url, rtype, attribs ){
         if( attribs.complete !== false ) self.fComplete(result, text);
     }
 
-    /* 异步加载 */
+    /* 异步加载(异步等待) */
     Ajax.call(url, '', callback, 'GET', rtype, true, true);
 }
 Wnd.prototype.innerHTML = function( html, attribs ){
@@ -483,18 +493,30 @@ Wnd.prototype.innerHTML = function( html, attribs ){
     this.oClient.innerHTML = html;
 
     /* 执行加载完成后的回调函数 */
-    if( attribs.complete !== false ) this.fComplete();
+    if( attribs.complete !== false ) this.fComplete(html, html);
 }
 
 /**
- * 客户区内容重载入
+ * 客户区内容重载
+ *
+ * @params str  data     载入数据
+ * @params str  type     载入类型(url, html)，默认html
+ * @params obj  attribs  载入属性
+ *         bol  attribs.move     加载完后窗口自动居中，默认false
+ *         bol  attribs.loading  客户区内容浮显加载层，默认true
+ *         bol  attribs.complete 加载完后执行回调函数，默认false
  */
-Wnd.prototype.reinner = function(){
+Wnd.prototype.reinner = function( data, type, attribs ){
+    /* 初始化 */
+    attribs = typeof(attribs) == 'object' && attribs ? attribs : {};
+
     /* 创建客户区加载层 */
-    this.createClientLoading(this.oClient.offsetWidth-2, this.oClient.offsetHeight);
+    if( attribs.loading !== false ){
+        this.createClientLoading(this.oClient.offsetWidth-2, this.oClient.offsetHeight, 'float');
+    }
 
     /* 重新载入 */
-    this.inner( this.oInner.str, this.oInner.type, {'loading':false,'move':false,'complete':false} );
+    this.inner(data, type, {'loading':false,'move':(attribs.move===true),'complete':(attribs.complete===true)});
 }
 
 
@@ -671,7 +693,7 @@ Wnd.prototype.create = function(){
     if( this.iOverlay !== false ) this.createOverlay();
 
     /* 创建窗口 */
-    this.createWnd();      // 创建窗口总层
+    this.createWnd();      // 创建窗口层
     this.createTitle();    // 创建标题区
     this.createClient();   // 创建客户区
     this.createControl();  // 创建控制区
@@ -684,7 +706,7 @@ Wnd.prototype.create = function(){
 }
 
 /**
- * 创建窗口总层
+ * 创建窗口层
  */
 Wnd.prototype.createWnd = function(){
     /* 创建窗口总层 */
@@ -700,7 +722,7 @@ Wnd.prototype.createWnd = function(){
     /* 窗口总层基本样式 - 窗口隐藏 */
     this.oWnd.style.display = 'none';
 
-    /* 将窗口总层增加到body */
+    /* 写入DOM */
     document.body.appendChild(this.oWnd);
 }
 
@@ -721,7 +743,7 @@ Wnd.prototype.createOverlay = function(){
     this.oOverlay.style.opacity = this.iOverlay/100;
     this.oOverlay.style.display = 'none';
 
-    /* 将遮掩层增加到body */
+    /* 写入DOM */
     document.body.appendChild(this.oOverlay);
 }
 
@@ -757,7 +779,7 @@ Wnd.prototype.createTitle = function(){
     /* 标题区 - 标题操作层 - 关闭按钮 */
     if( this.iTitleAct % 10 ) this.createTitleButton( {'type':'close','click':this.cannel} );
 
-    /* 将标题区层增加到窗口总层 */
+    /* 写入DOM */
     this.oWnd.appendChild(this.oTitle);
 }
 
@@ -800,18 +822,18 @@ Wnd.prototype.createClient = function(){
     this.oClient.style.overflowX = parseInt(this.iOverflow%100/10) ? 'hidden' : (parseInt(this.iOverflow/1000) ? 'scroll' : '');
     this.oClient.style.overflowY = this.iOverflow%10 ? 'hidden' : (parseInt(this.iOverflow%1000/100) ? 'scroll' : '');
 
-    /* 将客户区层增加到窗口总层 */
+    /* 写入DOM */
     this.oWnd.appendChild(this.oClient);
 }
 
 /**
  * 创建客户区加载层
  *
- * @params int width     宽度
- * @params int height    高度
- * @params bol relative  使用 position:relative 加载层。默认：false
+ * @params int width   宽度
+ * @params int height  高度
+ * @params str type    加载层类型，'float'表示浮显加载层(默认)，'fill'表示填充加载层
  */
-Wnd.prototype.createClientLoading = function( width, height, relative )
+Wnd.prototype.createClientLoading = function( width, height, type )
 {
     /* 初始化参数 */
     if( !(width > 0 && height > 0) ) return false;
@@ -825,11 +847,11 @@ Wnd.prototype.createClientLoading = function( width, height, relative )
     b.appendChild(o);
     b.appendChild(i);
 
-    /* 写入节点到客户区 */
+    /* 写入DOM */
     this.oClient.childNodes[0] ? this.oClient.insertBefore(b, this.oClient.childNodes[0]) : this.oClient.appendChild(b);
 
     /* 设置属性 */
-    b.className    = 'wnd-client-loading' + (relative===true ? ' wnd-client-loading-relative' : '');
+    b.className    = 'wnd-client-loading' + (type=='fill' ? ' wnd-client-loading-relative' : '');
     b.style.width  = width + 'px';
     b.style.height = height + 'px';
 
@@ -849,7 +871,7 @@ Wnd.prototype.createControl = function(){
     this.oControl = document.createElement('DIV');
     this.oControl.className = 'wnd-control';
 
-    /* 将控制区层增加到窗口总层 */
+    /* 写入DOM */
     this.oWnd.appendChild(this.oControl);
 }
 
@@ -923,7 +945,7 @@ Wnd.prototype.drag = function(){
             self.oWnd.style.left = tx + 'px';
         }
 
-        /* 执行上一个鼠标松键事件 */
+        /* 执行旧的鼠标松键事件 */
         if( document.onmouseup ) try{ document.onmouseup(); }catch(ex){}
 
         /* 增加鼠标松键事件 */
