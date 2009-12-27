@@ -20,7 +20,7 @@
         <?php if( $r['error'] ){?>
         <tr style="background:#FFFCC1">
             <td colspan="5">
-                <div style="color:#900;padding:5px 0 10px 5px;">[安装失败 - <?php e($r['title'],'html'); ?>]<br /><?php e($r['error'], 'html'); ?></div>
+                <div style="color:#900;padding:5px 0 10px 5px;">[安装失败: <?php e($r['title'],'html'); ?>]<br /><?php e($r['error'], 'html'); ?></div>
             </td>
         </tr>
         <?php }?>
@@ -32,6 +32,9 @@
         
         
         <div class="listtable-footer">
+            <div style="color:#f00;float:left;padding:7px 0 0 10px;">
+            <?php echo $tpl['list']['total']; ?>
+            </div>
             <?php if( !empty($tpl['list']['data']) ){?>
             <div class="pager"><?php echo $tpl['list']['pager']['html']; ?></div>
             <?php }?>

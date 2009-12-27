@@ -520,10 +520,13 @@ function wnd_sysplugin_view_complete( result, text )
     var wnd = Wnds.find('wnd-sysplugin-view');
 
     if( result.error == -1 ){
+        wnd.buttonDel('install');
         wnd.buttonAddDefault('cannel');
     }else{
         wnd.buttonAdd({'index':'install','text':'安装','click':deal_sysplugin_install});
         wnd.buttonAddDefault('cannel');
+
+        wnd.buttonSort(['install','cannel']);
     }
 }
 
@@ -533,17 +536,20 @@ function wnd_sysplugin_view_complete( result, text )
 function deal_sysplugin_install()
 {
     /* 初始化 */
-    var url = 'modules/sys/sysplugin.php?act=install';
+    var url = 'modules/sys/sysplugin.php';
+    var act = '?act=install';
 
     /* CONFIRM回调函数 */
     function confirm_callback(){
         /* AJAX回调函数 */
         function ajax_callback( result, text ){
-            Wnds.find('wnd-sysplugin-view').reinner(result, 'html');
+            ListTable.init('listtable-sysplugin', url, '?act=list');
+            ListTable.filter('act', 'install');
+            ListTable.loadList();
         }
 
         /* 异步提交(异步等待) */
-        Ajax.call(url, null, ajax_callback, 'GET', 'TEXT');
+        Ajax.call(url+act, null, ajax_callback, 'GET', 'TEXT');
     }
 
     wnd_confirm('确认安装所有组件？', {'ok':confirm_callback});
