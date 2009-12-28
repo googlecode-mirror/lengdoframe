@@ -543,8 +543,8 @@ function deal_sysplugin_install()
     function confirm_callback(){
         /* AJAX回调函数 */
         function ajax_callback( result, text ){
+            /* 初始化列表 */
             ListTable.init('listtable-sysplugin', url, '?act=list');
-            ListTable.filter('act', 'install');
             ListTable.loadList();
         }
 

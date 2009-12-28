@@ -27,12 +27,14 @@ $_CFG['TMP_INSTALL_FILES'][] = $_CFG['DIR_ROOT']  . 'js/system.js';
 $_CFG['TMP_INSTALL_FILES'][] = $_CFG['DIR_ADMIN'] . 'js/system.js';
 
 /* 组件首尾表示字符 */
-$_CFG['TMP_PLUGIN_ID']          = "\r\n\r\n// LengdoFrame Plugin #Id %s[Install:%s]";
-$_CFG['TMP_PLUGIN_HEADER']      = "\r\n\r\n// LengdoFrame Plugin Code";
-$_CFG['TMP_PLUGIN_FOOTER']      = "\r\n\r\n// LengdoFrame Plugin Code EOF";
+$_CFG['TMP_PLUGIN_HEADER']      = "\r\n\r\n// LengdoFrame Plugin Codes";
+$_CFG['TMP_PLUGIN_FOOTER']      = "\r\n\r\n// LengdoFrame Plugin Codes EOF";
 
-$_CFG['TMP_PLUGIN_HEADER_PREG'] = "\\r\\n\\r\\n\/\/ LengdoFrame Plugin Code";
-$_CFG['TMP_PLUGIN_FOOTER_PREG'] = "\\r\\n\\r\\n\/\/ LengdoFrame Plugin Code EOF";
+$_CFG['TMP_PLUGIN_ID_HEADER']   = "\r\n\r\n// LengdoFrame Plugin Code Header #Id %s[Install:%s]";
+$_CFG['TMP_PLUGIN_ID_FOOTER']   = "\r\n// LengdoFrame Plugin Code Footer #Id %s[Install:%s]";
+
+$_CFG['TMP_PLUGIN_HEADER_PREG'] = "\\r\\n\\r\\n\/\/ LengdoFrame Plugin Codes";
+$_CFG['TMP_PLUGIN_FOOTER_PREG'] = "\\r\\n\\r\\n\/\/ LengdoFrame Plugin Codes EOF";
 
 
 /* ------------------------------------------------------ */
@@ -42,24 +44,8 @@ if( $_REQUEST['act'] == 'install' ){
     /* 所有组件 */
     $tpl['list'] = list_plugin();
 
-    /* 安装组件 */
-    $errors = install_plugin($tpl['list']['data']);
-
-    /* 所有组件 - 数据重构 */
-    foreach( $tpl['list']['data'] AS $i=>$r ){
-        /* 错误信息 */
-        if( $errors[$i] ){
-            $tpl['list']['data'][$i]['error'] = implode("\r\n", $errors[$i]);
-        }
-
-        /* 补全文件夹 */
-        $tpl['list']['data'][$i]['folder'] = $_CFG['DIR_PLUGIN'].$r['folder'];
-    }
-
-    /* 错误统计 */
-    if( count($errors[$i]) ){
-        $tpl['list']['total'] = '共 '. count($errors[$i]) .' 个组件安装失败';
-    }
+    /* 安装所有组件 */
+    install_plugins();
 }
 
 
@@ -69,12 +55,6 @@ if( $_REQUEST['act'] == 'install' ){
 else{
     /* 组件列表 */
     $tpl['list'] = list_plugin();
-
-    /* 所有组件 - 数据重构 */
-    foreach( $tpl['list']['data'] AS $i=>$r ){
-        /* 补全文件夹 */
-        $tpl['list']['data'][$i]['folder'] = $_CFG['DIR_PLUGIN'].$r['folder'];
-    }
 }
 
 
@@ -83,27 +63,9 @@ make_json_response( (empty($tpl['list']['data']) ? -1 : 0), '', tpl_fetch('syspl
 ?>
 
 <?php
-function list_plugin()
-{
-    /* 所有组件 */
-    $plugins = all_plugin();
-
-    /* 设置分页数据和信息 */
-    $p['rows_page']  = intval($_REQUEST['rows_page']) ? intval($_REQUEST['rows_page']) : 1;
-    $p['rows_total'] = count($plugins);
-    $p['html']       = pager( $p['rows_page'], $p['rows_total'] );
-    $p['cur_page']   = pager_current( $p['rows_page'], $p['rows_total'] );
-    $p['row_start']  = ($p['cur_page']-1) * $p['rows_page'];
-
-    $list['data']    = array_slice($plugins, $p['row_start'], $p['rows_page']);
-    $list['pager']   = $p;
-
-    /* 返回 */
-    return $list;
-}
-
 /**
- * 获取文件夹下所有组件
+ * 获取所有组件
+ * 过滤没有配置文件或者无效配置信息的组件
  */
 function all_plugin()
 {
@@ -111,11 +73,11 @@ function all_plugin()
 
     /* 初始化 */
     $plugins = array();
-    $fdgroups = array('php', 'javascript');
+    $fdgroups = array('php', 'javascript'); // 组件的父文件夹组
 
-    /* 遍历文件夹 */
+    /* 遍历父文件夹 */
     foreach( $fdgroups AS $fdgroup ){
-        /* 打开文件夹 */
+        /* 打开父文件夹 */
         $fd = @opendir($_CFG['DIR_PLUGIN'].$fdgroup);
 
         /* 遍历子文件夹 */
@@ -132,10 +94,14 @@ function all_plugin()
             /* 无效的配置文件 */
             if( !is_array($cfg) ) continue;
 
-            /* 数据重构 - 初始化 */
+            /* 数据重构 - 基础数据 */
             $cfg['type'] = $fdgroup;
             $cfg['folder'] = $fdgroup.'/'.$fdplugin.'/';  // 相对于 $_CFG['DIR_PLUGIN'] 的文件夹路径
-            $cfg['installed'] = installed_plugin($cfg);  // 组件安装检查
+            $cfg['fdpath'] = $_CFG['DIR_PLUGIN'].$cfg['folder']; // 全路径
+
+            /* 数据重构 - 检验数据 */
+            $cfg['errors'] = valid_plugin($cfg);
+            $cfg['installed'] = empty($cfg['errors']) ? installed_plugin($cfg) : 0;
 
             /* 数据保存 */
             $plugins[] = $cfg;
@@ -145,145 +111,94 @@ function all_plugin()
     return $plugins;
 }
 
+
 /**
- * 安装组件
+ * 获取组件列表
  *
- * @params arr  按照组件下标索引的错误信息
+ * @params arr  $plugins  所有组件
  */
-function install_plugin( $plugins )
+function list_plugin()
 {
-    global $_CFG;
+    /* 获取所有组件 */
+    $plugins = all_plugin();
 
-    /* 初始化 */
-    $inits = install_plugin_init($plugins);
+    /* 设置分页数据和信息 */
+    $p['rows_page']  = intval($_REQUEST['rows_page']) ? intval($_REQUEST['rows_page']) : 5;
+    $p['rows_total'] = count($plugins);
+    $p['html']       = pager( $p['rows_page'], $p['rows_total'] );
+    $p['cur_page']   = pager_current( $p['rows_page'], $p['rows_total'] );
+    $p['row_start']  = ($p['cur_page']-1) * $p['rows_page'];
 
-    foreach( $inits['codes'] AS $fpath_install=>$codes ){
-        /* 获取安装文件的代码 */
-        $code_install = file_get_contents($fpath_install);
+    $list['data']    = array_slice($plugins, $p['row_start'], $p['rows_page']);
+    $list['pager']   = $p;
 
-        /* 构建组件文件的代码集 */
-        $code_plugin = $_CFG['TMP_PLUGIN_HEADER'] ."\r\n". implode("\r\n", $codes);
-        $code_plugin.= "\r\n". $_CFG['TMP_PLUGIN_FOOTER'];
-
-        /* 追加或者替换组件代码到安装文件 */
-        if( strpos($code_install, trim($_CFG['TMP_PLUGIN_HEADER'],"\r\n ")) === false ){
-            /* 追加组件代码到安装文件 */
-            file_put_contents($fpath_install, $code_plugin, FILE_APPEND);
-        }else{
-            /* 匹配安装文件中已存在组件代码集 */
-            $preg  = '/'. $_CFG['TMP_PLUGIN_HEADER_PREG'] .'[\s\S]*'. $_CFG['TMP_PLUGIN_FOOTER_PREG'] .'/';
-
-            /* 替换安装文件中已存在组件代码集 */
-            file_put_contents($fpath_install, preg_replace($preg,$code_plugin,$code_install));
-        }
-    }
-
-    return $inits['errors'];
+    /* 返回 */
+    return $list;
 }
+
+
 /**
- * 初始化要安装的组件代码
+ * 组件配置检查
  *
- * @params str  $plugins  所有组件
- *
- * @return arr  按照组件下标索引的错误信息
- *              按照安装文件分组的组件代码
+ * @return arr  错误信息
  */
-function install_plugin_init( $plugins )
+function valid_plugin( $plugin )
 {
     global $_CFG;
 
     /* 初始化 */
-    $codes = array();
     $errors = array();
 
-    foreach( $plugins AS $i=>$plugin ){
-        /* 初始化组件代码和分组代码集 */
-        $code_plugin = '';
-        $codes_plugin = array();
-
-        /* 构建组件代码 */
-        foreach( $plugin['install'] AS $ii=>$install ){
-            /* 构建组件文件和安装文件路径 */
+    /* 组件安装配置检查 */
+    if( !is_array($plugin['install']) ){
+        /* 安装配置变量有效性检查 */
+        $errors[] = '无法找到组件的安装配置';
+    }else{
+        /* 安装配置文件有效性检查 */
+        foreach( $plugin['install'] AS $i=>$install ){
+            /* 组件文件路径和安装文件路径 */
             $fpath_plugin  = $_CFG['DIR_PLUGIN'].$plugin['folder'].$install[1];
             $fpath_install = $install[0];
 
-            /* 验证是否可以组件安装 */
-            $error = install_plugin_init_valid($fpath_install, $fpath_plugin);
-            if( $error ){ $errors[$i][] = (count($errors[$i])+1).'. '.$error; continue; }
+            /* 无效的组件文件 */
+            if( !is_file($fpath_plugin) ){
+                $errors[] = '无法找到组件文件 ' . $fpath_plugin;
+            }
 
-            /* 获取并重构组件文件的代码 */
-            $code_plugin.= sprintf($_CFG['TMP_PLUGIN_ID'],$plugin['folder'],$i) ."\r\n";
-            $code_plugin.= trim(file_get_contents($fpath_plugin),"\r\n ");
-            
-            /* 保存安装文件分组的组件代码(按照安装文件分组) */
-            $codes_plugin[$fpath_install][] = $code_plugin;
-        }
-
-        /* 保存安装文件分组的组件代码(按照安装文件分组) */
-        if( empty($errors[$i]) ){
-            foreach( $codes_plugin AS $fpath_install=>$code_plugin ){
-                $codes[$fpath_install][] = $code_plugin;
+            /* 无效的安装文件 */
+            if( !in_array($fpath_install,$_CFG['TMP_INSTALL_FILES']) ){ 
+                $errors[] = '不允许的安装文件 ' . $fpath_install;
+            }
+            elseif( !is_file($fpath_install) ){
+                $errors[] = '无法找到安装文件 ' . $fpath_install;
             }
         }
     }
 
-    return array('errors'=>$errors,'codes'=>$codes);
-}
-/**
- * 验证是否可以组件安装
- *
- * @return str  错误信息
- */
-function install_plugin_init_valid( $fpath_install, $fpath_plugin )
-{
-    global $_CFG;
-    
-    /* 初始华 */
-    $errors = array();
-
-    /* 无效的组件文件 */
-    if( !is_file($fpath_plugin) ){
-        $errors[] = '无法找到组件文件 ' . $fpath_plugin;
-    }
-
-    /* 无效的安装文件 */
-    if( !in_array($fpath_install,$_CFG['TMP_INSTALL_FILES']) ){ 
-        $errors[] = '无效指定安装文件 ' . $fpath_install;
-    }
-    elseif( !is_file($fpath_install) ){
-        $errors[] = '无法找到安装文件 ' . $fpath_install;
-    }
-
-    /* 返回 */
-    return implode("\r\n", $errors);
+    return $errors;
 }
 
+
 /**
- * 组件安装检查
+ * 组件已安装检查
  *
  * @params arr  $cfg  组件配置数据
  *
- * @return int  0表示未安装
+ * @return int  0表示未安装过
  *              1表示安装成功
  *              2表示无须安装
  */
-function installed_plugin( $cfg )
+function installed_plugin( $plugin )
 {
     global $_CFG;
 
     /* 无须安装 */
-    if( empty($cfg['install']) ) return 2;
+    if( empty($plugin['install']) ) return 2;
 
     /* 检查安装情况 */
-    foreach( $cfg['install'] AS $i=>$install ){
-        /* 无效的安装文件 */
-        if( !in_array($install[0],$_CFG['TMP_INSTALL_FILES']) ) return 0;
-
-        /* 无效的安装文件或者组件文件 */
-        if( !is_file($install[0]) || !is_file($_CFG['DIR_PLUGIN'].$cfg['folder'].$install[1]) ) return 0;
-
+    foreach( $plugin['install'] AS $i=>$install ){
         /* 初始化安装检查数据 */
-        $match = sprintf($_CFG['TMP_PLUGIN_ID'],$cfg['folder'],$i);
+        $match = sprintf($_CFG['TMP_PLUGIN_ID_HEADER'],$plugin['folder'],$i);
         $content = file_get_contents($install[0]);
 
         /* 未安装 */
@@ -292,5 +207,113 @@ function installed_plugin( $cfg )
 
     /* 已安装 */
     return 1;
+}
+
+
+/**
+ * 安装所有组件
+ */
+function install_plugins()
+{
+    global $_CFG;
+    
+    /* 获取所有组件 */
+    $plugins = all_plugin();
+
+    /* 过滤无效组件 */
+    foreach( $plugins AS $i=>$plugin ){
+        /* 过滤无效组件 */
+        if( !empty($plugin['errors']) ) unset($plugins[$i]);
+    }
+
+    /* 卸载所有组件 */
+    uninstall_plugins();
+
+    /* 初始化组件安装代码集数据(按安装文件分组) */
+    $codes = install_plugins_codes($plugins);
+
+    /* 安装代码 */
+    foreach( $codes AS $fpath_install=>$code ){
+        /* 重构组件代码集 */
+        $code = $_CFG['TMP_PLUGIN_HEADER'] ."\r\n". implode("\r\n", $code);
+        $code.= "\r\n". $_CFG['TMP_PLUGIN_FOOTER'];
+
+        /* 追加组件代码到安装文件 */
+        file_put_contents($fpath_install, $code, FILE_APPEND);
+    }
+}
+/**
+ * 初始化组件安装代码集数据
+ *
+ * @params arr  $cfgs  安装组件的配置集
+ *
+ * @return arr  按照安装文件分组的组件代码集
+ */
+function install_plugins_codes( $plugins )
+{
+    global $_CFG;
+
+    /* 初始化 */
+    $codes = array();
+
+    /* 遍历所有组件 */
+    foreach( $plugins AS $i=>$plugin ){
+        /* 初始化分组代码集 */
+        $codes_plugin = array();
+
+        /* 构建组件代码 */
+        foreach( $plugin['install'] AS $ii=>$install ){
+            /* 构建组件文件和安装文件路径 */
+            $fpath_plugin  = $_CFG['DIR_PLUGIN'].$plugin['folder'].$install[1];
+            $fpath_install = $install[0];
+
+            /* 获取并重构组件文件的代码 */
+            $code_plugin = sprintf($_CFG['TMP_PLUGIN_ID_HEADER'],$plugin['folder'],$ii) ."\r\n";
+            $code_plugin.= trim(file_get_contents($fpath_plugin),"\r\n ");
+            $code_plugin.= sprintf($_CFG['TMP_PLUGIN_ID_FOOTER'],$plugin['folder'],$ii);
+
+            /* 保存安装文件分组的组件代码(按照安装文件路径分组) */
+            $codes_plugin[$fpath_install][] = $code_plugin;
+        }
+
+        /* 保存安装文件分组的组件代码(按照安装文件路径分组) */
+        if( !empty($codes_plugin[$fpath_install]) ){
+            /* 初始化 */
+            if( empty($codes[$fpath_install]) ) $codes[$fpath_install] = array();
+            
+            /* 保存 */
+            $codes[$fpath_install] = array_merge($codes[$fpath_install], $codes_plugin[$fpath_install]);
+        }
+    }
+
+    return $codes;
+}
+
+
+/**
+ * 卸载所有组件
+ *
+ * @params arr  按照组件下标索引的错误信息
+ */
+function uninstall_plugins()
+{
+    global $_CFG;
+
+    foreach( $_CFG['TMP_INSTALL_FILES'] AS $i=>$fpath_install ){
+        /* 未创建安装文件 */
+        if( !is_file($fpath_install) ) continue;
+
+        /* 获取安装文件的代码 */
+        $code_install = file_get_contents($fpath_install);
+        
+        /* 无组件代码集的安装文件 */
+        if( strpos($code_install,trim($_CFG['TMP_PLUGIN_HEADER'],"\r\n ")) === false ) continue;
+
+        /* 匹配安装文件中组件代码集 */
+        $preg  = '/'. $_CFG['TMP_PLUGIN_HEADER_PREG'] .'[\s\S]*'. $_CFG['TMP_PLUGIN_FOOTER_PREG'] .'/';
+    
+        /* 删除组件代码集 */
+        @file_put_contents($fpath_install, preg_replace($preg,'',$code_install));
+    }
 }
 ?>
