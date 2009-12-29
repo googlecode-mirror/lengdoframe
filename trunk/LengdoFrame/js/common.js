@@ -11,13 +11,13 @@
 
 
 /* ------------------------------------------------------ */
-// - 常规组件函数 - 组合框 - 日历组合框
+// - 常规组件函数 - 组合框 - 时间组合框
 /* ------------------------------------------------------ */
 
 /**
  * 日历组合框 - 需加载 calendar.js
  */
-function deal_jscalendar_show( obj, configs )
+function deal_timecbox_show( obj, configs )
 {
     /* 初始化填充对象 */
     obj = typeof(obj) == 'object' ? obj : document.getElementById(obj);
@@ -28,32 +28,19 @@ function deal_jscalendar_show( obj, configs )
     /* 初始化配置集 */
     configs.format = typeof(configs.format) == 'string' ? configs.format : '%Y-%m-%d'; // [%Y-%m-%d %H:%M] 显示 [年-月-日 时-分]
 
-    /* 初始化全局日期控件对象 */
-    if( window._dynarch_popupCalendar != null ){
-        if( (configs.format.indexOf(' %H:%M') == -1 && window._dynarch_popupCalendar.showsTime === true) ||
-            (configs.format.indexOf(' %H:%M') != -1 && window._dynarch_popupCalendar.showsTime !== true)
-        ){
-            window._dynarch_popupCalendar.destroy(); deal_jscalendar_show(obj, configs); return ;
-        }
-    }else{
-        window._dynarch_popupCalendar = new Calendar(1, null, deal_jscalendar_selected, deal_jscalendar_close);
+    /* 初始化全局时间选择对象 */
+window._dynarch_popupCalendar = new Calendar({'inputField':obj});
 
-        if( configs.format.indexOf(' %H:%M') != -1 ){
-            window._dynarch_popupCalendar.showsTime = true;
-        }
 
-        window._dynarch_popupCalendar.create();
-    }
+    //window._dynarch_popupCalendar.setDateFormat(configs.format);         // 设置制定的日期格式
+    //window._dynarch_popupCalendar.parseDate(obj.value);                  // 解析预设数据
+    //window._dynarch_popupCalendar.sel = obj;                             // 输入框赋值
 
-    window._dynarch_popupCalendar.setDateFormat(configs.format);         // 设置制定的日期格式
-    window._dynarch_popupCalendar.parseDate(obj.value);                  // 解析预设数据
-    window._dynarch_popupCalendar.sel = obj;                             // 输入框赋值
-
-    window._dynarch_popupCalendar.showAtElement(obj.nextSibling, "Br");  // 显示日期控件
+    window._dynarch_popupCalendar.popup(obj.nextSibling, "Br");  // 显示日期控件
 
     return false;
 }
-function deal_jscalendar_selected( cal, date )
+function deal_timecbox_selected( cal, date )
 {
     cal.sel.value = date;
 
@@ -61,7 +48,7 @@ function deal_jscalendar_selected( cal, date )
         cal.callCloseHandler();
     }
 }
-function deal_jscalendar_close( cal )
+function deal_timecbox_close( cal )
 {
     cal.hide();
 }
@@ -319,40 +306,6 @@ function deal_combobox_mouseover( obj )
     }
 
     obj.onmouseover();
-}
-
-
-/* ------------------------------------------------------ */
-// - 常规组件函数 - 编辑器
-/* ------------------------------------------------------ */
-
-/**
- * 编辑器 - [测试阶段]
- * 使用方法：设置表单中Textarea的className=editorbox，然后调用该函数渲染
- *
- * @params str  id  表单ID
- */
-function deal_jseditor_show( id )
-{
-    /* 获取表单对象 */
-    var form = document.getElementById(id);
-
-    /* 初始化编辑器对象集合 */
-    if( typeof(CKEDITOR._EDITORS) != 'object' ){
-        CKEDITOR._EDITORS = {};
-    }
-
-    for( var i=0,len=form.length; i < len; i++ ){
-        try{
-            if( form[i].tagName.toUpperCase() == 'TEXTAREA' && form[i].className.toLowerCase() == 'editorbox' ){
-                try{
-                    CKEDITOR._EDITORS[id+i].destroy();
-                }catch(e){}
-
-                CKEDITOR._EDITORS[id+i] = CKEDITOR.replace(form[i]);
-            }
-        }catch(e){}
-    }
 }
 
 
