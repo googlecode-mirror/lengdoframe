@@ -413,7 +413,7 @@ function deal_privilege_fill()
 
 
 /* ------------------------------------------------------ */
-// - 系统模块
+// - 系统模块 - 我的帐号
 /* ------------------------------------------------------ */
 
 /**
@@ -467,6 +467,10 @@ function deal_myaccount_fill()
 }
 
 
+/* ------------------------------------------------------ */
+// - 系统模块 - 系统信息
+/* ------------------------------------------------------ */
+
 /**
  * 系统信息查看
  */
@@ -492,6 +496,10 @@ function wnd_sysinfo_view()
     wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
 }
 
+
+/* ------------------------------------------------------ */
+// - 系统模块 - 系统组件
+/* ------------------------------------------------------ */
 
 /**
  * 系统组件查看
@@ -521,12 +529,14 @@ function wnd_sysplugin_view_complete( result, text )
 
     if( result.error == -1 ){
         wnd.buttonDel('install');
+        wnd.buttonDel('uninstall');
         wnd.buttonAddDefault('cannel');
     }else{
         wnd.buttonAdd({'index':'install','text':'安装','click':deal_sysplugin_install});
+        wnd.buttonAdd({'index':'uninstall','text':'卸载','click':deal_sysplugin_uninstall});
         wnd.buttonAddDefault('cannel');
 
-        wnd.buttonSort(['install','cannel']);
+        wnd.buttonSort(['install','uninstall','cannel']);
     }
 }
 
@@ -555,6 +565,35 @@ function deal_sysplugin_install()
     wnd_confirm('确认安装所有组件？', {'ok':confirm_callback});
 }
 
+/**
+ * 系统组件卸载
+ */
+function deal_sysplugin_uninstall()
+{
+    /* 初始化 */
+    var url = 'modules/sys/sysplugin.php';
+    var act = '?act=uninstall';
+
+    /* CONFIRM回调函数 */
+    function confirm_callback(){
+        /* AJAX回调函数 */
+        function ajax_callback( result, text ){
+            /* 初始化列表 */
+            ListTable.init('listtable-sysplugin', url, '?act=list');
+            ListTable.loadList();
+        }
+
+        /* 异步提交(异步等待) */
+        Ajax.call(url+act, null, ajax_callback, 'GET', 'TEXT');
+    }
+
+    wnd_confirm('确认卸载所有组件？', {'ok':confirm_callback});
+}
+
+
+/* ------------------------------------------------------ */
+// - 系统模块 - 系统退出
+/* ------------------------------------------------------ */
 
 /**
  * 系统退出

@@ -22,20 +22,20 @@
                 </tr>
 
                 <?php }else{ ?>
-                <tr style="background:#FFFCC1">
+                <tr>
                     <td colspan="5">
-                        <div style="border:1px solid #A00;">
+                        <div style="border:1px solid #A00;padding:1px 0 0;">
                             <table>
                             <tr align="center" style="background:#FFFCC1">
                                 <td width="20%"><?php e($r['title'],'html'); ?></td>
                                 <td width="12%"><?php e($r['ver'],'html'); ?></td>
                                 <td width="12%"><?php e($r['type'],'html'); ?></td>
-                                <td width="48%" align="left" onmousemove="tagtitle(event,'<?php e($r['folder'],'hstr'); ?>')"><?php e($r['folder'],'html'); ?></td>
+                                <td width="48%" align="left" onmousemove="tagtitle(event,'<?php e($r['fdpath'],'hstr'); ?>')"><?php e($r['fdpath'],'html'); ?></td>
                                 <td><span class="<?php echo $r['installed'] ? 'yes' : 'no' ?>"></span></td>
                             </tr>
                             </table>
 
-                            <div style="color:#900;padding:5px 0 5px 5px;line-height:130%;">
+                            <div style="color:#900;padding:5px 0 5px 5px;line-height:130%;background:#FFFCC1;">
                                 <?php foreach( $r['errors'] AS $i=>$error ){?>
                                 <?php e(($i+1).'. '.$error,'html'); ?><br />
                                 <?php }?>

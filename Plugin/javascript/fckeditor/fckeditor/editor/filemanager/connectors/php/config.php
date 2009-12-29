@@ -33,13 +33,13 @@ $Config['Enabled'] = true ;
 
 
 // Path to user files relative to the document root.
-$Config['UserFilesPath'] = $_CFG['URL_JSEDITOR_UPLOAD'] ;
+$Config['UserFilesPath'] = $_CFG['URL_FCKEDITOR_UPLOAD'] ;
 
 // Fill the following value it you prefer to specify the absolute path for the
 // user files directory. Useful if you are using a virtual directory, symbolic
 // link or alias. Examples: 'C:\\MySite\\userfiles\\' or '/root/mysite/userfiles/'.
 // Attention: The above 'UserFilesPath' must point to the same directory.
-$Config['UserFilesAbsolutePath'] = $_CFG['DIR_JSEDITOR_UPLOAD'] ;
+$Config['UserFilesAbsolutePath'] = $_CFG['DIR_FCKEDITOR_UPLOAD'] ;
 
 // Due to security issues with Apache modules, it is recommended to leave the
 // following setting enabled.
