@@ -20,7 +20,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     &lt;div class="timecbox"&gt;<br />
 		<div style="margin-left:1.5em;">
             &lt;input type="text" class="textbox" style="width:70px;" name="..."/&gt;&lt;input type="button"<br />
-            &nbsp; onmouseover="deal_combobox_mouseover(this)" onclick="deal_timecbox_show(this.previousSibling)" class="choice"/&gt;
+            &nbsp; onmouseover="deal_combobox_mouseover(this)" onclick="deal_timecbox_show(this)" class="choice"/&gt;
 	    </div>
     &lt;/div&gt;
 </div>
@@ -28,7 +28,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     代码说明：
     <div style="margin-left:1.2em;">1. 为了兼容浏览器，两个 &lt;input&gt; 标签务必紧挨着写在一起！</div>
     <div style="margin-left:1.2em;">2. onmouseover="deal_combobox_mouseover(this)" 为按钮添加点击时样式变化</div>
-    <div style="margin-left:1.2em;">3. deal_timecbox_show(this.previousSibling) 显示JS日历控件并自动绑定指定的输入文本框</div>
+    <div style="margin-left:1.2em;">3. deal_timecbox_show(this) 显示JS时间选择器并自动绑定指定的输入文本框</div>
 </div>
 
 <br /><br />
