@@ -124,14 +124,14 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 /* ------------------------------------------------------ */
 /* - 组合框 - 时间组合框
 /* ------------------------------------------------------ */
-.datecbox{ display:inline; }
+.timecbox{ display:inline; }
 
-.datecbox .textbox{ width:150px; border-right:0; background:#FEFEFE; color:#666; font-family:Garamonds,Tahoma; }
-.datecbox .fillbox{ width:150px; border-right:0; color:#666; font-family:Garamonds,Tahoma; }
+.timecbox .textbox{ width:150px; border-right:0; background:#FEFEFE; color:#666; font-family:Garamonds,Tahoma; }
+.timecbox .fillbox{ width:150px; border-right:0; color:#666; font-family:Garamonds,Tahoma; }
 
-.datecbox .choice{ width:24px; height:20px; border:0px; background:url(images/style_fxy.gif) -328px -50px; cursor:pointer; vertical-align:middle; }
-.datecbox .choiceover{ background-position:-328px -50px; }
-.datecbox .choicedown{ background-position:-328px -90px; }
+.timecbox .choice{ width:24px; height:20px; border:0px; background:url(images/style_fxy.gif) -328px -50px; cursor:pointer; vertical-align:middle; }
+.timecbox .choiceover{ background-position:-328px -50px; }
+.timecbox .choicedown{ background-position:-328px -90px; }
 
 
 /* ------------------------------------------------------ */

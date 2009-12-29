@@ -9,9 +9,10 @@ $_PLUGIN_CFG['ver']      = 'v3.4.0';
 /* 设置组件配置 - 组件标题 */
 $_PLUGIN_CFG['title']    = 'Kindeditor编辑器';
 
-/* 设置组件配置 - 文件融合 */
+/* 设置组件配置 - 组件安装 */
 $_PLUGIN_CFG['install']   = array();
 $_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'js/system.js', 'src'=>'kindeditor.js' , 'type'=>'JS LOAD JS');
+
 
 /* 返回组件配置 */
 return $_PLUGIN_CFG;

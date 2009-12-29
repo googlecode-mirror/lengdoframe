@@ -56,7 +56,7 @@ else{
 
     /* 数据表的信息 - 数据格式化 */
     $tpl['all'] = array();
-    $tpl['cnt'] = array('chip'=>0,'row'=>0,'size'=>0,'table'=>0);
+    $tpl['stat'] = array('chip'=>0,'row'=>0,'size'=>0,'table'=>0);
     foreach( $tables AS $table ){
         $type    = $db_ver >= '4.1' ? $table['Engine'] : $table['Type'];
         $charset = $db_ver >= '4.1' ? $table['Collation'] : 'N/A';
@@ -67,10 +67,10 @@ else{
             $table['Data_free'] = '0';
         }else{
             $check = $db->GetRow("CHECK TABLE `$table[Name]`");
-            $tpl['cnt']['row']   += $table['Rows'];
-            $tpl['cnt']['chip']  += $table['Data_free'];
-            $tpl['cnt']['size']  += $table['Data_length'];
-            $tpl['cnt']['table'] += 1;
+            $tpl['stat']['row']   += $table['Rows'];
+            $tpl['stat']['chip']  += $table['Data_free'];
+            $tpl['stat']['size']  += $table['Data_length'];
+            $tpl['stat']['table'] += 1;
         }
 
         $tpl['all'][] = array( 'name'     => $table['Name'],
@@ -85,7 +85,7 @@ else{
     }
 
     /* 格式化数据量大小 */
-    $tpl['cnt']['size'] = bitunit($tpl['cnt']['size']);
+    $tpl['stat']['size'] = bitunit($tpl['stat']['size']);
 
     /* 初始化页面信息 */
     $tpl['_body'] = 'list';
