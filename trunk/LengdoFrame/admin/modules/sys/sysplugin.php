@@ -194,7 +194,7 @@ function valid_plugin( $plugin )
         }
     }
 
-    return $errors;
+    return array_unique($errors);
 }
 
 

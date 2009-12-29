@@ -28,9 +28,4 @@ $_CFG['tblpre'] = '';       //数据表名称前辍
 /* 上传的文件夹 */
 // $_CFG['DIR_UPLOAD'] = $_CFG['DIR_ROOT'] . 'upload/';
 // $_CFG['URL_UPLOAD'] = $_CFG['URL_ROOT'] . 'upload/';
-
-/* JS编辑器文件夹 */
-// $_CFG['DIR_JSEDITOR_UPLOAD'] = $_CFG['DIR_ROOT'] . 'upload/jseditor/';
-// $_CFG['URL_JSEDITOR_UPLOAD'] = $_CFG['URL_ROOT'] . 'upload/jseditor/';
-// $_CFG['URL_JSEDITOR_FOLDER'] = $_CFG['URL_ROOT'] . 'js/fckeditor/';
 ?>

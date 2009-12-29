@@ -15,42 +15,37 @@
 /* ------------------------------------------------------ */
 
 /**
- * 日历组合框 - 需加载 calendar.js
+ * 时间组合框 - 需安装 JsCal2 组件
+ *
+ * @params obj  caller   调用者对象
+ * @params obj  configs  时间组件的配置
  */
-function deal_timecbox_show( obj, configs )
+function deal_timecbox_show( caller, configs )
 {
-    /* 初始化填充对象 */
-    obj = typeof(obj) == 'object' ? obj : document.getElementById(obj);
+    /* 必要组件检测 */
+    if( typeof(Calendar) != 'function' ){
+        wnd_alert('Please Install "JsCal2" Plugin !'); return false;
+    }
 
     /* 初始化配置 */
-    if( typeof(configs) != 'object' ) configs = {};
+    configs = configs == 'object' ? configs : {};
 
-    /* 初始化配置集 */
+    /* 初始化配置 - 时间格式 */
     configs.format = typeof(configs.format) == 'string' ? configs.format : '%Y-%m-%d'; // [%Y-%m-%d %H:%M] 显示 [年-月-日 时-分]
 
-    /* 初始化全局时间选择对象 */
-window._dynarch_popupCalendar = new Calendar({'inputField':obj});
-
-
-    //window._dynarch_popupCalendar.setDateFormat(configs.format);         // 设置制定的日期格式
-    //window._dynarch_popupCalendar.parseDate(obj.value);                  // 解析预设数据
-    //window._dynarch_popupCalendar.sel = obj;                             // 输入框赋值
-
-    window._dynarch_popupCalendar.popup(obj.nextSibling, "Br");  // 显示日期控件
-
-    return false;
-}
-function deal_timecbox_selected( cal, date )
-{
-    cal.sel.value = date;
-
-    if( cal.dateClicked ){
-        cal.callCloseHandler();
+    /* 初始化全局时间选择器对象 */
+    if( !window.TIMECBOX_TIME_SELECTER ){
+        window.TIMECBOX_TIME_SELECTER = new Calendar({'onSelect':function(){this.hide();},'align':'Br'});
     }
-}
-function deal_timecbox_close( cal )
-{
-    cal.hide();
+
+    /* 显示时分 */
+    if( configs.format.indexOf(' %H:%M') >= 0 ){
+        window.TIMECBOX_TIME_SELECTER.args.showTime = true;
+        window.TIMECBOX_TIME_SELECTER.redraw();
+    }
+
+    /* 绑定显示 */
+    window.TIMECBOX_TIME_SELECTER.manageFields(caller, caller.previousSibling, configs.format);
 }
 
 

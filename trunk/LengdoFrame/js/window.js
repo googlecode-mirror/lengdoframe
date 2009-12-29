@@ -504,7 +504,7 @@ Wnd.prototype.inner = function( data, type, attribs ){
 Wnd.prototype.innerURL = function( url, rtype, attribs ){
     /* 必要组件检测 */
     if( typeof(Ajax) != 'object' ){
-        wnd_alert('Please Load Ajax Object'); return false;
+        wnd_alert('Please Load Ajax Object !'); return false;
     }
 
     /* 指针引用 */

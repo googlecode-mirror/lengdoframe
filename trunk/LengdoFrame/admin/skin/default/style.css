@@ -541,7 +541,7 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 /* ------------------------------------------------------ */
 /* - TAG TITLE
 /* ------------------------------------------------------ */
-.tagtitle-div{ padding:1px 3px 1px; _padding-top:0; border:1px solid #000; line-height:130%; background:#FFFFE1; position:absolute; }
+.tagtitle-div{ padding:1px 3px 1px; _padding-top:0; border:1px solid #000; line-height:130%; background:#FFFFE1; position:absolute; z-index:99; }
 
 
 /* ------------------------------------------------------ */
