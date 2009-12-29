@@ -41,7 +41,7 @@ class FCKeditor
         global $_CFG;
 
 		$this->InstanceName	= $instanceName ;
-		$this->BasePath		= $_CFG['URL_JSEDITOR_FOLDER'];
+		$this->BasePath		= $_CFG['URL_FCKEDITOR_FOLDER'];
 		$this->Value		= isset($attribs['value'])   ? $attribs['value']  : '';
 		$this->Width		= isset($attribs['width'])   ? $attribs['width']  : '100%';
 		$this->Height		= isset($attribs['height'])  ? $attribs['height'] : '200';

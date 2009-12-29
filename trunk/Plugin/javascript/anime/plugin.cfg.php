@@ -11,8 +11,7 @@ $_PLUGIN_CFG['title']     = '图片动画效果';
 
 /* 设置组件配置 - 组件安装 */
 $_PLUGIN_CFG['install']   = array();
-$_PLUGIN_CFG['install'][] = array($_CFG['DIR_ADMIN'].'js/system.js', 'anime.js');
-
+$_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'js/system.js', 'src'=>'anime.js', 'type'=>'JS LOAD JS');
 
 /* 返回组件配置 */
 return $_PLUGIN_CFG;
@@ -22,5 +21,5 @@ return $_PLUGIN_CFG;
 
 
 使用说明：
-    1. 拷贝 所有文件 到 /plugin/javascript/anime/ 文件夹下
+    1. 拷贝 所有文件 到 /plugin/javascript/anime/ 文件夹下并安装
     2. 在程序中调用 Anime 对象的成员函数使用

@@ -38,10 +38,10 @@ function sys_msg( $msg )
  *
  * @params str  $file_path   文件(夹)路径
  *
- * @return int  返回 8421 码
- *              如果是文件，分别代表
+ * @return int  返回8421码，false表示文件不存在
+ *              如果是文件，8421码分别代表
  *                  文件可执行rename()函数、文件可改、可写、文件可读。
- *              如果是文件夹，分别代表
+ *              如果是文件夹，8421码分别代表
  *                  目录下文件可执行rename()函数、目录下文件可改、目录可写、目录可读。
  */
 function file_privilege( $file_path )
@@ -50,9 +50,7 @@ function file_privilege( $file_path )
     $file_path = rtrim( str_replace("\\",'/',$file_path), '/ ' );
 
     /* 文件或文件夹不存在不存在 */
-    if( !file_exists($file_path) ){
-        return false;
-    }
+    if( !file_exists($file_path) ) return false;
 
     /* 文件权限属性初始化 */
     $mark = 0;
