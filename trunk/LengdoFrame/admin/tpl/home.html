@@ -1,4 +1,4 @@
-<?php include($_CFG['DIR_ADMIN_TPL'].'header.html'); ?>
+<?php if( $tpl['_header'] ){ include($_CFG['DIR_ADMIN_TPL'].'header.html'); }?>
 
 
 <div class="home-header">
@@ -52,6 +52,11 @@
 
 		<div class="body"><div class="linea"></div><div class="lineb"></div>
 			<div class="content" style="line-height:150%; height:300px; overflow-y:scroll;">
+                <span>[20091230] 更新内核版本 /admin/lang/zh.php</span><br />
+                <span>[20091230] 移除视图控制变量 $tpl['_block']，替换为 $tpl['_header']</span><br />
+                <span>[20091230] 增加框架组件机制</span><br />
+                <span>[20091230] 修改时间组合框的第三方控件为组件形式，提供默认组件JsCal2。移除内置时间选择器控件</span><br />
+                <br />
                 <span>[20091227] 更新内核版本 /admin/lang/zh.php</span><br />
                 <span>[20091227] 解决IE6下背景不缓存BUG /js/common.js</span><br />
                 <span>[20091227] 增加窗口控制区按钮排序和删除功能 /js/window.js</span><br />
