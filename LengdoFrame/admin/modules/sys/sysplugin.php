@@ -23,8 +23,8 @@ require('../../includes/init.php');
 
 /* 允许追加组件代码的文件 */
 $_CFG['TMP_INSTALL_FILES']   = array();
-$_CFG['TMP_INSTALL_FILES'][] = $_CFG['DIR_ROOT']  . 'js/system.js';
-$_CFG['TMP_INSTALL_FILES'][] = $_CFG['DIR_ADMIN'] . 'js/system.js';
+$_CFG['TMP_INSTALL_FILES'][] = $_CFG['DIR_ROOT']  . 'script/system.js';
+$_CFG['TMP_INSTALL_FILES'][] = $_CFG['DIR_ADMIN'] . 'script/system.js';
 
 /* 组件代码集首尾标识字符 */
 $_CFG['TMP_PLUGIN_HEADER']      = "\r\n\r\n\r\n\r\n\r\n\r\n";
