@@ -41,14 +41,14 @@ require('../admin/includes/lib_func.php');
 
 define('SN_INSTALL', md5(__FILE__));
 
-$_CFG['DIR_ADMIN_PFILE']  = $_CFG['DIR_ADMIN_PFILE'];
-$_CFG['URL_ADMIN_PFILE']  = './admin/data/pfile/';
+$_CFG['DIR_ADMIN_PFILE']       = $_CFG['DIR_ADMIN_PFILE'];
+$_CFG['URL_ADMIN_PFILE']       = './admin/data/pfile/';
 
-$_CFG['DIR_SYSTEMCONFIG'] = $_CFG['DIR_INC'].'_systemconfig.php';
-$_CFG['URL_SYSTEMCONFIG'] = './includes/_systemconfig.php';
+$_CFG['DIR_SYSTEMCONFIG']      = $_CFG['DIR_INC'].'_systemconfig.php';
+$_CFG['URL_SYSTEMCONFIG']      = './includes/_systemconfig.php';
 
-$_CFG['FILE_INSTALL_SQL'] = './lengdoframe.sql';
-$_CFG['FILE_SYSTEMCONFIG'] = '../includes/systemconfig.php';
+$_CFG['FILE_INSTALL_SQL']      = './lengdoframe.sql';
+$_CFG['FILE_SYSTEMCONFIG']     = '../includes/systemconfig.php';
 $_CFG['FILE_SYSTEMCONFIG_SRC'] = '../includes/_systemconfig.php';
 
 
@@ -90,29 +90,29 @@ if( $_REQUEST['act'] == 'envcheck' ){
 
         /* 文件不存在 */
         if( $filepriv == 0 ){
-            $tpl['files'][$i]['need'] = $_DBD['fileexist'][1];
-            $tpl['files'][$i]['error'] = isset($_POST['submit']) ? 1 : 0;
+            $tpl['files'][$i]['need']     = $_DBD['fileexist'][1];
+            $tpl['files'][$i]['error']    = isset($_POST['submit']) ? 1 : 0;
             $tpl['files'][$i]['filepriv'] = $_DBD['fileexist'][0];
         }
         /* 文件存在 - 配置文件检查 */
         elseif( $r['file'] == $_CFG['DIR_SYSTEMCONFIG'] && file_systemconfig_valid() === false ){
-            $tpl['files'][$i]['need'] = $_DBD['filevalid'][1];
-            $tpl['files'][$i]['error'] = isset($_POST['submit']) ? 1 : 0;
+            $tpl['files'][$i]['need']     = $_DBD['filevalid'][1];
+            $tpl['files'][$i]['error']    = isset($_POST['submit']) ? 1 : 0;
             $tpl['files'][$i]['filepriv'] = $_DBD['filevalid'][0];
         }
         /* 文件存在 - 其他文件检查 */
         else{
             /* 目录权限检查 */
             if( $r['type'] == 'dir' ){
-                $tpl['files'][$i]['need'] = $_DBD['filewrite'][1];
-                $tpl['files'][$i]['error'] = isset($_POST['submit']) ? 1*(($filepriv&2)==0) : 0;
+                $tpl['files'][$i]['need']     = $_DBD['filewrite'][1];
+                $tpl['files'][$i]['error']    = isset($_POST['submit']) ? 1*(($filepriv&2)==0) : 0;
                 $tpl['files'][$i]['filepriv'] = $_DBD['filewrite'][ (($filepriv&2)==2)*1 ];
             }
             /* 文件权限检查 */
             else{
-                $tpl['files'][$i]['need'] = ($filepriv&8) == 0 ? $_DBD['filerename'][1] : $_DBD['filewrite'][1];
-                $tpl['files'][$i]['error'] = isset($_POST['submit']) ? 1*(($filepriv&10)!=10) : 0;
-                $tpl['files'][$i]['filepriv'] = ($filepriv&8) == 0 ? $_DBD['filerename'][0] : $_DBD['filewrite'][ (($filepriv&2)==2)*1 ];
+                $tpl['files'][$i]['need']     = ($filepriv&8) == 0      ? $_DBD['filerename'][1] : $_DBD['filewrite'][1];
+                $tpl['files'][$i]['error']    = isset($_POST['submit']) ? (($filepriv&10)!=10)*1 : 0;
+                $tpl['files'][$i]['filepriv'] = ($filepriv&8) == 0      ? $_DBD['filerename'][0] : $_DBD['filewrite'][ (($filepriv&2)==2)*1 ];
             }
         }
 
@@ -191,7 +191,7 @@ elseif( $_REQUEST['act'] == 'dbcreate' ){
     /* ------------------------------------------------------ */
     if( isset($_POST['submit']) ){
         /* 初始化 */
-        $tpl['acts'] = 'rpn';
+        $tpl['acts'] = 'pn';
         $tpl['errors'] = array();
 
         /* 初始化$_POST */
@@ -274,7 +274,7 @@ elseif( $_REQUEST['act'] == 'dbcreate' ){
 /* ------------------------------------------------------ */
 elseif( $_REQUEST['act'] == 'complete' ){
     /* 跳转地址 */
-    $tpl['redirect'] = $_CFG[URL_ADMIN].'index.php';
+    $tpl['redirect'] = $_CFG['URL_ADMIN'].'index.php';
 
     /* 初始化页面信息 */
     $tpl['_body'] = 'complete';

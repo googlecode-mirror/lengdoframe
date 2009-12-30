@@ -144,7 +144,7 @@
 
             <table class="complete-table">
             <tr>
-                <td class="redirect">-&gt; <a href="<?php echo $tpl['redirect']; ?>">安装完成，点击进入</a></td>
+                <td class="redirect">· <a href="<?php echo $tpl['redirect']; ?>">安装完成，点击进入</a></td>
             </tr>
             </table>
 
@@ -155,10 +155,6 @@
         <div class="install-main-body-line"></div>
 
         <div class="install-main-body-acts">
-            <?php if( strpos($tpl['acts'],'r') !== false ){?>
-                <input type="button" class="button" value="重  置" onclick="window.location.href = window.location.href;" />
-            <?php }?>
-
             <?php if( strpos($tpl['acts'],'p') !== false ){?>
                 <input type="button" class="button" value="上一步" onclick="window.location.search = 'step=<?php echo $tpl['step']-1;?>';"/>
             <?php }?>

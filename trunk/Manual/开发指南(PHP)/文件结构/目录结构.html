@@ -149,38 +149,12 @@ function struct_expand( caller )
                     <td>模块函数库</td>
                 </tr>
                 <tr class='lvl3 lvlf'>
+                    <td>|--- lib_privilege.php</td>
+                    <td>权限系统函数库</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
                     <td>|--- lib_role.php</td>
                     <td>角色函数库</td>
-                </tr>
-
-
-        <tr class='lvl2'>
-            <td>|-- <a href="javascript:void(0)" onclick="struct_expand(this)">script/</a></td>
-            <td>后台公用脚本文件夹</td>
-        </tr>
-                <tr class='lvl3 lvlf'>
-                    <td>|--- _system.js</td>
-                    <td>[自定义文件] 后台公用函数库</td>
-                </tr>
-                <tr class='lvl3 lvlf'>
-                    <td>|--- _systemwindows.js</td>
-                    <td>[自定义文件] 后台弹出窗口函数库</td>
-                </tr>
-                <tr class='lvl3 lvlf'>
-                    <td>|--- listtable.js</td>
-                    <td>列表对象</td>
-                </tr>
-                <tr class='lvl3 lvlf'>
-                    <td>|--- modulemenu.js</td>
-                    <td>模块菜单函数库</td>
-                </tr>
-                <tr class='lvl3 lvlf'>
-                    <td>|--- titleact.js</td>
-                    <td>标题按钮函数库</td>
-                </tr>
-                <tr class='lvl3 lvlf'>
-                    <td>|--- windows.js</td>
-                    <td>后台弹出窗口函数库</td>
                 </tr>
 
 
@@ -257,6 +231,40 @@ function struct_expand( caller )
                             <td>|---- sysinfo.php</td>
                             <td>系统信息模块</td>
                         </tr>
+                        <tr class='lvl4 lvlf'>
+                            <td>|---- sysplugin.php</td>
+                            <td>系统组件模块</td>
+                        </tr>
+
+
+        <tr class='lvl2'>
+            <td>|-- <a href="javascript:void(0)" onclick="struct_expand(this)">script/</a></td>
+            <td>后台公用脚本文件夹</td>
+        </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- _system.js</td>
+                    <td>[自定义文件] 后台公用函数库</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- _systemwindows.js</td>
+                    <td>[自定义文件] 后台弹出窗口函数库</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- listtable.js</td>
+                    <td>列表对象</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- modulemenu.js</td>
+                    <td>模块菜单函数库</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- titleact.js</td>
+                    <td>标题按钮函数库</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
+                    <td>|--- windows.js</td>
+                    <td>后台弹出窗口函数库</td>
+                </tr>
 
 
         <tr class='lvl2'>
@@ -342,8 +350,12 @@ function struct_expand( caller )
                     <td>系统信息模板</td>
                 </tr>
                 <tr class='lvl3 lvlf'>
+                    <td>|--- sysplugin.html</td>
+                    <td>系统组件模板</td>
+                </tr>
+                <tr class='lvl3 lvlf'>
                     <td>|--- titleact.html</td>
-                    <td>标题层按钮模板</td>
+                    <td>模块标题层按钮模板</td>
                 </tr>
 
         <tr class='lvl2 lvlf'>
@@ -368,18 +380,6 @@ function struct_expand( caller )
             <td>|-- mysql.class.php</td>
             <td>Mysql数据库类</td>
         </tr>
-
-
-<tr class='lvl1'>
-    <td>|- style/</td>
-    <td>前台布局样式文件夹</td>
-</tr>
-
-
-<tr class='lvl1'>
-    <td>|- images/</td>
-    <td>前台布局图片文件夹</td>
-</tr>
 
 
 <tr class='lvl1'>
@@ -413,13 +413,38 @@ function struct_expand( caller )
 
 
 <tr class='lvl1'>
+    <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">language/</a></td>
+    <td>前台公用语言库文件夹</td>
+</tr>
+        <tr class='lvl2 lvlf'>
+            <td>|-- _systemzh.js</td>
+            <td>[自定义文件] 前台公用语言库</td>
+        </tr>
+
+
+<tr class='lvl1'>
+    <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">plugin/</a></td>
+    <td>组件文件夹</td>
+</tr>
+        <tr class='lvl2'>
+            <td>|-- <a href="javascript:void(0)" onclick="struct_expand(this)">javascript/</a></td>
+            <td>Javascript组件文件夹</td>
+        </tr>
+            <tr class='lvl3'>
+                <td>|-- jscal3/</td>
+                <td>时间选择器组件</td>
+            </tr>
+
+        <tr class='lvl2'>
+            <td>|-- php/</td>
+            <td>PHP组件文件夹</td>
+        </tr>
+
+
+<tr class='lvl1'>
     <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">script/</a></td>
     <td>整站公用和前台公用的脚本文件夹</td>
 </tr>
-        <tr class="lvl2">
-            <td>|-- calendar</td>
-            <td>日历控件</td>
-        </tr>
         <tr class="lvl2 lvlf">
             <td>|-- _system.js</td>
             <td>[自定义文件] 前台公用函数库</td>
@@ -441,10 +466,6 @@ function struct_expand( caller )
             <td>表单控件对象</td>
         </tr>
         <tr class="lvl2 lvlf">
-            <td>|-- img.js</td>
-            <td>图片动画效果对象</td>
-        </tr>
-        <tr class="lvl2 lvlf">
             <td>|-- tableact.js</td>
             <td>表格通用操作对象</td>
         </tr>
@@ -455,27 +476,10 @@ function struct_expand( caller )
 
 
 <tr class='lvl1'>
-    <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">language/</a></td>
-    <td>前台公用语言库文件夹</td>
+    <td>|- style/</td>
+    <td>前台布局样式文件夹</td>
 </tr>
-        <tr class='lvl2 lvlf'>
-            <td>|-- _systemzh.js</td>
-            <td>[自定义文件] 前台公用语言库</td>
-        </tr>
 
-
-<tr class='lvl1'>
-    <td>|- <a href="javascript:void(0)" onclick="struct_expand(this)">plugin/</a></td>
-    <td>组件文件夹</td>
-</tr>
-        <tr class='lvl2'>
-            <td>|-- javascript/</td>
-            <td>Javascript组件文件夹</td>
-        </tr>
-        <tr class='lvl2'>
-            <td>|-- php/</td>
-            <td>PHP组件文件夹</td>
-        </tr>
 
 <tr class='lvl1'>
     <td>|- template/</td>
