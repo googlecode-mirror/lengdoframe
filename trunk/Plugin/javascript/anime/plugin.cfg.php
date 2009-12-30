@@ -11,7 +11,7 @@ $_PLUGIN_CFG['title']     = '图片动画效果';
 
 /* 设置组件配置 - 组件安装 */
 $_PLUGIN_CFG['install']   = array();
-$_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'js/system.js', 'src'=>'anime.js', 'type'=>'JS LOAD JS');
+$_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'anime.js', 'type'=>'JS LOAD JS');
 
 
 /* 返回组件配置 */
