@@ -7,7 +7,7 @@ $_PLUGIN_CFG = array();
 $_PLUGIN_CFG['ver']      = 'v1.7.0';
 
 /* 设置组件配置 - 组件标题 */
-$_PLUGIN_CFG['title']    = 'JSCal2时间选择器';
+$_PLUGIN_CFG['title']    = 'JSCal2 时间选择器';
 
 /* 设置组件配置 - 组件安装 */
 $_PLUGIN_CFG['install']   = array();
