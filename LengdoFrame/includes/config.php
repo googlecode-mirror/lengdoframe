@@ -76,13 +76,13 @@ $_CFG['DIR_INC'] = isset($_CFG['DIR_INC']) ? $_CFG['DIR_INC'] : $_CFG['DIR_ROOT'
 
 
 /* 前台文件夹路径 */
-$_CFG['DIR_TPL'] = isset($_CFG['DIR_TPL']) ? $_CFG['DIR_TPL'] : $_CFG['DIR_ROOT'].'tpl/';
-$_CFG['DIR_LNG'] = isset($_CFG['DIR_LNG']) ? $_CFG['DIR_LNG'] : $_CFG['DIR_ROOT'].'lang/';
+$_CFG['DIR_TPL'] = isset($_CFG['DIR_TPL']) ? $_CFG['DIR_TPL'] : $_CFG['DIR_ROOT'].'template/';
+$_CFG['DIR_LNG'] = isset($_CFG['DIR_LNG']) ? $_CFG['DIR_LNG'] : $_CFG['DIR_ROOT'].'language/';
 
 
 /* 后台文件夹路径 */
-$_CFG['DIR_ADMIN_TPL'] = isset($_CFG['DIR_ADMIN_TPL']) ? $_CFG['DIR_ADMIN_TPL'] : $_CFG['DIR_ADMIN'].'tpl/';
-$_CFG['DIR_ADMIN_LNG'] = isset($_CFG['DIR_ADMIN_LNG']) ? $_CFG['DIR_ADMIN_LNG'] : $_CFG['DIR_ADMIN'].'lang/';
+$_CFG['DIR_ADMIN_TPL'] = isset($_CFG['DIR_ADMIN_TPL']) ? $_CFG['DIR_ADMIN_TPL'] : $_CFG['DIR_ADMIN'].'template/';
+$_CFG['DIR_ADMIN_LNG'] = isset($_CFG['DIR_ADMIN_LNG']) ? $_CFG['DIR_ADMIN_LNG'] : $_CFG['DIR_ADMIN'].'language/';
 $_CFG['DIR_ADMIN_INC'] = isset($_CFG['DIR_ADMIN_INC']) ? $_CFG['DIR_ADMIN_INC'] : $_CFG['DIR_ADMIN'].'includes/';
 
 /* 后台文件夹路径 - 后台皮肤 */

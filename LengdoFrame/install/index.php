@@ -31,7 +31,7 @@ require('../includes/config.php');
 
 /* 功能函数文件 */
 require('../includes/func.php');
-require('../admin/lang/zh.php');
+require('../admin/language/zh.php');
 require('../admin/includes/lib_func.php');
 
 
@@ -287,7 +287,7 @@ elseif( $_REQUEST['act'] == 'complete' ){
 
 
 /* 加载视图 */
-include('tpl/index.html')
+include('template/index.html')
 ?>
 
 <?php
