@@ -144,9 +144,6 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                     /* 异步 - 列表页，列表查询 */<br />
                     if( $_REQUEST['act'] == 'list' ){<br />
                         <div style="margin-left:2em;">
-                            /* 初始化页面信息 */<br />
-                            $tpl['_block'] = true;<br />
-                            <br />
                             /* 列表查询 */<br />
                             if( $_REQUEST['actsub'] == 'query' ){
                                 <div style="margin-left:2em;">
@@ -164,6 +161,9 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                     /* 异步 - 默认首页 */<br />
                     else{<br />
                         <div style="margin-left:2em;">
+                            /* 初始化页面信息 */<br />
+                            $tpl['_header'] = 'title';<br />
+                            <br />
                             /* 操作属性 */<br />
                             $attribs = array();<br />
                             $attribs['add']['onclick'] = "wnd_articlecat_fill(this,'add')";<br />
@@ -205,11 +205,10 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 49行<br />
                 53行<br />
                 55行<br />
-                58行<br />
-                60行<br />
+                57行<br />
+                61行<br />
                 <br />
-                64行<br />
-                68行<br />
+                67行<br />
                 71行<br />
                 <br />
                 74行<br />
@@ -232,12 +231,11 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 <br />
                 设置读取视图文件的列表代码块<br />
                 列表和列表查询功能点的处理代码<br />
-                设置读取视图文件的类型为代码块，即不加载公共视图文件 header.html<br />
                 列表查询功能点的处理代码<br />
-                设置读取视图文件的列表子代码块<br />
-                <br />
+                设置读取视图文件的列表查询代码块<br />
                 返回HTML代码<br />
-                设置读取视图文件的模块首页代码块<br />
+                <br />
+                设置读取视图文件 header.html 中 'title' 的HTML代码块（即"模块标题层"HTML代码块）<br />
                 设置增加操作的onclick属性，'add'代表权限操作码,'onclick'表示HTML的标签属性<br />
                 <br />
                 构建 "模块标题层" 的操作按钮(独立权限)，'btn'代表操作类型为按钮<br />
@@ -321,7 +319,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 31<br />32
             </td>
             <td>
-                &lt;?php if( $tpl['_block'] !== true ){ include($_CFG['DIR_ADMIN_TPL'].'header.html'); }?&gt;<br />
+                &lt;?php if( $tpl['_header'] ){ include($_CFG['DIR_ADMIN_TPL'].'header.html'); }?&gt;<br />
                 <br />
                 <br />
                 &lt;?php if( $tpl['_body'] == 'list' ){ ?&gt;<br />
@@ -383,7 +381,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 11-24行<br />
             </td>
             <td>
-                视图头部公用文件，包含模块标题层代码块<br />
+                视图头部公用文件，包含"模块标题层"代码块<br />
                 <br />
                 视图文件的列表代码块<br />
                 <br />

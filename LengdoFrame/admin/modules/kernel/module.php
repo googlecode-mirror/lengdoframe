@@ -32,8 +32,7 @@ if( $_REQUEST['act'] == 'add' ){
     ctl_fill('add');
 
     /* 初始化页面信息 */
-    $tpl['_body']  = 'add';
-    $tpl['_block'] = true;
+    $tpl['_body'] = 'add';
 }
 /* ------------------------------------------------------ */
 // - 异步 - 写入数据库
@@ -70,8 +69,7 @@ elseif( $_REQUEST['act'] == 'edit' ){
     $tpl['module'] = info_module( array('module_id'=>$_GET['module_id']) );
 
     /* 初始化页面信息 */
-    $tpl['_body']  = 'edit';
-    $tpl['_block'] = true;
+    $tpl['_body'] = 'edit';
 }
 /* ------------------------------------------------------ */
 // - 异步 - 更新数据库
@@ -217,9 +215,6 @@ else{
     // - 异步 - 列表页，列表查询
     /* ------------------------------------------------------ */
     if( $_REQUEST['act'] == 'list' ){
-        /* 初始化页面信息 */
-        $tpl['_block'] = true;
-
         /* 列表查询 */
         if( $_REQUEST['actsub'] == 'query' ){
             /* 初始化页面信息 */
@@ -234,6 +229,9 @@ else{
     // - 异步 - 默认首页
     /* ------------------------------------------------------ */
     else{
+        /* 初始化页面信息 */
+        $tpl['_header'] = 'title';
+
         /* 操作属性 */
         $attribs = array();
         $attribs['add']['onclick'] = "wnd_module_fill(this,'add')";

@@ -95,9 +95,6 @@ else{
     // - 异步 - 列表页，列表查询
     /* ------------------------------------------------------ */
     if( $_REQUEST['act'] == 'list' ){
-        /* 初始化页面信息 */
-        $tpl['_block'] = true;
-
         /* 列表查询 */
         if( $_REQUEST['actsub'] == 'query' ){
             /* 初始化页面信息 */
@@ -112,6 +109,9 @@ else{
     // - 异步 - 默认首页
     /* ------------------------------------------------------ */
     else{
+        /* 初始化页面信息 */
+        $tpl['_header'] = 'title';
+
         /* 取得管理员的优化操作 */
         $m_aa = admin_module_acts('db_optimize.php');
         $m_ab = filter_module_acts($m_aa, array('optimize'), true);

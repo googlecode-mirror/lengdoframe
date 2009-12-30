@@ -41,8 +41,7 @@ if( $_REQUEST['act'] == 'add' ){
     $tpl['html_privilege_table'] = html_privilege_table('privilege_ids', '', $role_priv_ids);
 
     /* 初始化页面信息 */
-    $tpl['_body']  = 'add';
-    $tpl['_block'] = true;
+    $tpl['_body'] = 'add';
 }
 /* ------------------------------------------------------ */
 // - 异步 - 写入数据库
@@ -105,8 +104,7 @@ elseif( $_REQUEST['act'] == 'edit' ){
     $tpl['html_privilege_table'] = html_privilege_table('privilege_ids', $seled_priv_ids, $shows_priv_ids);
 
     /* 初始化页面信息 */
-    $tpl['_body']  = 'edit';
-    $tpl['_block'] = true;
+    $tpl['_body'] = 'edit';
 }
 /* ------------------------------------------------------ */
 // - 异步 - 更新数据库
@@ -311,9 +309,6 @@ else{
     // - 异步 - 列表页，列表查询
     /* ------------------------------------------------------ */
     if( $_REQUEST['act'] == 'list' ){
-        /* 初始化页面信息 */
-        $tpl['_block'] = true;
-
         /* 列表查询 */
         if( $_REQUEST['actsub'] == 'query' ){
             /* 初始化页面信息 */
@@ -328,6 +323,9 @@ else{
     // - 异步 - 默认首页
     /* ------------------------------------------------------ */
     else{
+        /* 初始化页面信息 */
+        $tpl['_header'] = 'title';
+
         /* 取得管理员的增加操作 */
         $m_ab = filter_module_acts($m_aa, array('add'), true);
 
