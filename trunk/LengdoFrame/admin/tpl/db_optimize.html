@@ -24,9 +24,9 @@
                 <td><?php echo $r['name']; ?></td>
                 <td><?php echo $r['comment']; ?></td>
                 <td><?php echo $r['type']; ?></td>
-                <td><?php echo $r['rec_row']; ?></td>
-                <td><?php echo $r['rec_size']; ?></td>
-                <td><?php echo $r['rec_chip'] > 0 ? f($r['rec_chip'],'color') : $r['rec_chip']; ?></td>
+                <td><?php echo $r['rows']; ?></td>
+                <td><?php echo $r['size']; ?></td>
+                <td><?php echo $r['chip'] > 0 ? f($r['chip'],'color') : $r['chip']; ?></td>
                 <td><?php echo $r['charset']; ?></td>
                 <td><?php echo $r['status']; ?></td>
             </tr>
@@ -35,7 +35,7 @@
                 <td style="background:#fbfdfd;border-bottom:0;"></td>
                 <td style="background:#fbfdfd;border-bottom:0;"></td>
                 <td style="background:#fbfdfd;border-bottom:0;"></td>
-                <td style="background:#fbfdfd;border-bottom:0;"><?php echo $tpl['stat']['row']; ?></td>
+                <td style="background:#fbfdfd;border-bottom:0;"><?php echo $tpl['stat']['rows']; ?></td>
                 <td style="background:#fbfdfd;border-bottom:0;"><?php echo $tpl['stat']['size']; ?></td>
                 <td style="background:#fbfdfd;border-bottom:0;"><?php echo $tpl['stat']['chip'] > 0 ? f($tpl['stat']['chip'],'color') : $tpl['stat']['chip']; ?></td>
                 <td style="background:#fbfdfd;border-bottom:0;"></td>

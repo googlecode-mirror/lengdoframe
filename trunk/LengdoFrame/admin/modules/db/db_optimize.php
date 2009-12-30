@@ -24,8 +24,8 @@ if( $_REQUEST['act'] == 'optimize' ){
     /* 权限检查 */
     admin_privilege_valid('db_optimize.php', 'optimize');
 
-    /* 取得所有表*/
-    $tables = $db->getCol("SHOW TABLES");
+    /* 所有数据表的信息*/
+    $tables = $db->getCol("SHOW TABLE STATUS");
 
     foreach( $tables AS $table ){
         if( $row = $db->getRow("OPTIMIZE TABLE `$table`") ){
@@ -37,9 +37,7 @@ if( $_REQUEST['act'] == 'optimize' ){
     }
 
     /* 返回 */
-    $msg = admin_privilege_name_fk('db_optimize.php','optimize').$_LANG['msg_ok'];
-
-    make_json_ok($msg);
+    make_json_ok( admin_privilege_name_fk('db_optimize.php','optimize').$_LANG['msg_ok'] );
 }
 
 
@@ -50,37 +48,33 @@ else{
     /* 权限检查 */
     admin_privilege_valid('db_optimize.php', 'optimize');
 
-    /* 数据库版本和所有数据表的信息 */
+    /* 所有数据表的信息 */
     $tables = $db->getAll('SHOW TABLE STATUS');
-    $db_ver = $db->version();
 
     /* 数据表的信息 - 数据格式化 */
-    $tpl['all'] = array();
+    $tpl['all']  = array();
     $tpl['stat'] = array('chip'=>0,'row'=>0,'size'=>0,'table'=>0);
-    foreach( $tables AS $table ){
-        $type    = $db_ver >= '4.1' ? $table['Engine'] : $table['Type'];
-        $charset = $db_ver >= '4.1' ? $table['Collation'] : 'N/A';
-        $comment = trim($table['Comment']);
 
-        if( strtoupper($type) == 'MEMORY' ){
+    foreach( $tables AS $table ){
+        if( strtoupper($table['Engine']) == 'MEMORY' ){
             $check['Msg_text']  = 'Ignore';
             $table['Data_free'] = '0';
         }else{
             $check = $db->GetRow("CHECK TABLE `$table[Name]`");
-            $tpl['stat']['row']   += $table['Rows'];
+            $tpl['stat']['rows']  += $table['Rows'];
             $tpl['stat']['chip']  += $table['Data_free'];
             $tpl['stat']['size']  += $table['Data_length'];
             $tpl['stat']['table'] += 1;
         }
 
-        $tpl['all'][] = array( 'name'     => $table['Name'],
-                               'type'     => $type,
-                               'status'   => $check['Msg_text'],
-                               'charset'  => $charset,
-                               'comment'  => $comment,
-                               'rec_row'  => $table['Rows'],
-                               'rec_chip' => $table['Data_free'],
-                               'rec_size' => bitunit($table['Data_length'])
+        $tpl['all'][] = array( 'name'    => $table['Name'],
+                               'type'    => $table['Engine'],
+                               'status'  => $check['Msg_text'],
+                               'charset' => $table['Collation'],
+                               'comment' => $table['Comment'],
+                               'rows'    => $table['Rows'],
+                               'chip'    => $table['Data_free'],
+                               'size'    => bitunit($table['Data_length'])
                         );
     }
 

@@ -86,8 +86,8 @@ $_CFG['DIR_ADMIN_LNG'] = isset($_CFG['DIR_ADMIN_LNG']) ? $_CFG['DIR_ADMIN_LNG'] 
 $_CFG['DIR_ADMIN_INC'] = isset($_CFG['DIR_ADMIN_INC']) ? $_CFG['DIR_ADMIN_INC'] : $_CFG['DIR_ADMIN'].'includes/';
 
 /* 后台文件夹路径 - 后台皮肤 */
-$_CFG['DIR_ADMIN_SKIN'] = isset($_CFG['DIR_ADMIN_SKIN']) ? $_CFG['DIR_ADMIN_SKIN'] : $_CFG['DIR_ADMIN'].'skin/';
-$_CFG['URL_ADMIN_SKIN'] = isset($_CFG['URL_ADMIN_SKIN']) ? $_CFG['URL_ADMIN_SKIN'] : $_CFG['URL_ADMIN'].'skin/';
+$_CFG['DIR_ADMIN_SKIN'] = isset($_CFG['DIR_ADMIN_SKIN']) ? $_CFG['DIR_ADMIN_SKIN'] : $_CFG['DIR_ADMIN'].'skins/';
+$_CFG['URL_ADMIN_SKIN'] = isset($_CFG['URL_ADMIN_SKIN']) ? $_CFG['URL_ADMIN_SKIN'] : $_CFG['URL_ADMIN'].'skins/';
 
 /* 后台文件夹路径 - 权限文件 */
 $_CFG['DIR_ADMIN_PFILE'] = isset($_CFG['DIR_ADMIN_PFILE']) ? $_CFG['DIR_ADMIN_PFILE'] : $_CFG['DIR_ADMIN'].'data/pfile/';
