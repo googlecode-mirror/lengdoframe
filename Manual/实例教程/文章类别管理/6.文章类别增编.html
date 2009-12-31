@@ -87,7 +87,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 var act = wnd.getData('act') == 'add' ? '?act=insert' : '?act=update';<br />
                 <br />
                 /* 异步提交(异步等待) */<br />
-                Ajax.call(url+act, deal_form_params('wfm-articlecat-fill'), callback, 'POST', 'JSON');<br />
+                Ajax.call(url+act, form_params_build('wfm-articlecat-fill'), callback, 'POST', 'JSON');<br />
                 <br />
                 /* 回调函数 */<br />
                 function callback( result, text ){<br />

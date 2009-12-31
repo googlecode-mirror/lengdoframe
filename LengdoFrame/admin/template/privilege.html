@@ -5,13 +5,13 @@
 
     <?php if( $tpl['_bodysub'] != 'query' ){?>
     <div class="listtable-div" id="listtable-privilege" onmouseover="ListTable.init(this.id,'modules/kernel/privilege.php','?act=list');">
-        <form class="listtable-search" onsubmit="deal_search_list(this);return false;">
+        <form class="listtable-search" onsubmit="listtable_search(this);return false;">
             <table>
             <tr>
                 <td width="30"><i class="icon"></i></td>
                 <td width="45"><h1>模块：</h1></td>
                 <td><?php echo $tpl['formc_module']; ?></td>
-                <td style="padding-left:15px;"><input type="submit" value="搜 索" class="submit"/><input type="button" class="flush" onmouseover="deal_combobox_mouseover(this)" onclick="ListTable.resetList()" title="初始化搜索"/></td>
+                <td style="padding-left:15px;"><input type="submit" value="搜 索" class="submit"/><input type="button" class="flush" onmouseover="combobox_mouseover(this)" onclick="ListTable.resetList()" title="初始化搜索"/></td>
             </tr>
             </table>
         </form>

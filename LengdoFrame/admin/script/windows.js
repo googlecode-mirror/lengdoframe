@@ -11,6 +11,28 @@
 
 
 /* ------------------------------------------------------ */
+// - 系统模块 - 系统退出
+/* ------------------------------------------------------ */
+
+/**
+ * 系统退出
+ */
+function wnd_syslogout()
+{
+    /* 回调函数 */
+    function callback(){
+        /* 显示页面加载中 */
+        webpage_load_show();
+
+        /* 页面跳转 */
+        window.location.href = 'index.php?act=logout';
+    }
+
+    wnd_confirm('确认退出系统？', {'ok':callback});
+}
+
+
+/* ------------------------------------------------------ */
 // - 管理员管理
 /* ------------------------------------------------------ */
 
@@ -52,7 +74,7 @@ function deal_admin_fill()
     var act = wnd.getData('act') == 'add' ? '?act=insert' : '?act=update';
 
     /* 异步提交(异步等待) */
-    Ajax.call(url+act, deal_form_params('wfm-admin-fill'), callback, 'POST', 'JSON');
+    Ajax.call(url+act, form_params_build('wfm-admin-fill'), callback, 'POST', 'JSON');
 
     /* 回调函数 */
     function callback( result, text ){
@@ -113,7 +135,7 @@ function deal_role_fill()
     var act = wnd.getData('act') == 'add' ? '?act=insert' : '?act=update';
 
     /* 异步提交(异步等待) */
-    Ajax.call(url+act, deal_form_params('wfm-role-fill'), callback, 'POST', 'JSON');
+    Ajax.call(url+act, form_params_build('wfm-role-fill'), callback, 'POST', 'JSON');
 
     /* 回调函数 */
     function callback( result, text ){
@@ -203,7 +225,7 @@ function deal_dbbackup_fill( params )
 	if( typeof(params) == 'undefined' ) wnd_wait('备份中...');
 
 	/* 提交的参数 */
-	var params = typeof(params) == 'string' ? params : deal_form_params('wfm-dbbackup-fill');
+	var params = typeof(params) == 'string' ? params : form_params_build('wfm-dbbackup-fill');
 
 	/* 异步提交(异步等待) */
     Ajax.call(url+act, params, callback, 'POST', 'JSON', true, true);
@@ -268,7 +290,7 @@ function deal_dbbackup_download( findex )
     var url = 'modules/db/db_backup.php?act=download&findex='+ findex;
 
     /* 模拟异步提交 */
-    deal_ajax_iframe_attribs( {'src':url} );
+    ajax_iframe_attribs( {'src':url} );
 }
 
 /**
@@ -332,7 +354,7 @@ function deal_module_fill()
     var act = wnd.getData('act') == 'add' ? '?act=insert' : '?act=update';
 
     /* 异步提交(异步等待) */
-    Ajax.call(url+act, deal_form_params('wfm-module-fill'), callback, 'POST', 'JSON');
+    Ajax.call(url+act, form_params_build('wfm-module-fill'), callback, 'POST', 'JSON');
 
     /* 回调函数 */
     function callback( result, text ){
@@ -393,7 +415,7 @@ function deal_privilege_fill()
     var act = wnd.getData('act') == 'add' ? '?act=insert' : '?act=update';
 
     /* 异步提交(异步等待) */
-    Ajax.call(url+act, deal_form_params('wfm-privilege-fill'), callback, 'POST', 'JSON');
+    Ajax.call(url+act, form_params_build('wfm-privilege-fill'), callback, 'POST', 'JSON');
 
     /* 回调函数 */
     function callback( result, text ){
@@ -448,7 +470,7 @@ function deal_myaccount_fill()
     var wnd = Wnds.find('wnd-myaccount-fill');
 
     /* 异步提交(异步等待) */
-    Ajax.call(url, deal_form_params('wfm-myaccount-fill'), callback, 'POST', 'JSON');
+    Ajax.call(url, form_params_build('wfm-myaccount-fill'), callback, 'POST', 'JSON');
 
     /* 回调函数 */
     function callback( result, text ){
@@ -592,68 +614,6 @@ function deal_sysplugin_uninstall()
 
 
 /* ------------------------------------------------------ */
-// - 系统模块 - 系统退出
-/* ------------------------------------------------------ */
-
-/**
- * 系统退出
- */
-function wnd_syslogout()
-{
-    /* 回调函数 */
-    function callback(){
-        /* 显示页面加载中 */
-        deal_webpage_load();
-
-        /* 页面跳转 */
-        window.location.href = 'index.php?act=logout';
-    }
-
-    wnd_confirm('确认退出系统？', {'ok':callback});
-}
-
-
-/* ------------------------------------------------------ */
-// - 列表
-/* ------------------------------------------------------ */
-
-/**
- * 通用 - 当前列表搜索
- *
- * @params obj  form    表单对象
- * @params obj  filter  附加的搜索条件
- * @params str  id      列表的ID
- *
- * @return bol  false
- */
-function deal_search_list( form, filter, id )
-{
-    /* 初始化搜索条件 */
-	filter = typeof(filter) == 'object' && !filter ? filter : {};
-
-    /* 设置搜索条件 */
-    for( var i=0,len=form.length; i < len; i++ ){
-        /* 无效的表单域名称 */
-        if( !form[i].name ) continue;
-
-        /* 过滤特殊情况 */
-        if( form[i].type == 'radio' || form[i].type == 'checkbox' ){
-            if( !form[i].checked ) continue;
-        }
-
-        /* 赋值参数 */
-        filter[form[i].name] = form[i].value;
-    }
-
-    /* 初始化列表对象 */
-	if( typeof(id) == 'string' ) ListTable.init(id);
-
-    /* 列表搜索 */
-    ListTable.search(filter);
-}
-
-
-/* ------------------------------------------------------ */
 // - 列表 - 导出
 /* ------------------------------------------------------ */
 
@@ -682,7 +642,7 @@ function deal_list_export( id, url, limit )
     }
 
     /* 模拟异步提交 */
-    deal_ajax_iframe_attribs( {'src':url} );
+    ajax_iframe_attribs( {'src':url} );
 }
 
 

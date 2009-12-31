@@ -873,3 +873,43 @@ var listtable_achoice_callbacks_default = {
         }
     }
 }
+
+
+/* ------------------------------------------------------ */
+// - 列表搜索
+/* ------------------------------------------------------ */
+
+/**
+ * 列表搜索
+ *
+ * @params obj  form    表单对象
+ * @params obj  filter  附加的搜索条件
+ * @params str  id      列表的ID，默认使用当前激活列表
+ *
+ * @return bol  false
+ */
+function listtable_search( form, filter, id )
+{
+    /* 初始化搜索条件 */
+	filter = typeof(filter) == 'object' && !filter ? filter : {};
+
+    /* 设置搜索条件 */
+    for( var i=0,len=form.length; i < len; i++ ){
+        /* 无效的表单域名称 */
+        if( !form[i].name ) continue;
+
+        /* 过滤特殊情况 */
+        if( form[i].type == 'radio' || form[i].type == 'checkbox' ){
+            if( !form[i].checked ) continue;
+        }
+
+        /* 赋值参数 */
+        filter[form[i].name] = form[i].value;
+    }
+
+    /* 初始化列表对象 */
+	if( typeof(id) == 'string' ) ListTable.init(id);
+
+    /* 列表搜索 */
+    ListTable.search(filter);
+}

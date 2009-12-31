@@ -5,25 +5,25 @@
 
     <?php if( $tpl['_bodysub'] != 'query' ){?>
     <div class="listtable-div" id="listtable-adminlog" onmouseover="ListTable.init(this.id,'modules/admin/admin_log.php','?act=list');">
-        <form class="listtable-search" onsubmit="deal_search_list(this);return false;">
+        <form class="listtable-search" onsubmit="listtable_search(this);return false;">
             <table>
             <tr>
                 <td width="30"><i class="icon"></i></td>
                 <td width="45"><h1>时间：</h1></td>
                 <td width="210">
                     <div class="timecbox">
-                        <input type="text" name="datef" class="textbox" style="width:70px;"/><input type="button" onmouseover="deal_combobox_mouseover(this)" onclick="deal_timecbox_show(this)" class="choice"/>
+                        <input type="text" name="datef" class="textbox" style="width:70px;"/><input type="button" onmouseover="combobox_mouseover(this)" onclick="timecbox_show(this)" class="choice"/>
                     </div>
                     <font style="color:#7f9db9;">-</font>
                     <div class="timecbox">
-                        <input type="text" name="datet" class="textbox" style="width:70px;"/><input type="button" onmouseover="deal_combobox_mouseover(this)" onclick="deal_timecbox_show(this)" class="choice"/>
+                        <input type="text" name="datet" class="textbox" style="width:70px;"/><input type="button" onmouseover="combobox_mouseover(this)" onclick="timecbox_show(this)" class="choice"/>
                     </div>
                 </td>
                 <td width="60"><h1>管理员：</h1></td>
                 <td width="80"><input type="text" class="textbox" style="width:80px" name="admin"></td>
                 <td width="60"><h1>关键字：</h1></td>
                 <td width="100"><input type="text" class="textbox" style="width:100px" name="info"></td>
-                <td style="padding-left:15px;"><input type="submit" value="搜 索" class="submit"/><input type="button" class="flush" onmouseover="deal_combobox_mouseover(this)" onclick="ListTable.resetList()" title="初始化搜索"/></td>
+                <td style="padding-left:15px;"><input type="submit" value="搜 索" class="submit"/><input type="button" class="flush" onmouseover="combobox_mouseover(this)" onclick="ListTable.resetList()" title="初始化搜索"/></td>
             </tr>
             </table>
         </form>
