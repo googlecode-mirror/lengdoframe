@@ -4,7 +4,7 @@
 <?php if( $tpl['_body'] == 'list' ){ ?>
 
     <?php if( $tpl['_bodysub'] != 'query' ){?>
-    <div class="listtable-div" id="listtable-privilege" onmouseover="ListTable.init(this.id,'modules/kernel/privilege.php','?act=list');ListTable.filter('module_id','<?php echo $_GET['module_id']; ?>');">
+    <div class="listtable-div" id="listtable-privilege" onmouseover="ListTable.init(this.id,'modules/kernel/privilege.php','?act=list');">
         <form class="listtable-search" onsubmit="deal_search_list(this);return false;">
             <table>
             <tr>
