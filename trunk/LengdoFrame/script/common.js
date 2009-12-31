@@ -20,7 +20,7 @@
  * @params obj  caller   调用者对象
  * @params obj  configs  时间组件的配置
  */
-function deal_timecbox_show( caller, configs )
+function timecbox_show( caller, configs )
 {
     /* 必要组件检测 */
     if( typeof(Calendar) != 'function' ){
@@ -54,49 +54,9 @@ function deal_timecbox_show( caller, configs )
 /* ------------------------------------------------------ */
 
 /**
- * 文件组合框 - 上传文件更改
- *
- * @params obj  caller  调用者对象
- * @params str  type    文件类型
- */
-function deal_filecbox_change( caller, type )
-{
-    /* 未选择上传文件 */
-    if( !caller.value ) return;
-
-    /* 扩展名检查 */
-    var ext = caller.value.substr( caller.value.lastIndexOf('.') ).toLowerCase();
-
-    switch( type ){
-        case 'img':
-            if( ext != '.jpg' && ext != '.gif' ){
-                caller.value = ''; wnd_alert('无效的图片格式！'); return ;
-            }
-        break;
-
-        case 'sql':
-            if( ext != '.sql' ){
-                caller.value = ''; wnd_alert('无效的SQL文件格式！'); return ;
-            }
-        break;
-    }
-
-    /* 文本框显示 */
-    var textbox = caller.parentNode;
-
-    while( textbox = textbox.previousSibling ){
-        if( textbox.tagName && textbox.tagName.toLowerCase() == 'input' && textbox.type == 'text' ){
-            break;
-        }
-    }
-
-    textbox.value = caller.value;
-}
-
-/**
  * 文件组合框 - 清除要上传的文件
  */
-function deal_filecbox_clear( caller )
+function filecbox_clear( caller )
 {
     /* 向上 - 清除文本框 */
     var textbox = caller;
@@ -134,7 +94,7 @@ function deal_filecbox_clear( caller )
 /**
  * 文件组合框 - 上传文件
  */
-function deal_filecbox_upload( obj, msg )
+function filecbox_upload( obj, msg )
 {
     /* 获取表单域所在的表单 */
     form = obj;
@@ -161,6 +121,46 @@ function deal_filecbox_upload( obj, msg )
 }
 
 /**
+ * 文件组合框 - 上传文件更改
+ *
+ * @params obj  caller  调用者对象
+ * @params str  type    文件类型
+ */
+function filecbox_change( caller, type )
+{
+    /* 未选择上传文件 */
+    if( !caller.value ) return;
+
+    /* 扩展名检查 */
+    var ext = caller.value.substr( caller.value.lastIndexOf('.') ).toLowerCase();
+
+    switch( type ){
+        case 'img':
+            if( ext != '.jpg' && ext != '.gif' ){
+                caller.value = ''; wnd_alert('无效的图片格式！'); return ;
+            }
+        break;
+
+        case 'sql':
+            if( ext != '.sql' ){
+                caller.value = ''; wnd_alert('无效的SQL文件格式！'); return ;
+            }
+        break;
+    }
+
+    /* 文本框显示 */
+    var textbox = caller.parentNode;
+
+    while( textbox = textbox.previousSibling ){
+        if( textbox.tagName && textbox.tagName.toLowerCase() == 'input' && textbox.type == 'text' ){
+            break;
+        }
+    }
+
+    textbox.value = caller.value;
+}
+
+/**
  * 文件组合框 - 已上传的文件的删除操作
  *
  * @params obj  caller   调用者对象
@@ -170,7 +170,7 @@ function deal_filecbox_upload( obj, msg )
  *         bol           configs.merge     提交成功后合并操作框，增宽文本框。默认 true
  *         fun           configs.complete  提交成功后的回调函数
  */
-function deal_filecbox_uploaded_del( caller, url, configs )
+function filecbox_uploaded_del( caller, url, configs )
 {
     /* 初始化配置集 */
     configs = typeof(configs) == 'object' && configs ? configs : {};
@@ -232,7 +232,7 @@ function deal_filecbox_uploaded_del( caller, url, configs )
  *         mix  config.limit  上下限(步长大于0时为上限，小于0时为下限)
  *         int  config.fixed  小数点后精度长度
  */
-function deal_numscbox( caller, step, config )
+function numscbox_deal( caller, step, config )
 {
     /* 初始化参数 */
     step = typeof(step) == 'number' && isFinite(step) ? step : 0;
@@ -240,7 +240,7 @@ function deal_numscbox( caller, step, config )
 
     /* 初始化文本框对象和增减后的数字变量 */
 	var tb = caller.parentNode.parentNode.cells[0].childNodes[0];
-    var nm = deal_numscbox_calc( parseFloat(tb.value), step );
+    var nm = numscbox_deal_calc( parseFloat(tb.value), step );
 
     /* 赋值 */
     if( typeof(nm) == 'number' && isFinite(nm) ){
@@ -256,7 +256,7 @@ function deal_numscbox( caller, step, config )
 /**
  * 数字步长组合框 - 浮点数精确计算
  */
-function deal_numscbox_calc( num, step )
+function numscbox_deal_calc( num, step )
 {
     var ln, ls, m;
 
@@ -276,7 +276,7 @@ function deal_numscbox_calc( num, step )
 /**
  * 组合框按钮效果
  */
-function deal_combobox_mouseover( obj )
+function combobox_mouseover( obj )
 {
     var cls = obj.className;
 
@@ -582,6 +582,12 @@ function tabletree_click( obj )
 // - 系统窗口 - 需加载 window.js
 /* ------------------------------------------------------ */
 
+/**
+ * 系统 Wait 窗口
+ *
+ * @params str  msg      消息内容
+ * @params obj  configs  窗口配置(参见Wnd类的窗口配置)
+ */
 function wnd_wait( msg, configs )
 { 
     configs = typeof(configs) == 'object' && configs ? configs : {};
@@ -592,13 +598,13 @@ function wnd_wait( msg, configs )
 
     wnd_sysmsg(msg, configs, 'wait');
 }
-function wnd_wait_clear()
-{ 
-    var wnd = Wnds.find('wnd-sysmsg-wait'); 
 
-    if( wnd ) wnd.hidden(); 
-}
-
+/**
+ * 系统 Alert 窗口
+ *
+ * @params str  msg      消息内容
+ * @params obj  configs  窗口配置(参见Wnd类的窗口配置)
+ */
 function wnd_alert( msg, configs, active )
 { 
     configs = typeof(configs) == 'object' && configs ? configs : {};
@@ -610,6 +616,12 @@ function wnd_alert( msg, configs, active )
     wnd_sysmsg(msg, configs, 'alert', active);
 }
 
+/**
+ * 系统 Confirm 窗口
+ *
+ * @params str  msg      消息内容
+ * @params obj  configs  窗口配置(参见Wnd类的窗口配置)
+ */
 function wnd_confirm( msg, configs, active )
 {
     configs = typeof(configs) == 'object' && configs ? configs : {};
@@ -625,7 +637,7 @@ function wnd_confirm( msg, configs, active )
  * 系统提示窗口
  *
  * @params str  msg      消息内容
- * @params obj  configs  窗口配置
+ * @params obj  configs  窗口配置(参见Wnd类的窗口配置)
  * @params str  type     窗口类型
  * @params str  active   激活窗口控制区按钮(按钮索引，false表示不启用，默认激活'ok'按钮)
  */
@@ -675,6 +687,31 @@ function wnd_sysmsg( msg, configs, type, active )
     }
 }
 
+/**
+ * 系统 Wait 窗口取消函数
+ */
+function wnd_wait_clear()
+{ 
+    var wnd = Wnds.find('wnd-sysmsg-wait'); 
+
+    if( wnd ) wnd.hidden(); 
+}
+
+
+/* ------------------------------------------------------ */
+// - 页面加载中功能函数
+/* ------------------------------------------------------ */
+
+function webpage_load_show()
+{
+    document.getElementById('dloading-div').style.display = 'block';
+}
+
+function webpage_load_hide()
+{
+    document.getElementById('dloading-div').style.display = 'none';
+}
+
 
 /* ------------------------------------------------------ */
 // - 表单功能函数 - 部分函数需加载 window.js
@@ -687,7 +724,7 @@ function wnd_sysmsg( msg, configs, type, active )
  *
  * @return str  数据经过URL编码
  */
-function deal_form_params( form )
+function form_params_build( form )
 {
     /* 初始化参数 */
     var params = '';
@@ -712,70 +749,13 @@ function deal_form_params( form )
     return params;
 }
 
-/**
- * 模拟异步提交表单。
- * 注：该函数并不提交表单，只是为表单的模拟异步创建条件
- *
- * @params obj  form     表单对象
- * @params str  url      提交的URL地址
- * @params obj  configs  完成后回调
- *         str           configs.msg       等待时提示消息，false表示不显示
- *         str           configs.rtype     响应的数据类型，JSON(默认) TEXT
- *         fun           configs.complete  完成时回调的函数
- */
-function deal_form_submit( form, url, configs )
-{
-    /* 初始化 */
-    configs = typeof(configs) == 'object' && configs ? configs : {};
 
-	/* 获取IFRAME */
-	var iframe = deal_ajax_iframe();
-    
-    /* 设置IFRAME加载函数 */
-    deal_ajax_iframe_attribs( {'onload':function(){deal_form_submit_complete(form,url,configs)}} )
-
-    /* 初始化表单参数 */
-    form.action   = url;
-	form.target   = iframe.name;
-
-    /* 初始化表单常量 */
-    form.method   = 'post';
-	form.encoding = 'multipart/form-data';
-
-    /* 显示等待消息 */
-    if( configs.msg !== false ) wnd_wait( configs.msg ? configs.msg : '请稍等！数据提交中....' );
-}
-function deal_form_submit_complete( form, url, configs )
-{
-    /* 清除窗口 */
-    wnd_wait_clear();
-
-    /* 读取响应内容并JSON化 */
-    try{
-        var text = deal_ajax_iframe().contentWindow.document.body.innerHTML;
-        var result = text;
-
-        /* 解决FF下由于文件上传表单域导致返回的数据加上<pre>标签的BUG */
-        if( result.indexOf('<pre>') != -1 && result.substr(0, 5) == '<pre>' ){
-            result = result.substring(5, result.length-6);
-        }
-
-        /* 格式化JSON数据 */
-        if( configs.rtype != 'TEXT' ){
-            result = eval('('+ result +')');
-        }
-    }catch(e){
-        wnd_alert('数据解析出错！<br />'+result); return false;
-    }
-
-    if( typeof(configs.complete) == 'function' ){
-        configs.complete(result, text, form);
-    }
-}
-
+/* ------------------------------------------------------ */
+// - 窗口表单功能函数 - 需加载 window.js
+/* ------------------------------------------------------ */
 
 /**
- * 窗口表单默认键盘事件
+ * 处理窗口表单的默认键盘事件
  *
  * @params obj event   事件对象
  * @params obj wndele  窗口内元素
@@ -814,13 +794,111 @@ function deal_wfm_keyboard( event, wndele )
 
 
 /* ------------------------------------------------------ */
+// - 表单异步提交完全模拟
+/* ------------------------------------------------------ */
+
+/**
+ * 模拟异步提交表单
+ *
+ * @params obj  form     表单对象
+ * @params str  url      提交的URL地址
+ * @params obj  configs  完成后回调
+ *         str           configs.rtype     响应的数据类型，JSON(默认) TEXT
+ *         fun           configs.complete  完成时回调的函数
+ */
+function ajax_form_submit( form, url, configs )
+{
+    /* 初始化模拟异步提交表单数据 */
+    ajax_form_init(form, url, configs);
+    
+    /* 获取表单的提交按钮 */
+    var submit = Formc.get(form, 'ajax-form-submit');
+    
+    /* 无提交按钮 */
+    if( !submit ){
+        submit = document.createElement('INPUT');
+        submit.type = 'submit';
+        submit.style.display = 'none';
+
+        form.appendChild(submit);
+    }
+    
+    /* 提交表单 */
+    submit.click();
+}
+
+/**
+ * 初始化模拟异步提交表单数据
+ *
+ * @params obj  form     表单对象
+ * @params str  url      提交的URL地址
+ * @params obj  configs  完成后回调
+ *         str           configs.rtype     响应的数据类型，JSON(默认) TEXT
+ *         fun           configs.complete  完成时回调的函数
+ */
+function ajax_form_init( form, url, configs )
+{
+    /* 初始化 */
+    configs = typeof(configs) == 'object' && configs ? configs : {};
+
+	/* 获取IFRAME */
+	var iframe = ajax_iframe();
+    
+    /* 设置IFRAME加载函数 */
+    ajax_iframe_attribs( {'onload':function(){ajax_form_complete(form,url,configs)}} )
+
+    /* 初始化表单参数 */
+    form.action   = url;
+	form.target   = iframe.name;
+
+    /* 初始化表单常量 */
+    form.method   = 'post';
+	form.encoding = 'multipart/form-data';
+}
+
+/**
+ * 调用表单提交返回后的回调函数
+ *
+ * @params obj  form     表单对象
+ * @params str  url      提交的URL地址
+ * @params obj  configs  完成后回调
+ *         str           configs.rtype     响应的数据类型，JSON(默认) TEXT
+ *         fun           configs.complete  完成时回调的函数
+ */
+function ajax_form_complete( form, url, configs )
+{
+    /* 读取响应内容并JSON化 */
+    try{
+        var text = ajax_iframe().contentWindow.document.body.innerHTML;
+        var result = text;
+
+        /* 解决FF下由于文件上传表单域导致返回的数据加上<pre>标签的BUG */
+        if( result.indexOf('<pre>') != -1 && result.substr(0, 5) == '<pre>' ){
+            result = result.substring(5, result.length-6);
+        }
+
+        /* 格式化JSON数据 */
+        if( configs.rtype != 'TEXT' ){
+            result = eval('('+ result +')');
+        }
+    }catch(e){
+        wnd_alert('数据解析出错！<br />'+result); return false;
+    }
+
+    if( typeof(configs.complete) == 'function' ){
+        configs.complete(result, text, form);
+    }
+}
+
+
+/* ------------------------------------------------------ */
 // - 模拟异步IFRAME
 /* ------------------------------------------------------ */
 
 /**
  * 获取模拟异步的IFRAME
  */
-function deal_ajax_iframe()
+function ajax_iframe()
 {
 	/* 获取IFRAME */
 	var iframe = document.getElementById('deal-ajax-iframe');
@@ -845,10 +923,10 @@ function deal_ajax_iframe()
 /**
  * 设置模拟异步的IFRAME属性
  */
-function deal_ajax_iframe_attribs( attribs )
+function ajax_iframe_attribs( attribs )
 {
 	/* 获取IFRAME */
-	var iframe = deal_ajax_iframe();
+	var iframe = ajax_iframe();
 
     /* 初始化 */
     attribs = typeof(attribs) == 'object' && attribs ? attribs : {};
@@ -865,21 +943,6 @@ function deal_ajax_iframe_attribs( attribs )
     if( typeof(attribs.src) == 'string' && attribs.src != '' ){
         iframe.src = attribs.src +'&'+ Math.random();
     }
-}
-
-
-/* ------------------------------------------------------ */
-// - 页面加载中功能函数
-/* ------------------------------------------------------ */
-
-function deal_webpage_load()
-{
-    document.getElementById('dloading-div').style.display = 'block';
-}
-
-function deal_webpage_loaded()
-{
-    document.getElementById('dloading-div').style.display = 'none';
 }
 
 

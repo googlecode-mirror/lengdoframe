@@ -128,7 +128,7 @@
 
     <?php if( $tpl['_body'] == 'index' ){?>
         <div style="display:none">
-            <form onsubmit="deal_form_submit(this,'modules/db/db_backup.php?act=upload',{'complete':deal_dbbackup_upload});">
+            <form onsubmit="ajax_form_init(this,'modules/db/db_backup.php?act=upload',{'complete':deal_dbbackup_upload});">
                 <div class="table-header"><i></i><span>请上传扩展名为.sql , 容量小于2048 KB 的文件</span></div>
                 <div class="form-div" style="border-bottom:0;">
                     <table cellspacing="1">
@@ -137,9 +137,9 @@
                         <td>
                             <div class="filecbox">
                                 <input type="text" class="textbox" readonly/>
-                                <a class="clear"   href="javascript:void(0)" onclick="deal_filecbox_clear(this)" onmouseover="deal_combobox_mouseover(this)" title="清除"></a>
-                                <a class="overlay" href="javascript:void(0)" onmouseover="deal_combobox_mouseover(this)" title="选择文件" style="border-right:0;"><input name="file" type="file" class="filebox" size="1" onchange="deal_filecbox_change(this,'sql');"/></a>
-                                <a class="upload"  href="javascript:void(0)" onclick="deal_filecbox_upload(this,'确定上传SQL文件？')" onmouseover="deal_combobox_mouseover(this)" title="上传"></a>
+                                <a class="clear"   href="javascript:void(0)" onclick="filecbox_clear(this)" onmouseover="combobox_mouseover(this)" title="清除"></a>
+                                <a class="overlay" href="javascript:void(0)" onmouseover="combobox_mouseover(this)" title="选择文件" style="border-right:0;"><input name="file" type="file" class="filebox" size="1" onchange="filecbox_change(this,'sql');"/></a>
+                                <a class="upload"  href="javascript:void(0)" onclick="filecbox_upload(this,'确定上传SQL文件？')" onmouseover="combobox_mouseover(this)" title="上传"></a>
                             </div>
                         </td>
                     </tr>

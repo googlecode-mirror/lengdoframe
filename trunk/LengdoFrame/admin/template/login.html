@@ -12,7 +12,7 @@
 </head>
 
 
-<body onload="deal_webpage_loaded()">
+<body onload="webpage_load_hide()">
 
     <div id="dloading-div"><a>页面加载中...</a></div>
     <div id="aloading-div" style="display:none"></div>
@@ -67,8 +67,8 @@
             /* 回调函数 */
             function callback( result, text ){
                 if( result.error == 0 ){
-                    /* 显示页面加载中 */
-                    deal_webpage_load();
+                    /* 隐藏页面加载中 */
+                    webpage_load_hide();
 
                     /* 页面跳转 */
                     window.location.href = 'index.php';
@@ -78,7 +78,7 @@
             }
 
             /* 异步提交(异步等待) */
-            Ajax.call('index.php?act=loginsubmit', deal_form_params('fm-login-fill'), callback, 'POST', 'JSON');
+            Ajax.call('index.php?act=loginsubmit', form_params_build('fm-login-fill'), callback, 'POST', 'JSON');
         }    
     </script>
 </body>

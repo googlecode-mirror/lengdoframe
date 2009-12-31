@@ -5,7 +5,7 @@
 
     <?php if( $tpl['_bodysub'] != 'query' ){?>
     <div class="listtable-div" id="listtable-admin" onmouseover="ListTable.init(this.id,'modules/admin/admin.php','?act=list');">
-        <form class="listtable-search" onsubmit="deal_search_list(this);return false;">
+        <form class="listtable-search" onsubmit="listtable_search(this);return false;">
             <table>
             <tr>
                 <td width="30"><i class="icon"></i></td>
@@ -13,7 +13,7 @@
                 <td width="100"><input type="text" name="username" class="textbox" style="width:100px"/></td>
                 <td width="45"><h1>姓名：</h1></td>
                 <td width="100"><input type="text" name="name" class="textbox" style="width:100px"/></td>
-                <td style="padding-left:15px;"><input type="submit" value="搜 索" class="submit"/><input type="button" class="flush" onmouseover="deal_combobox_mouseover(this)" onclick="ListTable.resetList()" title="初始化搜索"/></td>
+                <td style="padding-left:15px;"><input type="submit" value="搜 索" class="submit"/><input type="button" class="flush" onmouseover="combobox_mouseover(this)" onclick="ListTable.resetList()" title="初始化搜索"/></td>
             </tr>
             </table>
         </form>
