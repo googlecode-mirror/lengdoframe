@@ -278,7 +278,7 @@ function ddl_role_custom( $roles, $name, $selected = '', $appends = array(), $at
         }
 
         foreach( $appends AS $i=>$item ){
-            if( isset($item['value']) && isset($item['text']) ){
+            if( is_array($item) && isset($item['value']) && isset($item['text']) ){
                 $items[] = $item;
             }
         }

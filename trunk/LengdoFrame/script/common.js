@@ -28,7 +28,7 @@ function deal_timecbox_show( caller, configs )
     }
 
     /* 初始化配置 */
-    configs = configs == 'object' ? configs : {};
+    configs = typeof(configs) == 'object' ? configs : {};
 
     /* 初始化配置 - 时间格式 */
     configs.format = typeof(configs.format) == 'string' ? configs.format : '%Y-%m-%d'; // [%Y-%m-%d %H:%M] 显示 [年-月-日 时-分]
