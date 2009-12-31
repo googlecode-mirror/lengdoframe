@@ -154,7 +154,7 @@ function ddl_module( $name, $selected = '', $appends = array(), $attribs = array
         }
 
         foreach( $appends AS $i=>$item ){
-            if( isset($item['value']) && isset($item['text']) ){
+            if( is_array($item) && isset($item['value']) && isset($item['text']) ){
                 $items[] = $item;
             }
         }

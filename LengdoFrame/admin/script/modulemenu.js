@@ -155,7 +155,7 @@ function module_mtree_request( uri, configs )
     var div = document.getElementById(url);
 
     /* 初始化参数 */
-    configs = typeof(configs) == 'object' & configs ? configs : {}; 
+    configs = typeof(configs) == 'object' && configs ? configs : {}; 
     configs.reload = configs.reload === true ? true : false;
 
     /* 请求的模块层已存在且不需要重新载入 */
@@ -176,7 +176,7 @@ function module_mtree_request( uri, configs )
         window.MODULE_URL = url;
 
         /* 执行完成后自定义函数 */
-        if( typeof(configs.complete) == 'function' ) complete();
+        if( typeof(configs.complete) == 'function' ) configs.complete();
     }
 
     /* 请求的模块层不存在或者需要重新载入 */

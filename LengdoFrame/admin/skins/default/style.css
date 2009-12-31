@@ -450,7 +450,7 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 /* ------------------------------------------------------ */
 /* - 表格头部层
 /* ------------------------------------------------------ */
-.table-header{ height:27px; background:url(images/style_fy.gif) 0 -560px; }
+.table-header{ height:27px; background:url(images/style_fy.gif) 0 -560px; border-bottom:0 solid #D4D4D4; }
 .table-header i{ width:25px; height:25px; float:left; background:url(images/style_fxy.gif) -447px -167px; }
 .table-header span{ padding:6px 0 0 0; float:left; color:#062D75; filter:dropshadow(color=#FFFFFF,offx=1,offy=1); background:url(images/style_fy.gif) 0 -560px; }
 

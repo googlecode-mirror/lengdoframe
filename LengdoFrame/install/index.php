@@ -194,10 +194,13 @@ elseif( $_REQUEST['act'] == 'dbcreate' ){
         $tpl['acts'] = 'pn';
         $tpl['errors'] = array();
 
-        /* 初始化$_POST */
+        /* 初始化 $_POST */
         foreach( $_POST AS $k=>$v ){
             $_POST[$k] = trim($v);
         }
+        
+        /* 初始化 $_POST - 管理员姓名 */
+        $_POST['admin_name'] = $_POST['admin_name'] ? $_POST['admin_name'] : $_POST['admin_username'];
 
         /* 填写错误检查 */
         if( $_POST['dbhost'] == '' ) $tpl['errors']['dbhost'] = '数据库服务地址不能为空!';
@@ -434,7 +437,7 @@ function file_systemconfig_build()
 function update_administrator()
 {
     $sql = ' UPDATE `'. $_POST['tblpre'] .'admin` SET';
-    $sql.= ' `name`="'. $_POST['admin_user'] .'", `username`="'. $_POST['admin_username'] .'",';
+    $sql.= ' `name`="'. $_POST['admin_name'] .'", `username`="'. $_POST['admin_username'] .'",';
     $sql.= ' `password`="'. md5($_POST['admin_password']) .'", in_time='. time() .' WHERE `admin_id`=1';
 
     mysql_query($sql);

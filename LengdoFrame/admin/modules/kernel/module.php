@@ -195,7 +195,8 @@ else{
         /* 权限搜索操作 */
         if( $r['lft'] == $r['rht']-1 && admin_privilege_valid('privilege.php','list',false) ){
             $tpl['all'][$i]['acts'] .= "<a href=\"javascript:void(0)\" onclick=\"module_mtree_request('modules/kernel/privilege.php?act=index&module_id={$r[module_id]}";
-            $tpl['all'][$i]['acts'] .= "',true)\">". $_LANG['act_priv'] .'</a> ';
+            $tpl['all'][$i]['acts'] .= "',{'reload':true,'complete':function(){ListTable.init('listtable-privilege','modules/kernel/privilege.php','?act=list');";
+            $tpl['all'][$i]['acts'] .= "ListTable.filter('module_id','{$r[module_id]}')}})\">". $_LANG['act_priv'] .'</a> ';
         }
 
         /* 删除操作 */
