@@ -142,10 +142,11 @@ function module_mtree_expand_unique( obj )
  * 模块请求，设置模块URL
  *
  * @params str  uri       要请求模块的地址
- * @params bol  reload    重新载入，默认false
- * @params fun  complete  显示完成后执行
+ * @params obj  configs   请求配置
+ *         bol            configs.reload    重新载入，默认false
+ *         fun            configs.complete  显示完成后执行
  */
-function module_mtree_request( uri, reload, complete )
+function module_mtree_request( uri, configs )
 {
     /* 获取无搜索参数的URL */
     var url = uri.indexOf('?') == -1 ? uri : uri.substr(0, uri.indexOf('?'));
@@ -154,10 +155,11 @@ function module_mtree_request( uri, reload, complete )
     var div = document.getElementById(url);
 
     /* 初始化参数 */
-    reload = reload === true ? true : false;
+    configs = typeof(configs) == 'object' & configs ? configs : {}; 
+    configs.reload = configs.reload === true ? true : false;
 
     /* 请求的模块层已存在且不需要重新载入 */
-    if( div && reload === false ){
+    if( div && configs.reload === false ){
         /* 请求的模块层已显示 */
         if( window.MODULE_URL == url ) return true;
 
@@ -174,7 +176,7 @@ function module_mtree_request( uri, reload, complete )
         window.MODULE_URL = url;
 
         /* 执行完成后自定义函数 */
-        if( typeof(complete) == 'function' ) complete();
+        if( typeof(configs.complete) == 'function' ) complete();
     }
 
     /* 请求的模块层不存在或者需要重新载入 */
@@ -199,7 +201,7 @@ function module_mtree_request( uri, reload, complete )
             }
 
             /* 显示追加的模块层 */
-            module_mtree_request(url, false, complete);
+            module_mtree_request(url, {'reload':false, 'complete':configs.complete});
         }
 
         /* 请求模块内容(异步等待) */
