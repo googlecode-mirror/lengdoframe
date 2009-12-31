@@ -246,7 +246,7 @@ elseif( $_REQUEST['act'] == 'privtable' ){
 
     /* 角色权限表 */
     if( empty($role_priv_ids) ){
-        exit('<div class="warn-div"><span>'. $_LANG['str_role_nopriv'] .'</span></div>' );
+        exit('<div class="tips-div"><span>'. $_LANG['str_role_nopriv'] .'</span></div>' );
     }else{
         exit( html_privilege_table('privilege_ids', '', $role_priv_ids) );
     }

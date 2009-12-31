@@ -124,14 +124,14 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 /* ------------------------------------------------------ */
 /* - 组合框 - 时间组合框
 /* ------------------------------------------------------ */
-.datecbox{ display:inline; }
+.timecbox{ display:inline; }
 
-.datecbox .textbox{ width:150px; border-right:0; background:#FEFEFE; color:#666; font-family:Garamonds,Tahoma; }
-.datecbox .fillbox{ width:150px; border-right:0; color:#666; font-family:Garamonds,Tahoma; }
+.timecbox .textbox{ width:150px; border-right:0; background:#FEFEFE; color:#666; font-family:Garamonds,Tahoma; }
+.timecbox .fillbox{ width:150px; border-right:0; color:#666; font-family:Garamonds,Tahoma; }
 
-.datecbox .choice{ width:24px; height:20px; border:0px; background:url(images/style_fxy.gif) -328px -50px; cursor:pointer; vertical-align:middle; }
-.datecbox .choiceover{ background-position:-328px -50px; }
-.datecbox .choicedown{ background-position:-328px -90px; }
+.timecbox .choice{ width:24px; height:20px; border:0px; background:url(images/style_fxy.gif) -328px -50px; cursor:pointer; vertical-align:middle; }
+.timecbox .choiceover{ background-position:-328px -50px; }
+.timecbox .choicedown{ background-position:-328px -90px; }
 
 
 /* ------------------------------------------------------ */
@@ -456,11 +456,11 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 
 
 /* ------------------------------------------------------ */
-/* - 警告层
+/* - 提示层
 /* ------------------------------------------------------ */
-.warn-div{ background:#FFF; text-align:center; border:1px solid #FFF; }
-.warn-div b{ padding:20px; margin:2px; display:block; color:#777; border:1px solid #CCC; background:#FFFFE1; }
-.warn-div span{ padding:20px; margin:2px; display:block; color:#777; border:1px solid #CCC; background:#FFFFE1; }
+.tips-div{ background:#FFF; text-align:center; border:1px solid #FFF; }
+.tips-div b{ padding:20px; margin:2px; display:block; color:#777; border:1px solid #CCC; background:#FFFFE1; }
+.tips-div span{ padding:20px; margin:2px; display:block; color:#777; border:1px solid #CCC; background:#FFFFE1; }
 
 
 /* ------------------------------------------------------ */
@@ -541,7 +541,7 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 /* ------------------------------------------------------ */
 /* - TAG TITLE
 /* ------------------------------------------------------ */
-.tagtitle-div{ padding:1px 3px 1px; border:1px solid #000; line-height:130%; background:#FFFFE1; position:absolute; }
+.tagtitle-div{ padding:1px 3px 1px; _padding-top:0; border:1px solid #000; line-height:130%; background:#FFFFE1; position:absolute; z-index:99; }
 
 
 /* ------------------------------------------------------ */

@@ -456,11 +456,11 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 
 
 /* ------------------------------------------------------ */
-/* - 警告层
+/* - 提示层
 /* ------------------------------------------------------ */
-.warn-div{ background:#FFF; text-align:center; border:1px solid #FFF; }
-.warn-div b{ padding:20px; margin:2px; display:block; color:#777; border:1px solid #CCC; background:#FFFFE1; }
-.warn-div span{ padding:20px; margin:2px; display:block; color:#777; border:1px solid #CCC; background:#FFFFE1; }
+.tips-div{ background:#FFF; text-align:center; border:1px solid #FFF; }
+.tips-div b{ padding:20px; margin:2px; display:block; color:#777; border:1px solid #CCC; background:#FFFFE1; }
+.tips-div span{ padding:20px; margin:2px; display:block; color:#777; border:1px solid #CCC; background:#FFFFE1; }
 
 
 /* ------------------------------------------------------ */

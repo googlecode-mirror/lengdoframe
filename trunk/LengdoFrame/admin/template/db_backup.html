@@ -85,7 +85,7 @@
                     <th width="21%">操作</th>
                 </tr>
                 <?php if( $tpl['error'] ){?>
-                <tr><td colspan="6"><div class="warn-div"><span><?php echo $tpl['error']; ?></span></div></td></tr>
+                <tr><td colspan="6"><div class="tips-div"><span><?php echo $tpl['error']; ?></span></div></td></tr>
                 <?php }else{?>
                     <?php if( !empty($tpl['all']) ){ foreach( $tpl['all'] AS $r ){?>
                     <tr class="<?php echo $r['type']=='volumes' ? 2 : 1 ; ?>" style="<?php echo $r['type']=='volumes' ? 'display:none;color:#999' : ''; ?>" align="center">
@@ -102,7 +102,7 @@
                         <td class="action"><?php echo $r['acts']; ?></td>
                     </tr>
                     <?php }}else{?>
-                    <tr><td colspan="6"><div class="warn-div"><span>无数据</span></div></td></tr>
+                    <tr><td colspan="6"><div class="tips-div"><span>无数据</span></div></td></tr>
                     <?php }?>
                 <?php }?>
                 </table>

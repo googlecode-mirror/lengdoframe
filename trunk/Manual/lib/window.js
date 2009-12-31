@@ -381,7 +381,7 @@ Wnd.prototype.buttonAdd = function( config ){
 /**
  * 增加控制区默认按钮
  *
- * @params str  indexs  默认按钮标识码，默认'ok&cannel'
+ * @params str  indexs  默认按钮标索引，默认'ok&cannel'
  */
 Wnd.prototype.buttonAddDefault = function( indexs ){
     /* 初始化 */
@@ -391,6 +391,43 @@ Wnd.prototype.buttonAddDefault = function( indexs ){
     for( var i=0,j=indexs.length; i < j; i++ ){
         if( indexs[i] == 'ok' ) this.buttonAdd( {'index':'ok', 'text':'确定', 'click':this.ok} );
         if( indexs[i] == 'cannel' ) this.buttonAdd( {'index':'cannel', 'text':'取消', 'click':this.cannel} );
+    }
+}
+
+/**
+ * 删除控制区按钮
+ *
+ * @params str  index  按钮标索引
+ */
+Wnd.prototype.buttonDel = function( index ){
+    /* 删除按钮DOM */
+    if( this.oControlBtns[index] ){
+        this.oControlBtns[index].parentNode.removeChild(this.oControlBtns[index]);
+    }
+
+    /* 删除按钮 */
+    delete this.oControlBtns[index];
+}
+
+/**
+ * 排序控制区按钮
+ *
+ * @params arr  sort  控制区按钮排序索引
+ */
+Wnd.prototype.buttonSort = function( sort ){
+    /* 初始化 */
+    sort = typeof(sort) == 'object' && sort ? sort : [];
+
+    /* 循环排序索引 */
+    for( var i=sort.length-1,last=''; i >= 0; i-- ){
+        /* 无效索引 */
+        if( !this.oControlBtns[sort[i]] ) continue;
+
+        /* 排序按钮 */
+        this.oControl.insertBefore( this.oControlBtns[sort[i]], (last?this.oControlBtns[last]:this.oControl.childNodes[0]) );
+
+        /* 保存索引 */
+        last = sort[i];
     }
 }
 
@@ -467,7 +504,7 @@ Wnd.prototype.inner = function( data, type, attribs ){
 Wnd.prototype.innerURL = function( url, rtype, attribs ){
     /* 必要组件检测 */
     if( typeof(Ajax) != 'object' ){
-        wnd_alert('Please Load Ajax Object'); return false;
+        wnd_alert('Please Load Ajax Object !'); return false;
     }
 
     /* 指针引用 */
@@ -511,7 +548,7 @@ Wnd.prototype.reinner = function( data, type, attribs ){
     attribs = typeof(attribs) == 'object' && attribs ? attribs : {};
 
     /* 创建客户区加载层 */
-    if( attribs.loading !== false ){
+    if( attribs.loading === false ){
         this.createClientLoading(this.oClient.offsetWidth-2, this.oClient.offsetHeight, 'float');
     }
 
