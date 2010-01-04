@@ -188,10 +188,10 @@ var TableAct = {
         table.onclick = function(e){
             /* 事件源 */
             var obj = window.ActiveXObject ? window.event.srcElement : e.target;;
-            
+
             /* 无效的触发标签 */
             if( obj.tagName.toLowerCase() != elabel.toLowerCase() )return ;
-            
+
             /* 高亮对象 */
             if( obj = TableAct._rec(obj,label) ){
                 /* 设置背景色，过滤保护色 */
@@ -243,7 +243,7 @@ var TableAct = {
         /* 初始化参数 */
         label = label == 'td' ? 'td' : 'tr';
         color = typeof(color) == 'string' ? (color=='protect'?this.aProtectColor[0]:color) : '#FFFCC7';
-        
+
         /* 着色 */
         if( obj = TableAct._rec(obj,label) ) obj.style.backgroundColor = color;
     },

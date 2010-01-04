@@ -15,12 +15,12 @@
 /* ------------------------------------------------------ */
 
 /**
- * 时间组合框 - 需安装 JsCal2 组件
+ * 时间组合框 - 显示时间组件(需安装 JsCal2 组件)
  *
  * @params obj  caller   调用者对象
  * @params obj  configs  时间组件的配置
  */
-function timecbox_show( caller, configs )
+function timecbox_cal( caller, configs )
 {
     /* 必要组件检测 */
     if( typeof(Calendar) != 'function' ){
@@ -55,6 +55,8 @@ function timecbox_show( caller, configs )
 
 /**
  * 文件组合框 - 清除要上传的文件
+ *
+ * @params obj  caller   调用者对象
  */
 function filecbox_clear( caller )
 {
@@ -93,62 +95,59 @@ function filecbox_clear( caller )
 
 /**
  * 文件组合框 - 上传文件
+ *
+ * @params obj  caller   调用者对象
+ * @params obj  configs  配置集
+ *         str           configs.confirm   提交前的确认消息提示
  */
-function filecbox_upload( obj, msg )
+function filecbox_upload( caller, configs )
 {
+    /* 初始化 */
+    configs = typeof(configs) == 'object' && configs ? configs : {};
+
     /* 获取表单域所在的表单 */
-    form = obj;
+    form = caller;
     while( form.tagName.toLowerCase() != 'form' ){
         form = form.parentNode;
     }
 
     /* 获取文件表单域 */
-    file = obj;
+    file = caller;
     while( file.className != 'overlay' ){
         file = file.previousSibling;
     }
     file = file.childNodes[0];
 
+    /* 上传提示 */
     if( !file.value ){
         wnd_alert('请选择上传文件！'); return false;
     }
 
-    msg ? wnd_confirm(msg,{'ok':callback}) : callback();
-
+    /* 回调函数 */
     function callback(){
         form.onsubmit(); form.submit();
     }
+
+    configs.confirm ? wnd_confirm(configs.confirm,{'ok':callback}) : callback();
 }
 
 /**
  * 文件组合框 - 上传文件更改
  *
- * @params obj  caller  调用者对象
- * @params str  type    文件类型
+ * @params obj  caller    调用者对象
+ * @params fun  callback  更改时的回调函数
  */
-function filecbox_change( caller, type )
+function filecbox_change( caller, callback )
 {
     /* 未选择上传文件 */
-    if( !caller.value ) return;
+    if( !caller.value ) return ;
 
-    /* 扩展名检查 */
-    var ext = caller.value.substr( caller.value.lastIndexOf('.') ).toLowerCase();
-
-    switch( type ){
-        case 'img':
-            if( ext != '.jpg' && ext != '.gif' ){
-                caller.value = ''; wnd_alert('无效的图片格式！'); return ;
-            }
-        break;
-
-        case 'sql':
-            if( ext != '.sql' ){
-                caller.value = ''; wnd_alert('无效的SQL文件格式！'); return ;
-            }
-        break;
+    /* 执行回调函数 */
+    if( typeof(callback) == 'function' ){
+        if( callback(caller.value) === false ) return ;
     }
 
-    /* 文本框显示 */
+    /* 文本框赋值 */
     var textbox = caller.parentNode;
 
     while( textbox = textbox.previousSibling ){
@@ -159,6 +158,27 @@ function filecbox_change( caller, type )
 
     textbox.value = caller.value;
 }
+/**
+ * 扩展名限制
+ */
+function filecbox_change_ext( exts, alert )
+{
+    /* 初始化 */
+    exts = exts.split('|');
+
+    return function( value ){
+        /* 扩展名获取 */
+        var ext = value.substr( value.lastIndexOf('.')+1 ).toLowerCase();
+        
+        /* 扩展名检查 */
+        for( var i=0,j=exts.length; i < j; i++ ){
+            if( ext == exts[i] ) return true;
+        }
+
+        /* 扩展名过滤失败时提示 */
+        if( alert ) wnd_alert(alert); return false;
+    }
+}
 
 /**
  * 文件组合框 - 已上传的文件的删除操作
@@ -166,17 +186,17 @@ function filecbox_change( caller, type )
  * @params obj  caller   调用者对象
  * @params str  url      提交的URL
  * @params obj  configs  配置集
- *         str           configs.msg       提交前的消息提示
  *         bol           configs.merge     提交成功后合并操作框，增宽文本框。默认 true
+ *         str           configs.confirm   提交前的确认消息提示
  *         fun           configs.complete  提交成功后的回调函数
  */
 function filecbox_uploaded_del( caller, url, configs )
 {
     /* 初始化配置集 */
     configs = typeof(configs) == 'object' && configs ? configs : {};
-    configs.msg = configs.msg ? configs.msg : '确认删除文件？';
+    configs.confirm = configs.confirm ? configs.confirm : '确认删除文件？';
 
-    /* 确认OK - 回调函数 */
+    /* 回调函数 */
     function confirm_callback(){
         /* 异步提交(异步等待) */
         Ajax.call(url, '', ajax_callback, 'GET', 'JSON');
@@ -215,7 +235,7 @@ function filecbox_uploaded_del( caller, url, configs )
     }
 
     /* 删除提示 */
-    wnd_confirm(configs.msg, {'ok':confirm_callback});
+    wnd_confirm(configs.confirm, {'ok':confirm_callback});
 }
 
 
@@ -226,28 +246,28 @@ function filecbox_uploaded_del( caller, url, configs )
 /**
  * 数字步长组合框 - 数字增减
  *
- * @params obj  caller  调用者对象
- * @params num  step    步长值
- * @params obj  config  
- *         mix  config.limit  上下限(步长大于0时为上限，小于0时为下限)
- *         int  config.fixed  小数点后精度长度
+ * @params obj  caller   调用者对象
+ * @params num  step     步长值
+ * @params obj  configs  配置集
+ *         mix  configs.limit  上下限(步长大于0时为上限，小于0时为下限)
+ *         int  configs.fixed  小数点后精度长度
  */
-function numscbox_deal( caller, step, config )
+function numscbox_calc( caller, step, configs )
 {
     /* 初始化参数 */
     step = typeof(step) == 'number' && isFinite(step) ? step : 0;
-    config = config && typeof(config) == 'object' ? config : {};
+    configs = configs && typeof(configs) == 'object' ? configs : {};
 
     /* 初始化文本框对象和增减后的数字变量 */
 	var tb = caller.parentNode.parentNode.cells[0].childNodes[0];
-    var nm = numscbox_deal_calc( parseFloat(tb.value), step );
+    var nm = numscbox_calc_float( parseFloat(tb.value), step );
 
     /* 赋值 */
     if( typeof(nm) == 'number' && isFinite(nm) ){
-        if( step > 0 && nm > config.limit ) return false;
-        if( step < 0 && nm < config.limit ) return false;
+        if( step > 0 && nm > configs.limit ) return false;
+        if( step < 0 && nm < configs.limit ) return false;
 
-        tb.value = config.fixed ? nm.toFixed(config.fixed) : nm;
+        tb.value = configs.fixed ? nm.toFixed(configs.fixed) : nm;
     }else{
         return false;
     }
@@ -256,7 +276,7 @@ function numscbox_deal( caller, step, config )
 /**
  * 数字步长组合框 - 浮点数精确计算
  */
-function numscbox_deal_calc( num, step )
+function numscbox_calc_float( num, step )
 {
     var ln, ls, m;
 
@@ -280,25 +300,11 @@ function combobox_mouseover( obj )
 {
     var cls = obj.className;
 
-    obj.onmouseover = function(){
-        this.className = cls +' '+ cls +'over';
-    }
-
-    obj.onmousedown = function(){
-        this.className = cls +' '+ cls +'down';
-    }
-
-    obj.onmouseup = function(){
-        this.className = cls +' '+ cls +'over';
-    }
-
-    obj.onmouseout = function(){
-        this.className = cls;
-    }
-
-    obj.onfocus = function(){
-        this.blur();
-    }
+    obj.onfocus     = function(){ this.blur(); }
+    obj.onmouseup   = function(){ this.className = cls +' '+ cls +'over'; }
+    obj.onmouseout  = function(){ this.className = cls; }
+    obj.onmouseover = function(){ this.className = cls +' '+ cls +'over'; }
+    obj.onmousedown = function(){ this.className = cls +' '+ cls +'down'; }
 
     obj.onmouseover();
 }
@@ -310,26 +316,34 @@ function combobox_mouseover( obj )
 
 /**
  * 显示 Tag Title 层
+ *
+ * @params obj  event    兼容事件对象
+ * @params str  title    显示的标题
+ * @params obj  configs  配置集
+ *         int  configs.width      Title层宽度
+ *         str  configs.className  样式类名
  */
-function tagtitle( e, title, config )
+function tagtitle( event, title, configs )
 {
     /* 无效参数 */
     if( title.replace(/^\s*|\s*$/g, '') == '' ) return false;
 
-    /* 初始化事件对象和事件源对象 */
-    var event = e || window.event;
+    /* 初始化事件对象 */
+    event = event || window.event;
+
+    /* 初始化事件源对象 */
     var caller = window.ActiveXObject ? event.srcElement : event.target;
 
     /* 初始化配置参数 */
-    config = typeof(config) == 'object' && config ? config : {};
+    configs = typeof(configs) == 'object' && configs ? configs : {};
 
     /* 初始化标签TITLE层 */
-    var div = tagtitle_init(config);
+    var div = tagtitle_init(configs);
 
     /* 获取鼠标的坐标并定位 */
-    var mouse = tagtitle_mouse(e);
+    var mouse = tagtitle_mouse(event);
 
-    div.style.top = mouse.y + (window.ActiveXObject ? document.documentElement.scrollTop-document.documentElement.clientTop : 0) + 23 + 'px';
+    div.style.top  = mouse.y + (window.ActiveXObject ? document.documentElement.scrollTop-document.documentElement.clientTop : 0) + 23 + 'px';
     div.style.left = mouse.x - (window.ActiveXObject ? 2 : 0) + 'px';
 
     /* 设置标签TITLE层内容 */
@@ -349,7 +363,7 @@ function tagtitle( e, title, config )
 /**
  * 初始化 Tag Title 层
  */
-function tagtitle_init( config )
+function tagtitle_init( configs )
 {
     var div = document.getElementById('tagtitle-div');
 
@@ -364,8 +378,8 @@ function tagtitle_init( config )
 
     /* 设置层属性 */
     div.id = 'tagtitle-div';
-    div.className = 'tagtitle-div' + (config.className?(' '+config.className):'');
-    div.style.width = isNaN(config.width) ? 'auto' : (parseInt(config.width)+'px');
+    div.className = 'tagtitle-div' + (configs.className?(' '+configs.className):'');
+    div.style.width = isNaN(configs.width) ? 'auto' : (parseInt(configs.width)+'px');
 
     /* 返回层 */
     return div;
@@ -393,7 +407,7 @@ function tagtitle_mouse( e )
  * @params str  tabitems_id  Tabbar选项集ID
  * @params str  tabbodys_id  Tabbar内容集ID
  * @params obj  event        兼容事件对象
- * @params int  index        Tabbar选项的索引号
+ * @params int  index        Tabbar选中项的索引号
  */
 function tabbar( tabitems_id, tabbodys_id, event, index )
 {
@@ -430,27 +444,6 @@ function tabbar( tabitems_id, tabbodys_id, event, index )
         tabbody = tabbody ? tabbody.nextSibling : tabbody;
     }while( tabitem = tabitem.nextSibling );
 }
-/**
- * 发生事件源的TABITEM项对象
- */
-function tabbar_tabitem_evtsrc( tabitems_id, event, index )
-{
-    /* 初始化索引 */
-    index = typeof(index) == 'number' && index > 0 ? index : false;
-
-    /* 获取索引对于的Tabbar选项对象 */
-    if( index > 0 ){
-        var tabitems = document.getElementById(tabitems_id).childNodes;
-
-        for( var i=0,j=tabitems.length; i < j; i++ ){
-            if( !tabitems[i].tagName || tabitems[i].tagName.toLowerCase() != 'span' ) continue;
-            if( --index == 0 ) return tabitems[i];
-        }
-    }
-
-    /* 默认返回发生事件源的Tabitem对象 */
-    return window.ActiveXObject ? window.event.srcElement : event.target;
-}
 
 /**
  * TABITEM滑动
@@ -485,7 +478,27 @@ function tabbar_tabitem_slide( caller, tabitems_id, lftrht, step )
         tabitems.style.marginLeft = (tabitems.offsetWidth-tabsilde.offsetWidth<step-marginlft ? tabsilde.offsetWidth-tabitems.offsetWidth : marginlft-step)+'px';
     }
 }
+/**
+ * 发生事件源的TABITEM项对象
+ */
+function tabbar_tabitem_evtsrc( tabitems_id, event, index )
+{
+    /* 初始化索引 */
+    index = typeof(index) == 'number' && index > 0 ? index : false;
 
+    /* 获取索引对于的Tabbar选项对象 */
+    if( index > 0 ){
+        var tabitems = document.getElementById(tabitems_id).childNodes;
+
+        for( var i=0,j=tabitems.length; i < j; i++ ){
+            if( !tabitems[i].tagName || tabitems[i].tagName.toLowerCase() != 'span' ) continue;
+            if( --index == 0 ) return tabitems[i];
+        }
+    }
+
+    /* 默认返回发生事件源的Tabitem对象 */
+    return window.ActiveXObject ? window.event.srcElement : event.target;
+}
 /**
  * 初始化TABITEM层的宽度
  */
@@ -591,7 +604,7 @@ function tabletree_click( obj )
 function wnd_wait( msg, configs )
 { 
     configs = typeof(configs) == 'object' && configs ? configs : {};
-    
+
     configs.zindex   = 50;
     configs.button   = '';
     configs.titleact = 0;
@@ -679,7 +692,7 @@ function wnd_sysmsg( msg, configs, type, active )
     /* 激活窗口控制区按钮 */
     if( active !== false ){
         /* 初始化 */
-        active = typeof(active) == 'string' ? active : 'ok';
+        active = typeof(active) == 'string' && active ? active : 'ok';
         keypress = active == 'ok' ? function(e){if(e.keyCode==27)this.cannel()} : null;
 
         /* 激活 */
