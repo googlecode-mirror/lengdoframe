@@ -331,37 +331,35 @@ var ListTable = {
      * 删除记录行
      * 默认提交 act,id 参数
      *
-     * @params obj  caller  调用者对象
-     * @params mix  id      数据：记录ID
-     * @params str  msg     删除提示消息
-     * @params str  url     要提交的URL，默认使用 列表的基础URL + '?act=del'
-     * @params obj  callbacks      回调函数
-     *         fun  callbacks.ok   处理成功时回调的函数(不与默认的重载列表事件同时执行)
-     *         fun  callbacks.fail 处理失败时回调的函数
+     * @params obj  caller    调用者对象
+     * @params mix  id        数据：记录ID
+     * @params str  confirm   删除时提示消息
+     * @params obj  configs   配置集
+     *         fun            configs.ok    处理成功时回调的函数(不与默认的重载列表事件同时执行)
+     *         str            configs.url   要提交的URL，默认使用 列表的基础URL + '?act=del'
+     *         fun            configs.fail  处理失败时回调的函数
      */
-    del : function( caller, id, msg, url, callbacks ){
-        /* 删除提示 */
-        msg ? wnd_confirm(msg, {'ok':callback}) : callback();
+    del : function( caller, id, confirm, configs ){
+        /* 初始化 */
+        configs = typeof(configs) == 'object' && configs ? configs : {};
 
         /* 回调函数 */
-        function callback(){
+        function confirm_callback(){
             /* 初始化URL */
-            url = typeof(url) == 'string' && url ? url : '?act=del';
-            if( url.substr(0,1) == '?' ) url = ListTable.oCfgs[ListTable.sId].sUrl + url;
+            configs.url = typeof(configs.url) == 'string' && configs.url ? configs.url : '?act=del';
+            if( configs.url.substr(0,1) == '?' ) configs.url = ListTable.oCfgs[ListTable.sId].sUrl + configs.url;
 
             /* 异步传输(同步等待) */
-            var result = Ajax.call(url, 'id='+id, null, 'POST', 'JSON', false);
+            var result = Ajax.call(configs.url, 'id='+id, null, 'POST', 'JSON', false);
 
             /* 显示消息 */
-            if( result.message ){
-                wnd_alert(result.message);
-            }
+            if( result.message ) wnd_alert(result.message);
 
             /* 删除成功 */
             if( result.error == 0 ){
                 /* 函数回调 */
-                if( callbacks && typeof(callbacks.ok) == 'function' ){
-                    callbacks.ok(caller);
+                if( typeof(configs.ok) == 'function' ){
+                    configs.ok(caller);
                 }
                 /* 重载列表(默认) */
                 else{
@@ -371,26 +369,32 @@ var ListTable = {
             /* 删除失败 */
             else{
                 /* 函数回调 */
-                if( callbacks && typeof(callbacks.fail) == 'function' ) callbacks.fail(caller);
+                if( typeof(configs.fail) == 'function' ) configs.fail(caller);
             }
         }
+
+        /* 删除提示 */
+        confirm ? wnd_confirm(confirm, {'ok':confirm_callback}) : confirm_callback();
     },
 
     /**
      * 创建一个编辑区
      * 默认提交 act,id,field,val 参数
      *
-     * @params obj  caller  调用者对象
-     * @params int  id      数据：记录的ID
-     * @params str  field   要更新的字段名
-     * @params str  url     要提交的URL，默认使用 列表的基础URL + '?act=ufield'
-     * @params obj  callbacks      回调函数
-     *         fun  callbacks.ok   处理成功时回调的函数
-     *         fun  callbacks.fail 处理失败时回调的函数
+     * @params obj  caller   调用者对象
+     * @params int  id       数据：记录的ID
+     * @params str  field    要更新的字段名
+     * @params obj  configs  配置集
+     *         fun           configs.ok    处理成功时回调的函数(不与默认的重载列表事件同时执行)
+     *         str           configs.url   要提交的URL，默认使用 列表的基础URL + '?act=ufield'
+     *         fun           configs.fail  处理失败时回调的函数
      */
-    edit : function( caller, id, field, url, callbacks ){
+    edit : function( caller, id, field, configs ){
         /* 防止重复点击创建输入框 */
         if( caller.firstChild && caller.firstChild.tagName && caller.firstChild.tagName.toLowerCase() == 'input' ) return false;
+
+        /* 初始化 */
+        configs = typeof(configs) == 'object' && configs ? configs : {};
 
         /* 保存原来的内容 - 过滤首尾空白 */
         var s_html = f(caller.innerHTML, 'trim');
@@ -440,8 +444,8 @@ var ListTable = {
             /* 字段值发生变化 */
             else{
                 /* 初始化URL */
-                url = typeof(url) == 'string' && url ? url : '?act=ufield';
-                if( url.substr(0,1) == '?' ) url = ListTable.oCfgs[ListTable.sId].sUrl + url;
+                configs.url = typeof(configs.url) == 'string' && configs.url ? configs.url : '?act=ufield';
+                if( configs.url.substr(0,1) == '?' ) configs.url = ListTable.oCfgs[ListTable.sId].sUrl + configs.url;
 
                 /* 构建参数 */
                 var params = 'val='+ encodeURIComponent(this.value) +'&id='+ id +'&field='+ field;
@@ -455,7 +459,7 @@ var ListTable = {
                             caller.innerHTML = result.content === '' ? f(input.value,'html') : result.content;
 
                             /* 函数回调 */
-                            if( callbacks && typeof(callbacks.ok) == 'function' ) callbacks.ok(caller);
+                            if( typeof(configs.ok) == 'function' ) configs.ok(caller);
                         }
                         /* 处理出错，恢复到未编辑状态 */
                         else{
@@ -466,7 +470,7 @@ var ListTable = {
                             input.focus(); input.select();
 
                             /* 函数回调 */
-                            if( callbacks && typeof(callbacks.fail) == 'function' ) callbacks.fail(caller);
+                            if( typeof(configs.fail) == 'function' ) configs.fail(caller);
                         }
                     }
 
@@ -475,7 +479,7 @@ var ListTable = {
                 }
 
                 /* 异步传输(异步等待) */
-                Ajax.call(url, params, ajax_callback, 'POST', 'JSON');
+                Ajax.call(configs.url, params, ajax_callback, 'POST', 'JSON');
             }
         }
     },
@@ -484,17 +488,20 @@ var ListTable = {
      * 异步切换状态
      * 默认提交 act,id,field,val 参数
      *
-     * @params obj  caller  调用者对象
-     * @params int  id      数据：记录ID
-     * @params str  field   要切换状态的字段名称
-     * @params str  url     要提交的URL，默认使用 列表的基础URL + '?act=ufield'
-     * @params obj  callbacks      回调函数
-     *         fun  callbacks.ok   处理成功时回调的函数
-     *         fun  callbacks.fail 处理失败时回调的函数
+     * @params obj  caller   调用者对象
+     * @params int  id       数据：记录ID
+     * @params str  field    要切换状态的字段名称
+     * @params obj  configs  配置集
+     *         fun           configs.ok    处理成功时回调的函数(不与默认的重载列表事件同时执行)
+     *         str           configs.url   要提交的URL，默认使用 列表的基础URL + '?act=ufield'
+     *         fun           configs.fail  处理失败时回调的函数
      */
-    toggle : function( caller, id, field, url, callbacks ){
+    toggle : function( caller, id, field, configs ){
         /* 正在处理中 */
         if( caller.className == 'do' ) return false;
+
+        /* 初始化 */
+        configs = typeof(configs) == 'object' && configs ? configs : {};
 
         /* 切换后的值 */
         var val = caller.className == 'yes' ? 0 : 1;
@@ -503,8 +510,8 @@ var ListTable = {
         caller.className = 'do';
 
         /* 初始化URL */
-        url = typeof(url) == 'string' && url ? url : '?act=ufield';
-        if( url.substr(0,1) == '?' ) url = ListTable.oCfgs[ListTable.sId].sUrl + url;
+        configs.url = typeof(configs.url) == 'string' && configs.url ? configs.url : '?act=ufield';
+        if( configs.url.substr(0,1) == '?' ) configs.url = ListTable.oCfgs[ListTable.sId].sUrl + configs.url;
 
         /* 构建参数 */
         var params = 'val='+ val +'&id='+ id +'&field='+ field;
@@ -518,7 +525,7 @@ var ListTable = {
                     caller.className = result.content === '' ? (val?'yes':'no') : (result.content==1?'yes':'no');
 
                     /* 函数回调 */
-                    if( callbacks && typeof(callbacks.ok) == 'function' ) callbacks.ok(caller);
+                    if( typeof(configs.ok) == 'function' ) configs.ok(caller);
                 }
                 /* 处理出错，恢复原状态 */
                 else{
@@ -526,7 +533,7 @@ var ListTable = {
                     caller.className = val ? 'no' : 'yes';
 
                     /* 函数回调 */
-                    if( callbacks && typeof(callbacks.fail) == 'function' ) callbacks.fail(caller);
+                    if( typeof(configs.fail) == 'function' ) configs.fail(caller);
                 }
             }
 
@@ -535,7 +542,7 @@ var ListTable = {
         }
 
         /* 异步传输(异步等待) */
-        Ajax.call(url, params, ajax_callback, 'POST', 'JSON', true, true);
+        Ajax.call(configs.url, params, ajax_callback, 'POST', 'JSON', true, true);
     },
 
     /**
@@ -543,59 +550,51 @@ var ListTable = {
      * 数据为 ListTable.oCfgs[ListTable.sId].oChoiced 中的ID值
      * 默认提交 act,ids[] 参数以及附加参数
      *
-     * @params obj  caller  调用者对象
-     * @params str  url     要提交的URL，默认使用 列表的基础URL + url(如果url的格式为'?xx=xx&...')
-     * @params obj  params  附加参数{$param:$value}
-     * @params str  msg     消息提示，如果没填则表示不提示消息。
-     *                      消息中的%d将会被转换为批处理记录个数
-     * @params obj  callbacks      回调函数
-     *         fun  callbacks.ok   处理成功时回调的函数
-     *         fun  callbacks.fail 处理失败时回调的函数
+     * @params obj  caller   调用者对象
+     * @params str  url      要提交的URL，默认使用 列表的基础URL + url(如果url的格式为'?xx=xx&...')
+     * @params obj  configs  编辑记录时配置
+     *         obj           configs.params   附加参数{$param:$value}
+     *         str           configs.confirm  消息提示，如果没填则表示不提示消息。
+     *                                        消息中的%d将会被转换为批处理记录个数
      */
-    batch : function( caller, url, params, msg, callbacks ){
+    batch : function( caller, url, configs ){
+        /* 初始化 */
+        configs = typeof(configs) == 'object' && configs ? configs : {};
+
         /* 补全URL */
         if( url.substr(0,1) == '?' ) url = ListTable.oCfgs[ListTable.sId].sUrl + url;
-
-        /* 初始化附加属性 */
-        if( typeof(params) != 'object' || !params ) params={};
 
         /* 初始化 */
         var count = 0, param = '';
 
         /* 构建记录IDS参数 */
-        if( typeof(params) == 'object' && params ){
-            for( var id in this.oCfgs[this.sId].oChoiced ){
-                param += '&ids[]='+id; count++;
-            }
+        for( var id in this.oCfgs[this.sId].oChoiced ){
+            param += '&ids[]='+id; count++;
         }
 
         /* 无记录提示 */
-        if( count == 0 ){
-            wnd_alert('请选择记录！'); return false;
-        }
+        if( count == 0 ){ wnd_alert('请选择记录！'); return false; }
 
-        /* 确认提交提示 */
-        typeof(msg) == 'string' && msg ? wnd_confirm(msg.replace('%d', count), {'ok':callback}) : callback();
-
-        function callback(){
+        /* 回调函数 */
+        function confirm_callback(){
             /* 增加附加参数 */
-            for( var i in params ){
-                param += '&'+ i +'='+ encodeURIComponent(params[i]);
+            if( typeof(configs.params) == 'object' && configs.params ){
+                for( var i in params ){
+                    param += '&'+ i +'='+ encodeURIComponent(params[i]);
+                }
             }
 
             /* 异步传输(同步等待) */
             var result = Ajax.call(url, param, null, 'POST', 'JSON', false);
 
             /* 显示消息 */
-            if( result.message ){
-                wnd_alert(result.message);
-            }
+            if( result.message ) wnd_alert(result.message);
 
             /* 处理成功 */
             if( result.error == 0 ){
                 /* 函数回调 */
-                if( callbacks && typeof(callbacks.ok) == 'function' ){
-                    callbacks.ok(caller);
+                if( typeof(configs.ok) == 'function' ){
+                    configs.ok(caller);
                 }
                 /* 重载列表(默认) */
                 else{
@@ -605,9 +604,12 @@ var ListTable = {
             /* 删除失败 */
             else{
                 /* 函数回调 */
-                if( callbacks && typeof(callbacks.fail) == 'function' ) callbacks.fail(caller);
+                if( typeof(configs.fail) == 'function' ) configs.fail(caller);
             }
         }
+
+        /* 确认提交提示 */
+        configs.confirm ? wnd_confirm(configs.confirm.replace('%d', count), {'ok':confirm_callback}) : confirm_callback();
     },
 
 
