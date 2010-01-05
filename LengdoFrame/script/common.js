@@ -15,14 +15,14 @@
 /* ------------------------------------------------------ */
 
 /**
- * 时间组合框 - 显示时间组件(需安装 JsCal2 组件)
+ * 时间组合框 - 显示时间选择器(需安装 JsCal2 插件)
  *
  * @params obj  caller   调用者对象
- * @params obj  configs  时间组件的配置
+ * @params obj  configs  时间选择器的配置
  */
 function timecbox_cal( caller, configs )
 {
-    /* 必要组件检测 */
+    /* 必要插件检测 */
     if( typeof(Calendar) != 'function' ){
         wnd_alert('Please Install "JsCal2" Plugin !'); return false;
     }
