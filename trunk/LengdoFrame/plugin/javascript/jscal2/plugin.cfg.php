@@ -1,22 +1,22 @@
 ﻿<?php
-/* 初始组件配置 */
+/* 初始插件配置 */
 $_PLUGIN_CFG = array();
 
 
-/* 设置组件配置 - 组件版本 */
+/* 设置插件配置 - 插件版本 */
 $_PLUGIN_CFG['ver']      = 'v1.7.0';
 
-/* 设置组件配置 - 组件标题 */
+/* 设置插件配置 - 插件标题 */
 $_PLUGIN_CFG['title']    = 'JSCal2 时间选择器';
 
-/* 设置组件配置 - 组件安装 */
+/* 设置插件配置 - 插件安装 */
 $_PLUGIN_CFG['install']   = array();
 $_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'js/jscal2.js' , 'type'=>'JS LOAD JS');
 $_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'js/lang/cn.js' , 'type'=>'JS LOAD JS');
 $_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'css/jscal2.css' , 'type'=>'JS LOAD CSS');
 
 
-/* 返回组件配置 */
+/* 返回插件配置 */
 return $_PLUGIN_CFG;
 ?>
 功能说明：
