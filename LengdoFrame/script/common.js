@@ -945,11 +945,11 @@ function ajax_iframe_attribs( attribs )
     attribs = typeof(attribs) == 'object' && attribs ? attribs : {};
 
     /* 移除，绑定 onload 属性 */
-    if( iframe.onload ){
-        window.ActiveXObject ? iframe.detachEvent('onload',iframe.onload) : iframe.removeEventListener('load',iframe.onload,true);
-    }
-    if( typeof(attribs.onload) == 'function' ){
-        window.ActiveXObject ? iframe.attachEvent('onload',attribs.onload) : iframe.addEventListener('load',attribs.onload,true);
+    if( window.ActiveXObject ){
+        iframe.detachEvent('onload',iframe.onclick);
+        iframe.attachEvent('onload',iframe.onclick=attribs.onload);
+    }else{
+        iframe.onload = attribs.onload;
     }
 
     /* 绑定 src 属性 */
