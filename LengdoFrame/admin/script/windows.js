@@ -520,13 +520,13 @@ function wnd_sysinfo_view()
 
 
 /* ------------------------------------------------------ */
-// - 系统模块 - 系统组件
+// - 系统模块 - 插件管理
 /* ------------------------------------------------------ */
 
 /**
- * 系统组件查看
+ * 插件列表
  */
-function wnd_sysplugin_view()
+function wnd_sysplugin_list()
 {
     /* 初始化 */
     var url = 'modules/sys/sysplugin.php';
@@ -534,18 +534,18 @@ function wnd_sysplugin_view()
 
     /* 构建窗口 */
     if( !wnd ){
-        wnd = new Wnd('wnd-sysplugin-view', {'complete':wnd_sysplugin_view_complete}, {'width':700});
+        wnd = new Wnd('wnd-sysplugin-view', {'complete':wnd_sysplugin_list_complete}, {'width':700});
         wnd.create();
     }
 
     /* 初始化参数 */
-    wnd.title('系统组件');
+    wnd.title('插件列表');
     wnd.inner(url, 'url json');
 
     wnd.show();
     wnd.buttonActive('ok', function(e){if(e.keyCode==27)this.cannel()});
 }
-function wnd_sysplugin_view_complete( result, text )
+function wnd_sysplugin_list_complete( result, text )
 {
     var wnd = Wnds.find('wnd-sysplugin-view');
 
@@ -563,7 +563,7 @@ function wnd_sysplugin_view_complete( result, text )
 }
 
 /**
- * 系统组件安装
+ * 插件安装
  */
 function deal_sysplugin_install()
 {
@@ -584,11 +584,11 @@ function deal_sysplugin_install()
         Ajax.call(url+act, null, ajax_callback, 'GET', 'TEXT');
     }
 
-    wnd_confirm('确认安装所有组件？', {'ok':confirm_callback});
+    wnd_confirm('确认安装所有插件？', {'ok':confirm_callback});
 }
 
 /**
- * 系统组件卸载
+ * 插件卸载
  */
 function deal_sysplugin_uninstall()
 {
@@ -609,7 +609,7 @@ function deal_sysplugin_uninstall()
         Ajax.call(url+act, null, ajax_callback, 'GET', 'TEXT');
     }
 
-    wnd_confirm('确认卸载所有组件？', {'ok':confirm_callback});
+    wnd_confirm('确认卸载所有插件？', {'ok':confirm_callback});
 }
 
 

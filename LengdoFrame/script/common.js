@@ -11,7 +11,7 @@
 
 
 /* ------------------------------------------------------ */
-// - 常规组件函数 - 组合框 - 时间组合框
+// - 系统组件函数 - 组合框 - 时间组合框
 /* ------------------------------------------------------ */
 
 /**
@@ -50,7 +50,7 @@ function timecbox_cal( caller, configs )
 
 
 /* ------------------------------------------------------ */
-// - 常规组件函数 - 组合框 - 文件组合框
+// - 系统组件函数 - 组合框 - 文件组合框
 /* ------------------------------------------------------ */
 
 /**
@@ -240,7 +240,7 @@ function filecbox_uploaded_del( caller, url, configs )
 
 
 /* ------------------------------------------------------ */
-// - 常规组件函数 - 组合框 - 数字步长组合框
+// - 系统组件函数 - 组合框 - 数字步长组合框
 /* ------------------------------------------------------ */
 
 /**
@@ -290,7 +290,7 @@ function numscbox_calc_float( num, step )
 
 
 /* ------------------------------------------------------ */
-// - 常规组件函数 - 组合框 - 按钮效果
+// - 系统组件函数 - 组合框 - 按钮效果
 /* ------------------------------------------------------ */
 
 /**
@@ -311,11 +311,11 @@ function combobox_mouseover( obj )
 
 
 /* ------------------------------------------------------ */
-// - 常规组件函数 - Tag Title
+// - 系统组件函数 - 标签标题
 /* ------------------------------------------------------ */
 
 /**
- * 显示 Tag Title 层
+ * 显示标签标题层
  *
  * @params obj  event    兼容事件对象
  * @params str  title    显示的标题
@@ -361,7 +361,7 @@ function tagtitle( event, title, configs )
 }
 
 /**
- * 初始化 Tag Title 层
+ * 初始化标签标题层
  */
 function tagtitle_init( configs )
 {
@@ -386,7 +386,7 @@ function tagtitle_init( configs )
 }
 
 /**
- * 返回鼠标的坐标
+ * 返回鼠标的当前坐标
  */
 function tagtitle_mouse( e )
 {
@@ -398,7 +398,7 @@ function tagtitle_mouse( e )
 
 
 /* ------------------------------------------------------ */
-// - 常规组件函数 - Tabbar
+// - 系统组件函数 - Tabbar
 /* ------------------------------------------------------ */
 
 /**
@@ -521,7 +521,7 @@ function tabbar_tabitem_width_init( caller, tabitems_id )
 
 
 /* ------------------------------------------------------ */
-// - 常规组件函数 - 树型表格
+// - 系统组件函数 - 树型表格
 /* ------------------------------------------------------ */
 
 /**
@@ -592,7 +592,7 @@ function tabletree_click( obj )
 
 
 /* ------------------------------------------------------ */
-// - 系统窗口 - 需加载 window.js
+// - 系统组件函数 - 系统窗口
 /* ------------------------------------------------------ */
 
 /**
@@ -712,7 +712,7 @@ function wnd_wait_clear()
 
 
 /* ------------------------------------------------------ */
-// - 页面加载中功能函数
+// - 系统组件函数 - 页面加载
 /* ------------------------------------------------------ */
 
 function webpage_load_show()
@@ -727,7 +727,7 @@ function webpage_load_hide()
 
 
 /* ------------------------------------------------------ */
-// - 表单功能函数 - 部分函数需加载 window.js
+// - 系统组件函数 - 表单功能
 /* ------------------------------------------------------ */
 
 /**
@@ -764,7 +764,7 @@ function form_params_build( form )
 
 
 /* ------------------------------------------------------ */
-// - 窗口表单功能函数 - 需加载 window.js
+// - 系统组件函数 - 窗口表单功能
 /* ------------------------------------------------------ */
 
 /**
@@ -807,8 +807,37 @@ function deal_wfm_keyboard( event, wndele )
 
 
 /* ------------------------------------------------------ */
-// - 表单异步提交完全模拟
+// - 系统组件函数 - 表单异步提交完全模拟
 /* ------------------------------------------------------ */
+
+/**
+ * 初始化模拟异步提交表单数据
+ *
+ * @params obj  form     表单对象
+ * @params str  url      提交的URL地址
+ * @params obj  configs  完成后回调
+ *         str           configs.rtype     响应的数据类型，JSON(默认) TEXT
+ *         fun           configs.complete  完成时回调的函数
+ */
+function ajax_form_init( form, url, configs )
+{
+    /* 初始化 */
+    configs = typeof(configs) == 'object' && configs ? configs : {};
+
+	/* 获取IFRAME */
+	var iframe = ajax_iframe();
+    
+    /* 设置IFRAME加载函数 */
+    ajax_iframe_attribs( {'onload':function(){ajax_form_complete(form,url,configs)}} )
+
+    /* 初始化表单参数 */
+    form.action   = url;
+	form.target   = iframe.name;
+
+    /* 初始化表单常量 */
+    form.method   = 'post';
+	form.encoding = 'multipart/form-data';
+}
 
 /**
  * 模拟异步提交表单
@@ -838,35 +867,6 @@ function ajax_form_submit( form, url, configs )
     
     /* 提交表单 */
     submit.click();
-}
-
-/**
- * 初始化模拟异步提交表单数据
- *
- * @params obj  form     表单对象
- * @params str  url      提交的URL地址
- * @params obj  configs  完成后回调
- *         str           configs.rtype     响应的数据类型，JSON(默认) TEXT
- *         fun           configs.complete  完成时回调的函数
- */
-function ajax_form_init( form, url, configs )
-{
-    /* 初始化 */
-    configs = typeof(configs) == 'object' && configs ? configs : {};
-
-	/* 获取IFRAME */
-	var iframe = ajax_iframe();
-    
-    /* 设置IFRAME加载函数 */
-    ajax_iframe_attribs( {'onload':function(){ajax_form_complete(form,url,configs)}} )
-
-    /* 初始化表单参数 */
-    form.action   = url;
-	form.target   = iframe.name;
-
-    /* 初始化表单常量 */
-    form.method   = 'post';
-	form.encoding = 'multipart/form-data';
 }
 
 /**
@@ -905,7 +905,7 @@ function ajax_form_complete( form, url, configs )
 
 
 /* ------------------------------------------------------ */
-// - 模拟异步IFRAME
+// - 系统组件函数 - 模拟异步IFRAME
 /* ------------------------------------------------------ */
 
 /**
@@ -1001,7 +1001,8 @@ function f_html_match( match )
 
 
 /* ------------------------------------------------------ */
-// - 开启IE6下背景缓存
+// - 系统优化
 /* ------------------------------------------------------ */
 
+/* 开启IE6下背景缓存 */
 try{ document.execCommand('BackgroundImageCache', false, true);  }catch(e){}
