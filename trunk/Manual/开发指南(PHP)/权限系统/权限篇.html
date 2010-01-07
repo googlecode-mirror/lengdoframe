@@ -25,7 +25,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <br /><br />
 
 <b id="lfm-privilege-add">1. 增加权限</b><br />
-<div style="margin-left:1.2em;">打开<a target="_blank" href="模块篇.html#lfm-module-mtree" style="color:#000;">模块菜单树</a>中的 "内核->权限管理" ，然后点击右上边的 "增加" 按钮打开增加权限的窗口(参见"图1")！</div>
+<div style="margin-left:1.2em;">打开<a target="_blank" href="模块篇.html#lfm-module-mtree" style="color:#333;">模块菜单树</a>中的 "内核->权限管理" ，然后点击右上边的 "增加" 按钮打开增加权限的窗口(参见"图1")！</div>
 <div style="text-align:center;padding:5px;"><img alt="图1" src="images/privilege_add.gif" style="border:1px solid #ccc;"></div>
 
 <div style="margin-left:1.2em;">
@@ -50,7 +50,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <br /><br />
 
 <b>2. 编辑、删除权限</b><br />
-<div style="margin-left:1.2em;">打开<a target="_blank" href="模块篇.html#lfm-module-mtree" style="color:#000;">模块菜单树</a>中的 "内核->权限管理" 操作即可！</div>
+<div style="margin-left:1.2em;">打开<a target="_blank" href="模块篇.html#lfm-module-mtree" style="color:#333;">模块菜单树</a>中的 "内核->权限管理" 操作即可！</div>
 
 <br /><br />
 
@@ -60,7 +60,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 
 <div style="margin-left:1.2em;">
     <a id="lfm-privilege-dev-valid-title" href="javascript:void(0)" onclick="var o=document.getElementById('lfm-privilege-dev-valid');o.style.display=o.style.display=='none'?'':'none';" style="font-weight:bold;color:#000">3.1 程序开发之 - 权限检查</a><br />
-    <div style="margin-left:2em;display:none;" id="lfm-privilege-dev-valid">
+    <div style="margin-left:2em;" id="lfm-privilege-dev-valid">
         权限检查，即检查当前管理员是否拥有对某模块的操作的权限。代码如下：<br />
         <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
             admin_privilege_valid($module_file, $module_act);
@@ -68,15 +68,15 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 
         说明：<br />
         <div style="margin-left:1.2em;">
-        1. $module_file 为<a target="_blank" href="模块篇.html#lfm-module-add" style="color:#000;">模块的处理文件</a>。<br />
-        2. $module_act 为<a href="javascript:void(0)" onclick="window.location.hash='lfm-privilege-add'" style="color:#000;">增加权限</a>时的操作代码<br />
+        1. $module_file 为<a target="_blank" href="模块篇.html#lfm-module-add" style="color:#333;">模块的处理文件</a>。<br />
+        2. $module_act 为<a href="javascript:void(0)" onclick="window.location.hash='lfm-privilege-add'" style="color:#333;">增加权限</a>时的操作代码<br />
         3. 例如：admin_privilege_valid('article.php','add') 表示检查当前管理是否拥有增加文章的权限
         </div>
         <br />
     </div>
 
     <a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-privilege-dev-pname');o.style.display=o.style.display=='none'?'':'none';" style="font-weight:bold;color:#000">3.2 程序开发之 - 权限名称</a><br />
-    <div style="margin-left:2em;display:none;" id="lfm-privilege-dev-pname">
+    <div style="margin-left:2em;" id="lfm-privilege-dev-pname">
         权限名称，模块操作页面的标题(参见"图3")，代码如下：<br />
         <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
             $tpl['title'] = admin_privilege_name_fk('article.php', 'list');
@@ -85,7 +85,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     </div>
 
     <a id="lfm-privilege-dev-titleact-title" href="javascript:void(0)" onclick="var o=document.getElementById('lfm-privilege-dev-titleact');o.style.display=o.style.display=='none'?'':'none';" style="font-weight:bold;color:#000">3.3 程序开发之 - 独立权限</a><br />
-    <div style="margin-left:2em;display:none;" id="lfm-privilege-dev-titleact">
+    <div style="margin-left:2em;" id="lfm-privilege-dev-titleact">
         独立权限，通常指那些不需要绑带数据行操作的权限。比如"增加"，"列表"等权限(参见"图3")。<br />
         独立权限的使用代码如下：<br />
         <br />
@@ -109,7 +109,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     </div>
 
     <a id="lfm-privilege-dev-bind-title" href="javascript:void(0)" onclick="var o=document.getElementById('lfm-privilege-dev-bind');o.style.display=o.style.display=='none'?'':'none';" style="font-weight:bold;color:#000">3.4 程序开发之 - 绑定权限</a><br />
-    <div style="margin-left:2em;display:none;" id="lfm-privilege-dev-bind">
+    <div style="margin-left:2em;" id="lfm-privilege-dev-bind">
         绑定权限，通常指那些需要绑定数据行操作的权限，比如"编辑","删除"等权限(参见"图3")。<br />
         绑定权限的使用代码如下：<br />
         <br />

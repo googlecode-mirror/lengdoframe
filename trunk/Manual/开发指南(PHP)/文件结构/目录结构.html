@@ -6,13 +6,15 @@
 </head>
 <style>
 body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
+</style>
 
-.lfm-dir-lvl a{ color:#000; }
+<style>
+.lfm-dir-lvl a{ color:#333; }
 
 .lfm-dir-struct{ width:100%; *width:auto; border-bottom:1px solid #F0F0F0; table-layout:fixed; border-collapse:collapse; }
 .lfm-dir-struct tr td{ height:25px; padding:0; border-bottom:1px solid #F0F0F0; border-top:1px solid #F0F0F0; font-size:12px; }
-.lfm-dir-struct tr.lvl1 td{ padding-left:2em; color:#000; }
-.lfm-dir-struct tr.lvl1 td a{ color:#000; }
+.lfm-dir-struct tr.lvl1 td{ padding-left:2em; color:#333; }
+.lfm-dir-struct tr.lvl1 td a{ color:#333; }
 .lfm-dir-struct tr.lvl2 td{ padding-left:3em; color:#333; }
 .lfm-dir-struct tr.lvl2 td a{ color:#333; }
 .lfm-dir-struct tr.lvl3 td{ padding-left:4em; color:#666; }
@@ -23,64 +25,6 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 .lfm-dir-struct tr.lvlf td{ color:#f00; }
 </style>
 
-<script>
-function struct_show( index )
-{
-    /* 初始化 */
-    var i, j, c;
-    var tracks = {};
-
-    var tbl = document.getElementById('lfm-dir-struct');
-    
-    for( i=1; i <= index; i++ ){
-        tracks['lvl'+i] = 1;
-        tracks['lvl'+i+' lvlf'] = 1;
-    }
-
-    for( i=0,j=tbl.rows.length; i < j ; i++ ){
-        c = tbl.rows[i].className;
-
-        if( !c ) continue;
-
-        if( tracks[c] ){
-            tbl.rows[i].style.display = '';
-            tbl.rows[i].style.backgroundColor = c.indexOf('lvl'+index) == 0 && index > 1 ? '#FAFAFA' : '#FFFFFF';
-        }else{
-            tbl.rows[i].style.display = 'none';
-            tbl.rows[i].style.backgroundColor = '#FFFFFF';
-        }
-    }
-}
-
-function struct_expand( caller )
-{
-    var tr  = caller.parentNode.parentNode;
-    var lvl = 'lvl'+(tr.className.substr(3)*1+1);
-    var tbl = document.getElementById('lfm-dir-struct');
-
-    var flag = false;
-    var display = '';
-
-    for( var i=0,j=tbl.rows.length; i < j ; i++ ){
-        /* 标记并设置显示/隐藏 */
-        if( tbl.rows[i] == tr ){
-            flag = true;
-            display = tbl.rows[i+1] && tbl.rows[i+1].style.display ? '' : 'none';
-
-            continue;
-        }
-
-        /* 跳过 */
-        if( flag == false ) continue;
-
-        /* 跳出 */
-        if( tbl.rows[i].className < lvl ) break;
-
-        /* 设置显示/隐藏 */
-        tbl.rows[i].style.display = tbl.rows[i].className.indexOf(lvl) == 0 ? display : 'none';
-    }
-}
-</script>
 <body style="width:1000px;">
 
 
@@ -492,8 +436,67 @@ function struct_expand( caller )
     <td>前台首页</td>
 </tr>
 </table>
-<script>struct_show(1)</script>
 
+<script>
+function struct_show( index )
+{
+    /* 初始化 */
+    var i, j, c;
+    var tracks = {};
+
+    var tbl = document.getElementById('lfm-dir-struct');
+    
+    for( i=1; i <= index; i++ ){
+        tracks['lvl'+i] = 1;
+        tracks['lvl'+i+' lvlf'] = 1;
+    }
+
+    for( i=0,j=tbl.rows.length; i < j ; i++ ){
+        c = tbl.rows[i].className;
+
+        if( !c ) continue;
+
+        if( tracks[c] ){
+            tbl.rows[i].style.display = '';
+            tbl.rows[i].style.backgroundColor = c.indexOf('lvl'+index) == 0 && index > 1 ? '#FAFAFA' : '#FFFFFF';
+        }else{
+            tbl.rows[i].style.display = 'none';
+            tbl.rows[i].style.backgroundColor = '#FFFFFF';
+        }
+    }
+}
+
+function struct_expand( caller )
+{
+    var tr  = caller.parentNode.parentNode;
+    var lvl = 'lvl'+(tr.className.substr(3)*1+1);
+    var tbl = document.getElementById('lfm-dir-struct');
+
+    var flag = false;
+    var display = '';
+
+    for( var i=0,j=tbl.rows.length; i < j ; i++ ){
+        /* 标记并设置显示/隐藏 */
+        if( tbl.rows[i] == tr ){
+            flag = true;
+            display = tbl.rows[i+1] && tbl.rows[i+1].style.display ? '' : 'none';
+
+            continue;
+        }
+
+        /* 跳过 */
+        if( flag == false ) continue;
+
+        /* 跳出 */
+        if( tbl.rows[i].className < lvl ) break;
+
+        /* 设置显示/隐藏 */
+        tbl.rows[i].style.display = tbl.rows[i].className.indexOf(lvl) == 0 ? display : 'none';
+    }
+}
+
+struct_show(1);
+</script>
 
 
 </body>
