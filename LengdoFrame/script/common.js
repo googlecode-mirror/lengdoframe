@@ -19,6 +19,7 @@
  *
  * @params obj  caller   调用者对象
  * @params obj  configs  时间选择器的配置
+ *         str           configs.format  时间格式
  */
 function timecbox_cal( caller, configs )
 {
@@ -40,7 +41,13 @@ function timecbox_cal( caller, configs )
 
     /* 显示时分 */
     if( configs.format.indexOf(' %H:%M') >= 0 ){
-        window.TIMECBOX_TIME_SELECTER.args.showTime = true;
+        if( window.TIMECBOX_TIME_SELECTER.args.showTime == false ){
+            window.TIMECBOX_TIME_SELECTER.args.showTime = true;
+            window.TIMECBOX_TIME_SELECTER.redraw();
+        }
+    }
+    else if( window.TIMECBOX_TIME_SELECTER.args.showTime == true ){
+        window.TIMECBOX_TIME_SELECTER.args.showTime = false;
         window.TIMECBOX_TIME_SELECTER.redraw();
     }
 
