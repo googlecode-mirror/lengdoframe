@@ -61,9 +61,9 @@ elseif( $_REQUEST['act'] == 'insert' ){
 
     /* 参照信息 */
     $filter = array();
-    $filter['table']   = tname('role');
-    $filter['info_p']  = $info_p;
-    $filter['primary'] = 'role_id';
+    $filter['table']       = tname('role');    
+    $filter['primary']     = 'role_id';
+    $filter['parent_info'] = $info_p;
 
     /* 数据写入 */
     if( lrtree_insert($fields, $filter) ){

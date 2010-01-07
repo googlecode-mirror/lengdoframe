@@ -16,19 +16,19 @@
  * 
  * @params arr  $fields  要写入的数据
  * @params arr  $filter  过滤条件
- *         str  $filter['table']      前序遍历树的数据表
- *         str  $filter['where']      附加的过滤信息
- *         str  $filter['primary']    主键的字段名
- *         int  $filter['parent_id']  父节点ID
- *         arr  $filter['info_p']     父节点信息
+ *         str           $filter['table']       前序遍历树的数据表
+ *         str           $filter['where']       附加的过滤信息
+ *         str           $filter['primary']     主键的字段名
+ *         int           $filter['parent_id']   父节点ID
+ *         arr           $filter['parent_info'] 父节点信息
  *
  * @return bol  true表示写入成功，false表示写入失败
  */
 function lrtree_insert( $fields, $filter )
 {
     /* 父节点信息 */
-    if( is_array($filter['info_p']) && !empty($filter['info_p']) ){
-        $info_p = $filter['info_p'];
+    if( is_array($filter['parent_info']) && !empty($filter['parent_info']) ){
+        $info_p = $filter['parent_info'];
     }else{
         $sql = 'SELECT * FROM '. $filter['table'] .' WHERE '. $filter['primary'] .'='. $filter['parent_id'];
         $info_p = $GLOBALS['db']->getRow($sql);
@@ -59,9 +59,9 @@ function lrtree_insert( $fields, $filter )
  * 改进的前序遍历树删除
  * 
  * @params arr  $filter  过滤条件
- *         arr  $filter['info']   信任的树信息
- *         str  $filter['table']  前序遍历树的数据表
- *         str  $filter['where']  附加的过滤信息
+ *         arr           $filter['info']   信任的树信息
+ *         str           $filter['table']  前序遍历树的数据表
+ *         str           $filter['where']  附加的过滤信息
  *
  * @return bol  true表示删除成功，false表示删除失败
  */
@@ -101,10 +101,10 @@ function lrtree_del( $filter )
  * 改进的前序遍历树上移
  * 
  * @params arr  $filter  过滤条件
- *         str  $filter['table']       前序遍历树的数据表
- *         str  $filter['where']       附加的过滤信息
- *         str  $filter['primary']     主键的字段名
- *         arr  $filter['primary_id']  主键的字段值
+ *         str           $filter['table']       前序遍历树的数据表
+ *         str           $filter['where']       附加的过滤信息
+ *         str           $filter['primary']     主键的字段名
+ *         arr           $filter['primary_id']  主键的字段值
  *
  * @return bol  true表示移动成功，false表示移动失败 
  */
@@ -154,10 +154,10 @@ function lrtree_umove( $filter )
  * 改进的前序遍历树下移
  * 
  * @params arr  $filter  过滤条件
- *         str  $filter['table']       前序遍历树的数据表
- *         str  $filter['where']       附加的过滤信息
- *         str  $filter['primary']     主键的字段名
- *         arr  $filter['primary_id']  主键的字段值
+ *         str           $filter['table']       前序遍历树的数据表
+ *         str           $filter['where']       附加的过滤信息
+ *         str           $filter['primary']     主键的字段名
+ *         arr           $filter['primary_id']  主键的字段值
  *
  * @return bol  true表示移动成功，false表示移动失败
  */
