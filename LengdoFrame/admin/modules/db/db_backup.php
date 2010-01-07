@@ -242,7 +242,7 @@ elseif( $_REQUEST['act'] == 'upload' ){
 
     /* 将文件移动到备份文件夹下 */
     if( !move_uploaded_file($_FILES['file']['tmp_name'],$fpath) ){
-        make_json_fail($_LANG['file_move_fail']);
+        make_json_fail($_LANG['file_mov_fail']);
     }
 
     /* 导入SQL文件 */

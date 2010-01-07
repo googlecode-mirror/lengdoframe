@@ -100,7 +100,7 @@ KE.setting = {
 	resizeMode : 2,
 	filterMode : false,
 	urlType : 'relative',
-	skinType : 'oxygen',
+	skinType : 'tinymce',
 	newlineTag : 'br',
 	cssPath : '',
 	skinsPath : KE.scriptPath + 'skins/',
