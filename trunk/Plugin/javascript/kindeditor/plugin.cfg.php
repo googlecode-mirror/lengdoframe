@@ -4,14 +4,14 @@ $_PLUGIN_CFG = array();
 
 
 /* 设置插件配置 - 插件版本 */
-$_PLUGIN_CFG['ver']      = 'v3.4.0';
+$_PLUGIN_CFG['ver']       = 'v3.4.0';
 
 /* 设置插件配置 - 插件标题 */
-$_PLUGIN_CFG['title']    = 'Kindeditor编辑器';
+$_PLUGIN_CFG['title']     = 'Kindeditor编辑器';
 
 /* 设置插件配置 - 插件安装 */
 $_PLUGIN_CFG['install']   = array();
-$_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'kindeditor.js' , 'type'=>'JS LOAD JS');
+$_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'kindeditor.js' , 'type'=>'LOAD');
 
 
 /* 返回插件配置 */

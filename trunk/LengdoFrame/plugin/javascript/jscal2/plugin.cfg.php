@@ -4,16 +4,16 @@ $_PLUGIN_CFG = array();
 
 
 /* 设置插件配置 - 插件版本 */
-$_PLUGIN_CFG['ver']      = 'v1.7.0';
+$_PLUGIN_CFG['ver']       = 'v1.7.0';
 
 /* 设置插件配置 - 插件标题 */
-$_PLUGIN_CFG['title']    = 'JSCal2 时间选择器';
+$_PLUGIN_CFG['title']     = 'JSCal2 时间选择器';
 
 /* 设置插件配置 - 插件安装 */
 $_PLUGIN_CFG['install']   = array();
-$_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'js/jscal2.js' , 'type'=>'JS LOAD JS');
-$_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'js/lang/cn.js' , 'type'=>'JS LOAD JS');
-$_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'css/jscal2.css' , 'type'=>'JS LOAD CSS');
+$_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'js/jscal2.js' , 'type'=>'LOAD');
+$_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'js/lang/cn.js' , 'type'=>'LOAD');
+$_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'css/jscal2.css' , 'type'=>'LOAD');
 
 
 /* 返回插件配置 */

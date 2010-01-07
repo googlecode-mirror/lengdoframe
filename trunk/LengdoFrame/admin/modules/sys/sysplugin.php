@@ -42,10 +42,10 @@ $_CFG['TMP_PLUGIN_HEADER_PREG'].= "\/\* [^ ]* \*\/\\r\\n";
 $_CFG['TMP_PLUGIN_FOOTER_PREG'] = "\/\/ \- LengdoFrame Plugin Codes EOF";
 
 /* 插件代码首尾标识字符 */
-$_CFG['TMP_PLUGIN_ID_HEADER']      = "\r\n\r\n";
-$_CFG['TMP_PLUGIN_ID_HEADER']     .= "// LengdoFrame Plugin Code Header #Id %s[Install:%s]\r\n";
-$_CFG['TMP_PLUGIN_ID_FOOTER']      = "\r\n";
-$_CFG['TMP_PLUGIN_ID_FOOTER']     .= "// LengdoFrame Plugin Code Footer #Id %s[Install:%s]";
+$_CFG['TMP_PLUGIN_ID_HEADER']   = "\r\n\r\n";
+$_CFG['TMP_PLUGIN_ID_HEADER']  .= "// LengdoFrame Plugin Code Header #Id %s[Install:%s]\r\n";
+$_CFG['TMP_PLUGIN_ID_FOOTER']   = "\r\n";
+$_CFG['TMP_PLUGIN_ID_FOOTER']  .= "// LengdoFrame Plugin Code Footer #Id %s[Install:%s]";
 
 
 /* ------------------------------------------------------ */
@@ -158,7 +158,7 @@ function list_plugin()
  */
 function valid_plugin( $plugin )
 {
-    global $_CFG;
+    global $_CFG, $_LANG;
 
     /* 初始化 */
     $errors = array();
@@ -166,7 +166,7 @@ function valid_plugin( $plugin )
     /* 插件安装配置检查 */
     if( !is_array($plugin['install']) ){
         /* 安装配置变量有效性检查 */
-        $errors[] = '无法找到插件的安装配置';
+        $errors[] = $_LANG['fail_plugin_config_unfind'];
     }else{
         /* 安装配置文件有效性检查 */
         foreach( $plugin['install'] AS $i=>$install ){
@@ -175,21 +175,21 @@ function valid_plugin( $plugin )
 
             /* 无效的插件文件 */
             if( !is_file($install['src_fpath']) ){
-                $errors[] = '无法找到插件文件 '. $install['src_fpath'];
+                $errors[] = $_LANG['fail_plugin_pfile_unfind'] .' '. $install['src_fpath'];
             }
             elseif( file_get_contents($install['src_fpath']) === false ){
-                $errors[] = '无权读取插件文件 '. $install['src_fpath'];
+                $errors[] = $_LANG['fail_plugin_pfile_unwrite'] .' '. $install['src_fpath'];
             }
 
             /* 无效的安装文件 */
             if( !in_array($install['fpath'],$_CFG['TMP_INSTALL_FILES']) ){ 
-                $errors[] = '不允许的安装文件 '. $install['fpath'];
+                $errors[] = $_LANG['fail_plugin_ifile_unallow'] .' '. $install['fpath'];
             }
             elseif( !is_file($install['fpath']) ){
-                $errors[] = '无法找到安装文件 '. $install['fpath'];
+                $errors[] = $_LANG['fail_plugin_ifile_unfind'] .' '. $install['fpath'];
             }
             elseif( (file_privilege($install['fpath'])&7) != 7 ){
-                $errors[] = '无权读写安装文件 '. $install['fpath'];
+                $errors[] = $_LANG['fail_plugin_ifile_unwrite'] .' '. $install['fpath'];
             }
         }
     }
@@ -287,16 +287,17 @@ function install_plugins_codes( $plugins )
 
             /* 获取并重构插件文件的代码 - 页眉代码 */
             $code_plugin = sprintf($_CFG['TMP_PLUGIN_ID_HEADER'],$_CFG['URL_PLUGIN'].$plugin['folder'],$ii);
-            
+
             /* 获取并重构插件文件的代码 - 主要代码 */
-            if( $install['type'] == 'JS LOAD JS' ){
-                $code_plugin.= "document.write('<script type=\"text/javascript\" src=\"".$install['src_upath']."\"></script>');";
-            }
-            elseif( $install['type'] == 'JS LOAD CSS' ){
-                $code_plugin.= "document.write('<link rel=\"stylesheet\" type=\"text/css\" href=\"".$install['src_upath']."\">');";
-            }
-            else{
-                $code_plugin.= trim(file_get_contents($install['fpath']),"\r\n ");
+            switch( install_type($install) ){
+                /* 安装类型：JS文件加载JS文件 */
+                case 'JS LOAD JS'  : $code_plugin.= 'document.write(\'<script type="text/javascript" src="'. $install['src_upath'] .'"></script>\');'; break;
+
+                /* 安装类型：JS文件加载CSS文件 */
+                case 'JS LOAD CSS' : $code_plugin.= 'document.write(\'<link rel="stylesheet" type="text/css" href="'. $install['src_upath'] .'">\');'; break;
+
+                /* 安装类型：默认 */
+                default : $code_plugin.= trim(file_get_contents($install['fpath']),"\r\n "); break;
             }
 
             /* 获取并重构插件文件的代码 - 页脚代码 */
@@ -344,5 +345,21 @@ function uninstall_plugins()
         /* 删除插件代码集 */
         @file_put_contents($fpath_install, preg_replace($preg,'',$code_install));
     }
+}
+
+
+/**
+ * 构建安装类型码
+ *
+ * @params arr  $install  安装信息
+ */
+function install_type( $install )
+{
+    /* 获取安装文件扩展名和插件文件扩展名 */
+    $fext = substr($install['fpath'], strrpos($install['fpath'],'.')+1);
+    $sext = substr($install['src'], strrpos($install['src'],'.')+1);
+    
+    /* 返回安装类型码 */
+    return strtoupper($fext.' '.$install['type'].' '.$sext);
 }
 ?>
