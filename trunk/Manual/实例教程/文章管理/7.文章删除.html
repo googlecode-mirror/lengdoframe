@@ -21,7 +21,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <b id="lfm-article-mdel-code-title">1. 文章删除的模块文件</b>
 <div style="margin-left:1.2em;">
     <div style="text-indent:2em;">
-        在<a target="_blank" href="5.文章列表.html#lfm-article-mlist-code-title" style="color:#000">文章列表</a>中我们已经给删除按钮提供触发接口，参见第29行的ListTable.del()函数;
+        在<a target="_blank" href="5.文章列表.html#lfm-article-mlist-code-title" style="color:#333">文章列表</a>中我们已经给删除按钮提供触发接口，参见第29行的ListTable.del()函数;
     </div>
     <div style="text-indent:2em;">
         ListTable.del()是一个javascript函数，该函数会自动默认提交'act'=del&id=xxx'参数到服务器端，服务器端编写方法如下：
@@ -30,7 +30,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <br />
 
     <div style="text-indent:2em;">
-        拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-article-mdel-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>模块文件 /admin/modules/article/article.php
+        拷贝<a href="javascript:void(0)" style="color:#333;" onclick="var o=document.getElementById('lfm-article-mdel-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>模块文件 /admin/modules/article/article.php
     </div>
 
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
@@ -50,7 +50,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 51<br />52<br />53
             </td>
             <td>
-                &lt;?php<br />
+                <script>document.write('&l'+'t;')</script>?php<br />
                 /* 文件加载 */<br />
                 require('../../includes/init.php');<br />
                 require('../../includes/lib_article.php');<br />
@@ -114,13 +114,13 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                         // <a target="_blank" href="5.文章列表.html#lfm-article-mlist-code-title" style="color:#666;">列表的模块文件代码</a>
                     </div>
                 }<br />
-                ?&gt;<br />
+                ?<script>document.write('&g'+'t;')</script><br />
                 <br />
-                &lt;?php<br />
+                <script>document.write('&l'+'t;')</script>?php<br />
                     <div style="margin-left:2em;">
                         // <a target="_blank" href="6.文章增编.html#lfm-article-mfillfunc-code-title" style="color:#666;">增编的相关辅助函数</a>
                     </div>
-                ?&gt;<br />
+                ?<script>document.write('&g'+'t;')</script><br />
             </td>
         </tr>
         </table>
@@ -145,14 +145,14 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <b id="lfm-article-mdel-code-title">2. 文章删除的库文件</b>
 <div style="margin-left:1.2em;">
     <div style="text-indent:2em;">
-        追加<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-article-ldel-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到库文件 /admin/includes/lib_article.php
+        追加<a href="javascript:void(0)" style="color:#333;" onclick="var o=document.getElementById('lfm-article-ldel-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到库文件 /admin/includes/lib_article.php
     </div>
 
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
         <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-article-ldel-code');o.style.display=o.style.display=='none'?'':'none'">View Code 2</a>
     </div>
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-article-ldel-code">
-        &lt;?php<br />
+        <script>document.write('&l'+'t;')</script>?php<br />
         /* 删除文章 */<br />
         function del_article( $filter )<br />
         {
@@ -172,7 +172,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 return array('error'=>1, 'message'=>$_LANG['fail_del']);
             </div>
         }<br />
-        ?&gt;<br />
+        ?<script>document.write('&g'+'t;')</script><br />
     </div>
 </div>
 

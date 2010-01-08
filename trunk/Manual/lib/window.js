@@ -361,21 +361,21 @@ Wnd.prototype.button = function( index, attrib, value ){
 /**
  * 增加控制区按钮
  *
- * @params obj  config  按钮配置
- *         str          config.text   按钮文字
- *         str          config.index  按钮索引
- *         fun          config.click  按钮单击事件
+ * @params obj  configs  按钮配置
+ *         str           configs.text   按钮文字
+ *         str           configs.index  按钮索引
+ *         fun           configs.click  按钮单击事件
  */
-Wnd.prototype.buttonAdd = function( config ){
+Wnd.prototype.buttonAdd = function( configs ){
     /* 初始化 */
-    if( typeof(config) != 'object' || !config ) return false;
-    if( typeof(config.index) != 'string' || !config.index ) return false;
+    if( typeof(configs) != 'object' || !configs ) return false;
+    if( typeof(configs.index) != 'string' || !configs.index ) return false;
 
     /* 已经存在的按钮 */
-    if( this.oControlBtns[config.index] ) return false;
+    if( this.oControlBtns[configs.index] ) return false;
 
     /* 创建按钮 */
-    this.createControlButton( {'index':config.index, 'text':config.text, 'click':config.click} );
+    this.createControlButton( {'index':configs.index, 'text':configs.text, 'click':configs.click} );
 }
 
 /**
@@ -823,7 +823,7 @@ Wnd.prototype.createTitle = function(){
 /**
  * 创建标题区按钮
  */
-Wnd.prototype.createTitleButton = function( config ){
+Wnd.prototype.createTitleButton = function( configs ){
     /* 初始化 */
     var self = this;
 
@@ -831,10 +831,10 @@ Wnd.prototype.createTitleButton = function( config ){
     var o = document.createElement('A');
 
     /* 设置A属性 */
-    o.className   = config.type;
+    o.className   = configs.type;
 
     o.href        = 'javascript:void(0)';
-    o.onclick     = function(e){ config.click.apply(self); }
+    o.onclick     = function(e){ configs.click.apply(self); }
     o.onmousedown = function(e){ try{window.event.cancelBubble=true;}catch(ex){e.stopPropagation();} }
 
     /* 写入DOM */
@@ -915,7 +915,7 @@ Wnd.prototype.createControl = function(){
 /**
  * 创建控制区按钮
  */
-Wnd.prototype.createControlButton = function( config ){
+Wnd.prototype.createControlButton = function( configs ){
     /* 初始化 */
     var self = this;
 
@@ -924,12 +924,12 @@ Wnd.prototype.createControlButton = function( config ){
 
     /* 设置INPUT属性 */
     o.type    = 'button';
-    o.value   = config.text;
-    o.onclick = function(){ config.click.apply(self) };
+    o.value   = configs.text;
+    o.onclick = function(){ configs.click.apply(self) };
 
     /* 写入DOM */
     this.oControl.appendChild(o);
-    this.oControlBtns[config.index] = o;
+    this.oControlBtns[configs.index] = o;
 }
 
 

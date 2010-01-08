@@ -47,8 +47,8 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <br />
 
     <div style="text-indent:2em;">
-        拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-article-mlist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到 
-        "文章列表"的<a target="_blank" href="4.文件创建及说明.html#lfm-article-file-module" style="color:#000;">模块文件</a> /admin/modules/article/article.php
+        拷贝<a href="javascript:void(0)" style="color:#333;" onclick="var o=document.getElementById('lfm-article-mlist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到 
+        "文章列表"的<a target="_blank" href="4.文件创建及说明.html#lfm-article-file-module" style="color:#333;">模块文件</a> /admin/modules/article/article.php
     </div>
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
         <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-article-mlist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a>
@@ -69,7 +69,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 71<br />72<br />73<br />74<br />75<br />76
             </td>
             <td>
-                &lt;?php<br />
+                <script>document.write('&l'+'t;')</script>?php<br />
                 /* 文件加载 */<br />
                 require('../../includes/init.php');<br />
                 require('../../includes/lib_article.php');<br />
@@ -93,7 +93,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                         $tpl['list'] = list_article();<br />
                         <br />
                         /* 文章列表 - 数据重构，绑定操作权限 */<br />
-                        foreach( $tpl['list']['data'] AS $i =&gt; $r ){
+                        foreach( $tpl['list']['data'] AS $i =<script>document.write('&g'+'t;')</script> $r ){
                             <div style="margin-left:2em;">
                                 /* 编辑操作 */<br />
                                 $attribs = array();<br />
@@ -157,7 +157,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 <br />
                 /* 加载视图 */<br />
                 include($_CFG['DIR_ADMIN_TPL'].'article.html');<br />
-                ?&gt;<br />
+                ?<script>document.write('&g'+'t;')</script><br />
             </td>
         </tr>
         </table>
@@ -198,7 +198,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 检查当前管理员是否拥有文章列表权限<br />
                 <br />
                 获取当前管理员拥有文章的所有权限<br />
-                在当前管理员拥有文章的所有权限中查找非增加、列表权限，用于<a target="_blank" href="../../开发指南(PHP)/权限系统/权限篇.html#lfm-privilege-dev-bind-title" style="color:#000">绑定权限</a><br />
+                在当前管理员拥有文章的所有权限中查找非增加、列表权限，用于<a target="_blank" href="../../开发指南(PHP)/权限系统/权限篇.html#lfm-privilege-dev-bind-title" style="color:#333">绑定权限</a><br />
                 <br />
                 获取文章列表数据<br />
                 循环遍历文章列表数据，重构数据，绑定权限<br />
@@ -214,7 +214,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 返回HTML代码<br />
                 <br />
                 设置读取视图文件 header.html 中 'title' 的HTML代码块（即"模块标题层"HTML代码块）<br />
-                在当前管理员拥有文章的所有权限中查找增加权限，用于<a target="_blank" href="../../开发指南(PHP)/权限系统/权限篇.html#lfm-privilege-dev-titleact-title" style="color:#000">独立权限</a><br />
+                在当前管理员拥有文章的所有权限中查找增加权限，用于<a target="_blank" href="../../开发指南(PHP)/权限系统/权限篇.html#lfm-privilege-dev-titleact-title" style="color:#333">独立权限</a><br />
                 设置增加操作的onclick属性，'add'代表权限操作码,'onclick'表示HTML的标签属性<br />
                 <br />
                 构建 "模块标题层" 的操作按钮(独立权限)，'btn'代表操作类型为按钮<br />
@@ -238,12 +238,12 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     </div>
     <br />
     <div style="text-indent:2em;">
-        追加<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-article-llist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="4.文件创建及说明.html#lfm-article-file-lib" style="color:#000;">库文件</a> /admin/includes/lib_article.php
+        追加<a href="javascript:void(0)" style="color:#333;" onclick="var o=document.getElementById('lfm-article-llist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="4.文件创建及说明.html#lfm-article-file-lib" style="color:#333;">库文件</a> /admin/includes/lib_article.php
     </div>
 
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;"><a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-article-llist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 2</a></div>
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-article-llist-code">
-        &lt;?php<br />
+        <script>document.write('&l'+'t;')</script>?php<br />
         /* 文章列表 */<br />
         function list_article()<br />
         {
@@ -290,7 +290,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 return $list;<br />
             </div>
         }<br />
-        ?&gt;<br />
+        ?<script>document.write('&g'+'t;')</script><br />
     </div>
 </div>
 
@@ -303,7 +303,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     </div>
     <br />
     <div style="text-indent:2em;">
-        拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-article-vlist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="4.文件创建及说明.html#lfm-article-file-view" style="color:#000;">视图文件</a> /admin/template/article.html
+        拷贝<a href="javascript:void(0)" style="color:#333;" onclick="var o=document.getElementById('lfm-article-vlist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="4.文件创建及说明.html#lfm-article-file-view" style="color:#333;">视图文件</a> /admin/template/article.html
     </div>
 
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
@@ -313,7 +313,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     </div>
 
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-article-vlist-code">
-        <table>
+        <table style="table-layout:fixed;">
         <tr>
             <td width="30">
                 1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />
@@ -321,82 +321,79 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 21<br />22<br />23<br />24<br />25<br />26<br />27<br />28<br />29<br />30<br />
                 31<br />32<br />33<br />34<br />35<br />36<br />37<br />38<br />39<br />40<br />
                 41<br />42<br />43<br />44<br />45<br />46<br />47<br />48<br />49<br />50<br />
-                51<br />52<br />53<br />54<br />55<br />56<br />57<br />58
+                51<br />52<br />53
             </td>
-            <td>
-                &lt;?php if( $tpl['_header'] ){ include($_CFG['DIR_ADMIN_TPL'].'header.html'); }?&gt;<br />
+            <td style="white-space:nowrap;">
+                <script>document.write('&l'+'t;')</script>?php if( $tpl['_header'] ){ include($_CFG['DIR_ADMIN_TPL'].'header.html'); }?<script>document.write('&g'+'t;')</script><br />
                 <br />
                 <br />
-                &lt;?php if( $tpl['_body'] == 'list' ){ ?&gt;
+                <script>document.write('&l'+'t;')</script>?php if( $tpl['_body'] == 'list' ){ ?<script>document.write('&g'+'t;')</script>
                     <div style="margin-left:2em;">
-                        &lt;?php if( $tpl['_bodysub'] != 'query' ){?&gt;<br />
-                        &lt;div class="listtable-div" id="listtable-article" onmouseover="ListTable.init(this.id,'modules/article/article.php','?act=list');"&gt;<br />
+                        <script>document.write('&l'+'t;')</script>?php if( $tpl['_bodysub'] != 'query' ){?<script>document.write('&g'+'t;')</script><br />
+                        <script>document.write('&l'+'t;')</script>div class="listtable-div" id="listtable-article" onmouseover="ListTable.init(this.id,'modules/article/article.php','?act=list');"<script>document.write('&g'+'t;')</script><br />
                             <div style="margin-left:2em;">
-                                &lt;form class="listtable-search" onsubmit="listtable_search(this);return false;"&gt;
+                                <script>document.write('&l'+'t;')</script>form class="listtable-search" onsubmit="listtable_search(this);return false;"<script>document.write('&g'+'t;')</script>
                                     <div style="margin-left:2em;">
-                                        &lt;table&gt;<br />
-                                        &lt;tr&gt;
+                                        <script>document.write('&l'+'t;')</script>table<script>document.write('&g'+'t;')</script><br />
+                                        <script>document.write('&l'+'t;')</script>tr<script>document.write('&g'+'t;')</script>
                                             <div style="margin-left:2em;">
-                                                &lt;td width="30"&gt;&lt;i class="icon"&gt;&lt;/i&gt;&lt;/td&gt;<br />
-                                                &lt;td width="45"&gt;&lt;h1&gt;标题：&lt;/h1&gt;&lt;/td&gt;<br />
-                                                &lt;td width="105"&gt;&lt;input type="text" name="title" style="width:100"&gt;&lt;/td&gt;<br />
-                                                &lt;td width="75"&gt;&lt;h1&gt;文章类别：&lt;/h1&gt;&lt;/td&gt;<br />
-                                                &lt;td&gt;&lt;?php echo $tpl['formc_article_cat']; ?&gt;&lt;/td&gt;<br />
-                                                &lt;td style="padding-left:15px;"&gt;
-                                                    <div style="margin-left:2em;">
-                                                        &lt;input type="submit" value="搜 索" class="submit"/&gt;&lt;input <br />
-                                                        &nbsp;type="button" class="flush" onmouseover="deal_combobox_mouseover(this)" onclick="ListTable.resetList()" title="初始化搜索"/&gt;
-                                                    </div>
-                                                &lt;/td&gt;
+                                                <script>document.write('&l'+'t;')</script>td width="30"<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>i class="icon"<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/i<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/td<script>document.write('&g'+'t;')</script><br />
+                                                <script>document.write('&l'+'t;')</script>td width="45"<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>h1<script>document.write('&g'+'t;')</script>标题：<script>document.write('&l'+'t;')</script>/h1<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/td<script>document.write('&g'+'t;')</script><br />
+                                                <script>document.write('&l'+'t;')</script>td width="105"<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>input type="text" name="title" style="width:100"<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/td<script>document.write('&g'+'t;')</script><br />
+                                                <script>document.write('&l'+'t;')</script>td width="75"<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>h1<script>document.write('&g'+'t;')</script>文章类别：<script>document.write('&l'+'t;')</script>/h1<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/td<script>document.write('&g'+'t;')</script><br />
+                                                <script>document.write('&l'+'t;')</script>td<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>?php echo $tpl['formc_article_cat']; ?<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/td<script>document.write('&g'+'t;')</script><br />
+                                                <script>document.write('&l'+'t;')</script>td style="padding-left:15px;"<script>document.write('&g'+'t;')</script>
+                                                    <script>document.write('&l'+'t;')</script>input type="submit" value="搜 索" class="submit"/<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>input type="button" class="flush" onmouseover="deal_combobox_mouseover(this)" onclick="ListTable.resetList()" title="初始化搜索"/<script>document.write('&g'+'t;')</script>
+                                                <script>document.write('&l'+'t;')</script>/td<script>document.write('&g'+'t;')</script>
                                             </div>
-                                        &lt;/tr&gt;<br />
-                                        &lt;/table&gt;
+                                        <script>document.write('&l'+'t;')</script>/tr<script>document.write('&g'+'t;')</script><br />
+                                        <script>document.write('&l'+'t;')</script>/table<script>document.write('&g'+'t;')</script>
                                     </div>
-                                &lt;/form&gt;<br />
+                                <script>document.write('&l'+'t;')</script>/form<script>document.write('&g'+'t;')</script><br />
                                 <br />
-                                &lt;div class="listtable-data"&gt;
+                                <script>document.write('&l'+'t;')</script>div class="listtable-data"<script>document.write('&g'+'t;')</script>
                             </div>
-                        &lt;?php }?&gt;<br /><br />
+                        <script>document.write('&l'+'t;')</script>?php }?<script>document.write('&g'+'t;')</script><br /><br />
                             <div style="margin-left:4em;">
-                                &lt;table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);"&gt;<br />
-                                &lt;tr&gt;<br />
+                                <script>document.write('&l'+'t;')</script>table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);"<script>document.write('&g'+'t;')</script><br />
+                                <script>document.write('&l'+'t;')</script>tr<script>document.write('&g'+'t;')</script><br />
                                     <div style="margin-left:2em;">
-                                        &lt;th width="5%"&gt;标识&lt;/th&gt;<br />
-                                        &lt;th width="50%"&gt;标题&lt;/th&gt;<br />
-                                        &lt;th width="20%"&gt;文章类别&lt;/th&gt;<br />
-                                        &lt;th width="15%"&gt;添加时间&lt;/th&gt;<br />
-                                        &lt;th width="10%"&gt;操作&lt;/th&gt;
+                                        <script>document.write('&l'+'t;')</script>th width="5%"<script>document.write('&g'+'t;')</script>标识<script>document.write('&l'+'t;')</script>/th<script>document.write('&g'+'t;')</script><br />
+                                        <script>document.write('&l'+'t;')</script>th width="50%"<script>document.write('&g'+'t;')</script>标题<script>document.write('&l'+'t;')</script>/th<script>document.write('&g'+'t;')</script><br />
+                                        <script>document.write('&l'+'t;')</script>th width="20%"<script>document.write('&g'+'t;')</script>文章类别<script>document.write('&l'+'t;')</script>/th<script>document.write('&g'+'t;')</script><br />
+                                        <script>document.write('&l'+'t;')</script>th width="15%"<script>document.write('&g'+'t;')</script>添加时间<script>document.write('&l'+'t;')</script>/th<script>document.write('&g'+'t;')</script><br />
+                                        <script>document.write('&l'+'t;')</script>th width="10%"<script>document.write('&g'+'t;')</script>操作<script>document.write('&l'+'t;')</script>/th<script>document.write('&g'+'t;')</script>
                                     </div>
-                                &lt;/tr&gt;<br />
+                                <script>document.write('&l'+'t;')</script>/tr<script>document.write('&g'+'t;')</script><br />
                                 <br />
-                                &lt;?php if( !empty($tpl['list']['data']) ){ foreach( $tpl['list']['data'] AS $r ){?&gt;<br />
-                                &lt;tr align="center"&gt;
+                                <script>document.write('&l'+'t;')</script>?php if( !empty($tpl['list']['data']) ){ foreach( $tpl['list']['data'] AS $r ){?<script>document.write('&g'+'t;')</script><br />
+                                <script>document.write('&l'+'t;')</script>tr align="center"<script>document.write('&g'+'t;')</script>
                                     <div style="margin-left:2em;">
-                                        &lt;td&gt;&lt;?php echo $r['article_id']; ?&gt;&lt;/td&gt;<br />
-                                        &lt;td&gt;&lt;?php e($r['title'],'html'); ?&gt;&lt;/td&gt;<br />
-                                        &lt;td&gt;&lt;?php e($r['article_cat_name'],'html'); ?&gt;&lt;/td&gt;<br />
-                                        &lt;td&gt;&lt;?php e($r['in_time'],'date'); ?&gt;&lt;/td&gt;<br />
-                                        &lt;td class="action"&gt;&lt;?php echo $r['acts']; ?&gt;&lt;/td&gt;
+                                        <script>document.write('&l'+'t;')</script>td<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>?php echo $r['article_id']; ?<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/td<script>document.write('&g'+'t;')</script><br />
+                                        <script>document.write('&l'+'t;')</script>td<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>?php e($r['title'],'html'); ?<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/td<script>document.write('&g'+'t;')</script><br />
+                                        <script>document.write('&l'+'t;')</script>td<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>?php e($r['article_cat_name'],'html'); ?<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/td<script>document.write('&g'+'t;')</script><br />
+                                        <script>document.write('&l'+'t;')</script>td<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>?php e($r['in_time'],'date'); ?<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/td<script>document.write('&g'+'t;')</script><br />
+                                        <script>document.write('&l'+'t;')</script>td class="action"<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>?php echo $r['acts']; ?<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/td<script>document.write('&g'+'t;')</script>
                                     </div>
-                                &lt;/tr&gt;<br />
-                                &lt;?php }}else{?&gt;<br />
-                                &lt;tr&gt;&lt;td colspan="5"&gt;&lt;div class="tips-div"&gt;&lt;span&gt;无数据&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;<br />
-                                &lt;?php }?&gt;<br />
+                                <script>document.write('&l'+'t;')</script>/tr<script>document.write('&g'+'t;')</script><br />
+                                <script>document.write('&l'+'t;')</script>?php }}else{?<script>document.write('&g'+'t;')</script><br />
+                                <script>document.write('&l'+'t;')</script>tr<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>td colspan="5"<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>div class="tips-div"<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>span<script>document.write('&g'+'t;')</script>无数据<script>document.write('&l'+'t;')</script>/span<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/div<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/td<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/tr<script>document.write('&g'+'t;')</script><br />
+                                <script>document.write('&l'+'t;')</script>?php }?<script>document.write('&g'+'t;')</script><br />
+                                <script>document.write('&l'+'t;')</script>/table<script>document.write('&g'+'t;')</script><br />
                                 <br />
-                                &lt;/table&gt;<br />
-                                &lt;div class="listtable-footer"&gt;&lt;div class="pager"&gt;&lt;?php echo $tpl['list']['pager']['html']; ?&gt;&lt;/div&gt;&lt;/div&gt;<br />
+                                <script>document.write('&l'+'t;')</script>div class="listtable-footer"<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>div class="pager"<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>?php echo $tpl['list']['pager']['html']; ?<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/div<script>document.write('&g'+'t;')</script><script>document.write('&l'+'t;')</script>/div<script>document.write('&g'+'t;')</script><br />
                             </div>
                         <br />
-                        &lt;?php if( $tpl['_bodysub'] != 'query' ){?&gt;
+                        <script>document.write('&l'+'t;')</script>?php if( $tpl['_bodysub'] != 'query' ){?<script>document.write('&g'+'t;')</script>
                             <div style="margin-left:2em;">
-                                &lt;/div&gt;
+                                <script>document.write('&l'+'t;')</script>/div<script>document.write('&g'+'t;')</script>
                             </div>
-                        &lt;/div&gt;<br />
-                        &lt;?php }?&gt;
+                        <script>document.write('&l'+'t;')</script>/div<script>document.write('&g'+'t;')</script><br />
+                        <script>document.write('&l'+'t;')</script>?php }?<script>document.write('&g'+'t;')</script>
                     </div>
                 <br />
                 <br />
-                &lt;?php } ?&gt;<br />
+                <script>document.write('&l'+'t;')</script>?php } ?<script>document.write('&g'+'t;')</script><br />
             </td>
         </tr>
         </table>
@@ -412,16 +409,16 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 <br />
                 6行<br />
                 7行<br />
-                23行<br />
-                26-48行<br />
+                20行<br />
+                23-45行<br />
             </td>
             <td>
                 视图头部公用文件，包含"模块标题层"代码块<br />
                 <br />
                 视图文件的列表代码块<br />
                 <br />
-                视图文件的列表BOX层，onmouseover表示绑定并激活列表的功能<br/>
-                视图文件的列表搜索表单(层)<br/>
+                视图文件的列表层，onmouseover表示绑定并激活列表的功能<br/>
+                视图文件的列表搜索表层<br/>
                 视图文件的列表数据层<br/>
                 视图文件的列表查询代码块(列表数据层的数据表)<br />
             </td>

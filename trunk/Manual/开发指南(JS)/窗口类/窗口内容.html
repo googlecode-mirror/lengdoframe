@@ -12,8 +12,9 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 </style>
 <body>
 
+
 <div style="text-indent:2em">
-    窗口内容，继<a target="_blank" href="窗口创建.html" style="color:#000">窗口创建</a>之后的又一个重要部分！<br /><br />
+    窗口内容，继<a target="_blank" href="窗口创建.html" style="color:#333">窗口创建</a>之后的又一个重要部分！<br /><br />
 </div>
 
 <div style="text-indent:2em">
@@ -29,23 +30,23 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <b>1. 窗口内容 - HTML载入</b><br />
 <div style="margin-left:1.2em;">
     <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
-        &lt;script type="application/javascript"&gt;<br />
+        <script>document.write('&l'+'t;')</script>script type="application/javascript"<script>document.write('&g'+'t;')</script>
             <div style="margin-left:2em;">
                 var wnd = new Wnd( 'wnd-unique-id1', null, {'width':400} ); <br />
                 <br />
                 wnd.create();<br />
                 wnd.buttonAddDefault();<br />
                 <br />
-                wnd.inner('&lt;b&gt;HTML内容XXX&lt;/b&gt;', 'html');<br />
+                wnd.inner('HTML内容XXX', 'html');<br />
                 wnd.show();<br />
             </div>
-        &lt;/script&gt;
+        <script>document.write('&l'+'t;')</script>/script<script>document.write('&g'+'t;')</script>
         <span style="color:#008ECD">
-            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id1',null,{'width':400});wnd.create();wnd.buttonAddDefault();wnd.inner('<b>HTML内容XXX</b>');wnd.show();">演示</a>]
+            [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id1',null,{'width':400});wnd.create();wnd.buttonAddDefault();wnd.inner('HTML内容XXX');wnd.show();">演示</a>]
         </span>
     </div>
     <div>
-        通过以上的代码，可以创建一个<a target="_blank" href="窗口创建.html" style="color:#000">固定宽度窗口</a>并在客户区显示"<b>HTML内容XXX</b>"！<br />
+        通过以上的代码，可以创建一个<a target="_blank" href="窗口创建.html" style="color:#333">固定宽度窗口</a>并在客户区显示"HTML内容XXX"！<br />
         [ <a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-inner'" style="color:#008ECD">API：窗口类-客户区内容载入</a> ]
     </div>
 </div>
@@ -55,7 +56,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <b>2. 窗口内容 - URL载入</b><br />
 <div style="margin-left:1.2em;">
     <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
-        &lt;script type="application/javascript"&gt;<br />
+        <script>document.write('&l'+'t;')</script>script type="application/javascript"<script>document.write('&g'+'t;')</script><br />
             <div style="margin-left:2em;">
                 var wnd = new Wnd( 'wnd-unique-id2', null, {'width':400} ); <br />
                 <br />
@@ -65,13 +66,13 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 wnd.inner('http://www.lengdo.com/about.php', 'url');<br />
                 wnd.show();<br />
             </div>
-        &lt;/script&gt;
+        <script>document.write('&l'+'t;')</script>/script<script>document.write('&g'+'t;')</script>
         <span style="color:#008ECD">
             [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id2',null,{'width':400});wnd.create();wnd.buttonAddDefault();wnd.inner('http://www.lengdo.com/about.php','url');wnd.show();">演示</a>]
         </span>
     </div>
     <div>
-        通过以上的代码，可以创建一个<a target="_blank" href="窗口创建.html" style="color:#000">固定宽度窗口</a>并在客户区载入 http://www.lengdo.com/about.php 网页的内容！ <br />
+        通过以上的代码，可以创建一个<a target="_blank" href="窗口创建.html" style="color:#333">固定宽度窗口</a>并在客户区载入 http://www.lengdo.com/about.php 网页的内容！ <br />
         [ <a href="javascript:void(0)" onclick="window.location.hash='lfm-wndcls-inner'" style="color:#008ECD">API：窗口类-客户区内容载入</a> ]
     </div>
     <br />
@@ -89,20 +90,20 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <div style="margin-left:1.2em;">
     内容载入和内容重载的主要区别在于加载层的类型，内容载入时加载层为填充，内容重载时加载则为浮动！<br />
     <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
-        &lt;script type="application/javascript"&gt;<br />
+        <script>document.write('&l'+'t;')</script>script type="application/javascript"<script>document.write('&g'+'t;')</script><br />
             <div style="margin-left:2em;">
                 var wnd = new Wnd( 'wnd-unique-id3', null, {'width':400} ); <br />
                 <br />
                 wnd.create();<br />
                 wnd.buttonAddDefault();<br />
                 <br />
-                wnd.inner('1. X&lt;br /&gt;2. X&lt;br /&gt;3. X&lt;br /&gt;4. X&lt;br /&gt;', 'html');<br />
+                wnd.inner('1. X<script>document.write('&l'+'t;')</script>br /<script>document.write('&g'+'t;')</script>2. X<script>document.write('&l'+'t;')</script>br /<script>document.write('&g'+'t;')</script>3. X<script>document.write('&l'+'t;')</script>br /<script>document.write('&g'+'t;')</script>4. X<script>document.write('&l'+'t;')</script>br /<script>document.write('&g'+'t;')</script>', 'html');<br />
                 wnd.show();<br />
                 <br />
                 alert('点击确定后重载');<br />
                 wnd.reinner('http://www.lengdo.com/about.php', 'url');<br />
             </div>
-        &lt;/script&gt;
+        <script>document.write('&l'+'t;')</script>/script<script>document.write('&g'+'t;')</script>
         <span style="color:#008ECD">
             [<a href="javascript:void(0)" style="color:#008ECD" onclick="wnd_unique_id3()">演示</a>]
         </span>
@@ -114,7 +115,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 wnd.create();
                 wnd.buttonAddDefault();
 
-                wnd.inner('<div>1. X</div><div>2. X</div><div>3. X</div><div>4. X</div>', 'html');
+                wnd.inner('<div style="height:100px">1. X</d'+'iv>', 'html');
                 wnd.show();
 
                 alert('点击确定后重载');
@@ -222,6 +223,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     </tr>
     </table>
 </div>
+
 
 </body>
 </html>
