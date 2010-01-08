@@ -21,7 +21,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <b id="lfm-articlecat-mdel-code-title">1. 文章类别删除的模块文件</b>
 <div style="margin-left:1.2em;">
     <div style="text-indent:2em;">
-        在<a target="_blank" href="5.文章类别列表.html#lfm-articlecat-mlist-code-title" style="color:#000">文章类别列表</a>中我们已经给删除按钮提供触发接口，参见第37行的ListTable.del()函数;
+        在<a target="_blank" href="5.文章类别列表.html#lfm-articlecat-mlist-code-title" style="color:#333">文章类别列表</a>中我们已经给删除按钮提供触发接口，参见第37行的ListTable.del()函数;
     </div>
     <div style="text-indent:2em;">
         ListTable.del()是一个javascript函数，该函数会自动默认提交'act'=del&id=xxx'参数到服务器端，服务器端编写方法如下：
@@ -30,7 +30,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <br />
 
     <div style="text-indent:2em;">
-        拷贝<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-mdel-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>模块文件 /admin/modules/article/article_cat.php
+        拷贝<a href="javascript:void(0)" style="color:#333;" onclick="var o=document.getElementById('lfm-articlecat-mdel-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>模块文件 /admin/modules/article/article_cat.php
     </div>
 
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
@@ -50,7 +50,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 51<br />52
             </td>
             <td>
-                &lt;?php<br />
+                <script>document.write('&l'+'t;')</script>?php<br />
                 /* 文件加载 */<br />
                 require('../../includes/init.php');<br />
                 require('../../includes/lib_lrtree.php');<br />
@@ -111,13 +111,13 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                         // <a target="_blank" href="5.文章类别列表.html#lfm-articlecat-mlist-code-title" style="color:#666;">列表的模块文件代码</a>
                     </div>
                 }<br />
-                ?&gt;<br />
+                ?<script>document.write('&g'+'t;')</script><br />
                 <br />
-                &lt;?php<br />
+                <script>document.write('&l'+'t;')</script>?php<br />
                     <div style="margin-left:2em;">
                         // <a target="_blank" href="6.文章类别增编.html#lfm-articlecat-mfillfunc-code-title" style="color:#666;">增编的相关辅助函数</a>
                     </div>
-                ?&gt;<br />
+                ?<script>document.write('&g'+'t;')</script><br />
             </td>
         </tr>
         </table>
@@ -142,14 +142,14 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <b id="lfm-articlecat-mdel-code-title">2. 文章类别删除的库文件</b>
 <div style="margin-left:1.2em;">
     <div style="text-indent:2em;">
-        追加<a href="javascript:void(0)" style="color:#000;" onclick="var o=document.getElementById('lfm-articlecat-ldel-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到库文件 /admin/includes/lib_article.php
+        追加<a href="javascript:void(0)" style="color:#333;" onclick="var o=document.getElementById('lfm-articlecat-ldel-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到库文件 /admin/includes/lib_article.php
     </div>
 
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
         <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-ldel-code');o.style.display=o.style.display=='none'?'':'none'">View Code 2</a>
     </div>
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-ldel-code">
-        &lt;?php<br />
+        <script>document.write('&l'+'t;')</script>?php<br />
         /* 删除文章类别 */<br />
         function del_article_cat( $filter )<br />
         {
@@ -195,8 +195,8 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 /* 根据文章类别信息(信任)取得文章类别IDS */<br />
                 if( is_array($filter['info']) && !empty($filter['info']) ){
                     <div style="margin-left:2em;">
-                        $sql = 'SELECT article_cat_id FROM '. tname('article_cat'). ' WHERE lft'. ($self?'&gt;=':'&gt;') . intval($filter['info']['lft']);<br />
-                        $sql.= ' AND rht'. ($self?'&lt;=':'&lt;') . intval($filter['info']['rht']) .' ORDER BY lft ASC';<br />
+                        $sql = 'SELECT article_cat_id FROM '. tname('article_cat'). ' WHERE lft'. ($self?'<script>document.write('&g'+'t;')</script>=':'<script>document.write('&g'+'t;')</script>') . intval($filter['info']['lft']);<br />
+                        $sql.= ' AND rht'. ($self?'<script>document.write('&l'+'t;')</script>=':'<script>document.write('&l'+'t;')</script>') . intval($filter['info']['rht']) .' ORDER BY lft ASC';<br />
                         <br />
                         return $GLOBALS['db']->getCol($sql);
                     </div>
@@ -205,7 +205,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 return array();
             </div>
         }<br />
-        ?&gt;<br />
+        ?<script>document.write('&g'+'t;')</script><br />
     </div>
 </div>
 

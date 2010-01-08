@@ -43,22 +43,22 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         以下就是一个典型的视图文件代码结构：
     </div>
     <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
-        &lt;?php if( $tpl['_header'] ){ include($_CFG['DIR_ADMIN_TPL'].'header.html'); }?&gt;<br />
+        <script>document.write('&l'+'t;')</script>?php if( $tpl['_header'] ){ include($_CFG['DIR_ADMIN_TPL'].'header.html'); }?<script>document.write('&g'+'t;')</script><br />
         <br />
         <br />
-        &lt;?php if( $tpl['_body'] == 'list' ){ ?&gt;
+        <script>document.write('&l'+'t;')</script>?php if( $tpl['_body'] == 'list' ){ ?<script>document.write('&g'+'t;')</script>
             <div style="margin-left:2em;">
-                &lt;!-- 列表的HTML代码 --&gt;
+                <script>document.write('&l'+'t;')</script>!-- 列表的HTML代码 --<script>document.write('&g'+'t;')</script>
             </div>
         <br />
         <br />
-        &lt;?php }elseif( $tpl['_body'] == 'add' || $tpl['_body'] == 'edit' ){ ?&gt;
+        <script>document.write('&l'+'t;')</script>?php }elseif( $tpl['_body'] == 'add' || $tpl['_body'] == 'edit' ){ ?<script>document.write('&g'+'t;')</script>
             <div style="margin-left:2em;">
-                &lt;!-- 增编的HTML代码 --&gt;
+                <script>document.write('&l'+'t;')</script>!-- 增编的HTML代码 --<script>document.write('&g'+'t;')</script>
             </div>
         <br />
         <br />
-        &lt;?php } ?&gt;
+        <script>document.write('&l'+'t;')</script>?php } ?<script>document.write('&g'+'t;')</script>
     </div>
 </div>
 

@@ -24,25 +24,25 @@ var Ajax = {
     /**
      * 调用此方法发送HTTP请求。
      *
-     * @params str  url           请求的URL地址
-     * @params str  params        发送参数 (字符串)
-     * @params fun  callback      回调函数
-     * @params str  ransferMode   请求的方式，有"GET"和"POST"(默认)两种 
-     * @params str  responseType  响应类型，有"JSON"、"XML"和"TEXT"(默认)三种
-     * @params bol  asyn          是否异步等待(默认是)
-     * @params bol  quiet         是否安静模式请求(默认false)
+     * @params str  url       请求的URL地址
+     * @params str  params    发送参数
+     * @params fun  callback  回调函数
+     * @params str  method    请求的方式，有"GET"和"POST"(默认)两种 
+     * @params str  rtype     响应类型，有"JSON"、"XML"和"TEXT"(默认)三种
+     * @params bol  asyn      是否异步等待(默认是)
+     * @params bol  quiet     是否安静模式请求(默认false)
      */
-    call : function( url, params, callback, transferMode, responseType, asyn, quiet ){
+    call : function( url, params, callback, method, rtype, asyn, quiet ){
         /* 初始化参数 */
-        transferMode = typeof(transferMode) === 'string' && transferMode.toUpperCase() === 'GET' ? 'GET' : 'POST';
+        method = typeof(method) === 'string' && method.toUpperCase() === 'GET' ? 'GET' : 'POST';
 
-        if( transferMode === 'GET' ){
+        if( method === 'GET' ){
             url += params ? (url.indexOf("?") === -1 ? '?' : '&') + params : '';
             url  = encodeURI(url) + (url.indexOf('?') === -1 ? '?' : '&') + Math.random();
         }
 
         asyn = asyn === false ? false : true;
-        responseType = typeof(responseType) === 'string' && ((responseType=responseType.toUpperCase()) === 'JSON' || responseType === 'XML') ? responseType : 'TEXT';
+        rtype = typeof(rtype) === 'string' && ((rtype=rtype.toUpperCase()) === 'JSON' || rtype === 'XML') ? rtype : 'TEXT';
 
         /* 处理HTTP请求和响应 */
         var xhr = this.createXMLHttpRequest();
@@ -54,9 +54,9 @@ var Ajax = {
                 self.onRunning();
             }
 
-            xhr.open(transferMode, url, asyn);
+            xhr.open(method, url, asyn);
 
-            if( transferMode === 'POST' ){
+            if( method === 'POST' ){
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             }
 
@@ -79,7 +79,7 @@ var Ajax = {
                                 }
 
                                 if( typeof(callback) === 'function' ){
-                                    callback.call(self, self.parseResult(responseType, xhr), xhr.responseText);
+                                    callback.call(self, self.parseResult(rtype, xhr), xhr.responseText);
                                 }
                             break;
 
@@ -106,7 +106,7 @@ var Ajax = {
 
                 xhr.send(params); // ...停顿，直至send结束再执行下面代码。
 
-                var result = self.parseResult(responseType, xhr);
+                var result = self.parseResult(rtype, xhr);
 
                 if( typeof(self.onComplete) === 'function' ){
                     self.onComplete();
@@ -179,10 +179,10 @@ var Ajax = {
      *
      * @return mix  返回特定格式的数据结果
      */
-    parseResult : function( responseType, xhr ){
+    parseResult : function( rtype, xhr ){
         var result = null;
 
-        switch( responseType ){
+        switch( rtype ){
             case 'XML' :
                 result = xhr.responseXML; break;
 
@@ -201,7 +201,7 @@ var Ajax = {
                 result = this.preFilter(xhr.responseText); break;
 
             default :
-                alert(this.filename +'/parseResult() error: unknown response type:'+ responseType);
+                alert(this.filename +'/parseResult() error: unknown response type:'+ rtype);
         }
 
         return result;

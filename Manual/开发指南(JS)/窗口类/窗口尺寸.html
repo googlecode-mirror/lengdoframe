@@ -11,8 +11,9 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 </style>
 <body>
 
+
 <div style="text-indent:2em">
-    在使用窗口类的构造函数<a target="_blank" href="窗口创建.html" style="color:#000">创建窗口</a>时，可以提交窗口的宽度或高度参数来控制窗口的尺寸。在窗口创建完成后我们仍然可以使用以下参数来控制窗口的尺寸：
+    在使用窗口类的构造函数<a target="_blank" href="窗口创建.html" style="color:#333">创建窗口</a>时，可以提交窗口的宽度或高度参数来控制窗口的尺寸。在窗口创建完成后我们仍然可以使用以下参数来控制窗口的尺寸：
 </div>
 
 <br />
@@ -28,7 +29,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <b>1. 窗口尺寸 - 构造时设置宽度和高度</b><br />
 <div style="margin-left:1.2em;">
     <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
-        &lt;script type="application/javascript"&gt;<br />
+        <script>document.write('&l'+'t;')</script>script type="application/javascript"<script>document.write('&g'+'t;')</script><br />
             <div style="margin-left:2em;">
                 var wnd = new Wnd( 'wnd-unique-id', null, {'width':400,'height':100} ); <br /><br />
 
@@ -37,7 +38,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 <br />
                 wnd.show();
             </div>
-        &lt;/script&gt;
+        <script>document.write('&l'+'t;')</script>/script<script>document.write('&g'+'t;')</script>
         <span style="color:#008ECD">
             [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id1',null,{'width':400,'height':100});wnd.create();wnd.buttonAddDefault();wnd.show();">演示</a>]
         </span>
@@ -53,7 +54,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <b>2. 窗口尺寸 - 创建后设置宽度和高度</b><br />
 <div style="margin-left:1.2em;">
     <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
-        &lt;script type="application/javascript"&gt;<br />
+        <script>document.write('&l'+'t;')</script>script type="application/javascript"<script>document.write('&g'+'t;')</script><br />
             <div style="margin-left:2em;">
                 var wnd = new Wnd( 'wnd-unique-id'); <br /><br />
 
@@ -67,7 +68,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 alert("点击'确定'后设置高度");
                 wnd.height(100);<br />
             </div>
-        &lt;/script&gt;
+        <script>document.write('&l'+'t;')</script>/script<script>document.write('&g'+'t;')</script>
         <span style="color:#008ECD">
             [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id2');wnd.create();wnd.buttonAddDefault();wnd.show();alert('点击\'确定\'后设置宽度');wnd.width(400);alert('点击\'确定\'后设置高度');wnd.height(100);">演示</a>]
         </span>
@@ -83,7 +84,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <b>3. 窗口尺寸 - 窗口最大化</b><br />
 <div style="margin-left:1.2em;">
     <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
-        &lt;script type="application/javascript"&gt;<br />
+        <script>document.write('&l'+'t;')</script>script type="application/javascript"<script>document.write('&g'+'t;')</script><br />
             <div style="margin-left:2em;">
                 var wnd = new Wnd( 'wnd-unique-id'); <br /><br />
 
@@ -97,7 +98,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 alert("点击'确定'后恢复最大化"); 
                 wnd.remax();<br />
             </div>
-        &lt;/script&gt;
+        <script>document.write('&l'+'t;')</script>/script<script>document.write('&g'+'t;')</script>
         <span style="color:#008ECD">
             [<a href="javascript:void(0)" style="color:#008ECD" onclick="var wnd=new Wnd('wnd-unique-id3');wnd.create();wnd.buttonAddDefault();wnd.show();alert('点击\'确定\'后设置最大化');wnd.max();alert('点击\'确定\'后恢复最大化');wnd.remax();">演示</a>]
         </span>
@@ -149,6 +150,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         </table>
     </div>
 </div>
+
 
 </body>
 </html>
