@@ -1,7 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<title><?php echo $_LANG['sys_title']; ?></title>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
 <link rel="stylesheet" type="text/css" href="<?php echo $_CFG['URL_ADMIN_SKIN'].$_CFG['SYS_SKIN']; ?>/style.css">
 <link rel="stylesheet" type="text/css" href="<?php echo $_CFG['URL_ADMIN_SKIN'].$_CFG['SYS_SKIN']; ?>/system.css">
 
@@ -18,36 +21,34 @@
 
 <script type="text/javascript" src="<?php echo $_CFG['URL_ADMIN']; ?>script/system.js"></script>
 <script type="text/javascript" src="<?php echo $_CFG['URL_ADMIN']; ?>script/systemwindows.js"></script>
-
-<title><?php echo $_LANG['sys_title']; ?></title>
 </head>
+
 
 <body onload="webpage_load_hide();module_mtree_request('index.php?act=home');">
 
-<div id="dloading-div"><a>页面加载中...</a></div>
-<div id="aloading-div" style="display:none"></div>
+    <div id="dloading-div"><a>页面加载中...</a></div>
+    <div id="aloading-div" style="display:none"></div>
 
-<div class="layout-top">
-    <div class="lft"><h1><?php echo $_LANG['sys_title']; ?></h1></div>
-    <div class="rht">[ <?php echo f(admin_name(),'html'),' - ',$_PRIV['role']['name']; ?> ]</div>
-</div>
+    <div class="layout-top">
+        <div class="lft"><h1><?php echo $_LANG['sys_title']; ?></h1></div>
+        <div class="rht">[ <?php echo f(admin_name(),'html'),' - ',$_PRIV['role']['name']; ?> ]</div>
+    </div>
 
-<table class="layout" cellpadding="0" cellspacing="0">
-<tr>
-    <td class="layout-lft">
-        <div class="quick_menu">
-            <a href="javascript:void(0)" class="logout" title="退出" onmousedown="this.childNodes[0].className='mdown'" onmouseup="this.childNodes[0].className=''" onmouseout="this.childNodes[0].className=''" onfocus="this.blur()" onclick="wnd_syslogout()"><i></i></a>
-            <a href="index.php?act=flush" class="flush" title="刷新系统" onmousedown="this.childNodes[0].className='mdown'" onmouseup="this.childNodes[0].className=''" onmouseout="this.childNodes[0].className=''" onfocus="this.blur()"><i></i></a>
-            <a href="javascript:void(0)" class="home" title="系统首页" onmousedown="this.childNodes[0].className='mdown'" onmouseup="this.childNodes[0].className=''" onmouseout="this.childNodes[0].className=''" onfocus="this.blur()" onclick="module_mtree_request('index.php?act=home')"><i></i></a>
-        </div>
+    <table class="layout" cellpadding="0" cellspacing="0">
+    <tr>
+        <td class="layout-lft">
+            <div class="quick_menu">
+                <a href="javascript:void(0)" class="logout" title="退出" onmousedown="this.childNodes[0].className='mdown'" onmouseup="this.childNodes[0].className=''" onmouseout="this.childNodes[0].className=''" onfocus="this.blur()" onclick="wnd_syslogout()"><i></i></a>
+                <a href="index.php?act=flush" class="flush" title="刷新系统" onmousedown="this.childNodes[0].className='mdown'" onmouseup="this.childNodes[0].className=''" onmouseout="this.childNodes[0].className=''" onfocus="this.blur()"><i></i></a>
+                <a href="javascript:void(0)" class="home" title="系统首页" onmousedown="this.childNodes[0].className='mdown'" onmouseup="this.childNodes[0].className=''" onmouseout="this.childNodes[0].className=''" onfocus="this.blur()" onclick="module_mtree_request('index.php?act=home')"><i></i></a>
+            </div>
 
-        <?php echo $_PRIV['module_mtree']; ?>
-    </td>
+            <?php echo $_PRIV['module_mtree']; ?>
+        </td>
 
-    <td class="layout-rht" id="layout-rht"></td>
-</tr>
-</table>
-
+        <td class="layout-rht" id="layout-rht"></td>
+    </tr>
+    </table>
 
 </body>
 </html>
