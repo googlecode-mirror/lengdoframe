@@ -249,9 +249,7 @@ var ListTable = {
         /* 异步调用 */
         Ajax.call(this.oCfgs[this.sId].sUList, '', callback, 'POST', 'JSON', configs.asyn, true);
 
-        /**
-         * 回调函数
-         */
+        /* 回调函数 */
         function callback( result, text ){
             /* 错误 - 服务器段返回错误 */
             if( result.error != 0 ){
@@ -553,6 +551,8 @@ var ListTable = {
      * @params obj  caller   调用者对象
      * @params str  url      要提交的URL，默认使用 列表的基础URL + url(如果url的格式为'?xx=xx&...')
      * @params obj  configs  编辑记录时配置
+     *         fun           configs.ok       处理成功时回调的函数(不与默认的重载列表事件同时执行)
+     *         fun           configs.fail     处理失败时回调的函数
      *         obj           configs.params   附加参数{$param:$value}
      *         str           configs.confirm  消息提示，如果没填则表示不提示消息。
      *                                        消息中的%d将会被转换为批处理记录个数
