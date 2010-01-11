@@ -6,7 +6,7 @@
     <?php if( $tpl['_bodysub'] != 'query' ){?>
     <div class="listtable-div" id="listtable-adminlog" onmouseover="ListTable.init(this.id,'modules/admin/admin_log.php','?act=list');">
         <form class="listtable-search" onsubmit="listtable_search(this);return false;">
-            <table>
+            <table class="listtable-table">
             <tr>
                 <td width="30"><i class="icon"></i></td>
                 <td width="45"><h1>时间：</h1></td>
@@ -31,7 +31,7 @@
         <div class="listtable-data">
     <?php }?>
 
-            <table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
+            <table class="listtable-table" onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
             <tr>
                 <th width="14%">IP</th>
                 <th width="20%">时间</th>

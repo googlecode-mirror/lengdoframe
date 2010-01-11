@@ -298,8 +298,8 @@ var ListTable = {
         div.insertBefore(b, div.childNodes[0]);
 
         /* 设置属性 */
-        b.id           = 'listtable-div-loading-' + this.oCfgs[this.sId].sId;
-        b.className    = 'listtable-div-loading';
+        b.id           = 'listtable-loading-' + this.oCfgs[this.sId].sId;
+        b.className    = 'listtable-loading';
         b.style.width  = div.offsetWidth + 'px';
         b.style.height = div.offsetHeight + 'px';
 
@@ -316,7 +316,7 @@ var ListTable = {
      */
     removeListLoading : function(){
         /* 获取对象 */
-        var o = document.getElementById('listtable-div-loading-'+this.oCfgs[this.sId].sId);
+        var o = document.getElementById('listtable-loading-'+this.oCfgs[this.sId].sId);
 
         /* 移除对象 */
         if( o ) o.parentNode.removeChild(o);

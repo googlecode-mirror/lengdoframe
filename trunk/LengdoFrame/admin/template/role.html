@@ -8,7 +8,7 @@
         <div class="listtable-data" style="border-top:0;border-bottom:0;">
     <?php }?>
 
-            <table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
+            <table class="listtable-table" onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
             <tr>
                 <th width="6%">标识</th>
                 <th width="74%">角色名称</th>
@@ -43,7 +43,7 @@
     <form id="wfm-role-fill" onkeydown="deal_wfm_keyboard(event,this);">
         <div class="table-header"><i></i><span>基本信息&nbsp;</span></div>
         <div class="form-div" style="border-bottom:0;">
-            <table>
+            <table class="form-table">
             <tr>
                 <td width="75"><h1>角色名称：</h1></td>
                 <td width="170"><input type="text" name="name" class="fillbox" style="width:150px;" value="<?php e($tpl['role']['name'],'formc'); ?>"/></td>

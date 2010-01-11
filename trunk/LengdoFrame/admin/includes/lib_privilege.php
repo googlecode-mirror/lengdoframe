@@ -955,7 +955,7 @@ function html_privilege_table( $name, $seled_ids = array() , $priv_ids = false )
         array_splice($modules, $i, 1);
     }
 
-    $html = '<table>';
+    $html = '<table class="form-table">';
 
     foreach( $modules AS $i => $module ){
         /* 模块无权限 - 说明该模块为模块组 */
