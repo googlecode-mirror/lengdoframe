@@ -8,21 +8,21 @@
             <table class="listtable-table">
             <tr>
                 <td width="120" style="padding-left:5px;">
-                    <input type="radio" name="backup_type" value="full" id="wfm-dbbackup-backtype-all" checked="checked" class="radio" 
-                    onclick="document.getElementById('wfm-dbbackup-dbtablebox').style.display='none'"/><label for="wfm-dbbackup-backtype-all">全部备份</label>
+                    <input type="radio" name="backup_type" value="full" id="wfmc-dbbackup-backtype-all" checked="checked" class="radio" 
+                    onclick="document.getElementById('wfm-dbbackup-dbtablebox').style.display='none'"/><label for="wfmc-dbbackup-backtype-all">全部备份</label>
                 </td>
                 <td style="color:#999">&nbsp;备份数据库所有表</td>
             </tr>
             <tr>
                 <td style="padding-left:5px;">
-                    <input type="radio" name="backup_type" value="custom" id="wfm-dbbackup-backtype-custom" class="radio" 
-                    onclick="document.getElementById('wfm-dbbackup-dbtablebox').style.display=''"/><label for="wfm-dbbackup-backtype-custom">自定义备份</label>
+                    <input type="radio" name="backup_type" value="custom" id="wfmc-dbbackup-backtype-custom" class="radio" 
+                    onclick="document.getElementById('wfm-dbbackup-dbtablebox').style.display=''"/><label for="wfmc-dbbackup-backtype-custom">自定义备份</label>
                 </td>
                 <td style="color:#999">&nbsp;根据自行选择备份数据表</td>
             </tr>
             <tr style="display:none" id="wfm-dbbackup-dbtablebox">
                 <td colspan="2">
-                    <table>
+                    <table width="100%">
                     <tr>
                         <td style="padding-left:4px; border:0;">
                             <input type="checkbox" id="wfm-dbbackup-selall" onclick="Formc.cbSyncCbg(this,Formc.cbgByContainer('wfm-dbbackup-customtable'))" class="checkbox"/>
@@ -42,10 +42,10 @@
             <tr>
                 <td width="170" style="padding-left:10px;">数据插入</td>
                 <td>
-                    <input type="checkbox" name="columns" id="wfm-dbbackup-columns" value="1" class="checkbox" checked="checked"/><label 
-                    for="wfm-dbbackup-columns">显示字段</label>
-                    <input type="checkbox" name="extended" id="wfm-dbbackup-extended" value="1" class="checkbox"/><label 
-                    for="wfm-dbbackup-extended">扩展插入</label>
+                    <input type="checkbox" name="columns" id="wfmc-dbbackup-columns" value="1" class="checkbox" checked="checked"/><label 
+                    for="wfmc-dbbackup-columns">显示字段</label>
+                    <input type="checkbox" name="extended" id="wfmc-dbbackup-extended" value="1" class="checkbox"/><label 
+                    for="wfmc-dbbackup-extended">扩展插入</label>
                 </td>
             </tr>
             <tr>

@@ -554,4 +554,5 @@ a.minus, span.minus{ width:16px; height:15px; *height:17px; display:inline-block
 /* ------------------------------------------------------ */
 
 /* 数据库表 */
+#wfm-dbbackup-customtable table{ width:100%; }
 #wfm-dbbackup-customtable table td{ border:0; }
