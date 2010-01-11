@@ -59,7 +59,7 @@ function lrtree_insert( $fields, $filter )
  * 改进的前序遍历树删除
  * 
  * @params arr  $filter  过滤条件
- *         arr           $filter['info']   信任的树信息
+ *         arr           $filter['info']   节点信息
  *         str           $filter['table']  前序遍历树的数据表
  *         str           $filter['where']  附加的过滤信息
  *
@@ -101,18 +101,23 @@ function lrtree_del( $filter )
  * 改进的前序遍历树上移
  * 
  * @params arr  $filter  过滤条件
+ *         arr           $filter['info']        节点信息
  *         str           $filter['table']       前序遍历树的数据表
  *         str           $filter['where']       附加的过滤信息
- *         str           $filter['primary']     主键的字段名
- *         arr           $filter['primary_id']  主键的字段值
+ *         str           $filter['primary']     节点主键的字段名
+ *         arr           $filter['primary_id']  节点主键的字段值
  *
  * @return bol  true表示移动成功，false表示移动失败 
  */
 function lrtree_umove( $filter )
 {
     /* 节点的信息 */
-    $sql  = 'SELECT * FROM '. $filter['table'] .' WHERE '. $filter['primary'] .'='. $filter['primary_id'];
-    $info = $GLOBALS['db']->getRow($sql);
+    if( is_array($filter) && !empty($filter['info']) ){
+        $info = $filter['info'];
+    }else{
+        $sql  = 'SELECT * FROM '. $filter['table'] .' WHERE '. $filter['primary'] .'='. $filter['primary_id'];
+        $info = $GLOBALS['db']->getRow($sql);
+    }
 
     /* 子节点的IDS，包括自己 */
     $sql  = ' SELECT '. $filter['primary'] .' FROM '. $filter['table'];
@@ -154,18 +159,23 @@ function lrtree_umove( $filter )
  * 改进的前序遍历树下移
  * 
  * @params arr  $filter  过滤条件
+ *         arr           $filter['info']        节点信息
  *         str           $filter['table']       前序遍历树的数据表
  *         str           $filter['where']       附加的过滤信息
- *         str           $filter['primary']     主键的字段名
- *         arr           $filter['primary_id']  主键的字段值
+ *         str           $filter['primary']     节点主键的字段名
+ *         arr           $filter['primary_id']  节点主键的字段值
  *
  * @return bol  true表示移动成功，false表示移动失败
  */
 function lrtree_dmove( $filter )
 {
     /* 节点的信息 */
-    $sql  = 'SELECT * FROM '. $filter['table'] .' WHERE '. $filter['primary'] .'='. $filter['primary_id'];
-    $info = $GLOBALS['db']->getRow($sql);
+    if( is_array($filter) && !empty($filter['info']) ){
+        $info = $filter['info'];
+    }else{
+        $sql  = 'SELECT * FROM '. $filter['table'] .' WHERE '. $filter['primary'] .'="'. $filter['primary_id'] .'"';
+        $info = $GLOBALS['db']->getRow($sql);
+    }
 
     /* 子节点的IDS，包括自己 */
     $sql  = ' SELECT '. $filter['primary'] .' FROM '. $filter['table'];

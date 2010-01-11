@@ -6,7 +6,7 @@
     <?php if( $tpl['_bodysub'] != 'query' ){?>
     <div class="listtable-div" id="listtable-admin" onmouseover="ListTable.init(this.id,'modules/admin/admin.php','?act=list');">
         <form class="listtable-search" onsubmit="listtable_search(this);return false;">
-            <table>
+            <table class="listtable-table">
             <tr>
                 <td width="30"><i class="icon"></i></td>
                 <td width="45"><h1>帐号：</h1></td>
@@ -21,7 +21,7 @@
         <div class="listtable-data">
     <?php }?>
 
-            <table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
+            <table class="listtable-table" onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
             <tr>
                 <th width="5%"><input type="checkbox" id="listtable-admin-touch" class="checkbox" onclick="ListTable.achoice(this.checked,this,'listtable-admin-ids')"/></th>
                 <th width="19%"><a href="javascript:void(0)" onclick="ListTable.orderBy('username')">管理员帐号</a><?php echo $tpl['img_username']; ?></th>
@@ -82,7 +82,7 @@
     <form id="wfm-admin-fill" onkeydown="deal_wfm_keyboard(event,this);">
         <div class="table-header"><i></i><span>基本信息&nbsp;</span></div>
         <div class="form-div" style="border-bottom:0;">
-            <table>
+            <table class="form-table">
             <tr>
                 <td width="90"><h1>管理员帐号：</h1></td>
                 <td width="180"><input type="text" name="username" class="fillbox" value="<?php e($tpl['admin']['username'],'formc'); ?>"/></td>

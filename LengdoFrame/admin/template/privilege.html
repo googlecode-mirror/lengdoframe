@@ -6,7 +6,7 @@
     <?php if( $tpl['_bodysub'] != 'query' ){?>
     <div class="listtable-div" id="listtable-privilege" onmouseover="ListTable.init(this.id,'modules/kernel/privilege.php','?act=list');">
         <form class="listtable-search" onsubmit="listtable_search(this);return false;">
-            <table>
+            <table class="listtable-table">
             <tr>
                 <td width="30"><i class="icon"></i></td>
                 <td width="45"><h1>模块：</h1></td>
@@ -19,7 +19,7 @@
         <div class="listtable-data">
     <?php }?>       
 
-            <table onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
+            <table class="listtable-table" onmouseover="TableAct.moveHiLight(this);TableAct.choiceHiLight(this);">
             <tr>
                 <th width="5%">标识</th>
                 <th width="20%">权限名</th>
@@ -53,7 +53,7 @@
 <?php }elseif( $tpl['_body'] == 'add' || $tpl['_body'] == 'edit' ){ ?>
     <form id="wfm-privilege-fill" onkeydown="deal_wfm_keyboard(event,this);">
         <div class="form-div" style="border-top:0;border-bottom:0;">
-            <table>
+            <table class="form-table">
             <tr>
                 <td width="75"><h1>权限名称：</h1></td>
                 <td><input type="text" name="name" class="fillbox" value="<?php e($tpl['privilege']['name'],'formc'); ?>"/></td>
