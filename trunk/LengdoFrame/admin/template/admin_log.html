@@ -11,13 +11,9 @@
                 <td width="30"><i class="icon"></i></td>
                 <td width="45"><h1>时间：</h1></td>
                 <td width="210">
-                    <div class="timecbox">
-                        <input type="text" name="datef" class="textbox" style="width:70px;"/><input type="button" onmouseover="combobox_mouseover(this)" onclick="timecbox_cal(this)" class="choice"/>
-                    </div>
+                    <?php echo timecbox('datef'); ?>
                     <font style="color:#7f9db9;">-</font>
-                    <div class="timecbox">
-                        <input type="text" name="datet" class="textbox" style="width:70px;"/><input type="button" onmouseover="combobox_mouseover(this)" onclick="timecbox_cal(this)" class="choice"/>
-                    </div>
+                    <?php echo timecbox('datet'); ?>
                 </td>
                 <td width="60"><h1>管理员：</h1></td>
                 <td width="80"><input type="text" class="textbox" style="width:80px" name="admin"></td>

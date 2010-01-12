@@ -38,7 +38,7 @@ elseif( $_REQUEST['act'] == 'download' ){
     admin_privilege_valid('db_backup.php', 'backup');
 
     /* 输出文件下载头 */
-    http_export_header( preg_replace('/\.sql\.php$/', '.sql', $_GET['findex']) );
+    http_download_header( preg_replace('/\.sql\.php$/', '.sql', $_GET['findex']) );
 
     /* 根据索引文件获取所有文件 */
     $fnames = all_sqlfile( array('findex'=>$_GET['findex']) );

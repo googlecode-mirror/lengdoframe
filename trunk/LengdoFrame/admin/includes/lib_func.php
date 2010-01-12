@@ -30,8 +30,86 @@ function sys_msg( $msg )
 
 
 /* ------------------------------------------------------ */
+// - 组合框
+/* ------------------------------------------------------ */
+
+/**
+ * 时间组合框
+ *
+ * @params str  $name     组合框名称
+ * @params arr  $configs  组合框配置
+ * @params arr  $attribs  文本框的属性
+ */
+function timecbox( $name, $configs = array(), $attribs = array() )
+{
+    /* 无效参数 */
+    if( !is_string($name) || $name == '' ) return;
+
+    /* 初始化参数 */
+    if( !is_array($configs) ) $configs = array();
+
+    /* 初始化参数 */
+    if( is_array($attribs) && !empty($attribs) ){
+        $attribs['name']  = $name;
+        $attribs['type']  = 'text';
+        $attribs['class'] = isset($attribs['class']) ? $attribs['class'] : 'textbox';
+        $attribs['style'] = isset($attribs['style']) ? $attribs['style'] : 'width:70px;';
+    }else{
+        $attribs = array('name'=>$name,'type'=>'text', 'class'=>'textbox', 'style'=>'width:70px');
+    }
+    
+    /* 构建HTML */
+    $html = '<div class="timecbox"><input';
+
+    /* 构建HTML - 文本框属性 */
+    foreach( $attribs AS $attrib=>$value ){
+        if( $value === null ){
+            $html .= ' '. $attrib;
+        }
+        else{
+            $html .= ' '. $attrib .'="'. $value .'"';
+        }
+    }
+
+    /* 构建HTML - 按钮及配置 */
+    $html .= '/><input type="button" onmouseover="combobox_mouseover(this)" class="choice" onclick="timecbox_cal(this,';
+    $html .= str_replace('"',"'",json_encode($configs)) .')"/></div>';
+
+    /* 返回 */
+    return $html;
+}
+
+
+/* ------------------------------------------------------ */
 // - 文件类
 /* ------------------------------------------------------ */
+
+/**
+ * 取出视图HTML代码
+ *
+ * @params str  $file  视图文件名
+ * @params arr  $tpl   视图的数据变量
+ */
+function tpl_fetch( $file, $tpl )
+{
+    /* 初始化 */
+    global $_LANG, $_DBD, $_CFG;
+
+    /* 缓存开始 */
+    ob_start();
+
+    /* 加载视图 */
+    include($_CFG['DIR_ADMIN_TPL'] . $file);
+
+    /* 获取视HTML */
+    $html = ob_get_contents();
+
+    /* 缓存结束 */
+    ob_end_clean();
+    
+    /* 返回 */
+    return $html;
+}
 
 /**
  * 文件(夹)权限检查函数
@@ -138,30 +216,6 @@ function file_privilege( $file_path )
     return $mark;
 }
 
-/**
- * 取出模板HTML代码
- */
-function tpl_fetch( $file, $tpl )
-{
-    /* 初始化 */
-    global $_LANG, $_DBD, $_CFG;
-
-    /* 缓存开始 */
-    ob_start();
-
-    /* 加载视图 */
-    include($_CFG['DIR_ADMIN_TPL'] . $file);
-
-    /* 获取视HTML */
-    $html = ob_get_contents();
-
-    /* 缓存结束 */
-    ob_end_clean();
-    
-    /* 返回 */
-    return $html;
-}
-
 
 /* ------------------------------------------------------ */
 // - 管理员日志
@@ -189,7 +243,7 @@ function admin_log( $info )
 
 
 /* ------------------------------------------------------ */
-// - 功能函数
+// - 分页函数
 /* ------------------------------------------------------ */
 
 /**
@@ -273,6 +327,57 @@ function pager_current( $rows_page, $rows_total )
 }
 
 
+/* ------------------------------------------------------ */
+// - HTML文件下载头
+/* ------------------------------------------------------ */
+
+/**
+ * HTTP导出
+ *
+ * @params str  $file     导出的文件名
+ * @params str  $data     导出的数据
+ * @params str  $oencode  输出编码，'UTF-8', 'GB2312'
+ */
+function http_download( $file, $data, $oencode = 'UTF-8' )
+{
+    /* 输出数据导出的文件头 */
+    http_download_header($file);
+
+    /* 编码并输出数据 */
+    echo http_download_encode($data, $oencode); exit();
+}
+function http_download_header( $file )
+{
+    /* 文件扩展名 */
+    $ext = end( explode('.',$file) );
+
+    /* HTML文件头的内容类型 */
+    $ctype = array();
+    $ctype['sql'] = 'text/plain';
+    $ctype['csv'] = 'application/vnd.ms-excel';
+
+    /* 输出文件头 */
+    header('Content-Type: '.$ctype[$ext]);                      //文件类型
+    header('Content-disposition: attachment; filename='.$file); //文件名称
+}
+function http_download_encode( $str, $oencode, $iencode = 'UTF-8' )
+{
+    if( function_exists('mb_convert_encoding') ){
+        return mb_convert_encoding($str, $oencode, $iencode);
+    }
+
+    if( function_exists('iconv') ){
+        return iconv($iencode, $oencode.'//IGNORE', $str);
+    }
+
+    return $str;
+}
+
+
+/* ------------------------------------------------------ */
+// - 列表导出
+/* ------------------------------------------------------ */
+
 /**
  * 列表数据导出
  *
@@ -300,52 +405,13 @@ function list_export( $file, $rows, $cols = '' )
         }
     }
 
-    http_export($file, $str, 'GB2312');
+    http_download($file, $str, 'GB2312');
 }
 
 
-/**
- * HTTP导出
- *
- * @params str  $file     导出的文件名
- * @params str  $data     导出的数据
- * @params str  $oencode  输出编码，'UTF-8', 'GB2312'
- */
-function http_export( $file, $data, $oencode = 'UTF-8' )
-{
-    /* 输出数据导出的文件头 */
-    http_export_header($file);
-
-    /* 编码并输出数据 */
-    echo http_export_encode($data, $oencode); exit();
-}
-function http_export_header( $file )
-{
-    /* 文件扩展名 */
-    $ext = end( explode('.',$file) );
-
-    /* HTML文件头的内容类型 */
-    $ctype = array();
-    $ctype['sql'] = 'text/plain';
-    $ctype['csv'] = 'application/vnd.ms-excel';
-
-    /* 输出文件头 */
-    header('Content-Type: '.$ctype[$ext]);                      //文件类型
-    header('Content-disposition: attachment; filename='.$file); //文件名称
-}
-function http_export_encode( $str, $oencode, $iencode = 'UTF-8' )
-{
-    if( function_exists('mb_convert_encoding') ){
-        return mb_convert_encoding($str, $oencode, $iencode);
-    }
-
-    if( function_exists('iconv') ){
-        return iconv($iencode, $oencode.'//IGNORE', $str);
-    }
-
-    return $str;
-}
-
+/* ------------------------------------------------------ */
+// - 列表排序图标
+/* ------------------------------------------------------ */
 
 /**
  * 构建排序图像HTML和访问这个HTML的变量名
