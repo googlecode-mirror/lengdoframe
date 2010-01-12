@@ -952,11 +952,13 @@ function ajax_iframe_attribs( attribs )
     attribs = typeof(attribs) == 'object' && attribs ? attribs : {};
 
     /* 移除，绑定 onload 属性 */
-    if( window.ActiveXObject ){
-        iframe.detachEvent('onload',iframe.onclick);
-        iframe.attachEvent('onload',iframe.onclick=attribs.onload);
-    }else{
-        iframe.onload = attribs.onload;
+    if( typeof(attribs.onload) == 'function' ){
+        if( window.ActiveXObject ){
+            iframe.detachEvent('onload',iframe.onclick);
+            iframe.attachEvent('onload',iframe.onclick=attribs.onload);
+        }else{
+            iframe.onload = attribs.onload;
+        }
     }
 
     /* 绑定 src 属性 */
