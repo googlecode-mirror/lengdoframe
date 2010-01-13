@@ -135,12 +135,12 @@
                     <tr>
                         <td width="95"><h1>本地SQL文件：</h1></td>
                         <td>
-                            <div class="filecbox">
-                                <input type="text" class="textbox" readonly/>
-                                <a class="clear"   href="javascript:void(0)" onclick="filecbox_clear(this)" onmouseover="combobox_mouseover(this)" title="清除"></a>
-                                <a class="overlay" href="javascript:void(0)" onmouseover="combobox_mouseover(this)" title="选择文件" style="border-right:0;"><input name="file" type="file" class="filebox" size="1" onchange="filecbox_change(this,filecbox_change_ext('sql','请上传SQL文件！'));"/></a>
-                                <a class="upload"  href="javascript:void(0)" onclick="filecbox_upload(this,{'confirm':'确定上传SQL文件？'})" onmouseover="combobox_mouseover(this)" title="上传"></a>
-                            </div>
+                            <?php echo filecbox('file', array(
+                                                            'upload' =>array( 'onclick'  => "filecbox_upload(this,{'confirm':'确定上传SQL文件？'});" ),
+                                                            'filebox'=>array( 'onchange' => "filecbox_change(this,filecbox_change_ext('sql','请上传SQL文件！'));" )
+                                                        )
+                                               );
+                            ?>
                         </td>
                     </tr>
                     </table>
