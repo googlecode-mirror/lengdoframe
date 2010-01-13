@@ -22,8 +22,8 @@
  */
 function sys_msg( $msg )
 {
-    $html  = '<body style="margin:0"><div style="text-align:center;border:1px solid #ccc;background:#ffffe1;';
-    $html .= 'padding:20px;margin:5px;font:12px Garamonds,Tahoma;color:#777;font-weight:blod;">'. $msg .'</div></body>';
+    $html = '<body style="margin:0"><div style="text-align:center;border:1px solid #ccc;background:#ffffe1;';
+    $html.= 'padding:20px;margin:5px;font:12px Garamonds,Tahoma;color:#777;font-weight:blod;">'. $msg .'</div></body>';
 
     exit($html);
 }
@@ -37,41 +37,34 @@ function sys_msg( $msg )
  * 时间组合框
  *
  * @params str  $name     组合框名称
- * @params arr  $configs  组合框配置
  * @params arr  $attribs  组合件属性
  *         arr            $attribs['button']   按钮属性
  *         arr            $attribs['textbox']  文本框属性
+ * @params arr  $configs  组合框配置
  */
-function timecbox( $name, $configs = array(), $attribs = array() )
+function timecbox( $name, $attribs = array(), $configs = array() )
 {
     /* 无效参数 */
-    if( !is_string($name) || $name == '' ) return;
+    if( !is_string($name) || $name == '' ) return '';
 
     /* 初始化参数 */
     if( !is_array($configs) ) $configs = array();
-    if( !is_array($attribs) ) $attribs = array();
 
-    /* 初始化参数 */
-    if( is_array($attribs['textbox']) && !empty($attribs['textbox']) ){
-        $attribs['textbox']['name']  = $name;
-        $attribs['textbox']['type']  = 'text';
-        $attribs['textbox']['class'] = isset($attribs['textbox']['class']) ? $attribs['textbox']['class'] : 'textbox';
-        $attribs['textbox']['style'] = isset($attribs['textbox']['style']) ? $attribs['textbox']['style'] : 'width:70px;';
-    }else{
-        $attribs['textbox'] = array('name'=>$name, 'type'=>'text', 'class'=>'textbox', 'style'=>'width:70px');
-    }
-    
-    /* 构建HTML */
-    $html = '<div class="timecbox"><input';
+    /* 初始化参数 - 文本框属性 */
+    if( !is_array($attribs['textbox']) ) $attribs['textbox'] = array();
+    $attribs['textbox'] = array_merge( array('class'=>'textbox','style'=>'width:70px'), $attribs['textbox'] );
+    $attribs['textbox'] = array_merge( $attribs['textbox'], array('name'=>$name, 'type'=>'text') );
 
     /* 构建HTML - 文本框属性 */
+    $html = '<div class="timecbox"><input';
     foreach( $attribs['textbox'] AS $attrib=>$value ){
-        $html .= ' '. $attrib .($value !== null ? '="'.$value.'"' : '');
+        $html.= ' '. ( $value===true ? $attrib : ($value===false?'':($attrib.'="'.$value.'"')) );
     }
+    $html.= '/>';
 
     /* 构建HTML - 按钮及配置 */
-    $html .= '/><input type="button" onmouseover="combobox_mouseover(this)" class="choice" onclick="timecbox_cal(this,';
-    $html .= str_replace('"',"'",json_encode($configs)) .')"/></div>';
+    $html.= '<input type="button" onmouseover="combobox_mouseover(this)" class="choice" onclick="timecbox_cal(this,';
+    $html.= str_replace('"',"'",json_encode($configs)) .')"/></div>';
 
     /* 返回 */
     return $html;
@@ -82,33 +75,68 @@ function timecbox( $name, $configs = array(), $attribs = array() )
  *
  * @params str  $name     组合框名称
  * @params arr  $attribs  组合件属性
+ *         arr            $attribs['del']      删除按钮属性
+ *         arr            $attribs['view']     查看按钮属性
  *         arr            $attribs['upload']   上传按钮属性
+ *         arr            $attribs['choice']   选择按钮属性
  *         arr            $attribs['filebox']  文件域属性
  */
 function filecbox( $name, $attribs = array() )
 {
     /* 无效参数 */
-    if( !is_string($name) || $name == '' ) return;
+    if( !is_string($name) || $name == '' ) return '';
 
     /* 初始化参数 */
     if( !is_array($configs) ) $configs = array();
     if( !is_array($attribs) ) $attribs = array();
 
-    /* 初始化参数 - 文件域属性 */
+    /* 初始化参数 - 文件域遮掩层和文件域属性 */
+    if( !is_array($attribs['textbox']) ) $attribs['textbox'] = array();
+    $attribs['textbox'] = array_merge( array('class'=>'textbox','readonly'=>true), $attribs['textbox'] );
+    $attribs['textbox'] = array_merge( $attribs['textbox'], array('type'=>'text') );
+
+    if( !is_array($attribs['overlay']) ) $attribs['overlay'] = array();
+    $attribs['overlay'] = array_merge( $attribs['overlay'], array('onmouseover'=>'combobox_mouseover(this)','class'=>'overlay','href'=>'javascript:void(0)') );
+
     if( !is_array($attribs['filebox']) ) $attribs['filebox'] = array();
     $attribs['filebox'] = array_merge( $attribs['filebox'], array('name'=>$name,'type'=>'file','class'=>'filebox','size'=>'1') );
 
     /* 构建HTML */
     $html = '<div class="filecbox">';
-    $html.= '<input type="text" class="textbox" readonly/>';
+
+    /* 构建HTML - 文件框 */
+    $html.= '<input';
+    foreach( $attribs['textbox'] AS $attrib=>$value ){
+        $html.= ' '. ( $value===true ? $attrib : ($value===false?'':($attrib.'="'.$value.'"')) );
+    }
+    $html.= '/>';
+
+    /* 构建HTML - 文件域清除按钮 */
     $html.= '<a class="clear" href="javascript:void(0)" onclick="filecbox_clear(this)" onmouseover="combobox_mouseover(this)" title="清除"></a>';
 
-    /* 构建HTML - 文件域 */
-    $html.= '<a class="overlay" href="javascript:void(0)" onmouseover="combobox_mouseover(this)" title="选择文件" style="border-right-width:0;"><input';
+    /* 构建HTML - 文件域遮掩层和文件域 */
+    $html.= '<a';
+    foreach( $attribs['overlay'] AS $attrib=>$value ){
+        $html.= ' '. $attrib .'="'. $value .'"';
+    }
+    $html.= '><input';
     foreach( $attribs['filebox'] AS $attrib=>$value ){
-        $html .= ' '. $attrib .($value !== null ? '="'.$value.'"' : '');
+        $html.= ' '. ( $value===true ? $attrib : ($value===false?'':($attrib.'="'.$value.'"')) );
     }
     $html.= '/></a>';
+
+    /* 构建HTML - 选择按钮 */
+    if( is_array($attribs['choice']) ){
+        /* 初始化参数 - 选择按钮属性 */
+        $attribs['choice'] = array_merge( $attribs['choice'], array('class'=>'choice','href'=>'javascript:void(0)','onmouseover'=>'combobox_mouseover(this)') );
+
+        /* 构建HTML - 选择按钮 */
+        $html.= '<a';
+        foreach( $attribs['choice'] AS $attrib=>$value ){
+            $html.= ' '. $attrib .'="'. $value .'"';
+        }
+        $html.= '></a>';
+    }
 
     /* 构建HTML - 上传按钮 */
     if( is_array($attribs['upload']) ){
@@ -116,12 +144,133 @@ function filecbox( $name, $attribs = array() )
         $attribs['upload'] = array_merge( $attribs['upload'], array('class'=>'upload','href'=>'javascript:void(0)','onmouseover'=>'combobox_mouseover(this)') );
 
         /* 构建HTML - 上传按钮 */
-        $html .= '<a';
+        $html.= '<a';
         foreach( $attribs['upload'] AS $attrib=>$value ){
-            $html .= ' '. $attrib .($value !== null ? '="'.$value.'"' : '');
+            $html.= ' '. $attrib .'="'. $value .'"';
         }
-        $html .= '></a>';
+        $html.= '></a>';
     }
+
+    /* 构建HTML - 删除按钮和查看按钮 */
+    if( is_array($attribs['del']) || is_array($attribs['view']) ){
+        $html.= '<div class="uploaded">';
+        
+        /* 构建HTML - 删除按钮 */
+        if( is_array($attribs['del']) ){
+            /* 初始化参数 - 删除按钮属性 */
+            $attribs['del'] = array_merge( $attribs['del'], array('class'=>'del','href'=>'javascript:void(0)','onmouseover'=>'combobox_mouseover(this)') );
+
+            /* 构建HTML - 删除按钮 */
+            $html.= '<a';
+            foreach( $attribs['del'] AS $attrib=>$value ){
+                $html.= ' '. $attrib .'="'. $value .'"';
+            }
+            $html.= '></a>';
+        }
+
+        /* 构建HTML - 查看按钮 */
+        if( is_array($attribs['view']) ){
+            /* 初始化参数 - 查看按钮属性 */
+            $attribs['view'] = array_merge( $attribs['view'], array('class'=>'view','href'=>'javascript:void(0)','onmouseover'=>'combobox_mouseover(this)') );
+
+            /* 构建HTML - 查看按钮 */
+            $html.= '<a';
+            foreach( $attribs['view'] AS $attrib=>$value ){
+                $html.= ' '. $attrib .'="'. $value .'"';
+            }
+            $html.= '></a>';
+        }
+
+        $html.= '</div>';
+    }
+
+    /* 返回 */
+    return $html;
+}
+
+/**
+ * 数字步长组合框
+ *
+ * @params str  $name     组合框名称
+ * @params arr  $attribs  组合件属性
+ *         arr            $attribs['textbox']  文本框属性
+ * @params arr  $configs  组合框配置
+ *         mix            $configs.tstep  向上的步长
+ *         mix            $configs.bstep  向下的步长
+ *         mix            $configs.limit  上下限(步长大于0时为上限，小于0时为下限)
+ *         mix            $configs.fixed  小数点后精度长度
+ */
+function numscbox( $name, $attribs = array(), $configs = array() )
+{
+    /* 无效参数 */
+    if( !is_string($name) || $name == '' ) return '';
+
+    /* 初始化参数 - 文本框属性 */
+    if( !is_array($attribs['textbox']) ) $attribs['textbox'] = array();
+    $attribs['textbox'] = array_merge( array('class'=>'textbox','style'=>'width:70px'), $attribs['textbox'] );
+    $attribs['textbox'] = array_merge( $attribs['textbox'], array('name'=>$name, 'type'=>'text') );
+
+    /* 构建HTML - 文本框属性 */
+    $html = '<table class="numscbox" cellpadding="0" cellspacing="0"><tr><td><input';
+    foreach( $attribs['textbox'] AS $attrib=>$value ){
+        $html.= ' '. ( $value===true ? $attrib : ($value===false?'':($attrib.'="'.$value.'"')) );
+    }    
+    $html.= '/></td><td>';
+
+    /* 初始化参数 */
+    $config = array();
+    if( is_numeric($configs['limit']) ) $config['limit'] = $configs['limit'];
+    if( is_numeric($configs['fixed']) ) $config['fixed'] = $configs['fixed'];
+
+    $config = str_replace('"',"'",json_encode($config));
+
+    /* 构建HTML - 文本框属性 */
+    $html.= '<a onmouseover="combobox_mouseover(this)" class="buttont" onclick="numscbox_calc(this,';
+    $html.= (is_numeric($configs['tstep'])&&$configs['tstep']>=0?$configs['tstep']:1) .','. $config .')"></a>';
+    $html.= '<a onmouseover="combobox_mouseover(this)" class="buttonb" onclick="numscbox_calc(this,';
+    $html.= (is_numeric($configs['bstep'])&&$configs['bstep']<=0?$configs['bstep']:-1) .','. $config .')"></a>';
+    $html.= '</td></tr></table>';
+
+    return $html;
+}
+
+/**
+ * 选择组合框
+ *
+ * @params str  $name     组合框名称
+ * @params arr  $attribs  组合件属性
+ *         arr            $attribs['button']   按钮属性
+ *         arr            $attribs['textbox']  文本框属性
+ * @params arr  $configs  组合框配置
+ */
+function choicecbox( $name, $attribs = array(), $configs = array() )
+{
+    /* 无效参数 */
+    if( !is_string($name) || $name == '' ) return '';
+
+    /* 初始化参数 - 文本框属性 */
+    if( !is_array($attribs['textbox']) ) $attribs['textbox'] = array();
+    $attribs['textbox'] = array_merge( array('class'=>'textbox'), $attribs['textbox'] );
+    $attribs['textbox'] = array_merge( $attribs['textbox'], array('name'=>$name, 'type'=>'text') );
+
+    /* 初始化参数 - 按钮属性 */
+    if( !is_array($attribs['button']) ) $attribs['button'] = array();
+    $attribs['button'] = array_merge( array('onmouseover'=>'combobox_mouseover(this)'), $attribs['button'] );
+    $attribs['button'] = array_merge( $attribs['button'], array('class'=>'choice','type'=>'button') );
+
+    /* 构建HTML - 文本框属性 */
+    $html = '<div class="choicecbox"><input';
+    foreach( $attribs['textbox'] AS $attrib=>$value ){
+        $html.= ' '. ( $value===true ? $attrib : ($value===false?'':($attrib.'="'.$value.'"')) );
+    }    
+    $html.= '/>';
+
+    /* 构建HTML - 按钮属性 */
+    $html.= '<input';
+    foreach( $attribs['button'] AS $attrib=>$value ){
+        $html.= ' '. ( $value===true ? $attrib : ($value===false?'':($attrib.'="'.$value.'"')) );
+    }
+    $html.= '/></div>';
 
     /* 返回 */
     return $html;
