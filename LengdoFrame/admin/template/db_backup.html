@@ -134,15 +134,7 @@
                     <table class="form-table" cellspacing="1">
                     <tr>
                         <td width="95"><h1>本地SQL文件：</h1></td>
-                        <td>
-                            <?php echo filecbox('file', array(
-                                                            'upload' =>array( 'onclick'  => "filecbox_upload(this,{'confirm':'确定上传SQL文件？'});" ),
-                                                            'overlay'=>array( 'style'    => "border-right-width:0px;" ),
-                                                            'filebox'=>array( 'onchange' => "filecbox_change(this,filecbox_change_ext('sql','请上传SQL文件！'));" )
-                                                        )
-                                               );
-                            ?>
-                        </td>
+                        <td><?php echo $tpl['cbox_file']; ?></td>
                     </tr>
                     </table>
                 </div>
