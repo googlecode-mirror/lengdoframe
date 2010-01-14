@@ -37,6 +37,9 @@ function timecbox_cal( caller, configs )
     /* 初始化全局时间选择器对象 */
     if( !window.TIMECBOX_TIME_SELECTER ){
         window.TIMECBOX_TIME_SELECTER = new Calendar({'onSelect':function(){this.hide();},'align':'Br'});
+        window.TIMECBOX_TIME_SELECTER.args.minuteStep  = 1;
+        window.TIMECBOX_TIME_SELECTER.args.animation   = false;
+        window.TIMECBOX_TIME_SELECTER.args.titleFormat = '%Y %b';
     }
 
     /* 显示时分 */
@@ -105,6 +108,7 @@ function filecbox_clear( caller )
  *
  * @params obj  caller   调用者对象
  * @params obj  configs  配置集
+ *         str           configs.empty     未选择上传文件消息提示
  *         str           configs.confirm   提交前的确认消息提示
  */
 function filecbox_upload( caller, configs )
@@ -127,7 +131,14 @@ function filecbox_upload( caller, configs )
 
     /* 上传提示 */
     if( !file.value ){
-        wnd_alert('请选择上传文件！'); return false;
+        /* 不提示 */
+        if( configs.empty === false ) return false; 
+
+        /* 初始化消息 */
+        configs.empty = typeof(configs.empty) == 'string' && configs.empty ? configs.empty : '请选择上传文件！';
+        
+        /* 提示上传 */
+        wnd_alert(configs.empty); return false;
     }
 
     /* 回调函数 */

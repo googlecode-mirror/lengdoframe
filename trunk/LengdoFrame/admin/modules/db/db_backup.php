@@ -316,6 +316,13 @@ else{
     // - 异步 - 默认首页
     /* ------------------------------------------------------ */
     else{
+        /* HTML控件 */
+        $attribs = array();
+        $attribs['upload']  = array('onclick'=>"filecbox_upload(this,{'confirm':'确定上传SQL文件？'});");
+        $attribs['overlay'] = array('style'=>"border-right-width:0px;");
+        $attribs['filebox'] = array('onchange'=>"filecbox_change(this,filecbox_change_ext('sql','请上传SQL文件！'));");
+        $tpl['cbox_file'] = filecbox('file', $attribs);
+
         /* 初始化页面信息 */
         $tpl['_header'] = 'title';
 

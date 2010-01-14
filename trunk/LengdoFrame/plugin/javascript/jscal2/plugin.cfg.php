@@ -14,6 +14,7 @@ $_PLUGIN_CFG['install']   = array();
 $_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'js/jscal2.js' , 'type'=>'LOAD');
 $_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'js/lang/cn.js' , 'type'=>'LOAD');
 $_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'css/jscal2.css' , 'type'=>'LOAD');
+$_PLUGIN_CFG['install'][] = array('fpath'=>$_CFG['DIR_ADMIN'].'script/system.js', 'src'=>'css/border-radius.css' , 'type'=>'LOAD');
 
 
 /* 返回插件配置 */
