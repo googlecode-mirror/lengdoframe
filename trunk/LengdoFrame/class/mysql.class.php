@@ -285,15 +285,16 @@ class Mysql
         $field_names = $this->getCol('DESC `'. $table .'`');
 
         /* 初始化 */
-        $fields = array();
-        $values = array();
+        $fields = array(); $values = array();
 
         /* 过滤$fields_values中无效的字段，提取有效字段和字段值 */
         foreach( $field_names AS $field ){
-            if( array_key_exists($field, $field_values) == true ){
-                $fields[] = '`'. $field .'`';
-                $values[] = '"'. $field_values[$field] .'"';
-            }
+            /* 无效字段 */
+            if( !array_key_exists($field,$field_values) ) continue;
+
+            /* 字段赋值 */
+            $fields[] = '`'. $field .'`';
+            $values[] = $field_values[$field] === null ? 'NULL' : ('"'.$field_values[$field].'"');
         }
 
         /* 构建SQL */
@@ -320,7 +321,13 @@ class Mysql
 
         /* 过滤 $fields_values 中无效的字段，提取有效字段和字段值 */
         foreach( $field_names AS $field ){
-            if( array_key_exists($field, $field_values) == true ){
+            /* 无效字段 */
+            if( !array_key_exists($field,$field_values) ) continue;
+
+            /* 字段赋值 */
+            if( $field_values[$field] === null ){
+                $sets[] = '`'. $field. '` = NULL';
+            }else{
                 $sets[] = '`'. $field. '` = "'. $field_values[$field] .'"';
             }
         }
