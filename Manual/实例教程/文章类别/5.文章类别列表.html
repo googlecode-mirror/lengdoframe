@@ -47,7 +47,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <b id="lfm-articlecat-mlist-code-title">2. 模块文件的数据处理</b>
 <div style="margin-left:1.2em;">
     <div style="text-indent:2em;">
-        "文章类别"的模块文件包含以下功能点代码：增加('add')，增加提交('query')，编辑('edit')，编辑提交('update')，删除('del')，列表('list')，模块默认首页('index')。每个功能点代码段通过 $_REQUEST['act'] 请求区分。
+        "文章类别"的模块文件包含以下功能点代码：增加('add')，增加提交('insert')，编辑('edit')，编辑提交('update')，删除('del')，列表('list')，模块默认首页('index')。每个功能点代码段通过 $_REQUEST['act'] 请求区分。
     </div>
     <div style="text-indent:2em;">
         列表('list')功能点包含了列表查询('query')子功能点，通过 $_REQUEST['actsub'] 标识。相比列表('list')功能点，列表查询('query')只负责返回列表的数据层HTML和分页HTML，而列表('list')则还要返回搜索层的HTML。
