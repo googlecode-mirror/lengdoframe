@@ -1,8 +1,8 @@
 版本记录  
-        /admin/lang/zh.php (由变量$_LANG['sys_kernel']控制)
+        /admin/language/zh.php (由变量$_LANG['sys_kernel']控制)
 
 版本日志
-        /admin/tpl/home.html (可直接通过运行系统查看)
+        /admin/template/home.html (可直接通过运行系统查看)
 
 版本格式
         命名：LengdoFrame v主版本号.子版本号.修正版本号 版本类型
