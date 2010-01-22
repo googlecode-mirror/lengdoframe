@@ -138,7 +138,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                 41<br />42<br />43<br />44<br />45<br />46<br />47<br />48<br />49<br />50<br />
                 51<br />52<br />53<br />54<br />55<br />56<br />57<br />58<br />59<br />60<br />
                 61<br />62<br />63<br />64<br />65<br />66<br />67<br />68<br />69<br />70<br />
-                71<br />72<br />73<br />74<br />75
+                71<br />72<br />73<br />74<br />75<br />76<br />77<br />78
             </td>
             <td>
                 <script>document.write('&l'+'t;')</script>?php<br />
@@ -229,7 +229,10 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
                         // <a target="_blank" href="5.文章类别列表.html#lfm-articlecat-mlist-code-title" style="color:#666;font-family:'宋体'">列表的模块文件代码</a>
                     </div>
                 }<br />
-                ?<script>document.write('&g'+'t;')</script><br />
+                <br />
+                /* 加载视图 */<br />
+                include($_CFG['DIR_ADMIN_TPL'].'article_cat.html');<br />
+                ?<script>document.write('&g'+'t;')</script>
             </td>
         </tr>
         </table>
@@ -281,6 +284,8 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         function ctl_fill( $act )<br />
         {
             <div style="margin-left:2em;">
+                global $tpl;<br />
+                <br />
                 /* 所属类别 */<br />
                 $append = array('value'=>'1', 'text'=>'顶级类别');<br />
                 $tpl['formc_article_cat'] = ddl_article_cat( 'parent_id', $_GET['parent_id'], $append, array('style'=>'width:154px') );
