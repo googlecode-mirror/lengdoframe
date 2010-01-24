@@ -33,7 +33,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
 <div style="margin-left:1.2em;">
     <div style="text-indent:2em;">开发中总是会遇到各种问题，没有数据对于调试来说是很困难的，所以在文章类别列表开发之前导入以下SQL到数据库！</div>
 
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+    <div class="viewcode-body" style="margin-left:2.2em;">
         TRUNCATE TABLE article_cat;<br />
         INSERT INTO article_cat(article_cat_id,name,lft,rht,lvl) VALUES('1','虚根分类','1','8','0');<br />
         INSERT INTO article_cat(article_cat_id,name,lft,rht,lvl) VALUES('2','新闻','2','7','1');<br />
@@ -64,12 +64,12 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         拷贝<a href="javascript:void(0)" style="color:#333;" onclick="var o=document.getElementById('lfm-articlecat-mlist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到 
         "文章列表"的<a target="_blank" href="4.文件创建及说明.html#lfm-articlecat-file-module" style="color:#333;">模块处理文件</a> /admin/modules/article/article_cat.php
     </div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
-        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-mlist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a>
+    <div class="viewcode-header" style="margin-left:2.2em;">
+        <a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-articlecat-mlist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a>
         <font style="color:#666"> - </font> 
-        <a href="javascript:void(0)" style="color:#090;text-decoration:none;" onclick="explain_code('lfm-articlecat-mlist-code-explain')">代码解释</a> 
+        <a href="javascript:void(0)" style="color:#090;" onclick="explain_code('lfm-articlecat-mlist-code-explain')">代码解释</a> 
     </div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-mlist-code">
+    <div class="viewcode-body" style="margin-left:2.2em;display:none;border-top:0;" id="lfm-articlecat-mlist-code">
         <table>
         <tr>
             <td width="30">
@@ -260,8 +260,8 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         拷贝<a href="javascript:void(0)" style="color:#333;" onclick="var o=document.getElementById('lfm-articlecat-llist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="4.文件创建及说明.html#lfm-articlecat-file-lib" style="color:#333;">库文件</a> /admin/includes/lib_article.php
     </div>
 
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;"><a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-llist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 2</a></div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-llist-code">
+    <div class="viewcode-header" style="margin-left:2.2em;"><a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-articlecat-llist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 2</a></div>
+    <div class="viewcode-body" style="margin-left:2.2em;display:none;border-top:0;" id="lfm-articlecat-llist-code">
         <script>document.write('&l'+'t;')</script>?php<br />
         /* 取得所有文章类别 */<br />
         function all_article_cat( $filter = array() )<br />
@@ -303,13 +303,13 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         拷贝<a href="javascript:void(0)" style="color:#333;" onclick="var o=document.getElementById('lfm-articlecat-vlist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="4.文件创建及说明.html#lfm-articlecat-file-view" style="color:#333;">视图文件</a> /admin/template/article_cat.html
     </div>
 
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
-        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-articlecat-vlist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 3</a>
+    <div class="viewcode-header" style="margin-left:2.2em;">
+        <a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-articlecat-vlist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 3</a>
         <font style="color:#666"> - </font> 
-        <a href="javascript:void(0)" style="color:#090;text-decoration:none;" onclick="explain_code('lfm-articlecat-vlist-code-explain')">代码解释</a> 
+        <a href="javascript:void(0)" style="color:#090;" onclick="explain_code('lfm-articlecat-vlist-code-explain')">代码解释</a> 
     </div>
 
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-articlecat-vlist-code">
+    <div class="viewcode-body" style="margin-left:2.2em;display:none;border-top:0;" id="lfm-articlecat-vlist-code">
         <table style="table-layout:fixed;">
         <tr>
             <td width="30">
