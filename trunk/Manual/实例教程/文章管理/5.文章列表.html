@@ -21,7 +21,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <div style="text-indent:2em;">
         以下数据供开发调试时使用。
     </div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+    <div class="viewcode-body" style="margin-left:2.2em;">
         TRUNCATE TABLE article;<br />
         INSERT INTO article(title,content,in_time) VALUES('标题1','内容1','1260769552');<br />
         INSERT INTO article(title,content,in_time) VALUES('标题2','内容2','1260769552');<br />
@@ -50,12 +50,12 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         拷贝<a href="javascript:void(0)" style="color:#333;" onclick="var o=document.getElementById('lfm-article-mlist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到 
         "文章列表"的<a target="_blank" href="4.文件创建及说明.html#lfm-article-file-module" style="color:#333;">模块文件</a> /admin/modules/article/article.php
     </div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
-        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-article-mlist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a>
+    <div class="viewcode-header" style="margin-left:2.2em;">
+        <a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-article-mlist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 1</a>
         <font style="color:#666"> - </font> 
-        <a href="javascript:void(0)" style="color:#090;text-decoration:none;" onclick="explain_code('lfm-article-mlist-code-explain')">代码解释</a> 
+        <a href="javascript:void(0)" style="color:#090;" onclick="explain_code('lfm-article-mlist-code-explain')">代码解释</a> 
     </div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-article-mlist-code">
+    <div class="viewcode-body" style="margin-left:2.2em;display:none;border-top:0;" id="lfm-article-mlist-code">
         <table>
         <tr>
             <td width="30">
@@ -241,8 +241,10 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         追加<a href="javascript:void(0)" style="color:#333;" onclick="var o=document.getElementById('lfm-article-llist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="4.文件创建及说明.html#lfm-article-file-lib" style="color:#333;">库文件</a> /admin/includes/lib_article.php
     </div>
 
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;"><a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-article-llist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 2</a></div>
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-article-llist-code">
+    <div class="viewcode-header" style="margin-left:2.2em;">
+        <a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-article-llist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 2</a>
+    </div>
+    <div class="viewcode-body" style="margin-left:2.2em;display:none;border-top:0;" id="lfm-article-llist-code">
         <script>document.write('&l'+'t;')</script>?php<br />
         /* 文章列表 */<br />
         function list_article()<br />
@@ -306,13 +308,13 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         拷贝<a href="javascript:void(0)" style="color:#333;" onclick="var o=document.getElementById('lfm-article-vlist-code');o.style.display=o.style.display=='none'?'':'none'">以下代码</a>到<a target="_blank" href="4.文件创建及说明.html#lfm-article-file-view" style="color:#333;">视图文件</a> /admin/template/article.html
     </div>
 
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;">
-        <a href="javascript:void(0)" style="color:#666;text-decoration:none;" onclick="var o=document.getElementById('lfm-article-vlist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 3</a>
+    <div class="viewcode-header" style="margin-left:2.2em;">
+        <a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-article-vlist-code');o.style.display=o.style.display=='none'?'':'none'">View Code 3</a>
         <font style="color:#666"> - </font> 
-        <a href="javascript:void(0)" style="color:#090;text-decoration:none;" onclick="explain_code('lfm-article-vlist-code-explain')">代码解释</a> 
+        <a href="javascript:void(0)" style="color:#090;" onclick="explain_code('lfm-article-vlist-code-explain')">代码解释</a> 
     </div>
 
-    <div style="font-size:12px;margin-left:2.2em;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;border-top:0;color:#666;display:none;" id="lfm-article-vlist-code">
+    <div class="viewcode-body" style="margin-left:2.2em;display:none;border-top:0;" id="lfm-article-vlist-code">
         <table style="table-layout:fixed;">
         <tr>
             <td width="30">
