@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../../lib/style.css">
 <title>权限篇</title>
 </head>
 <style>
@@ -62,7 +63,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <a id="lfm-privilege-dev-valid-title" href="javascript:void(0)" onclick="var o=document.getElementById('lfm-privilege-dev-valid');o.style.display=o.style.display=='none'?'':'none';" style="font-weight:bold;color:#000">3.1 程序开发之 - 权限检查</a><br />
     <div style="margin-left:2em;" id="lfm-privilege-dev-valid">
         权限检查，即检查当前管理员是否拥有对某模块的操作的权限。代码如下：<br />
-        <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        <div class="viewcode-body">
             admin_privilege_valid($module_file, $module_act);
         </div>
 
@@ -78,7 +79,7 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
     <a href="javascript:void(0)" onclick="var o=document.getElementById('lfm-privilege-dev-pname');o.style.display=o.style.display=='none'?'':'none';" style="font-weight:bold;color:#000">3.2 程序开发之 - 权限名称</a><br />
     <div style="margin-left:2em;" id="lfm-privilege-dev-pname">
         权限名称，模块操作页面的标题(参见"图3")，代码如下：<br />
-        <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        <div class="viewcode-body">
             $tpl['title'] = admin_privilege_name_fk('article.php', 'list');
         </div>
         <br />
@@ -90,19 +91,19 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         独立权限的使用代码如下：<br />
         <br />
         第一步：获取模块的所有操作并提取增加操作<br />
-        <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        <div class="viewcode-body">
             $m_aa = admin_module_acts('article.php'); <br />
             $m_ab = filter_module_acts($m_aa, array('add'), true);
         </div>
         <br />
         第二步：设置增加操作的属性<br />
-        <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        <div class="viewcode-body">
             $attribs = array();<br />
             $attribs['add'] = array('onclick'=>"wnd_article_fill(this,'add')");
         </div>
         <br />
         第三步：构建模块操作的按钮<br />
-        <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        <div class="viewcode-body">
             $tpl['acts'] = format_module_acts($m_ab, $attribs, 'btn', $items);
         </div>
         <br />
@@ -114,13 +115,13 @@ body{ font-size:14px; line-height:150%; font-family:Garamonds,Tahoma; }
         绑定权限的使用代码如下：<br />
         <br />
         第一步：获取模块的所有操作并提取编辑，删除操作<br />
-        <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        <div class="viewcode-body">
             $m_aa = admin_module_acts('article.php'); <br />
             $m_ab = filter_module_acts($m_aa, array('edit','del'), true);
         </div>
         <br />
         第二步：设置编辑，删除操作的属性并绑定<br />
-        <div style="font-size:12px;line-height:130%;background:#f4f4f4;padding:5px;border:1px solid #ccc;color:#666;">
+        <div class="viewcode-body">
         foreach( $tpl['article_list']['data'] AS $i => $r ){
             <div style="margin-left:1.5em">
             /* 编辑操作 */<br />
