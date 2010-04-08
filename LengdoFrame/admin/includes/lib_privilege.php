@@ -23,8 +23,6 @@
  *
  * @params str  $username  登陆帐号
  * @params str  $password  登陆密码
- *                     $info[''],$info['password']  //[用户登陆]使用和
- *                     $info['admin_id']  //[系统内用]使用管理员ID登陆
  *
  * @return bol  true 表示登陆成功, false 表示失败
  */
@@ -931,6 +929,7 @@ function html_privilege_table( $name, $seled_ids = array() , $priv_ids = false )
     /* 构建权限SQL */
     $sql = 'SELECT * FROM '. tname('privilege'); //SELECT * FROM
     $sql.= $priv_ids === false ? '' : ' WHERE privilege_id IN("'. implode('","',$priv_ids) .'")'; //WHERE, 限制要显示的权限
+    $sql.= 'ORDER BY `order` ASC';
 
     $privs = array();
     $array = $GLOBALS['db']->getAll($sql);
