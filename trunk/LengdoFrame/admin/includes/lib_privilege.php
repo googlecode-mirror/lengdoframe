@@ -451,9 +451,9 @@ function admin_pfile( $username = '' )
 
     /* 返回权限文件路径 */
     if( $username == '' ){
-        return $_CFG['DIR_ADMIN_PFILE'].$_SESSION[SN_ADMIN]['username'].'.php';
+        return $_CFG['DIR_ADMIN_PFILE'].md5($_SESSION[SN_ADMIN]['username']).'.php';
     }else{
-        return $_CFG['DIR_ADMIN_PFILE'].trim($username).'.php';
+        return $_CFG['DIR_ADMIN_PFILE'].md5(trim($username)).'.php';
     }
 }
 
