@@ -183,6 +183,9 @@ function module_mtree_request( uri, configs )
     else{
         /* 回调函数 */
         function callback( result, text ){
+            /* 获取请求的模块层 */
+            var div = document.getElementById(url);
+
             if( div ){
                 /* 重新载入模块层内容 */
                 div.innerHTML = text;
